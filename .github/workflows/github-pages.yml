@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
            python-version: '3.11'
 
@@ -28,6 +28,9 @@ jobs:
           python3 -m pip install --upgrade pip setuptools wheel
           # Install NumPy before GDAL
           python3 -m pip install numpy
+          # Install GDAL
+          export CPLUS_INCLUDE_PATH=/usr/include/gdal
+          export C_INCLUDE_PATH=/usr/include/gdal
           python3 -m pip install gdal==$(gdal-config --version)
           python3 -m pip install -r requirements.txt
           python3 -m pip install sphinx
@@ -40,7 +43,7 @@ jobs:
         run: touch docs/html/.nojekyll
 
       - name: Deploy generated content to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
           folder: docs/html
