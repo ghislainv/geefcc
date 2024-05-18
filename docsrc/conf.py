@@ -10,16 +10,15 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import os
-import sys
 import datetime
 import re  # Regular expression
-sys.path.insert(0, os.path.abspath('..'))
+
+# sys.path.insert(0, os.path.abspath('..'))
 
 
 def find_author_release():
     """Finding package authors and release."""
-    with open("pyfcc/__init__.py", encoding="utf-8") as file:
+    with open("../pyfcc/__init__.py", encoding="utf-8") as file:
         file_text = file.read()
     _author = re.search('^__author__\\s*=\\s*"(.*)"',
                         file_text, re.M).group(1)
