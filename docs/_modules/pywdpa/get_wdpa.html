@@ -1,0 +1,261 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pywdpa.get_wdpa &#8212; pywdpa — A simple access to world&#39;s protected areas</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/logo-pywdpa.svg" alt="Logo"/>
+    
+    <h1 class="logo logo-name">pywdpa</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">A simple access to world's protected areas</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ghislainv&repo=pywdpa&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/get_started.html">Get started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../indices.html">Indices and tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pywdpa.get_wdpa</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># author          :Ghislain Vieilledent</span>
+<span class="c1"># email           :ghislain.vieilledent@cirad.fr, ghislainv@gmail.com</span>
+<span class="c1"># web             :https://ecology.ghislainv.fr</span>
+<span class="c1"># python_version  :&gt;=2.7</span>
+<span class="c1"># license         :GPLv3</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="c1"># Import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span>  <span class="c1"># Python 3 compatibility</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">osgeo</span> <span class="kn">import</span> <span class="n">ogr</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="kn">from</span> <span class="nn">.get_token</span> <span class="kn">import</span> <span class="n">get_token</span>
+
+<span class="c1"># get_wdpa()</span>
+
+
+<div class="viewcode-block" id="get_wdpa"><a class="viewcode-back" href="../../reference.html#pywdpa.get_wdpa.get_wdpa">[docs]</a><span class="k">def</span> <span class="nf">get_wdpa</span><span class="p">(</span><span class="n">iso3</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function downloads protected areas for one country using the</span>
+<span class="sd">    WDPA API. Protected areas defined by a point are not</span>
+<span class="sd">    considered. The shapefile is written on the hard drive (in the</span>
+<span class="sd">    current directory).</span>
+
+<span class="sd">    :param iso3: The ISO-3 code of the country.</span>
+
+<span class="sd">    :param output_dir: Directory used for download.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SHAPE_ENCODING&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;utf-8&quot;</span>
+    <span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;https://api.protectedplanet.net/&quot;</span>
+    <span class="n">category</span> <span class="o">=</span> <span class="s2">&quot;v3/countries/&quot;</span>
+    <span class="n">wdpa_token</span> <span class="o">=</span> <span class="n">get_token</span><span class="p">()</span>
+    <span class="n">request</span> <span class="o">=</span> <span class="n">base_url</span> <span class="o">+</span> <span class="n">category</span> <span class="o">+</span> <span class="n">iso3</span> <span class="o">+</span> <span class="s2">&quot;?token=&quot;</span> <span class="o">+</span> <span class="n">wdpa_token</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;Invalid ISO-3 code&quot;</span>
+
+    <span class="n">response</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>  <span class="c1"># Equivalent to response.json()</span>
+
+    <span class="n">pas_count</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;country&quot;</span><span class="p">][</span><span class="s2">&quot;pas_count&quot;</span><span class="p">]</span>
+    <span class="n">pages</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">pas_count</span> <span class="o">/</span> <span class="mf">50.0</span><span class="p">))))</span>
+
+    <span class="k">if</span> <span class="n">pas_count</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="c1"># Create the output shapefile</span>
+        <span class="n">output_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="s2">&quot;pa_&quot;</span> <span class="o">+</span> <span class="n">iso3</span> <span class="o">+</span> <span class="s2">&quot;.shp&quot;</span><span class="p">)</span>
+        <span class="n">driver</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">GetDriverByName</span><span class="p">(</span><span class="s2">&quot;ESRI Shapefile&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">output_file</span><span class="p">):</span>
+            <span class="n">driver</span><span class="o">.</span><span class="n">DeleteDataSource</span><span class="p">(</span><span class="n">output_file</span><span class="p">)</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">CreateDataSource</span><span class="p">(</span><span class="n">output_file</span><span class="p">)</span>
+        <span class="c1"># Create the spatial reference, WGS84</span>
+        <span class="n">srs</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">osr</span><span class="o">.</span><span class="n">SpatialReference</span><span class="p">()</span>
+        <span class="n">srs</span><span class="o">.</span><span class="n">ImportFromEPSG</span><span class="p">(</span><span class="mi">4326</span><span class="p">)</span>
+        <span class="n">layer</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">CreateLayer</span><span class="p">(</span><span class="s2">&quot;wdpa&quot;</span><span class="p">,</span> <span class="n">srs</span><span class="p">,</span> <span class="n">ogr</span><span class="o">.</span><span class="n">wkbMultiPolygon</span><span class="p">)</span>
+        <span class="c1"># Add attributes</span>
+        <span class="n">layer</span><span class="o">.</span><span class="n">CreateField</span><span class="p">(</span><span class="n">ogr</span><span class="o">.</span><span class="n">FieldDefn</span><span class="p">(</span><span class="s2">&quot;wdpa_id&quot;</span><span class="p">,</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTInteger</span><span class="p">))</span>
+        <span class="n">layer</span><span class="o">.</span><span class="n">CreateField</span><span class="p">(</span><span class="n">ogr</span><span class="o">.</span><span class="n">FieldDefn</span><span class="p">(</span><span class="s2">&quot;pa_name&quot;</span><span class="p">,</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTString</span><span class="p">))</span>
+        <span class="n">layer</span><span class="o">.</span><span class="n">CreateField</span><span class="p">(</span><span class="n">ogr</span><span class="o">.</span><span class="n">FieldDefn</span><span class="p">(</span><span class="s2">&quot;orig_name&quot;</span><span class="p">,</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTString</span><span class="p">))</span>
+        <span class="n">layer</span><span class="o">.</span><span class="n">CreateField</span><span class="p">(</span><span class="n">ogr</span><span class="o">.</span><span class="n">FieldDefn</span><span class="p">(</span><span class="s2">&quot;ctry_iso3&quot;</span><span class="p">,</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTString</span><span class="p">))</span>
+        <span class="n">layer</span><span class="o">.</span><span class="n">CreateField</span><span class="p">(</span><span class="n">ogr</span><span class="o">.</span><span class="n">FieldDefn</span><span class="p">(</span><span class="s2">&quot;owner_type&quot;</span><span class="p">,</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTString</span><span class="p">))</span>
+        <span class="n">layer</span><span class="o">.</span><span class="n">CreateField</span><span class="p">(</span><span class="n">ogr</span><span class="o">.</span><span class="n">FieldDefn</span><span class="p">(</span><span class="s2">&quot;is_marine&quot;</span><span class="p">,</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTString</span><span class="p">))</span>
+        <span class="n">layer</span><span class="o">.</span><span class="n">CreateField</span><span class="p">(</span><span class="n">ogr</span><span class="o">.</span><span class="n">FieldDefn</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTString</span><span class="p">))</span>
+        <span class="n">layer</span><span class="o">.</span><span class="n">CreateField</span><span class="p">(</span><span class="n">ogr</span><span class="o">.</span><span class="n">FieldDefn</span><span class="p">(</span><span class="s2">&quot;iucn_cat&quot;</span><span class="p">,</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTString</span><span class="p">))</span>
+        <span class="n">layer</span><span class="o">.</span><span class="n">CreateField</span><span class="p">(</span><span class="n">ogr</span><span class="o">.</span><span class="n">FieldDefn</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTString</span><span class="p">))</span>
+        <span class="n">layer</span><span class="o">.</span><span class="n">CreateField</span><span class="p">(</span><span class="n">ogr</span><span class="o">.</span><span class="n">FieldDefn</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTString</span><span class="p">))</span>
+
+        <span class="c1"># API</span>
+        <span class="n">category</span> <span class="o">=</span> <span class="s2">&quot;v3/protected_areas/search/&quot;</span>
+
+        <span class="c1"># Loop on pages</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pages</span><span class="p">:</span>
+            <span class="n">request</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">base_url</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="s2">&quot;?token=&quot;</span><span class="p">,</span> <span class="n">wdpa_token</span><span class="p">,</span>
+                 <span class="s2">&quot;&amp;with_geometry=&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;&amp;country=&quot;</span><span class="p">,</span>
+                 <span class="n">iso3</span><span class="p">,</span> <span class="s2">&quot;&amp;per_page=&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span> <span class="s2">&quot;&amp;page=&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+            <span class="p">)</span>
+
+            <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;protected_areas&quot;</span><span class="p">]</span>
+
+            <span class="c1"># Number of protected areas</span>
+            <span class="n">npa</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+
+            <span class="c1"># Loop on protected areas</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">npa</span><span class="p">):</span>
+
+                <span class="c1"># Get pa geometry from json</span>
+                <span class="n">pa</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">g</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">CreateGeometryFromJson</span><span class="p">(</span>
+                    <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">pa</span><span class="p">[</span><span class="s2">&quot;geojson&quot;</span><span class="p">][</span><span class="s2">&quot;geometry&quot;</span><span class="p">])</span>
+                <span class="p">)</span>
+
+                <span class="c1"># # If point, convert to polygon with a buffer</span>
+                <span class="c1"># if (g.GetGeometryName() is &quot;POINT&quot; and pa[&quot;reported_area&quot;] is not &quot;0.0&quot;):</span>
+                <span class="c1">#     area = np.float(pa[&quot;reported_area&quot;])</span>
+                <span class="c1">#     buffer_size = int(round(np.sqrt(area/np.pi)*1000))</span>
+                <span class="c1">#     g = g.Buffer(buffer_size)</span>
+
+                <span class="c1"># If polygon, add feature</span>
+                <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">GetGeometryName</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;POLYGON&quot;</span><span class="p">,</span> <span class="s2">&quot;MULTIPOLYGON&quot;</span><span class="p">]:</span>
+                    <span class="c1"># Create feature with geometry and attributes</span>
+                    <span class="n">featureDefn</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetLayerDefn</span><span class="p">()</span>
+                    <span class="n">feature</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">Feature</span><span class="p">(</span><span class="n">featureDefn</span><span class="p">)</span>
+                    <span class="n">feature</span><span class="o">.</span><span class="n">SetGeometry</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+                    <span class="n">feature</span><span class="o">.</span><span class="n">SetField</span><span class="p">(</span><span class="s2">&quot;wdpa_id&quot;</span><span class="p">,</span> <span class="n">pa</span><span class="p">[</span><span class="s2">&quot;wdpa_id&quot;</span><span class="p">])</span>
+                    <span class="n">feature</span><span class="o">.</span><span class="n">SetField</span><span class="p">(</span><span class="s2">&quot;pa_name&quot;</span><span class="p">,</span> <span class="n">pa</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+                    <span class="n">feature</span><span class="o">.</span><span class="n">SetField</span><span class="p">(</span>
+                        <span class="s2">&quot;orig_name&quot;</span><span class="p">,</span> <span class="n">pa</span><span class="p">[</span><span class="s2">&quot;original_name&quot;</span><span class="p">])</span>
+                    <span class="n">feature</span><span class="o">.</span><span class="n">SetField</span><span class="p">(</span><span class="s2">&quot;ctry_iso3&quot;</span><span class="p">,</span> <span class="n">iso3</span><span class="p">)</span>
+                    <span class="n">feature</span><span class="o">.</span><span class="n">SetField</span><span class="p">(</span><span class="s2">&quot;owner_type&quot;</span><span class="p">,</span> <span class="n">pa</span><span class="p">[</span><span class="s2">&quot;owner_type&quot;</span><span class="p">])</span>
+                    <span class="n">feature</span><span class="o">.</span><span class="n">SetField</span><span class="p">(</span><span class="s2">&quot;is_marine&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">pa</span><span class="p">[</span><span class="s2">&quot;marine&quot;</span><span class="p">]))</span>
+                    <span class="n">feature</span><span class="o">.</span><span class="n">SetField</span><span class="p">(</span>
+                        <span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="n">pa</span><span class="p">[</span><span class="s2">&quot;designation&quot;</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+                    <span class="n">feature</span><span class="o">.</span><span class="n">SetField</span><span class="p">(</span><span class="s2">&quot;iucn_cat&quot;</span><span class="p">,</span> <span class="n">pa</span><span class="p">[</span><span class="s2">&quot;iucn_category&quot;</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+                    <span class="n">feature</span><span class="o">.</span><span class="n">SetField</span><span class="p">(</span><span class="s2">&quot;status&quot;</span><span class="p">,</span> <span class="n">pa</span><span class="p">[</span><span class="s2">&quot;legal_status&quot;</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+                    <span class="n">feature</span><span class="o">.</span><span class="n">SetField</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="n">pa</span><span class="p">[</span><span class="s2">&quot;legal_status_updated_at&quot;</span><span class="p">])</span>
+                    <span class="c1"># Add feature to layer</span>
+                    <span class="n">layer</span><span class="o">.</span><span class="n">CreateFeature</span><span class="p">(</span><span class="n">feature</span><span class="p">)</span>
+                    <span class="c1"># Dereference the feature</span>
+                    <span class="n">feature</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Save and close the data source</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;The WDPA does not contain any protected areas for &quot;</span> <span class="o">+</span> <span class="n">iso3</span></div>
+
+<span class="c1"># End</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2020, Ghislain Vieilledent.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

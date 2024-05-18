@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pywdpa.get_token &#8212; pywdpa — A simple access to world&#39;s protected areas</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/logo-pywdpa.svg" alt="Logo"/>
+    
+    <h1 class="logo logo-name">pywdpa</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">A simple access to world's protected areas</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ghislainv&repo=pywdpa&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/get_started.html">Get started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../indices.html">Indices and tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pywdpa.get_token</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># author          :Ghislain Vieilledent</span>
+<span class="c1"># email           :ghislain.vieilledent@cirad.fr, ghislainv@gmail.com</span>
+<span class="c1"># web             :https://ecology.ghislainv.fr</span>
+<span class="c1"># python_version  :&gt;=2.7</span>
+<span class="c1"># license         :GPLv3</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="c1"># Import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span>  <span class="c1"># Python 3 compatibility</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+
+<span class="c1"># get_token()</span>
+<div class="viewcode-block" id="get_token"><a class="viewcode-back" href="../../reference.html#pywdpa.get_token.get_token">[docs]</a><span class="k">def</span> <span class="nf">get_token</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s2">&quot;WDPA_KEY&quot;</span><span class="p">):</span>
+
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Check Protected Planet API token.</span>
+
+<span class="sd">    This function checks if the user has stored a valid Protected</span>
+<span class="sd">    Planet API token as an environment variable file under the</span>
+<span class="sd">    key ``&quot;WDPA_KEY&quot;``\ .</span>
+
+<span class="sd">    Before using this package for the first time, the user must follow</span>
+<span class="sd">    these steps:</span>
+
+<span class="sd">    #. Fill in the form available at `&lt;https://api.protectedplanet.net/request&gt;`_</span>
+<span class="sd">       to obtain a personal API token.</span>
+<span class="sd">    #. Store the token as an environment variable under the key &quot;WDPA_KEY&quot;.</span>
+<span class="sd">       You can use the command ``os.environ[&quot;WDPA_KEY&quot;]=&quot;your_token&quot;`` or</span>
+<span class="sd">       python-dotenv: `&lt;https://github.com/theskumar/python-dotenv&gt;`_.</span>
+
+<span class="sd">    :param key: Environment variable name (recommended name: ``&quot;WDPA_KEY&quot;``\ ).</span>
+
+<span class="sd">    :return: A vector of length one with the value of the API token.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">wdpa_key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">wdpa_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Missing WDPA API token. Please ensure that:</span><span class="si">{sep}</span><span class="s2">&quot;</span>
+               <span class="s2">&quot;1) You completed this form [https://api.protectedplanet.net/request] &quot;</span>
+               <span class="s2">&quot;to get the token.</span><span class="si">{sep}</span><span class="s2">&quot;</span>
+               <span class="s2">&quot;2) You stored the value as an environment variable with the &quot;</span>
+               <span class="s2">&quot;recommended name WDPA_KEY.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">msg</span>
+
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://api.protectedplanet.net/test?token=&quot;</span> <span class="o">+</span> <span class="n">wdpa_key</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">401</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;Invalid WDPA API token. Please ensure that:</span><span class="si">{sep}</span><span class="s2">&quot;</span>
+               <span class="s2">&quot;1) You completed this form [https://api.protectedplanet.net/request] &quot;</span>
+               <span class="s2">&quot;to get the token.</span><span class="si">{sep}</span><span class="s2">&quot;</span>
+               <span class="s2">&quot;2) You stored the value as an environment variable with the &quot;</span>
+               <span class="s2">&quot;recommended name WDPA_KEY.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">msg</span>
+
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;Something goes wrong with your API token.&quot;</span>
+
+    <span class="k">return</span> <span class="n">wdpa_key</span></div>
+
+<span class="c1"># End</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2020, Ghislain Vieilledent.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
