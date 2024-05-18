@@ -12,23 +12,29 @@
 #
 import os
 import sys
+import datetime
 import re  # Regular expression
 sys.path.insert(0, os.path.abspath('..'))
+
+
+def find_author_release():
+    """Finding package authors and release."""
+    with open("pyfcc/__init__.py", encoding="utf-8") as file:
+        file_text = file.read()
+    _author = re.search('^__author__\\s*=\\s*"(.*)"',
+                        file_text, re.M).group(1)
+    _release = re.search('^__version__\\s*=\\s*"(.*)"',
+                         file_text, re.M).group(1)
+    return (_author, _release)
 
 
 # -- Project information -----------------------------------------------------
 
 project = "pyfcc"
-copyright = "2020, Ghislain Vieilledent"
-author = "Ghislain Vieilledent"
-
-# The full version, including alpha/beta/rc tags
-version = re.search(
-    r'^__version__\s*=\s*"(.*)"',
-    open('../pyfcc/pyfcc.py').read(),
-    re.M
-).group(1)
-release = version
+(author, release) = find_author_release()
+_today = datetime.date.today()
+year = _today.year
+copyright = f"{year}, Cirad"
 
 # -- Sphynx options ----------------------------------------------------------
 add_module_names = False
@@ -63,7 +69,7 @@ html_theme = "alabaster"  # 'sphinx_rtd_theme'
 # documentation.
 #
 html_theme_options = {
-    'description': "A simple access to world's protected areas",
+    'description': "Forest cover change from Google Earth Engine",
     'code_font_family': "'Roboto Mono', 'Consolas', 'Menlo', "
                         "'Deja Vu Sans Mono', "
                         "'Bitstream Vera Sans Mono', monospace",
@@ -87,7 +93,7 @@ html_theme_options = {
 }
 
 html_favicon = "_static/favicon.ico"
-html_title = "pyfcc — Forest cover change data from Google Earth Engine"
+html_title = "pyfcc — Forest cover change from Google Earth Engine"
 html_short_title = "pyfcc"
 html_base_url = "https://ecology.ghislainv.fr/pyfcc/"
 

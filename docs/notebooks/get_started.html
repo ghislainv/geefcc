@@ -1,28 +1,27 @@
-
 <!DOCTYPE html>
 
-<html>
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Get started &#8212; pywdpa — A simple access to world&#39;s protected areas</title>
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Get Started &#8212; pyfcc — Forest cover change from Google Earth Engine</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=b21ac067" />
+    <script src="../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Python API" href="../reference.html" />
-    <link rel="prev" title="pywdpa Python package" href="../index.html" />
+    <link rel="prev" title="pyfcc Python package" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
+
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  
 
   </head><body>
   <div class="document">
@@ -31,22 +30,22 @@
         <div class="sphinxsidebarwrapper">
 <p class="logo">
   <a href="../index.html">
-    <img class="logo" src="../_static/logo-pywdpa.svg" alt="Logo"/>
+    <img class="logo" src="../_static/logo-pyfcc.svg" alt="Logo" />
     
-    <h1 class="logo logo-name">pywdpa</h1>
+    <h1 class="logo logo-name">pyfcc</h1>
     
   </a>
 </p>
 
 
 
-<p class="blurb">A simple access to world's protected areas</p>
+<p class="blurb">Forest cover change from Google Earth Engine</p>
 
 
 
 
 <p>
-<iframe src="https://ghbtns.com/github-btn.html?user=ghislainv&repo=pywdpa&type=star&count=true&size=large&v=2"
+<iframe src="https://ghbtns.com/github-btn.html?user=ghislainv&repo=pyfcc&type=star&count=true&size=large&v=2"
   allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
 </p>
 
@@ -57,14 +56,7 @@
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Get started</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#Overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Installation">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Managing-the-WDPA-API-token">Managing the WDPA API token</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Downloading-protected-areas">Downloading protected areas</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Command-line">Command line</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Get Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference.html">Python API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../indices.html">Indices and tables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
@@ -75,21 +67,21 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="../index.html" title="previous chapter"><code class="docutils literal notranslate"><span class="pre">pywdpa</span></code> Python package</a></li>
+      <li>Previous: <a href="../index.html" title="previous chapter"><code class="docutils literal notranslate"><span class="pre">pyfcc</span></code> Python package</a></li>
       <li>Next: <a href="../reference.html" title="next chapter">Python API</a></li>
   </ul></li>
 </ul>
 </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
-<script>$('#searchbox').show(0);</script>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -106,313 +98,89 @@
 
           <div class="body" role="main">
             
-  
-<style>
-/* CSS for nbsphinx extension */
-
-/* remove conflicting styling from Sphinx themes */
-div.nbinput.container div.prompt *,
-div.nboutput.container div.prompt *,
-div.nbinput.container div.input_area pre,
-div.nboutput.container div.output_area pre,
-div.nbinput.container div.input_area .highlight,
-div.nboutput.container div.output_area .highlight {
-    border: none;
-    padding: 0;
-    margin: 0;
-    box-shadow: none;
-}
-
-div.nbinput.container > div[class*=highlight],
-div.nboutput.container > div[class*=highlight] {
-    margin: 0;
-}
-
-div.nbinput.container div.prompt *,
-div.nboutput.container div.prompt * {
-    background: none;
-}
-
-div.nboutput.container div.output_area .highlight,
-div.nboutput.container div.output_area pre {
-    background: unset;
-}
-
-div.nboutput.container div.output_area div.highlight {
-    color: unset;  /* override Pygments text color */
-}
-
-/* avoid gaps between output lines */
-div.nboutput.container div[class*=highlight] pre {
-    line-height: normal;
-}
-
-/* input/output containers */
-div.nbinput.container,
-div.nboutput.container {
-    display: -webkit-flex;
-    display: flex;
-    align-items: flex-start;
-    margin: 0;
-    width: 100%;
-}
-@media (max-width: 540px) {
-    div.nbinput.container,
-    div.nboutput.container {
-        flex-direction: column;
-    }
-}
-
-/* input container */
-div.nbinput.container {
-    padding-top: 5px;
-}
-
-/* last container */
-div.nblast.container {
-    padding-bottom: 5px;
-}
-
-/* input prompt */
-div.nbinput.container div.prompt pre {
-    color: #307FC1;
-}
-
-/* output prompt */
-div.nboutput.container div.prompt pre {
-    color: #BF5B3D;
-}
-
-/* all prompts */
-div.nbinput.container div.prompt,
-div.nboutput.container div.prompt {
-    width: 4.5ex;
-    padding-top: 5px;
-    position: relative;
-    user-select: none;
-}
-
-div.nbinput.container div.prompt > div,
-div.nboutput.container div.prompt > div {
-    position: absolute;
-    right: 0;
-    margin-right: 0.3ex;
-}
-
-@media (max-width: 540px) {
-    div.nbinput.container div.prompt,
-    div.nboutput.container div.prompt {
-        width: unset;
-        text-align: left;
-        padding: 0.4em;
-    }
-    div.nboutput.container div.prompt.empty {
-        padding: 0;
-    }
-
-    div.nbinput.container div.prompt > div,
-    div.nboutput.container div.prompt > div {
-        position: unset;
-    }
-}
-
-/* disable scrollbars on prompts */
-div.nbinput.container div.prompt pre,
-div.nboutput.container div.prompt pre {
-    overflow: hidden;
-}
-
-/* input/output area */
-div.nbinput.container div.input_area,
-div.nboutput.container div.output_area {
-    -webkit-flex: 1;
-    flex: 1;
-    overflow: auto;
-}
-@media (max-width: 540px) {
-    div.nbinput.container div.input_area,
-    div.nboutput.container div.output_area {
-        width: 100%;
-    }
-}
-
-/* input area */
-div.nbinput.container div.input_area {
-    border: 1px solid #e0e0e0;
-    border-radius: 2px;
-    /*background: #f5f5f5;*/
-}
-
-/* override MathJax center alignment in output cells */
-div.nboutput.container div[class*=MathJax] {
-    text-align: left !important;
-}
-
-/* override sphinx.ext.imgmath center alignment in output cells */
-div.nboutput.container div.math p {
-    text-align: left;
-}
-
-/* standard error */
-div.nboutput.container div.output_area.stderr {
-    background: #fdd;
-}
-
-/* ANSI colors */
-.ansi-black-fg { color: #3E424D; }
-.ansi-black-bg { background-color: #3E424D; }
-.ansi-black-intense-fg { color: #282C36; }
-.ansi-black-intense-bg { background-color: #282C36; }
-.ansi-red-fg { color: #E75C58; }
-.ansi-red-bg { background-color: #E75C58; }
-.ansi-red-intense-fg { color: #B22B31; }
-.ansi-red-intense-bg { background-color: #B22B31; }
-.ansi-green-fg { color: #00A250; }
-.ansi-green-bg { background-color: #00A250; }
-.ansi-green-intense-fg { color: #007427; }
-.ansi-green-intense-bg { background-color: #007427; }
-.ansi-yellow-fg { color: #DDB62B; }
-.ansi-yellow-bg { background-color: #DDB62B; }
-.ansi-yellow-intense-fg { color: #B27D12; }
-.ansi-yellow-intense-bg { background-color: #B27D12; }
-.ansi-blue-fg { color: #208FFB; }
-.ansi-blue-bg { background-color: #208FFB; }
-.ansi-blue-intense-fg { color: #0065CA; }
-.ansi-blue-intense-bg { background-color: #0065CA; }
-.ansi-magenta-fg { color: #D160C4; }
-.ansi-magenta-bg { background-color: #D160C4; }
-.ansi-magenta-intense-fg { color: #A03196; }
-.ansi-magenta-intense-bg { background-color: #A03196; }
-.ansi-cyan-fg { color: #60C6C8; }
-.ansi-cyan-bg { background-color: #60C6C8; }
-.ansi-cyan-intense-fg { color: #258F8F; }
-.ansi-cyan-intense-bg { background-color: #258F8F; }
-.ansi-white-fg { color: #C5C1B4; }
-.ansi-white-bg { background-color: #C5C1B4; }
-.ansi-white-intense-fg { color: #A1A6B2; }
-.ansi-white-intense-bg { background-color: #A1A6B2; }
-
-.ansi-default-inverse-fg { color: #FFFFFF; }
-.ansi-default-inverse-bg { background-color: #000000; }
-
-.ansi-bold { font-weight: bold; }
-.ansi-underline { text-decoration: underline; }
-
-
-div.nbinput.container div.input_area div[class*=highlight] > pre,
-div.nboutput.container div.output_area div[class*=highlight] > pre,
-div.nboutput.container div.output_area div[class*=highlight].math,
-div.nboutput.container div.output_area.rendered_html,
-div.nboutput.container div.output_area > div.output_javascript,
-div.nboutput.container div.output_area:not(.rendered_html) > img{
-    padding: 5px;
-    margin: 0;
-}
-
-/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
-div.nbinput.container div.input_area > div[class^='highlight'],
-div.nboutput.container div.output_area > div[class^='highlight']{
-    overflow-y: hidden;
-}
-
-/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
-.prompt a.copybtn {
-    display: none;
-}
-
-/* Some additional styling taken form the Jupyter notebook CSS */
-div.rendered_html table {
-  border: none;
-  border-collapse: collapse;
-  border-spacing: 0;
-  color: black;
-  font-size: 12px;
-  table-layout: fixed;
-}
-div.rendered_html thead {
-  border-bottom: 1px solid black;
-  vertical-align: bottom;
-}
-div.rendered_html tr,
-div.rendered_html th,
-div.rendered_html td {
-  text-align: right;
-  vertical-align: middle;
-  padding: 0.5em 0.5em;
-  line-height: normal;
-  white-space: normal;
-  max-width: none;
-  border: none;
-}
-div.rendered_html th {
-  font-weight: bold;
-}
-div.rendered_html tbody tr:nth-child(odd) {
-  background: #f5f5f5;
-}
-div.rendered_html tbody tr:hover {
-  background: rgba(66, 165, 245, 0.2);
-}
-</style>
-<div class="section" id="Get-started">
-<h1>Get started<a class="headerlink" href="#Get-started" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="Overview">
-<h2>Overview<a class="headerlink" href="#Overview" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">pywdpa</span></code> Python package is an interface to the World Database on Protected Areas (WDPA) hosted on the Protected planet website: <a class="reference external" href="https://www.protectedplanet.net">https://www.protectedplanet.net</a>. It allows users to download spatial shapefiles of protected areas (PA) for world countries using the Protected Planet API (<a class="reference external" href="https://api.protectedplanet.net">https://api.protectedplanet.net</a>).</p>
+  <section id="get-started">
+<h1>Get Started<a class="headerlink" href="#get-started" title="Link to this heading">¶</a></h1>
+<div class="cell markdown docutils container">
+<p class="rubric" id="id1">Get started</p>
+<p class="rubric" id="overview">Overview</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">pywdpa</span></code> Python package is an interface to the World Database
+on Protected Areas (WDPA) hosted on the Protected planet website:
+<a class="reference external" href="https://www.protectedplanet.net">https://www.protectedplanet.net</a>. It allows users to download spatial
+shapefiles of protected areas (PA) for world countries using the
+Protected Planet API (<a class="reference external" href="https://api.protectedplanet.net">https://api.protectedplanet.net</a>).</p>
 <p>This package contains two main functions:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">.get_token()</span></code>: check if your WDPA token is correctly stored (see <a class="reference external" href="https://ecology.ghislainv.fr/pywdpa/reference.html#module-pywdpa.get_token">usage</a>);</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">.get_wdpa()</span></code>: download the shapefile of protected areas for one specific country (see <a class="reference external" href="https://ecology.ghislainv.fr/pywdpa/reference.html#module-pywdpa.get_wdpa">usage</a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.get_token()</span></code>: check if your WDPA token is correctly stored
+(see
+<a class="reference external" href="https://ecology.ghislainv.fr/pywdpa/reference.html#module-pywdpa.get_token">usage</a>);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.get_wdpa()</span></code>: download the shapefile of protected areas for one
+specific country (see
+<a class="reference external" href="https://ecology.ghislainv.fr/pywdpa/reference.html#module-pywdpa.get_wdpa">usage</a>).</p></li>
 </ul>
 </div>
-<div class="section" id="Installation">
-<h2>Installation<a class="headerlink" href="#Installation" title="Permalink to this headline">¶</a></h2>
-<p>You will need several dependencies to run the <code class="docutils literal notranslate"><span class="pre">pywdpa</span></code> Python package (<code class="docutils literal notranslate"><span class="pre">numpy</span></code>, <code class="docutils literal notranslate"><span class="pre">gdal</span></code>, and <code class="docutils literal notranslate"><span class="pre">requests</span></code>). The best way to install the package is to create a Python virtual environment, either through <code class="docutils literal notranslate"><span class="pre">virtualenv</span></code> or <code class="docutils literal notranslate"><span class="pre">conda</span></code>. A virtual environment is a self-contained directory tree that contains a Python installation for a particular version of Python, plus a number of additional packages.</p>
-<div class="section" id="Using-virtualenv">
-<h3>Using <code class="docutils literal notranslate"><span class="pre">virtualenv</span></code><a class="headerlink" href="#Using-virtualenv" title="Permalink to this headline">¶</a></h3>
-<p>You first need to have the <code class="docutils literal notranslate"><span class="pre">virtualenv</span></code> package installed (see <a class="reference external" href="https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/">here</a>).</p>
-<p>Then, create a virtual environment and install the <code class="docutils literal notranslate"><span class="pre">pywdpa</span></code> package with the following commands:</p>
+<div class="cell markdown docutils container">
+<p class="rubric" id="installation">Installation</p>
+<p>You will need several dependencies to run the <code class="docutils literal notranslate"><span class="pre">pywdpa</span></code> Python
+package (<code class="docutils literal notranslate"><span class="pre">numpy</span></code>, <code class="docutils literal notranslate"><span class="pre">gdal</span></code>, and <code class="docutils literal notranslate"><span class="pre">requests</span></code>). The best way to
+install the package is to create a Python virtual environment, either
+through <code class="docutils literal notranslate"><span class="pre">virtualenv</span></code> or <code class="docutils literal notranslate"><span class="pre">conda</span></code>. A virtual environment is a
+self-contained directory tree that contains a Python installation for
+a particular version of Python, plus a number of additional packages.</p>
+<p class="rubric" id="using-virtualenv">Using <code class="docutils literal notranslate"><span class="pre">virtualenv</span></code></p>
+<p>You first need to have the <code class="docutils literal notranslate"><span class="pre">virtualenv</span></code> package installed (see
+<a class="reference external" href="https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/">here</a>).</p>
+<p>Then, create a virtual environment and install the <code class="docutils literal notranslate"><span class="pre">pywdpa</span></code> package
+with the following commands:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># In a shell</span>
-<span class="nb">cd</span> ~
-mkdir venvs <span class="c1"># Directory for virtual environments</span>
-<span class="nb">cd</span> venvs
-virtualenv --python<span class="o">=</span>/usr/bin/python3 venv-pywppa
-<span class="nb">source</span> ~/venvs/venv-far/bin/activate
-pip install pywdpa <span class="c1"># For PyPI version, this will install all other dependencies</span>
+<span class="nb">cd</span><span class="w"> </span>~
+mkdir<span class="w"> </span>venvs<span class="w"> </span><span class="c1"># Directory for virtual environments</span>
+<span class="nb">cd</span><span class="w"> </span>venvs
+virtualenv<span class="w"> </span>--python<span class="o">=</span>/usr/bin/python3<span class="w"> </span>venv-pywppa
+<span class="nb">source</span><span class="w"> </span>~/venvs/venv-far/bin/activate
+pip<span class="w"> </span>install<span class="w"> </span>pywdpa<span class="w"> </span><span class="c1"># For PyPI version, this will install all other dependencies</span>
 <span class="c1"># pip install https://github.com/ghislainv/pywdpa/archive/master.zip # For GitHub dev version</span>
 <span class="c1"># pip install geopandas descartes folium python-dotenv # Optional additional packages</span>
 </pre></div>
 </div>
 <p>To deactivate and delete the virtual environment:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>deactivate
-rm -R ~/venvs/venv-pywdpa <span class="c1"># Just remove the repository</span>
+rm<span class="w"> </span>-R<span class="w"> </span>~/venvs/venv-pywdpa<span class="w"> </span><span class="c1"># Just remove the repository</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="Using-conda">
-<h3>Using <code class="docutils literal notranslate"><span class="pre">conda</span></code><a class="headerlink" href="#Using-conda" title="Permalink to this headline">¶</a></h3>
-<p>You first need to have <code class="docutils literal notranslate"><span class="pre">miniconda3</span></code> installed (see <a class="reference external" href="https://docs.conda.io/en/latest/miniconda.html">here</a>).</p>
-<p>Then, create a conda environment (details <a class="reference external" href="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html">here</a>) and install the <code class="docutils literal notranslate"><span class="pre">pywdpa</span></code> package with the following commands:</p>
+<p class="rubric" id="using-conda">Using <code class="docutils literal notranslate"><span class="pre">conda</span></code></p>
+<p>You first need to have <code class="docutils literal notranslate"><span class="pre">miniconda3</span></code> installed (see
+<a class="reference external" href="https://docs.conda.io/en/latest/miniconda.html">here</a>).</p>
+<p>Then, create a conda environment (details
+<a class="reference external" href="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html">here</a>)
+and install the <code class="docutils literal notranslate"><span class="pre">pywdpa</span></code> package with the following commands:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># In a shell</span>
-conda create --name conda-pywdpa python pip numpy gdal requests --yes
-conda activate conda-far
+conda<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>conda-pywdpa<span class="w"> </span>python<span class="w"> </span>pip<span class="w"> </span>numpy<span class="w"> </span>gdal<span class="w"> </span>requests<span class="w"> </span>--yes
+conda<span class="w"> </span>activate<span class="w"> </span>conda-far
 <span class="c1"># conda install geopandas --yes  # Optional additional packages available in conda</span>
 <span class="c1"># conda install -c conda-forge descartes folium python-dotenv --yes  # Optional additional packages available in conda</span>
-pip install pywdpa <span class="c1"># Install PyPI version</span>
+pip<span class="w"> </span>install<span class="w"> </span>pywdpa<span class="w"> </span><span class="c1"># Install PyPI version</span>
 <span class="c1"># pip install https://github.com/ghislainv/pywdpa/archive/master.zip # For GitHub dev version</span>
 </pre></div>
 </div>
 <p>To deactivate and delete the conda environment:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>conda deactivate
-conda env remove --name conda-pywdpa
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>deactivate
+conda<span class="w"> </span>env<span class="w"> </span>remove<span class="w"> </span>--name<span class="w"> </span>conda-pywdpa
 </pre></div>
 </div>
 </div>
+<div class="cell markdown docutils container">
+<p class="rubric" id="managing-the-wdpa-api-token">Managing the WDPA API token</p>
+<p>This package uses the Protected Planet API to access data on world
+protected areas. You must first have obtained a Personal API Token by
+filling in the form available at
+<a class="reference external" href="https://api.protectedplanet.net/request">https://api.protectedplanet.net/request</a>. Then you need to set an
+environment variable (we recommend using the name <code class="docutils literal notranslate"><span class="pre">WDPA_KEY</span></code>) using
+either the command <code class="docutils literal notranslate"><span class="pre">os.environ[&quot;WDPA_KEY&quot;]=&quot;your_token&quot;</span></code> or
+<a class="reference external" href="https://github.com/theskumar/python-dotenv">python-dotenv</a>.</p>
+<p>The validity of your token can be checked with function
+<code class="docutils literal notranslate"><span class="pre">.get_token()</span></code>.</p>
 </div>
-<div class="section" id="Managing-the-WDPA-API-token">
-<h2>Managing the WDPA API token<a class="headerlink" href="#Managing-the-WDPA-API-token" title="Permalink to this headline">¶</a></h2>
-<p>This package uses the Protected Planet API to access data on world protected areas. You must first have obtained a Personal API Token by filling in the form available at <a class="reference external" href="https://api.protectedplanet.net/request">https://api.protectedplanet.net/request</a>. Then you need to set an environment variable (we recommend using the name <code class="docutils literal notranslate"><span class="pre">WDPA_KEY</span></code>) using either the command <code class="docutils literal notranslate"><span class="pre">os.environ[&quot;WDPA_KEY&quot;]=&quot;your_token&quot;</span></code> or <a class="reference external" href="https://github.com/theskumar/python-dotenv">python-dotenv</a>.</p>
-<p>The validity of your token can be checked with function <code class="docutils literal notranslate"><span class="pre">.get_token()</span></code>.</p>
+<div class="cell markdown docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In Python</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">pywdpa</span>
@@ -425,180 +193,87 @@ conda env remove --name conda-pywdpa
 <span class="n">pywdpa</span><span class="o">.</span><span class="n">get_token</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>If your token is valid, the function will return its value. Otherwise it will print an error message.</p>
 </div>
-<div class="section" id="Downloading-protected-areas">
-<h2>Downloading protected areas<a class="headerlink" href="#Downloading-protected-areas" title="Permalink to this headline">¶</a></h2>
-<p>The function <code class="docutils literal notranslate"><span class="pre">.get_wdpa()</span></code> can be used to download the shapefile of protected areas for the Reunion Island which has the iso code “REU”. The output file name in the working directory will be “pa_REU.shp”.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
-</pre></div>
+<div class="cell markdown docutils container">
+<p>If your token is valid, the function will return its value. Otherwise
+it will print an error message.</p>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">pywdpa</span>
+<div class="cell markdown docutils container">
+<p class="rubric" id="downloading-protected-areas">Downloading protected areas</p>
+<p>The function <code class="docutils literal notranslate"><span class="pre">.get_wdpa()</span></code> can be used to download the shapefile of
+protected areas for the Reunion Island which has the iso code “REU”.
+The output file name in the working directory will be “pa_REU.shp”.</p>
+</div>
+<div class="cell code docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pywdpa</span>
 
 <span class="n">pywdpa</span><span class="o">.</span><span class="n">get_wdpa</span><span class="p">(</span><span class="s2">&quot;REU&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<p>The shapefile can be imported in the Python environment, for example using the Python package <code class="docutils literal notranslate"><span class="pre">geopandas</span></code>.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
-</pre></div>
+<div class="cell markdown docutils container">
+<p>The shapefile can be imported in the Python environment, for example
+using the Python package <code class="docutils literal notranslate"><span class="pre">geopandas</span></code>.</p>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>
+<div class="cell code docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>
 
 <span class="n">pa_REU</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s2">&quot;pa_REU.shp&quot;</span><span class="p">)</span>
 <span class="n">pa_REU</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="output execute-result docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   <span class="n">wdpa_id</span>                    <span class="n">pa_name</span>                  <span class="n">orig_name</span> <span class="n">ctry_iso3</span>  \
+<span class="mi">0</span>    <span class="mi">62780</span>  <span class="n">Bois</span> <span class="n">De</span> <span class="n">Nèfles</span><span class="o">-</span><span class="n">Saint</span><span class="o">-</span><span class="n">Paul</span>  <span class="n">Bois</span> <span class="n">De</span> <span class="n">Nèfles</span><span class="o">-</span><span class="n">Saint</span><span class="o">-</span><span class="n">Paul</span>       <span class="n">REU</span>
+<span class="mi">1</span>    <span class="mi">62786</span>    <span class="n">Hauts</span> <span class="n">De</span> <span class="n">Saint</span><span class="o">-</span><span class="n">Philippe</span>    <span class="n">Hauts</span> <span class="n">De</span> <span class="n">Saint</span><span class="o">-</span><span class="n">Philippe</span>       <span class="n">REU</span>
+<span class="mi">2</span>    <span class="mi">62787</span>                  <span class="n">Les</span> <span class="n">Mares</span>                  <span class="n">Les</span> <span class="n">Mares</span>       <span class="n">REU</span>
+<span class="mi">3</span>    <span class="mi">83081</span>                 <span class="n">Bois</span> <span class="n">Blanc</span>                 <span class="n">Bois</span> <span class="n">Blanc</span>       <span class="n">REU</span>
+<span class="mi">4</span>    <span class="mi">83112</span>                <span class="n">Grande</span> <span class="n">Anse</span>                <span class="n">Grande</span> <span class="n">Anse</span>       <span class="n">REU</span>
+
+     <span class="n">owner_type</span> <span class="n">is_marine</span>                                               <span class="nb">type</span>  \
+<span class="mi">0</span>  <span class="n">Not</span> <span class="n">Reported</span>     <span class="kc">False</span>                 <span class="n">Forest</span> <span class="n">Integral</span> <span class="n">Biological</span> <span class="n">Reserve</span>
+<span class="mi">1</span>  <span class="n">Not</span> <span class="n">Reported</span>     <span class="kc">False</span>                 <span class="n">Forest</span> <span class="n">Integral</span> <span class="n">Biological</span> <span class="n">Reserve</span>
+<span class="mi">2</span>  <span class="n">Not</span> <span class="n">Reported</span>     <span class="kc">False</span>                 <span class="n">Forest</span> <span class="n">Integral</span> <span class="n">Biological</span> <span class="n">Reserve</span>
+<span class="mi">3</span>  <span class="n">Not</span> <span class="n">Reported</span>     <span class="kc">False</span>  <span class="n">Land</span> <span class="n">Acquired</span> <span class="n">By</span> <span class="n">Conservatoire</span> <span class="n">Du</span> <span class="n">Littoral</span> <span class="p">(</span><span class="n">Na</span><span class="o">...</span>
+<span class="mi">4</span>  <span class="n">Not</span> <span class="n">Reported</span>      <span class="kc">True</span>  <span class="n">Land</span> <span class="n">Acquired</span> <span class="n">By</span> <span class="n">Conservatoire</span> <span class="n">Du</span> <span class="n">Littoral</span> <span class="p">(</span><span class="n">Na</span><span class="o">...</span>
+
+  <span class="n">iucn_cat</span>      <span class="n">status</span>        <span class="n">date</span>  \
+<span class="mi">0</span>       <span class="n">Ia</span>  <span class="n">Designated</span>  <span class="mi">01</span><span class="o">/</span><span class="mi">01</span><span class="o">/</span><span class="mi">1985</span>
+<span class="mi">1</span>       <span class="n">Ia</span>  <span class="n">Designated</span>  <span class="mi">01</span><span class="o">/</span><span class="mi">01</span><span class="o">/</span><span class="mi">1987</span>
+<span class="mi">2</span>       <span class="n">Ia</span>  <span class="n">Designated</span>  <span class="mi">01</span><span class="o">/</span><span class="mi">01</span><span class="o">/</span><span class="mi">1987</span>
+<span class="mi">3</span>       <span class="n">IV</span>  <span class="n">Designated</span>  <span class="mi">01</span><span class="o">/</span><span class="mi">01</span><span class="o">/</span><span class="mi">1980</span>
+<span class="mi">4</span>       <span class="n">IV</span>  <span class="n">Designated</span>  <span class="mi">01</span><span class="o">/</span><span class="mi">01</span><span class="o">/</span><span class="mi">1982</span>
+
+                                            <span class="n">geometry</span>
+<span class="mi">0</span>  <span class="n">POLYGON</span> <span class="p">((</span><span class="mf">55.38600</span> <span class="o">-</span><span class="mf">21.03200</span><span class="p">,</span> <span class="mf">55.37700</span> <span class="o">-</span><span class="mf">21.027</span><span class="o">...</span>
+<span class="mi">1</span>  <span class="n">POLYGON</span> <span class="p">((</span><span class="mf">55.72300</span> <span class="o">-</span><span class="mf">21.33500</span><span class="p">,</span> <span class="mf">55.71100</span> <span class="o">-</span><span class="mf">21.337</span><span class="o">...</span>
+<span class="mi">2</span>  <span class="n">POLYGON</span> <span class="p">((</span><span class="mf">55.72300</span> <span class="o">-</span><span class="mf">21.18300</span><span class="p">,</span> <span class="mf">55.73900</span> <span class="o">-</span><span class="mf">21.179</span><span class="o">...</span>
+<span class="mi">3</span>  <span class="n">MULTIPOLYGON</span> <span class="p">(((</span><span class="mf">55.80000</span> <span class="o">-</span><span class="mf">21.19700</span><span class="p">,</span> <span class="mf">55.81900</span> <span class="o">-...</span>
+<span class="mi">4</span>  <span class="n">MULTIPOLYGON</span> <span class="p">(((</span><span class="mf">55.54900</span> <span class="o">-</span><span class="mf">21.36800</span><span class="p">,</span> <span class="mf">55.54800</span> <span class="o">-...</span>
 </pre></div>
 </div>
-<div class="output_area rendered_html docutils container">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>wdpa_id</th>
-      <th>pa_name</th>
-      <th>orig_name</th>
-      <th>ctry_iso3</th>
-      <th>owner_type</th>
-      <th>is_marine</th>
-      <th>type</th>
-      <th>iucn_cat</th>
-      <th>status</th>
-      <th>date</th>
-      <th>geometry</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>62780</td>
-      <td>Bois De Nèfles-Saint-Paul</td>
-      <td>Bois De Nèfles-Saint-Paul</td>
-      <td>REU</td>
-      <td>Not Reported</td>
-      <td>False</td>
-      <td>Forest Integral Biological Reserve</td>
-      <td>Ia</td>
-      <td>Designated</td>
-      <td>01/01/1985</td>
-      <td>POLYGON ((55.38600 -21.03200, 55.37700 -21.027...</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>62786</td>
-      <td>Hauts De Saint-Philippe</td>
-      <td>Hauts De Saint-Philippe</td>
-      <td>REU</td>
-      <td>Not Reported</td>
-      <td>False</td>
-      <td>Forest Integral Biological Reserve</td>
-      <td>Ia</td>
-      <td>Designated</td>
-      <td>01/01/1987</td>
-      <td>POLYGON ((55.72300 -21.33500, 55.71100 -21.337...</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>62787</td>
-      <td>Les Mares</td>
-      <td>Les Mares</td>
-      <td>REU</td>
-      <td>Not Reported</td>
-      <td>False</td>
-      <td>Forest Integral Biological Reserve</td>
-      <td>Ia</td>
-      <td>Designated</td>
-      <td>01/01/1987</td>
-      <td>POLYGON ((55.72300 -21.18300, 55.73900 -21.179...</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>83081</td>
-      <td>Bois Blanc</td>
-      <td>Bois Blanc</td>
-      <td>REU</td>
-      <td>Not Reported</td>
-      <td>False</td>
-      <td>Land Acquired By Conservatoire Du Littoral (Na...</td>
-      <td>IV</td>
-      <td>Designated</td>
-      <td>01/01/1980</td>
-      <td>MULTIPOLYGON (((55.80000 -21.19700, 55.81900 -...</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>83112</td>
-      <td>Grande Anse</td>
-      <td>Grande Anse</td>
-      <td>REU</td>
-      <td>Not Reported</td>
-      <td>True</td>
-      <td>Land Acquired By Conservatoire Du Littoral (Na...</td>
-      <td>IV</td>
-      <td>Designated</td>
-      <td>01/01/1982</td>
-      <td>MULTIPOLYGON (((55.54900 -21.36800, 55.54800 -...</td>
-    </tr>
-  </tbody>
-</table>
-</div></div>
 </div>
-<p>Protected areas can be plotted using either the <code class="docutils literal notranslate"><span class="pre">.plot</span></code> function from the geopandas object or using the Python package <code class="docutils literal notranslate"><span class="pre">folium</span></code> which makes it easy to visualize data that’s been manipulated in Python on an interactive leaflet map.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
-</pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">ListedColormap</span>
+<div class="cell markdown docutils container">
+<p>Protected areas can be plotted using either the <code class="docutils literal notranslate"><span class="pre">.plot</span></code> function
+from the geopandas object or using the Python package <code class="docutils literal notranslate"><span class="pre">folium</span></code>
+which makes it easy to visualize data that’s been manipulated in
+Python on an interactive leaflet map.</p>
+</div>
+<div class="cell code docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">ListedColormap</span>
 <span class="n">cm</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span><span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="s2">&quot;blue&quot;</span><span class="p">])</span>
 <span class="n">pa_REU</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="s2">&quot;is_marine&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="output execute-result docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span> <span class="n">at</span> <span class="mh">0x7f534817dee0</span><span class="o">&gt;</span>
 </pre></div>
 </div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f534817dee0&gt;
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_get_started_10_1.png" src="../_images/notebooks_get_started_10_1.png" />
 </div>
 </div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">folium</span>
+<div class="cell code docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">folium</span>
 <span class="n">latitude</span> <span class="o">=</span> <span class="o">-</span><span class="mf">21.1</span>
 <span class="n">longitude</span> <span class="o">=</span> <span class="mf">55.5</span>
 <span class="n">fcol</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">{</span>
@@ -611,40 +286,33 @@ conda env remove --name conda-pywdpa
 <span class="n">m</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="output execute-result docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">folium</span><span class="o">.</span><span class="n">folium</span><span class="o">.</span><span class="n">Map</span> <span class="n">at</span> <span class="mh">0x7f5348d49a90</span><span class="o">&gt;</span>
 </pre></div>
 </div>
-<div class="output_area rendered_html docutils container">
-<div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -> Trust Notebook</span><iframe src="about:blank" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" data-html=%3C%21DOCTYPE%20html%3E%0A%3Chead%3E%20%20%20%20%0A%20%20%20%20%3Cmeta%20http-equiv%3D%22content-type%22%20content%3D%22text/html%3B%20charset%3DUTF-8%22%20/%3E%0A%20%20%20%20%0A%20%20%20%20%20%20%20%20%3Cscript%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20L_NO_TOUCH%20%3D%20false%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20L_DISABLE_3D%20%3D%20false%3B%0A%20%20%20%20%20%20%20%20%3C/script%3E%0A%20%20%20%20%0A%20%20%20%20%3Cstyle%3Ehtml%2C%20body%20%7Bwidth%3A%20100%25%3Bheight%3A%20100%25%3Bmargin%3A%200%3Bpadding%3A%200%3B%7D%3C/style%3E%0A%20%20%20%20%3Cstyle%3E%23map%20%7Bposition%3Aabsolute%3Btop%3A0%3Bbottom%3A0%3Bright%3A0%3Bleft%3A0%3B%7D%3C/style%3E%0A%20%20%20%20%3Cscript%20src%3D%22https%3A//cdn.jsdelivr.net/npm/leaflet%401.6.0/dist/leaflet.js%22%3E%3C/script%3E%0A%20%20%20%20%3Cscript%20src%3D%22https%3A//code.jquery.com/jquery-1.12.4.min.js%22%3E%3C/script%3E%0A%20%20%20%20%3Cscript%20src%3D%22https%3A//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js%22%3E%3C/script%3E%0A%20%20%20%20%3Cscript%20src%3D%22https%3A//cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js%22%3E%3C/script%3E%0A%20%20%20%20%3Clink%20rel%3D%22stylesheet%22%20href%3D%22https%3A//cdn.jsdelivr.net/npm/leaflet%401.6.0/dist/leaflet.css%22/%3E%0A%20%20%20%20%3Clink%20rel%3D%22stylesheet%22%20href%3D%22https%3A//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css%22/%3E%0A%20%20%20%20%3Clink%20rel%3D%22stylesheet%22%20href%3D%22https%3A//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css%22/%3E%0A%20%20%20%20%3Clink%20rel%3D%22stylesheet%22%20href%3D%22https%3A//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css%22/%3E%0A%20%20%20%20%3Clink%20rel%3D%22stylesheet%22%20href%3D%22https%3A//cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css%22/%3E%0A%20%20%20%20%3Clink%20rel%3D%22stylesheet%22%20href%3D%22https%3A//cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css%22/%3E%0A%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cmeta%20name%3D%22viewport%22%20content%3D%22width%3Ddevice-width%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20initial-scale%3D1.0%2C%20maximum-scale%3D1.0%2C%20user-scalable%3Dno%22%20/%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cstyle%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%23map_1a0ed4316ad74953a76531b089732cb0%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20position%3A%20relative%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20width%3A%20100.0%25%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20height%3A%20100.0%25%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20left%3A%200.0%25%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20top%3A%200.0%25%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%3C/style%3E%0A%20%20%20%20%20%20%20%20%0A%3C/head%3E%0A%3Cbody%3E%20%20%20%20%0A%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cdiv%20class%3D%22folium-map%22%20id%3D%22map_1a0ed4316ad74953a76531b089732cb0%22%20%3E%3C/div%3E%0A%20%20%20%20%20%20%20%20%0A%3C/body%3E%0A%3Cscript%3E%20%20%20%20%0A%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%20var%20map_1a0ed4316ad74953a76531b089732cb0%20%3D%20L.map%28%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22map_1a0ed4316ad74953a76531b089732cb0%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20center%3A%20%5B-21.1%2C%2055.5%5D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20crs%3A%20L.CRS.EPSG3857%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20zoom%3A%2010%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20zoomControl%3A%20true%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20preferCanvas%3A%20false%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%29%3B%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20%0A%0A%20%20%20%20%20%20%20%20%0A%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%20var%20tile_layer_684efe9c972f496087e6fbe1cfbbb0d0%20%3D%20L.tileLayer%28%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22https%3A//%7Bs%7D.tile.openstreetmap.org/%7Bz%7D/%7Bx%7D/%7By%7D.png%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7B%22attribution%22%3A%20%22Data%20by%20%5Cu0026copy%3B%20%5Cu003ca%20href%3D%5C%22http%3A//openstreetmap.org%5C%22%5Cu003eOpenStreetMap%5Cu003c/a%5Cu003e%2C%20under%20%5Cu003ca%20href%3D%5C%22http%3A//www.openstreetmap.org/copyright%5C%22%5Cu003eODbL%5Cu003c/a%5Cu003e.%22%2C%20%22detectRetina%22%3A%20false%2C%20%22maxNativeZoom%22%3A%2018%2C%20%22maxZoom%22%3A%2018%2C%20%22minZoom%22%3A%200%2C%20%22noWrap%22%3A%20false%2C%20%22opacity%22%3A%201%2C%20%22subdomains%22%3A%20%22abc%22%2C%20%22tms%22%3A%20false%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%29.addTo%28map_1a0ed4316ad74953a76531b089732cb0%29%3B%0A%20%20%20%20%20%20%20%20%0A%20%20%20%20%0A%20%20%20%20%20%20%20%20function%20geo_json_b14535c1100144e88280c72777bcdcee_styler%28feature%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20switch%28feature.id%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20case%20%224%22%3A%20case%20%225%22%3A%20case%20%2210%22%3A%20case%20%2211%22%3A%20case%20%2212%22%3A%20case%20%2215%22%3A%20case%20%2218%22%3A%20case%20%2222%22%3A%20case%20%2223%22%3A%20case%20%2224%22%3A%20case%20%2225%22%3A%20case%20%2226%22%3A%20case%20%2228%22%3A%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20return%20%7B%22color%22%3A%20%22blue%22%2C%20%22fillColor%22%3A%20%22blue%22%7D%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20default%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20return%20%7B%22color%22%3A%20%22green%22%2C%20%22fillColor%22%3A%20%22green%22%7D%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%7D%0A%0A%20%20%20%20%20%20%20%20function%20geo_json_b14535c1100144e88280c72777bcdcee_onEachFeature%28feature%2C%20layer%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20layer.on%28%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%29%3B%0A%20%20%20%20%20%20%20%20%7D%3B%0A%20%20%20%20%20%20%20%20var%20geo_json_b14535c1100144e88280c72777bcdcee%20%3D%20L.geoJson%28null%2C%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20onEachFeature%3A%20geo_json_b14535c1100144e88280c72777bcdcee_onEachFeature%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20style%3A%20geo_json_b14535c1100144e88280c72777bcdcee_styler%2C%0A%20%20%20%20%20%20%20%20%7D%29%3B%0A%0A%20%20%20%20%20%20%20%20function%20geo_json_b14535c1100144e88280c72777bcdcee_add%20%28data%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20geo_json_b14535c1100144e88280c72777bcdcee%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20.addData%28data%29%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20.addTo%28map_1a0ed4316ad74953a76531b089732cb0%29%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20geo_json_b14535c1100144e88280c72777bcdcee_add%28%7B%22features%22%3A%20%5B%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B55.386%2C%20-21.032%5D%2C%20%5B55.377%2C%20-21.027%5D%2C%20%5B55.38%2C%20-21.013%5D%2C%20%5B55.388%2C%20-21.015%5D%2C%20%5B55.39%2C%20-21.023%5D%2C%20%5B55.386%2C%20-21.032%5D%5D%5D%2C%20%22type%22%3A%20%22Polygon%22%7D%2C%20%22id%22%3A%20%220%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/1985%22%2C%20%22is_marine%22%3A%20%22False%22%2C%20%22iucn_cat%22%3A%20%22Ia%22%2C%20%22orig_name%22%3A%20%22Bois%20De%20N%5Cu00e8fles-Saint-Paul%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Bois%20De%20N%5Cu00e8fles-Saint-Paul%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22Forest%20Integral%20Biological%20Reserve%22%2C%20%22wdpa_id%22%3A%2062780%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B55.723%2C%20-21.335%5D%2C%20%5B55.711%2C%20-21.337%5D%2C%20%5B55.711%2C%20-21.342%5D%2C%20%5B55.71%2C%20-21.342%5D%2C%20%5B55.694%2C%20-21.323%5D%2C%20%5B55.699%2C%20-21.298%5D%2C%20%5B55.717%2C%20-21.288%5D%2C%20%5B55.79%2C%20-21.278%5D%2C%20%5B55.791%2C%20-21.288%5D%2C%20%5B55.765%2C%20-21.286%5D%2C%20%5B55.765%2C%20-21.297%5D%2C%20%5B55.77%2C%20-21.297%5D%2C%20%5B55.772%2C%20-21.308%5D%2C%20%5B55.766%2C%20-21.326%5D%2C%20%5B55.748%2C%20-21.333%5D%2C%20%5B55.749%2C%20-21.342%5D%2C%20%5B55.743%2C%20-21.344%5D%2C%20%5B55.734%2C%20-21.334%5D%2C%20%5B55.723%2C%20-21.335%5D%5D%5D%2C%20%22type%22%3A%20%22Polygon%22%7D%2C%20%22id%22%3A%20%221%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/1987%22%2C%20%22is_marine%22%3A%20%22False%22%2C%20%22iucn_cat%22%3A%20%22Ia%22%2C%20%22orig_name%22%3A%20%22Hauts%20De%20Saint-Philippe%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Hauts%20De%20Saint-Philippe%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22Forest%20Integral%20Biological%20Reserve%22%2C%20%22wdpa_id%22%3A%2062786%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B55.723%2C%20-21.183%5D%2C%20%5B55.739%2C%20-21.179%5D%2C%20%5B55.744%2C%20-21.185%5D%2C%20%5B55.743%2C%20-21.201%5D%2C%20%5B55.72%2C%20-21.206%5D%2C%20%5B55.696%2C%20-21.22%5D%2C%20%5B55.692%2C%20-21.212%5D%2C%20%5B55.709%2C%20-21.207%5D%2C%20%5B55.723%2C%20-21.183%5D%5D%5D%2C%20%22type%22%3A%20%22Polygon%22%7D%2C%20%22id%22%3A%20%222%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/1987%22%2C%20%22is_marine%22%3A%20%22False%22%2C%20%22iucn_cat%22%3A%20%22Ia%22%2C%20%22orig_name%22%3A%20%22Les%20Mares%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Les%20Mares%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22Forest%20Integral%20Biological%20Reserve%22%2C%20%22wdpa_id%22%3A%2062787%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B%5B55.8%2C%20-21.197%5D%2C%20%5B55.819%2C%20-21.205%5D%2C%20%5B55.817%2C%20-21.207%5D%2C%20%5B55.816%2C%20-21.209%5D%2C%20%5B55.814%2C%20-21.21%5D%2C%20%5B55.814%2C%20-21.212%5D%2C%20%5B55.812%2C%20-21.212%5D%2C%20%5B55.809%2C%20-21.217%5D%2C%20%5B55.797%2C%20-21.215%5D%2C%20%5B55.8%2C%20-21.197%5D%5D%5D%2C%20%5B%5B%5B55.812%2C%20-21.212%5D%2C%20%5B55.811%2C%20-21.211%5D%2C%20%5B55.812%2C%20-21.211%5D%2C%20%5B55.813%2C%20-21.212%5D%2C%20%5B55.812%2C%20-21.212%5D%5D%5D%2C%20%5B%5B%5B55.814%2C%20-21.213%5D%2C%20%5B55.813%2C%20-21.214%5D%2C%20%5B55.813%2C%20-21.213%5D%2C%20%5B55.814%2C%20-21.213%5D%2C%20%5B55.814%2C%20-21.213%5D%5D%5D%2C%20%5B%5B%5B55.824%2C%20-21.202%5D%2C%20%5B55.822%2C%20-21.206%5D%2C%20%5B55.814%2C%20-21.212%5D%2C%20%5B55.819%2C%20-21.207%5D%2C%20%5B55.819%2C%20-21.205%5D%2C%20%5B55.82%2C%20-21.205%5D%2C%20%5B55.819%2C%20-21.204%5D%2C%20%5B55.82%2C%20-21.204%5D%2C%20%5B55.82%2C%20-21.201%5D%2C%20%5B55.824%2C%20-21.202%5D%5D%5D%5D%2C%20%22type%22%3A%20%22MultiPolygon%22%7D%2C%20%22id%22%3A%20%223%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/1980%22%2C%20%22is_marine%22%3A%20%22False%22%2C%20%22iucn_cat%22%3A%20%22IV%22%2C%20%22orig_name%22%3A%20%22Bois%20Blanc%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Bois%20Blanc%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22Land%20Acquired%20By%20Conservatoire%20Du%20Littoral%20%28National%20Seaside%20And%20Lakeside%20Conservancy%29%22%2C%20%22wdpa_id%22%3A%2083081%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B%5B55.549%2C%20-21.368%5D%2C%20%5B55.548%2C%20-21.367%5D%2C%20%5B55.547%2C%20-21.367%5D%2C%20%5B55.549%2C%20-21.367%5D%2C%20%5B55.549%2C%20-21.368%5D%5D%5D%2C%20%5B%5B%5B55.553%2C%20-21.37%5D%2C%20%5B55.553%2C%20-21.369%5D%2C%20%5B55.554%2C%20-21.37%5D%2C%20%5B55.551%2C%20-21.368%5D%2C%20%5B55.55%2C%20-21.369%5D%2C%20%5B55.552%2C%20-21.369%5D%2C%20%5B55.553%2C%20-21.37%5D%5D%5D%2C%20%5B%5B%5B55.572%2C%20-21.376%5D%2C%20%5B55.568%2C%20-21.375%5D%2C%20%5B55.564%2C%20-21.372%5D%2C%20%5B55.561%2C%20-21.373%5D%2C%20%5B55.555%2C%20-21.371%5D%2C%20%5B55.554%2C%20-21.373%5D%2C%20%5B55.551%2C%20-21.374%5D%2C%20%5B55.55%2C%20-21.374%5D%2C%20%5B55.549%2C%20-21.37%5D%2C%20%5B55.55%2C%20-21.371%5D%2C%20%5B55.552%2C%20-21.369%5D%2C%20%5B55.552%2C%20-21.37%5D%2C%20%5B55.551%2C%20-21.371%5D%2C%20%5B55.551%2C%20-21.371%5D%2C%20%5B55.564%2C%20-21.372%5D%2C%20%5B55.571%2C%20-21.375%5D%2C%20%5B55.583%2C%20-21.371%5D%2C%20%5B55.572%2C%20-21.376%5D%5D%2C%20%5B%5B55.553%2C%20-21.37%5D%2C%20%5B55.553%2C%20-21.37%5D%2C%20%5B55.553%2C%20-21.37%5D%2C%20%5B55.553%2C%20-21.37%5D%2C%20%5B55.553%2C%20-21.37%5D%2C%20%5B55.553%2C%20-21.37%5D%5D%2C%20%5B%5B55.551%2C%20-21.371%5D%2C%20%5B55.553%2C%20-21.37%5D%2C%20%5B55.552%2C%20-21.369%5D%2C%20%5B55.55%2C%20-21.369%5D%2C%20%5B55.55%2C%20-21.37%5D%2C%20%5B55.552%2C%20-21.369%5D%2C%20%5B55.552%2C%20-21.37%5D%2C%20%5B55.552%2C%20-21.37%5D%2C%20%5B55.552%2C%20-21.37%5D%2C%20%5B55.552%2C%20-21.37%5D%2C%20%5B55.551%2C%20-21.371%5D%2C%20%5B55.551%2C%20-21.371%5D%5D%2C%20%5B%5B55.551%2C%20-21.374%5D%2C%20%5B55.551%2C%20-21.374%5D%2C%20%5B55.551%2C%20-21.374%5D%2C%20%5B55.551%2C%20-21.374%5D%2C%20%5B55.551%2C%20-21.374%5D%5D%2C%20%5B%5B55.551%2C%20-21.374%5D%2C%20%5B55.551%2C%20-21.374%5D%2C%20%5B55.551%2C%20-21.374%5D%2C%20%5B55.551%2C%20-21.374%5D%2C%20%5B55.551%2C%20-21.374%5D%2C%20%5B55.551%2C%20-21.373%5D%2C%20%5B55.551%2C%20-21.373%5D%2C%20%5B55.551%2C%20-21.373%5D%2C%20%5B55.551%2C%20-21.373%5D%2C%20%5B55.551%2C%20-21.373%5D%2C%20%5B55.551%2C%20-21.374%5D%5D%2C%20%5B%5B55.55%2C%20-21.373%5D%2C%20%5B55.551%2C%20-21.372%5D%2C%20%5B55.551%2C%20-21.372%5D%2C%20%5B55.551%2C%20-21.372%5D%2C%20%5B55.551%2C%20-21.371%5D%2C%20%5B55.551%2C%20-21.371%5D%2C%20%5B55.551%2C%20-21.371%5D%2C%20%5B55.551%2C%20-21.371%5D%2C%20%5B55.551%2C%20-21.371%5D%2C%20%5B55.55%2C%20-21.373%5D%5D%2C%20%5B%5B55.553%2C%20-21.373%5D%2C%20%5B55.553%2C%20-21.372%5D%2C%20%5B55.554%2C%20-21.372%5D%2C%20%5B55.553%2C%20-21.372%5D%2C%20%5B55.553%2C%20-21.372%5D%2C%20%5B55.553%2C%20-21.373%5D%5D%5D%5D%2C%20%22type%22%3A%20%22MultiPolygon%22%7D%2C%20%22id%22%3A%20%224%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/1982%22%2C%20%22is_marine%22%3A%20%22True%22%2C%20%22iucn_cat%22%3A%20%22IV%22%2C%20%22orig_name%22%3A%20%22Grande%20Anse%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Grande%20Anse%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22Land%20Acquired%20By%20Conservatoire%20Du%20Littoral%20%28National%20Seaside%20And%20Lakeside%20Conservancy%29%22%2C%20%22wdpa_id%22%3A%2083112%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B%5B55.285%2C%20-21.201%5D%2C%20%5B55.286%2C%20-21.207%5D%2C%20%5B55.287%2C%20-21.211%5D%2C%20%5B55.287%2C%20-21.214%5D%2C%20%5B55.289%2C%20-21.217%5D%2C%20%5B55.288%2C%20-21.218%5D%2C%20%5B55.281%2C%20-21.203%5D%2C%20%5B55.285%2C%20-21.197%5D%2C%20%5B55.285%2C%20-21.201%5D%5D%2C%20%5B%5B55.283%2C%20-21.201%5D%2C%20%5B55.283%2C%20-21.201%5D%2C%20%5B55.283%2C%20-21.201%5D%2C%20%5B55.283%2C%20-21.201%5D%2C%20%5B55.283%2C%20-21.201%5D%5D%2C%20%5B%5B55.283%2C%20-21.201%5D%2C%20%5B55.283%2C%20-21.201%5D%2C%20%5B55.283%2C%20-21.201%5D%2C%20%5B55.283%2C%20-21.201%5D%2C%20%5B55.283%2C%20-21.201%5D%5D%5D%2C%20%5B%5B%5B55.289%2C%20-21.217%5D%2C%20%5B55.288%2C%20-21.214%5D%2C%20%5B55.287%2C%20-21.21%5D%2C%20%5B55.286%2C%20-21.206%5D%2C%20%5B55.289%2C%20-21.217%5D%5D%5D%2C%20%5B%5B%5B55.287%2C%20-21.187%5D%2C%20%5B55.285%2C%20-21.194%5D%2C%20%5B55.284%2C%20-21.194%5D%2C%20%5B55.287%2C%20-21.186%5D%2C%20%5B55.287%2C%20-21.187%5D%5D%5D%2C%20%5B%5B%5B55.287%2C%20-21.186%5D%2C%20%5B55.286%2C%20-21.185%5D%2C%20%5B55.287%2C%20-21.185%5D%2C%20%5B55.287%2C%20-21.186%5D%2C%20%5B55.287%2C%20-21.186%5D%5D%5D%5D%2C%20%22type%22%3A%20%22MultiPolygon%22%7D%2C%20%22id%22%3A%20%225%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/1980%22%2C%20%22is_marine%22%3A%20%22True%22%2C%20%22iucn_cat%22%3A%20%22IV%22%2C%20%22orig_name%22%3A%20%22La%20Pointe%20Au%20Sel%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22La%20Pointe%20Au%20Sel%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22Land%20Acquired%20By%20Conservatoire%20Du%20Littoral%20%28National%20Seaside%20And%20Lakeside%20Conservancy%29%22%2C%20%22wdpa_id%22%3A%2083131%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B%5B55.493%2C%20-20.885%5D%2C%20%5B55.493%2C%20-20.886%5D%2C%20%5B55.489%2C%20-20.887%5D%2C%20%5B55.493%2C%20-20.885%5D%2C%20%5B55.493%2C%20-20.885%5D%5D%5D%2C%20%5B%5B%5B55.487%2C%20-20.886%5D%2C%20%5B55.489%2C%20-20.886%5D%2C%20%5B55.489%2C%20-20.887%5D%2C%20%5B55.487%2C%20-20.886%5D%2C%20%5B55.487%2C%20-20.886%5D%5D%5D%2C%20%5B%5B%5B55.486%2C%20-20.886%5D%2C%20%5B55.487%2C%20-20.886%5D%2C%20%5B55.484%2C%20-20.886%5D%2C%20%5B55.484%2C%20-20.886%5D%2C%20%5B55.486%2C%20-20.886%5D%5D%5D%5D%2C%20%22type%22%3A%20%22MultiPolygon%22%7D%2C%20%22id%22%3A%20%226%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/1980%22%2C%20%22is_marine%22%3A%20%22False%22%2C%20%22iucn_cat%22%3A%20%22IV%22%2C%20%22orig_name%22%3A%20%22Le%20Chaudron%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Le%20Chaudron%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22Land%20Acquired%20By%20Conservatoire%20Du%20Littoral%20%28National%20Seaside%20And%20Lakeside%20Conservancy%29%22%2C%20%22wdpa_id%22%3A%2083139%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B55.48%2C%20-21.1%5D%2C%20%5B55.502%2C%20-21.118%5D%2C%20%5B55.507%2C%20-21.136%5D%2C%20%5B55.499%2C%20-21.133%5D%2C%20%5B55.496%2C%20-21.125%5D%2C%20%5B55.488%2C%20-21.129%5D%2C%20%5B55.488%2C%20-21.134%5D%2C%20%5B55.482%2C%20-21.122%5D%2C%20%5B55.472%2C%20-21.121%5D%2C%20%5B55.47%2C%20-21.104%5D%2C%20%5B55.48%2C%20-21.1%5D%5D%5D%2C%20%22type%22%3A%20%22Polygon%22%7D%2C%20%22id%22%3A%20%227%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/1989%22%2C%20%22is_marine%22%3A%20%22False%22%2C%20%22iucn_cat%22%3A%20%22Ia%22%2C%20%22orig_name%22%3A%20%22Matarum%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Matarum%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22Forest%20Integral%20Biological%20Reserve%22%2C%20%22wdpa_id%22%3A%20142721%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B55.6%2C%20-21.053%5D%2C%20%5B55.593%2C%20-21.054%5D%2C%20%5B55.592%2C%20-21.059%5D%2C%20%5B55.596%2C%20-21.062%5D%2C%20%5B55.589%2C%20-21.069%5D%2C%20%5B55.587%2C%20-21.085%5D%2C%20%5B55.552%2C%20-21.073%5D%2C%20%5B55.561%2C%20-21.064%5D%2C%20%5B55.561%2C%20-21.048%5D%2C%20%5B55.565%2C%20-21.043%5D%2C%20%5B55.561%2C%20-21.037%5D%2C%20%5B55.565%2C%20-21.032%5D%2C%20%5B55.582%2C%20-21.026%5D%2C%20%5B55.6%2C%20-21.053%5D%5D%5D%2C%20%22type%22%3A%20%22Polygon%22%7D%2C%20%22id%22%3A%20%228%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/1985%22%2C%20%22is_marine%22%3A%20%22False%22%2C%20%22iucn_cat%22%3A%20%22Ia%22%2C%20%22orig_name%22%3A%20%22Le%20Mazerin%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Le%20Mazerin%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22Forest%20Integral%20Biological%20Reserve%22%2C%20%22wdpa_id%22%3A%20142722%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B55.558%2C%20-21.077%5D%2C%20%5B55.564%2C%20-21.086%5D%2C%20%5B55.584%2C%20-21.095%5D%2C%20%5B55.581%2C%20-21.103%5D%2C%20%5B55.568%2C%20-21.114%5D%2C%20%5B55.591%2C%20-21.104%5D%2C%20%5B55.597%2C%20-21.116%5D%2C%20%5B55.594%2C%20-21.122%5D%2C%20%5B55.579%2C%20-21.123%5D%2C%20%5B55.566%2C%20-21.137%5D%2C%20%5B55.554%2C%20-21.138%5D%2C%20%5B55.546%2C%20-21.134%5D%2C%20%5B55.519%2C%20-21.137%5D%2C%20%5B55.507%2C%20-21.129%5D%2C%20%5B55.5%2C%20-21.116%5D%2C%20%5B55.48%2C%20-21.097%5D%2C%20%5B55.487%2C%20-21.091%5D%2C%20%5B55.49%2C%20-21.101%5D%2C%20%5B55.497%2C%20-21.105%5D%2C%20%5B55.518%2C%20-21.093%5D%2C%20%5B55.524%2C%20-21.079%5D%2C%20%5B55.529%2C%20-21.083%5D%2C%20%5B55.536%2C%20-21.079%5D%2C%20%5B55.558%2C%20-21.077%5D%5D%5D%2C%20%22type%22%3A%20%22Polygon%22%7D%2C%20%22id%22%3A%20%229%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/1994%22%2C%20%22is_marine%22%3A%20%22False%22%2C%20%22iucn_cat%22%3A%20%22IV%22%2C%20%22orig_name%22%3A%20%22Bebour%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Bebour%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22Forest%20Managed%20Biological%20Reserve%22%2C%20%22wdpa_id%22%3A%20142723%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B55.568%2C%20-21.376%5D%2C%20%5B55.569%2C%20-21.377%5D%2C%20%5B55.567%2C%20-21.378%5D%2C%20%5B55.567%2C%20-21.378%5D%2C%20%5B55.568%2C%20-21.376%5D%5D%5D%2C%20%22type%22%3A%20%22Polygon%22%7D%2C%20%22id%22%3A%20%2210%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/1986%22%2C%20%22is_marine%22%3A%20%22True%22%2C%20%22iucn_cat%22%3A%20%22IV%22%2C%20%22orig_name%22%3A%20%22Ile%20De%20Petite-Ile%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Ile%20De%20Petite-Ile%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22Biotope%20Protection%20Order%22%2C%20%22wdpa_id%22%3A%20147295%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B%5B55.385%2C%20-21.285%5D%2C%20%5B55.389%2C%20-21.282%5D%2C%20%5B55.397%2C%20-21.286%5D%2C%20%5B55.391%2C%20-21.291%5D%2C%20%5B55.38%2C%20-21.282%5D%2C%20%5B55.385%2C%20-21.285%5D%5D%5D%2C%20%5B%5B%5B55.383%2C%20-21.288%5D%2C%20%5B55.379%2C%20-21.286%5D%2C%20%5B55.378%2C%20-21.284%5D%2C%20%5B55.38%2C%20-21.281%5D%2C%20%5B55.383%2C%20-21.288%5D%5D%5D%5D%2C%20%22type%22%3A%20%22MultiPolygon%22%7D%2C%20%22id%22%3A%20%2211%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/1985%22%2C%20%22is_marine%22%3A%20%22True%22%2C%20%22iucn_cat%22%3A%20%22IV%22%2C%20%22orig_name%22%3A%20%22Etang%20Du%20Gol%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Etang%20Du%20Gol%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22Land%20Acquired%20By%20Conservatoire%20Du%20Littoral%20%28National%20Seaside%20And%20Lakeside%20Conservancy%29%22%2C%20%22wdpa_id%22%3A%20147322%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B%5B55.834%2C%20-21.182%5D%2C%20%5B55.832%2C%20-21.186%5D%2C%20%5B55.831%2C%20-21.185%5D%2C%20%5B55.829%2C%20-21.184%5D%2C%20%5B55.829%2C%20-21.183%5D%2C%20%5B55.83%2C%20-21.183%5D%2C%20%5B55.83%2C%20-21.183%5D%2C%20%5B55.83%2C%20-21.181%5D%2C%20%5B55.831%2C%20-21.18%5D%2C%20%5B55.832%2C%20-21.177%5D%2C%20%5B55.834%2C%20-21.182%5D%5D%2C%20%5B%5B55.83%2C%20-21.183%5D%2C%20%5B55.83%2C%20-21.185%5D%2C%20%5B55.831%2C%20-21.182%5D%2C%20%5B55.83%2C%20-21.183%5D%2C%20%5B55.83%2C%20-21.183%5D%5D%5D%2C%20%5B%5B%5B55.826%2C%20-21.184%5D%2C%20%5B55.826%2C%20-21.185%5D%2C%20%5B55.825%2C%20-21.184%5D%2C%20%5B55.826%2C%20-21.184%5D%2C%20%5B55.826%2C%20-21.184%5D%5D%5D%2C%20%5B%5B%5B55.827%2C%20-21.184%5D%2C%20%5B55.826%2C%20-21.184%5D%2C%20%5B55.826%2C%20-21.184%5D%2C%20%5B55.825%2C%20-21.184%5D%2C%20%5B55.826%2C%20-21.182%5D%2C%20%5B55.827%2C%20-21.184%5D%5D%5D%2C%20%5B%5B%5B55.827%2C%20-21.182%5D%2C%20%5B55.828%2C%20-21.183%5D%2C%20%5B55.826%2C%20-21.182%5D%2C%20%5B55.827%2C%20-21.181%5D%2C%20%5B55.827%2C%20-21.182%5D%5D%5D%2C%20%5B%5B%5B55.83%2C%20-21.177%5D%2C%20%5B55.831%2C%20-21.179%5D%2C%20%5B55.83%2C%20-21.181%5D%2C%20%5B55.83%2C%20-21.182%5D%2C%20%5B55.83%2C%20-21.183%5D%2C%20%5B55.83%2C%20-21.183%5D%2C%20%5B55.829%2C%20-21.183%5D%2C%20%5B55.829%2C%20-21.184%5D%2C%20%5B55.827%2C%20-21.18%5D%2C%20%5B55.83%2C%20-21.177%5D%5D%2C%20%5B%5B55.828%2C%20-21.179%5D%2C%20%5B55.829%2C%20-21.18%5D%2C%20%5B55.83%2C%20-21.179%5D%2C%20%5B55.829%2C%20-21.179%5D%2C%20%5B55.828%2C%20-21.179%5D%5D%5D%2C%20%5B%5B%5B55.807%2C%20-21.133%5D%2C%20%5B55.808%2C%20-21.135%5D%2C%20%5B55.806%2C%20-21.136%5D%2C%20%5B55.806%2C%20-21.134%5D%2C%20%5B55.807%2C%20-21.133%5D%5D%5D%5D%2C%20%22type%22%3A%20%22MultiPolygon%22%7D%2C%20%22id%22%3A%20%2212%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/1985%22%2C%20%22is_marine%22%3A%20%22True%22%2C%20%22iucn_cat%22%3A%20%22IV%22%2C%20%22orig_name%22%3A%20%22Anse%20Des%20Cascades%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Anse%20Des%20Cascades%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22Land%20Acquired%20By%20Conservatoire%20Du%20Littoral%20%28National%20Seaside%20And%20Lakeside%20Conservancy%29%22%2C%20%22wdpa_id%22%3A%20147323%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B55.403%2C%20-21.0%5D%2C%20%5B55.433%2C%20-21.013%5D%2C%20%5B55.454%2C%20-21.031%5D%2C%20%5B55.452%2C%20-21.061%5D%2C%20%5B55.442%2C%20-21.066%5D%2C%20%5B55.446%2C%20-21.057%5D%2C%20%5B55.443%2C%20-21.038%5D%2C%20%5B55.427%2C%20-21.016%5D%2C%20%5B55.418%2C%20-21.018%5D%2C%20%5B55.401%2C%20-21.002%5D%2C%20%5B55.403%2C%20-21.0%5D%5D%5D%2C%20%22type%22%3A%20%22Polygon%22%7D%2C%20%22id%22%3A%20%2213%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/2002%22%2C%20%22is_marine%22%3A%20%22False%22%2C%20%22iucn_cat%22%3A%20%22IV%22%2C%20%22orig_name%22%3A%20%22Bras%20Des%20Merles-Bras%20B%5Cu00e9mal%5Cu00e9%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Bras%20Des%20Merles-Bras%20B%5Cu00e9mal%5Cu00e9%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22Forest%20Managed%20Biological%20Reserve%22%2C%20%22wdpa_id%22%3A%20193401%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B%5B55.38%2C%20-20.895%5D%2C%20%5B55.378%2C%20-20.895%5D%2C%20%5B55.381%2C%20-20.894%5D%2C%20%5B55.379%2C%20-20.894%5D%2C%20%5B55.38%2C%20-20.895%5D%5D%5D%2C%20%5B%5B%5B55.375%2C%20-20.898%5D%2C%20%5B55.375%2C%20-20.898%5D%2C%20%5B55.375%2C%20-20.898%5D%2C%20%5B55.375%2C%20-20.898%5D%2C%20%5B55.375%2C%20-20.898%5D%5D%5D%2C%20%5B%5B%5B55.378%2C%20-20.904%5D%2C%20%5B55.378%2C%20-20.896%5D%2C%20%5B55.386%2C%20-20.901%5D%2C%20%5B55.381%2C%20-20.903%5D%2C%20%5B55.378%2C%20-20.904%5D%5D%5D%2C%20%5B%5B%5B55.393%2C%20-20.905%5D%2C%20%5B55.391%2C%20-20.903%5D%2C%20%5B55.386%2C%20-20.9%5D%2C%20%5B55.385%2C%20-20.898%5D%2C%20%5B55.384%2C%20-20.896%5D%2C%20%5B55.382%2C%20-20.895%5D%2C%20%5B55.381%2C%20-20.894%5D%2C%20%5B55.381%2C%20-20.894%5D%2C%20%5B55.381%2C%20-20.894%5D%2C%20%5B55.385%2C%20-20.891%5D%2C%20%5B55.396%2C%20-20.904%5D%2C%20%5B55.393%2C%20-20.905%5D%5D%5D%2C%20%5B%5B%5B55.393%2C%20-20.911%5D%2C%20%5B55.388%2C%20-20.902%5D%2C%20%5B55.379%2C%20-20.894%5D%2C%20%5B55.395%2C%20-20.907%5D%2C%20%5B55.393%2C%20-20.911%5D%5D%2C%20%5B%5B55.386%2C%20-20.9%5D%2C%20%5B55.386%2C%20-20.9%5D%2C%20%5B55.386%2C%20-20.9%5D%2C%20%5B55.386%2C%20-20.9%5D%5D%5D%2C%20%5B%5B%5B55.382%2C%20-20.896%5D%2C%20%5B55.382%2C%20-20.896%5D%2C%20%5B55.382%2C%20-20.896%5D%2C%20%5B55.382%2C%20-20.896%5D%5D%5D%2C%20%5B%5B%5B55.382%2C%20-20.896%5D%2C%20%5B55.382%2C%20-20.896%5D%2C%20%5B55.382%2C%20-20.896%5D%2C%20%5B55.382%2C%20-20.896%5D%5D%5D%2C%20%5B%5B%5B55.382%2C%20-20.896%5D%2C%20%5B55.382%2C%20-20.896%5D%2C%20%5B55.382%2C%20-20.896%5D%2C%20%5B55.382%2C%20-20.896%5D%5D%5D%2C%20%5B%5B%5B55.382%2C%20-20.896%5D%2C%20%5B55.382%2C%20-20.896%5D%2C%20%5B55.382%2C%20-20.896%5D%2C%20%5B55.382%2C%20-20.896%5D%5D%5D%2C%20%5B%5B%5B55.384%2C%20-20.897%5D%2C%20%5B55.384%2C%20-20.897%5D%2C%20%5B55.383%2C%20-20.897%5D%2C%20%5B55.384%2C%20-20.897%5D%5D%5D%2C%20%5B%5B%5B55.384%2C%20-20.897%5D%2C%20%5B55.384%2C%20-20.897%5D%2C%20%5B55.384%2C%20-20.897%5D%2C%20%5B55.384%2C%20-20.897%5D%5D%5D%2C%20%5B%5B%5B55.384%2C%20-20.897%5D%2C%20%5B55.384%2C%20-20.897%5D%2C%20%5B55.384%2C%20-20.897%5D%2C%20%5B55.384%2C%20-20.897%5D%5D%5D%2C%20%5B%5B%5B55.384%2C%20-20.897%5D%2C%20%5B55.384%2C%20-20.897%5D%2C%20%5B55.384%2C%20-20.897%5D%2C%20%5B55.384%2C%20-20.897%5D%5D%5D%2C%20%5B%5B%5B55.384%2C%20-20.897%5D%2C%20%5B55.384%2C%20-20.897%5D%2C%20%5B55.384%2C%20-20.897%5D%2C%20%5B55.384%2C%20-20.897%5D%5D%5D%2C%20%5B%5B%5B55.384%2C%20-20.897%5D%2C%20%5B55.384%2C%20-20.897%5D%2C%20%5B55.384%2C%20-20.897%5D%2C%20%5B55.384%2C%20-20.897%5D%5D%5D%2C%20%5B%5B%5B55.384%2C%20-20.897%5D%2C%20%5B55.384%2C%20-20.897%5D%2C%20%5B55.384%2C%20-20.897%5D%2C%20%5B55.384%2C%20-20.897%5D%5D%5D%2C%20%5B%5B%5B55.384%2C%20-20.897%5D%2C%20%5B55.384%2C%20-20.897%5D%2C%20%5B55.384%2C%20-20.897%5D%2C%20%5B55.384%2C%20-20.897%5D%5D%5D%2C%20%5B%5B%5B55.384%2C%20-20.897%5D%2C%20%5B55.384%2C%20-20.897%5D%2C%20%5B55.384%2C%20-20.897%5D%2C%20%5B55.384%2C%20-20.897%5D%5D%5D%2C%20%5B%5B%5B55.384%2C%20-20.898%5D%2C%20%5B55.384%2C%20-20.898%5D%2C%20%5B55.384%2C%20-20.898%5D%2C%20%5B55.384%2C%20-20.898%5D%5D%5D%2C%20%5B%5B%5B55.359%2C%20-20.913%5D%2C%20%5B55.354%2C%20-20.912%5D%2C%20%5B55.365%2C%20-20.908%5D%2C%20%5B55.369%2C%20-20.901%5D%2C%20%5B55.374%2C%20-20.897%5D%2C%20%5B55.375%2C%20-20.903%5D%2C%20%5B55.37%2C%20-20.903%5D%2C%20%5B55.37%2C%20-20.905%5D%2C%20%5B55.369%2C%20-20.904%5D%2C%20%5B55.368%2C%20-20.905%5D%2C%20%5B55.363%2C%20-20.911%5D%2C%20%5B55.359%2C%20-20.913%5D%5D%5D%2C%20%5B%5B%5B55.387%2C%20-20.932%5D%2C%20%5B55.383%2C%20-20.927%5D%2C%20%5B55.381%2C%20-20.923%5D%2C%20%5B55.386%2C%20-20.926%5D%2C%20%5B55.385%2C%20-20.926%5D%2C%20%5B55.385%2C%20-20.928%5D%2C%20%5B55.387%2C%20-20.932%5D%5D%5D%2C%20%5B%5B%5B55.389%2C%20-20.933%5D%2C%20%5B55.388%2C%20-20.931%5D%2C%20%5B55.388%2C%20-20.93%5D%2C%20%5B55.385%2C%20-20.928%5D%2C%20%5B55.386%2C%20-20.926%5D%2C%20%5B55.387%2C%20-20.926%5D%2C%20%5B55.386%2C%20-20.926%5D%2C%20%5B55.37%2C%20-20.915%5D%2C%20%5B55.372%2C%20-20.923%5D%2C%20%5B55.355%2C%20-20.913%5D%2C%20%5B55.359%2C%20-20.914%5D%2C%20%5B55.361%2C%20-20.913%5D%2C%20%5B55.362%2C%20-20.912%5D%2C%20%5B55.363%2C%20-20.911%5D%2C%20%5B55.367%2C%20-20.907%5D%2C%20%5B55.368%2C%20-20.905%5D%2C%20%5B55.37%2C%20-20.905%5D%2C%20%5B55.37%2C%20-20.903%5D%2C%20%5B55.375%2C%20-20.903%5D%2C%20%5B55.376%2C%20-20.902%5D%2C%20%5B55.376%2C%20-20.902%5D%2C%20%5B55.376%2C%20-20.901%5D%2C%20%5B55.376%2C%20-20.901%5D%2C%20%5B55.379%2C%20-20.911%5D%2C%20%5B55.39%2C%20-20.923%5D%2C%20%5B55.387%2C%20-20.928%5D%2C%20%5B55.389%2C%20-20.933%5D%5D%2C%20%5B%5B55.374%2C%20-20.905%5D%2C%20%5B55.374%2C%20-20.905%5D%2C%20%5B55.374%2C%20-20.905%5D%2C%20%5B55.374%2C%20-20.905%5D%2C%20%5B55.374%2C%20-20.905%5D%5D%2C%20%5B%5B55.374%2C%20-20.906%5D%2C%20%5B55.374%2C%20-20.906%5D%2C%20%5B55.374%2C%20-20.906%5D%2C%20%5B55.374%2C%20-20.906%5D%2C%20%5B55.374%2C%20-20.906%5D%5D%2C%20%5B%5B55.374%2C%20-20.906%5D%2C%20%5B55.374%2C%20-20.906%5D%2C%20%5B55.374%2C%20-20.906%5D%2C%20%5B55.374%2C%20-20.906%5D%2C%20%5B55.374%2C%20-20.906%5D%5D%2C%20%5B%5B55.374%2C%20-20.906%5D%2C%20%5B55.374%2C%20-20.906%5D%2C%20%5B55.374%2C%20-20.906%5D%2C%20%5B55.374%2C%20-20.906%5D%2C%20%5B55.374%2C%20-20.906%5D%5D%2C%20%5B%5B55.374%2C%20-20.907%5D%2C%20%5B55.374%2C%20-20.907%5D%2C%20%5B55.374%2C%20-20.907%5D%2C%20%5B55.374%2C%20-20.907%5D%2C%20%5B55.374%2C%20-20.907%5D%5D%2C%20%5B%5B55.374%2C%20-20.908%5D%2C%20%5B55.374%2C%20-20.908%5D%2C%20%5B55.374%2C%20-20.908%5D%2C%20%5B55.374%2C%20-20.908%5D%5D%2C%20%5B%5B55.374%2C%20-20.908%5D%2C%20%5B55.374%2C%20-20.908%5D%2C%20%5B55.374%2C%20-20.908%5D%2C%20%5B55.374%2C%20-20.908%5D%2C%20%5B55.374%2C%20-20.908%5D%5D%2C%20%5B%5B55.375%2C%20-20.908%5D%2C%20%5B55.375%2C%20-20.908%5D%2C%20%5B55.374%2C%20-20.908%5D%2C%20%5B55.375%2C%20-20.908%5D%5D%2C%20%5B%5B55.376%2C%20-20.908%5D%2C%20%5B55.376%2C%20-20.908%5D%2C%20%5B55.375%2C%20-20.908%5D%2C%20%5B55.376%2C%20-20.908%5D%5D%2C%20%5B%5B55.376%2C%20-20.908%5D%2C%20%5B55.376%2C%20-20.908%5D%2C%20%5B55.376%2C%20-20.908%5D%2C%20%5B55.376%2C%20-20.908%5D%2C%20%5B55.376%2C%20-20.908%5D%5D%2C%20%5B%5B55.375%2C%20-20.909%5D%2C%20%5B55.375%2C%20-20.909%5D%2C%20%5B55.376%2C%20-20.909%5D%2C%20%5B55.375%2C%20-20.909%5D%2C%20%5B55.375%2C%20-20.909%5D%5D%2C%20%5B%5B55.375%2C%20-20.91%5D%2C%20%5B55.375%2C%20-20.91%5D%2C%20%5B55.375%2C%20-20.91%5D%2C%20%5B55.375%2C%20-20.91%5D%2C%20%5B55.375%2C%20-20.91%5D%5D%2C%20%5B%5B55.376%2C%20-20.91%5D%2C%20%5B55.375%2C%20-20.91%5D%2C%20%5B55.375%2C%20-20.91%5D%2C%20%5B55.375%2C%20-20.91%5D%2C%20%5B55.376%2C%20-20.91%5D%5D%2C%20%5B%5B55.376%2C%20-20.911%5D%2C%20%5B55.376%2C%20-20.911%5D%2C%20%5B55.376%2C%20-20.911%5D%2C%20%5B55.376%2C%20-20.911%5D%2C%20%5B55.376%2C%20-20.911%5D%5D%2C%20%5B%5B55.376%2C%20-20.912%5D%2C%20%5B55.376%2C%20-20.912%5D%2C%20%5B55.376%2C%20-20.912%5D%2C%20%5B55.376%2C%20-20.912%5D%2C%20%5B55.376%2C%20-20.912%5D%5D%2C%20%5B%5B55.376%2C%20-20.912%5D%2C%20%5B55.376%2C%20-20.912%5D%2C%20%5B55.376%2C%20-20.912%5D%2C%20%5B55.376%2C%20-20.912%5D%2C%20%5B55.376%2C%20-20.912%5D%5D%2C%20%5B%5B55.378%2C%20-20.914%5D%2C%20%5B55.378%2C%20-20.914%5D%2C%20%5B55.378%2C%20-20.914%5D%2C%20%5B55.378%2C%20-20.914%5D%2C%20%5B55.378%2C%20-20.914%5D%5D%2C%20%5B%5B55.36%2C%20-20.915%5D%2C%20%5B55.36%2C%20-20.915%5D%2C%20%5B55.359%2C%20-20.915%5D%2C%20%5B55.36%2C%20-20.915%5D%2C%20%5B55.36%2C%20-20.915%5D%5D%2C%20%5B%5B55.38%2C%20-20.916%5D%2C%20%5B55.38%2C%20-20.916%5D%2C%20%5B55.38%2C%20-20.916%5D%2C%20%5B55.38%2C%20-20.916%5D%2C%20%5B55.38%2C%20-20.916%5D%5D%2C%20%5B%5B55.381%2C%20-20.919%5D%2C%20%5B55.381%2C%20-20.919%5D%2C%20%5B55.381%2C%20-20.918%5D%2C%20%5B55.381%2C%20-20.919%5D%2C%20%5B55.381%2C%20-20.919%5D%5D%5D%2C%20%5B%5B%5B55.389%2C%20-20.933%5D%2C%20%5B55.388%2C%20-20.928%5D%2C%20%5B55.389%2C%20-20.927%5D%2C%20%5B55.391%2C%20-20.932%5D%2C%20%5B55.39%2C%20-20.931%5D%2C%20%5B55.389%2C%20-20.931%5D%2C%20%5B55.389%2C%20-20.933%5D%5D%5D%2C%20%5B%5B%5B55.399%2C%20-20.951%5D%2C%20%5B55.389%2C%20-20.936%5D%2C%20%5B55.39%2C%20-20.931%5D%2C%20%5B55.392%2C%20-20.937%5D%2C%20%5B55.391%2C%20-20.928%5D%2C%20%5B55.398%2C%20-20.93%5D%2C%20%5B55.404%2C%20-20.942%5D%2C%20%5B55.399%2C%20-20.951%5D%5D%2C%20%5B%5B55.399%2C%20-20.946%5D%2C%20%5B55.399%2C%20-20.946%5D%2C%20%5B55.399%2C%20-20.946%5D%2C%20%5B55.399%2C%20-20.946%5D%5D%2C%20%5B%5B55.398%2C%20-20.946%5D%2C%20%5B55.399%2C%20-20.946%5D%2C%20%5B55.398%2C%20-20.946%5D%2C%20%5B55.398%2C%20-20.946%5D%5D%2C%20%5B%5B55.398%2C%20-20.946%5D%2C%20%5B55.398%2C%20-20.946%5D%2C%20%5B55.398%2C%20-20.946%5D%2C%20%5B55.398%2C%20-20.946%5D%2C%20%5B55.398%2C%20-20.946%5D%2C%20%5B55.398%2C%20-20.946%5D%5D%2C%20%5B%5B55.398%2C%20-20.945%5D%2C%20%5B55.398%2C%20-20.945%5D%2C%20%5B55.398%2C%20-20.945%5D%2C%20%5B55.398%2C%20-20.945%5D%2C%20%5B55.398%2C%20-20.945%5D%5D%2C%20%5B%5B55.397%2C%20-20.945%5D%2C%20%5B55.397%2C%20-20.945%5D%2C%20%5B55.397%2C%20-20.945%5D%2C%20%5B55.397%2C%20-20.945%5D%2C%20%5B55.397%2C%20-20.945%5D%5D%2C%20%5B%5B55.397%2C%20-20.945%5D%2C%20%5B55.396%2C%20-20.943%5D%2C%20%5B55.396%2C%20-20.944%5D%2C%20%5B55.396%2C%20-20.944%5D%2C%20%5B55.397%2C%20-20.945%5D%5D%2C%20%5B%5B55.396%2C%20-20.943%5D%2C%20%5B55.396%2C%20-20.943%5D%2C%20%5B55.396%2C%20-20.943%5D%2C%20%5B55.396%2C%20-20.943%5D%5D%2C%20%5B%5B55.396%2C%20-20.943%5D%2C%20%5B55.396%2C%20-20.943%5D%2C%20%5B55.396%2C%20-20.943%5D%2C%20%5B55.396%2C%20-20.943%5D%2C%20%5B55.396%2C%20-20.943%5D%5D%2C%20%5B%5B55.395%2C%20-20.942%5D%2C%20%5B55.395%2C%20-20.942%5D%2C%20%5B55.395%2C%20-20.942%5D%2C%20%5B55.395%2C%20-20.942%5D%5D%2C%20%5B%5B55.395%2C%20-20.942%5D%2C%20%5B55.395%2C%20-20.942%5D%2C%20%5B55.395%2C%20-20.942%5D%2C%20%5B55.395%2C%20-20.942%5D%5D%2C%20%5B%5B55.395%2C%20-20.942%5D%2C%20%5B55.395%2C%20-20.942%5D%2C%20%5B55.395%2C%20-20.942%5D%2C%20%5B55.395%2C%20-20.942%5D%2C%20%5B55.395%2C%20-20.942%5D%5D%2C%20%5B%5B55.395%2C%20-20.942%5D%2C%20%5B55.395%2C%20-20.942%5D%2C%20%5B55.395%2C%20-20.942%5D%2C%20%5B55.395%2C%20-20.942%5D%2C%20%5B55.395%2C%20-20.942%5D%5D%2C%20%5B%5B55.395%2C%20-20.941%5D%2C%20%5B55.395%2C%20-20.941%5D%2C%20%5B55.395%2C%20-20.941%5D%2C%20%5B55.395%2C%20-20.941%5D%2C%20%5B55.395%2C%20-20.941%5D%5D%2C%20%5B%5B55.395%2C%20-20.941%5D%2C%20%5B55.394%2C%20-20.941%5D%2C%20%5B55.394%2C%20-20.941%5D%2C%20%5B55.394%2C%20-20.941%5D%2C%20%5B55.394%2C%20-20.941%5D%2C%20%5B55.395%2C%20-20.941%5D%5D%2C%20%5B%5B55.394%2C%20-20.941%5D%2C%20%5B55.394%2C%20-20.941%5D%2C%20%5B55.394%2C%20-20.941%5D%2C%20%5B55.394%2C%20-20.941%5D%2C%20%5B55.394%2C%20-20.941%5D%5D%2C%20%5B%5B55.393%2C%20-20.94%5D%2C%20%5B55.393%2C%20-20.94%5D%2C%20%5B55.393%2C%20-20.94%5D%2C%20%5B55.393%2C%20-20.94%5D%2C%20%5B55.393%2C%20-20.94%5D%5D%2C%20%5B%5B55.392%2C%20-20.939%5D%2C%20%5B55.392%2C%20-20.939%5D%2C%20%5B55.392%2C%20-20.939%5D%2C%20%5B55.392%2C%20-20.939%5D%2C%20%5B55.392%2C%20-20.939%5D%5D%2C%20%5B%5B55.392%2C%20-20.939%5D%2C%20%5B55.392%2C%20-20.939%5D%2C%20%5B55.392%2C%20-20.939%5D%2C%20%5B55.392%2C%20-20.939%5D%2C%20%5B55.392%2C%20-20.939%5D%5D%2C%20%5B%5B55.392%2C%20-20.939%5D%2C%20%5B55.392%2C%20-20.939%5D%2C%20%5B55.392%2C%20-20.939%5D%2C%20%5B55.392%2C%20-20.939%5D%2C%20%5B55.392%2C%20-20.939%5D%5D%2C%20%5B%5B55.392%2C%20-20.938%5D%2C%20%5B55.392%2C%20-20.938%5D%2C%20%5B55.392%2C%20-20.938%5D%2C%20%5B55.392%2C%20-20.938%5D%2C%20%5B55.392%2C%20-20.938%5D%5D%2C%20%5B%5B55.392%2C%20-20.938%5D%2C%20%5B55.392%2C%20-20.938%5D%2C%20%5B55.392%2C%20-20.938%5D%2C%20%5B55.392%2C%20-20.938%5D%5D%2C%20%5B%5B55.395%2C%20-20.942%5D%2C%20%5B55.395%2C%20-20.942%5D%2C%20%5B55.395%2C%20-20.942%5D%2C%20%5B55.395%2C%20-20.942%5D%5D%2C%20%5B%5B55.395%2C%20-20.942%5D%2C%20%5B55.395%2C%20-20.942%5D%2C%20%5B55.395%2C%20-20.942%5D%2C%20%5B55.395%2C%20-20.942%5D%5D%5D%2C%20%5B%5B%5B55.392%2C%20-20.937%5D%2C%20%5B55.392%2C%20-20.937%5D%2C%20%5B55.392%2C%20-20.937%5D%2C%20%5B55.392%2C%20-20.937%5D%5D%5D%2C%20%5B%5B%5B55.392%2C%20-20.937%5D%2C%20%5B55.392%2C%20-20.937%5D%2C%20%5B55.392%2C%20-20.937%5D%2C%20%5B55.392%2C%20-20.937%5D%2C%20%5B55.392%2C%20-20.937%5D%5D%5D%5D%2C%20%22type%22%3A%20%22MultiPolygon%22%7D%2C%20%22id%22%3A%20%2214%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/1996%22%2C%20%22is_marine%22%3A%20%22False%22%2C%20%22iucn_cat%22%3A%20%22IV%22%2C%20%22orig_name%22%3A%20%22Grande%20Chaloupe%20-%20Ravine%20A%20Malheur%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Grande%20Chaloupe%20-%20Ravine%20A%20Malheur%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22Land%20Acquired%20By%20Conservatoire%20Du%20Littoral%20%28National%20Seaside%20And%20Lakeside%20Conservancy%29%22%2C%20%22wdpa_id%22%3A%20330594%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B%5B55.498%2C%20-21.349%5D%2C%20%5B55.499%2C%20-21.349%5D%2C%20%5B55.499%2C%20-21.351%5D%2C%20%5B55.492%2C%20-21.35%5D%2C%20%5B55.498%2C%20-21.349%5D%5D%5D%2C%20%5B%5B%5B55.507%2C%20-21.353%5D%2C%20%5B55.508%2C%20-21.354%5D%2C%20%5B55.507%2C%20-21.354%5D%2C%20%5B55.507%2C%20-21.353%5D%2C%20%5B55.507%2C%20-21.353%5D%5D%5D%2C%20%5B%5B%5B55.506%2C%20-21.353%5D%2C%20%5B55.507%2C%20-21.354%5D%2C%20%5B55.505%2C%20-21.353%5D%2C%20%5B55.506%2C%20-21.353%5D%2C%20%5B55.506%2C%20-21.353%5D%5D%5D%2C%20%5B%5B%5B55.507%2C%20-21.353%5D%2C%20%5B55.507%2C%20-21.353%5D%2C%20%5B55.507%2C%20-21.353%5D%2C%20%5B55.507%2C%20-21.353%5D%2C%20%5B55.507%2C%20-21.353%5D%5D%5D%2C%20%5B%5B%5B55.506%2C%20-21.352%5D%2C%20%5B55.507%2C%20-21.352%5D%2C%20%5B55.506%2C%20-21.352%5D%2C%20%5B55.506%2C%20-21.351%5D%2C%20%5B55.506%2C%20-21.352%5D%5D%5D%2C%20%5B%5B%5B55.505%2C%20-21.351%5D%2C%20%5B55.506%2C%20-21.351%5D%2C%20%5B55.506%2C%20-21.352%5D%2C%20%5B55.507%2C%20-21.353%5D%2C%20%5B55.505%2C%20-21.351%5D%5D%5D%2C%20%5B%5B%5B55.504%2C%20-21.351%5D%2C%20%5B55.503%2C%20-21.351%5D%2C%20%5B55.503%2C%20-21.35%5D%2C%20%5B55.504%2C%20-21.351%5D%2C%20%5B55.504%2C%20-21.351%5D%5D%5D%2C%20%5B%5B%5B55.501%2C%20-21.35%5D%2C%20%5B55.5%2C%20-21.349%5D%2C%20%5B55.503%2C%20-21.349%5D%2C%20%5B55.503%2C%20-21.35%5D%2C%20%5B55.501%2C%20-21.35%5D%5D%5D%5D%2C%20%22type%22%3A%20%22MultiPolygon%22%7D%2C%20%22id%22%3A%20%2215%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/1997%22%2C%20%22is_marine%22%3A%20%22True%22%2C%20%22iucn_cat%22%3A%20%22IV%22%2C%20%22orig_name%22%3A%20%22Terre%20Rouge%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Terre%20Rouge%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22Land%20Acquired%20By%20Conservatoire%20Du%20Littoral%20%28National%20Seaside%20And%20Lakeside%20Conservancy%29%22%2C%20%22wdpa_id%22%3A%20330595%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B%5B55.241%2C%20-21.02%5D%2C%20%5B55.252%2C%20-21.022%5D%2C%20%5B55.254%2C%20-21.03%5D%2C%20%5B55.251%2C%20-21.032%5D%2C%20%5B55.241%2C%20-21.02%5D%5D%2C%20%5B%5B55.247%2C%20-21.025%5D%2C%20%5B55.248%2C%20-21.026%5D%2C%20%5B55.249%2C%20-21.026%5D%2C%20%5B55.249%2C%20-21.025%5D%2C%20%5B55.247%2C%20-21.025%5D%5D%2C%20%5B%5B55.25%2C%20-21.026%5D%2C%20%5B55.25%2C%20-21.026%5D%2C%20%5B55.251%2C%20-21.026%5D%2C%20%5B55.25%2C%20-21.026%5D%2C%20%5B55.25%2C%20-21.026%5D%5D%2C%20%5B%5B55.248%2C%20-21.027%5D%2C%20%5B55.248%2C%20-21.027%5D%2C%20%5B55.248%2C%20-21.027%5D%2C%20%5B55.248%2C%20-21.027%5D%2C%20%5B55.248%2C%20-21.027%5D%5D%2C%20%5B%5B55.245%2C%20-21.031%5D%2C%20%5B55.245%2C%20-21.031%5D%2C%20%5B55.245%2C%20-21.031%5D%2C%20%5B55.245%2C%20-21.031%5D%2C%20%5B55.245%2C%20-21.031%5D%5D%2C%20%5B%5B55.243%2C%20-21.032%5D%2C%20%5B55.243%2C%20-21.032%5D%2C%20%5B55.244%2C%20-21.032%5D%2C%20%5B55.244%2C%20-21.032%5D%2C%20%5B55.243%2C%20-21.032%5D%5D%5D%2C%20%5B%5B%5B55.257%2C%20-21.039%5D%2C%20%5B55.257%2C%20-21.039%5D%2C%20%5B55.257%2C%20-21.038%5D%2C%20%5B55.257%2C%20-21.039%5D%2C%20%5B55.257%2C%20-21.039%5D%5D%5D%2C%20%5B%5B%5B55.256%2C%20-21.038%5D%2C%20%5B55.257%2C%20-21.038%5D%2C%20%5B55.257%2C%20-21.038%5D%2C%20%5B55.257%2C%20-21.038%5D%2C%20%5B55.256%2C%20-21.038%5D%5D%5D%2C%20%5B%5B%5B55.243%2C%20-21.041%5D%2C%20%5B55.242%2C%20-21.042%5D%2C%20%5B55.241%2C%20-21.041%5D%2C%20%5B55.238%2C%20-21.045%5D%2C%20%5B55.242%2C%20-21.038%5D%2C%20%5B55.243%2C%20-21.041%5D%5D%5D%2C%20%5B%5B%5B55.256%2C%20-21.038%5D%2C%20%5B55.256%2C%20-21.039%5D%2C%20%5B55.249%2C%20-21.035%5D%2C%20%5B55.25%2C%20-21.035%5D%2C%20%5B55.256%2C%20-21.038%5D%5D%5D%2C%20%5B%5B%5B55.258%2C%20-21.037%5D%2C%20%5B55.252%2C%20-21.033%5D%2C%20%5B55.252%2C%20-21.033%5D%2C%20%5B55.254%2C%20-21.031%5D%2C%20%5B55.258%2C%20-21.037%5D%5D%5D%2C%20%5B%5B%5B55.245%2C%20-21.031%5D%2C%20%5B55.249%2C%20-21.035%5D%2C%20%5B55.249%2C%20-21.035%5D%2C%20%5B55.241%2C%20-21.027%5D%2C%20%5B55.245%2C%20-21.031%5D%5D%5D%2C%20%5B%5B%5B55.235%2C%20-21.02%5D%2C%20%5B55.241%2C%20-21.027%5D%2C%20%5B55.248%2C%20-21.035%5D%2C%20%5B55.249%2C%20-21.035%5D%2C%20%5B55.248%2C%20-21.036%5D%2C%20%5B55.236%2C%20-21.024%5D%2C%20%5B55.231%2C%20-21.024%5D%2C%20%5B55.235%2C%20-21.02%5D%5D%2C%20%5B%5B55.244%2C%20-21.032%5D%2C%20%5B55.245%2C%20-21.032%5D%2C%20%5B55.245%2C%20-21.032%5D%2C%20%5B55.245%2C%20-21.032%5D%2C%20%5B55.244%2C%20-21.032%5D%5D%2C%20%5B%5B55.244%2C%20-21.032%5D%2C%20%5B55.244%2C%20-21.032%5D%2C%20%5B55.244%2C%20-21.032%5D%2C%20%5B55.244%2C%20-21.032%5D%2C%20%5B55.244%2C%20-21.032%5D%5D%2C%20%5B%5B55.246%2C%20-21.034%5D%2C%20%5B55.246%2C%20-21.034%5D%2C%20%5B55.246%2C%20-21.034%5D%2C%20%5B55.246%2C%20-21.034%5D%5D%2C%20%5B%5B55.246%2C%20-21.034%5D%2C%20%5B55.246%2C%20-21.034%5D%2C%20%5B55.246%2C%20-21.034%5D%2C%20%5B55.246%2C%20-21.034%5D%5D%5D%2C%20%5B%5B%5B55.256%2C%20-21.023%5D%2C%20%5B55.253%2C%20-21.019%5D%2C%20%5B55.254%2C%20-21.018%5D%2C%20%5B55.256%2C%20-21.02%5D%2C%20%5B55.256%2C%20-21.023%5D%5D%5D%5D%2C%20%22type%22%3A%20%22MultiPolygon%22%7D%2C%20%22id%22%3A%20%2216%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/2003%22%2C%20%22is_marine%22%3A%20%22False%22%2C%20%22iucn_cat%22%3A%20%22IV%22%2C%20%22orig_name%22%3A%20%22Cap%20De%20La%20Houssaye%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Cap%20De%20La%20Houssaye%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22Land%20Acquired%20By%20Conservatoire%20Du%20Littoral%20%28National%20Seaside%20And%20Lakeside%20Conservancy%29%22%2C%20%22wdpa_id%22%3A%20330596%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B55.516%2C%20-21.206%5D%2C%20%5B55.529%2C%20-21.187%5D%2C%20%5B55.546%2C%20-21.184%5D%2C%20%5B55.536%2C%20-21.182%5D%2C%20%5B55.541%2C%20-21.17%5D%2C%20%5B55.535%2C%20-21.169%5D%2C%20%5B55.537%2C%20-21.161%5D%2C%20%5B55.532%2C%20-21.168%5D%2C%20%5B55.535%2C%20-21.18%5D%2C%20%5B55.531%2C%20-21.184%5D%2C%20%5B55.532%2C%20-21.175%5D%2C%20%5B55.521%2C%20-21.143%5D%2C%20%5B55.527%2C%20-21.136%5D%2C%20%5B55.532%2C%20-21.136%5D%2C%20%5B55.539%2C%20-21.14%5D%2C%20%5B55.54%2C%20-21.151%5D%2C%20%5B55.545%2C%20-21.154%5D%2C%20%5B55.544%2C%20-21.178%5D%2C%20%5B55.555%2C%20-21.18%5D%2C%20%5B55.548%2C%20-21.188%5D%2C%20%5B55.531%2C%20-21.193%5D%2C%20%5B55.528%2C%20-21.202%5D%2C%20%5B55.515%2C%20-21.213%5D%2C%20%5B55.512%2C%20-21.211%5D%2C%20%5B55.516%2C%20-21.206%5D%5D%5D%2C%20%22type%22%3A%20%22Polygon%22%7D%2C%20%22id%22%3A%20%2217%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/2006%22%2C%20%22is_marine%22%3A%20%22False%22%2C%20%22iucn_cat%22%3A%20%22IV%22%2C%20%22orig_name%22%3A%20%22Bras%20De%20La%20Plaine%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Bras%20De%20La%20Plaine%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22Biotope%20Protection%20Order%22%2C%20%22wdpa_id%22%3A%20345940%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B55.343%2C%20-21.281%5D%2C%20%5B55.34%2C%20-21.288%5D%2C%20%5B55.324%2C%20-21.273%5D%2C%20%5B55.272%2C%20-21.205%5D%2C%20%5B55.28%2C%20-21.186%5D%2C%20%5B55.279%2C%20-21.166%5D%2C%20%5B55.247%2C%20-21.115%5D%2C%20%5B55.213%2C%20-21.093%5D%2C%20%5B55.207%2C%20-21.04%5D%2C%20%5B55.215%2C%20-21.018%5D%2C%20%5B55.239%2C%20-21.01%5D%2C%20%5B55.24%2C%20-21.019%5D%2C%20%5B55.234%2C%20-21.019%5D%2C%20%5B55.217%2C%20-21.036%5D%2C%20%5B55.224%2C%20-21.054%5D%2C%20%5B55.221%2C%20-21.078%5D%2C%20%5B55.254%2C%20-21.11%5D%2C%20%5B55.253%2C%20-21.114%5D%2C%20%5B55.271%2C%20-21.132%5D%2C%20%5B55.272%2C%20-21.15%5D%2C%20%5B55.287%2C%20-21.161%5D%2C%20%5B55.287%2C%20-21.183%5D%2C%20%5B55.28%2C%20-21.202%5D%2C%20%5B55.293%2C%20-21.23%5D%2C%20%5B55.33%2C%20-21.258%5D%2C%20%5B55.334%2C%20-21.276%5D%2C%20%5B55.343%2C%20-21.281%5D%5D%5D%2C%20%22type%22%3A%20%22Polygon%22%7D%2C%20%22id%22%3A%20%2218%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/2007%22%2C%20%22is_marine%22%3A%20%22True%22%2C%20%22iucn_cat%22%3A%20%22IV%22%2C%20%22orig_name%22%3A%20%22Marine%20De%20La%20R%5Cu00e9union%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Marine%20De%20La%20R%5Cu00e9union%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22National%20Nature%20Reserve%22%2C%20%22wdpa_id%22%3A%20388663%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B%5B55.289%2C%20-21.129%5D%2C%20%5B55.286%2C%20-21.119%5D%2C%20%5B55.295%2C%20-21.114%5D%2C%20%5B55.281%2C%20-21.115%5D%2C%20%5B55.278%2C%20-21.103%5D%2C%20%5B55.27%2C%20-21.095%5D%2C%20%5B55.286%2C%20-21.091%5D%2C%20%5B55.281%2C%20-21.079%5D%2C%20%5B55.286%2C%20-21.073%5D%2C%20%5B55.282%2C%20-21.07%5D%2C%20%5B55.289%2C%20-21.072%5D%2C%20%5B55.287%2C%20-21.063%5D%2C%20%5B55.296%2C%20-21.05%5D%2C%20%5B55.285%2C%20-21.043%5D%2C%20%5B55.283%2C%20-21.032%5D%2C%20%5B55.29%2C%20-21.025%5D%2C%20%5B55.294%2C%20-21.027%5D%2C%20%5B55.294%2C%20-21.02%5D%2C%20%5B55.322%2C%20-20.999%5D%2C%20%5B55.323%2C%20-20.999%5D%2C%20%5B55.325%2C%20-21.003%5D%2C%20%5B55.328%2C%20-21.006%5D%2C%20%5B55.329%2C%20-21.006%5D%2C%20%5B55.344%2C%20-20.992%5D%2C%20%5B55.331%2C%20-20.976%5D%2C%20%5B55.319%2C%20-20.974%5D%2C%20%5B55.312%2C%20-20.964%5D%2C%20%5B55.301%2C%20-20.959%5D%2C%20%5B55.282%2C%20-20.958%5D%2C%20%5B55.279%2C%20-20.962%5D%2C%20%5B55.278%2C%20-20.955%5D%2C%20%5B55.279%2C%20-20.952%5D%2C%20%5B55.283%2C%20-20.956%5D%2C%20%5B55.306%2C%20-20.957%5D%2C%20%5B55.326%2C%20-20.97%5D%2C%20%5B55.348%2C%20-20.969%5D%2C%20%5B55.353%2C%20-20.955%5D%2C%20%5B55.341%2C%20-20.944%5D%2C%20%5B55.35%2C%20-20.949%5D%2C%20%5B55.36%2C%20-20.924%5D%2C%20%5B55.347%2C%20-20.921%5D%2C%20%5B55.368%2C%20-20.921%5D%2C%20%5B55.373%2C%20-20.912%5D%2C%20%5B55.389%2C%20-20.935%5D%2C%20%5B55.37%2C%20-20.943%5D%2C%20%5B55.369%2C%20-20.953%5D%2C%20%5B55.353%2C%20-20.95%5D%2C%20%5B55.372%2C%20-20.962%5D%2C%20%5B55.357%2C%20-20.962%5D%2C%20%5B55.372%2C%20-20.97%5D%2C%20%5B55.369%2C%20-20.975%5D%2C%20%5B55.381%2C%20-20.979%5D%2C%20%5B55.398%2C%20-20.974%5D%2C%20%5B55.403%2C%20-20.979%5D%2C%20%5B55.39%2C%20-20.991%5D%2C%20%5B55.382%2C%20-20.99%5D%2C%20%5B55.364%2C%20-20.975%5D%2C%20%5B55.36%2C%20-20.982%5D%2C%20%5B55.353%2C%20-20.976%5D%2C%20%5B55.349%2C%20-20.978%5D%2C%20%5B55.361%2C%20-20.989%5D%2C%20%5B55.352%2C%20-20.997%5D%2C%20%5B55.371%2C%20-21.018%5D%2C%20%5B55.357%2C%20-21.033%5D%2C%20%5B55.37%2C%20-21.042%5D%2C%20%5B55.374%2C%20-21.035%5D%2C%20%5B55.379%2C%20-21.039%5D%2C%20%5B55.365%2C%20-21.073%5D%2C%20%5B55.366%2C%20-21.115%5D%2C%20%5B55.325%2C%20-21.117%5D%2C%20%5B55.289%2C%20-21.129%5D%5D%5D%2C%20%5B%5B%5B55.621%2C%20-21.176%5D%2C%20%5B55.617%2C%20-21.17%5D%2C%20%5B55.621%2C%20-21.164%5D%2C%20%5B55.615%2C%20-21.171%5D%2C%20%5B55.603%2C%20-21.168%5D%2C%20%5B55.603%2C%20-21.154%5D%2C%20%5B55.595%2C%20-21.155%5D%2C%20%5B55.588%2C%20-21.143%5D%2C%20%5B55.583%2C%20-21.145%5D%2C%20%5B55.585%2C%20-21.138%5D%2C%20%5B55.58%2C%20-21.131%5D%2C%20%5B55.584%2C%20-21.13%5D%2C%20%5B55.6%2C%20-21.146%5D%2C%20%5B55.599%2C%20-21.134%5D%2C%20%5B55.605%2C%20-21.129%5D%2C%20%5B55.623%2C%20-21.127%5D%2C%20%5B55.626%2C%20-21.121%5D%2C%20%5B55.634%2C%20-21.12%5D%2C%20%5B55.644%2C%20-21.111%5D%2C%20%5B55.653%2C%20-21.114%5D%2C%20%5B55.645%2C%20-21.123%5D%2C%20%5B55.649%2C%20-21.126%5D%2C%20%5B55.66%2C%20-21.116%5D%2C%20%5B55.661%2C%20-21.124%5D%2C%20%5B55.652%2C%20-21.128%5D%2C%20%5B55.657%2C%20-21.133%5D%2C%20%5B55.642%2C%20-21.139%5D%2C%20%5B55.647%2C%20-21.149%5D%2C%20%5B55.637%2C%20-21.167%5D%2C%20%5B55.621%2C%20-21.176%5D%5D%5D%2C%20%5B%5B%5B55.382%2C%20-21.182%5D%2C%20%5B55.385%2C%20-21.177%5D%2C%20%5B55.387%2C%20-21.177%5D%2C%20%5B55.386%2C%20-21.181%5D%2C%20%5B55.382%2C%20-21.182%5D%5D%5D%2C%20%5B%5B%5B55.806%2C%20-21.217%5D%2C%20%5B55.799%2C%20-21.215%5D%2C%20%5B55.803%2C%20-21.214%5D%2C%20%5B55.804%2C%20-21.199%5D%2C%20%5B55.798%2C%20-21.198%5D%2C%20%5B55.805%2C%20-21.193%5D%2C%20%5B55.808%2C%20-21.184%5D%2C%20%5B55.8%2C%20-21.165%5D%2C%20%5B55.793%2C%20-21.166%5D%2C%20%5B55.785%2C%20-21.157%5D%2C%20%5B55.78%2C%20-21.161%5D%2C%20%5B55.78%2C%20-21.155%5D%2C%20%5B55.757%2C%20-21.138%5D%2C%20%5B55.752%2C%20-21.143%5D%2C%20%5B55.753%2C%20-21.136%5D%2C%20%5B55.745%2C%20-21.134%5D%2C%20%5B55.746%2C%20-21.126%5D%2C%20%5B55.74%2C%20-21.134%5D%2C%20%5B55.736%2C%20-21.126%5D%2C%20%5B55.723%2C%20-21.14%5D%2C%20%5B55.701%2C%20-21.129%5D%2C%20%5B55.703%2C%20-21.122%5D%2C%20%5B55.699%2C%20-21.117%5D%2C%20%5B55.696%2C%20-21.128%5D%2C%20%5B55.694%2C%20-21.121%5D%2C%20%5B55.686%2C%20-21.126%5D%2C%20%5B55.684%2C%20-21.118%5D%2C%20%5B55.69%2C%20-21.111%5D%2C%20%5B55.687%2C%20-21.107%5D%2C%20%5B55.678%2C%20-21.113%5D%2C%20%5B55.684%2C%20-21.106%5D%2C%20%5B55.68%2C%20-21.102%5D%2C%20%5B55.668%2C%20-21.111%5D%2C%20%5B55.662%2C%20-21.113%5D%2C%20%5B55.658%2C%20-21.108%5D%2C%20%5B55.666%2C%20-21.103%5D%2C%20%5B55.654%2C%20-21.098%5D%2C%20%5B55.652%2C%20-21.092%5D%2C%20%5B55.661%2C%20-21.095%5D%2C%20%5B55.675%2C%20-21.091%5D%2C%20%5B55.68%2C%20-21.083%5D%2C%20%5B55.672%2C%20-21.075%5D%2C%20%5B55.677%2C%20-21.072%5D%2C%20%5B55.666%2C%20-21.068%5D%2C%20%5B55.673%2C%20-21.058%5D%2C%20%5B55.68%2C%20-21.056%5D%2C%20%5B55.671%2C%20-21.055%5D%2C%20%5B55.66%2C%20-21.061%5D%2C%20%5B55.66%2C%20-21.052%5D%2C%20%5B55.646%2C%20-21.065%5D%2C%20%5B55.64%2C%20-21.065%5D%2C%20%5B55.64%2C%20-21.065%5D%2C%20%5B55.638%2C%20-21.067%5D%2C%20%5B55.637%2C%20-21.067%5D%2C%20%5B55.637%2C%20-21.069%5D%2C%20%5B55.636%2C%20-21.07%5D%2C%20%5B55.636%2C%20-21.07%5D%2C%20%5B55.635%2C%20-21.071%5D%2C%20%5B55.634%2C%20-21.071%5D%2C%20%5B55.637%2C%20-21.072%5D%2C%20%5B55.63%2C%20-21.08%5D%2C%20%5B55.625%2C%20-21.08%5D%2C%20%5B55.664%2C%20-21.034%5D%2C%20%5B55.64%2C%20-21.041%5D%2C%20%5B55.638%2C%20-21.038%5D%2C%20%5B55.646%2C%20-21.035%5D%2C%20%5B55.646%2C%20-21.031%5D%2C%20%5B55.634%2C%20-21.027%5D%2C%20%5B55.641%2C%20-21.018%5D%2C%20%5B55.64%2C%20-21.005%5D%2C%20%5B55.627%2C%20-21.007%5D%2C%20%5B55.611%2C%20-21.031%5D%2C%20%5B55.623%2C%20-20.994%5D%2C%20%5B55.606%2C%20-21.006%5D%2C%20%5B55.58%2C%20-21.0%5D%2C%20%5B55.563%2C%20-21.011%5D%2C%20%5B55.535%2C%20-21.04%5D%2C%20%5B55.537%2C%20-21.048%5D%2C%20%5B55.528%2C%20-21.061%5D%2C%20%5B55.528%2C%20-21.072%5D%2C%20%5B55.514%2C%20-21.089%5D%2C%20%5B55.506%2C%20-21.073%5D%2C%20%5B55.489%2C%20-21.064%5D%2C%20%5B55.487%2C%20-21.056%5D%2C%20%5B55.482%2C%20-21.054%5D%2C%20%5B55.476%2C%20-21.065%5D%2C%20%5B55.466%2C%20-21.061%5D%2C%20%5B55.469%2C%20-21.053%5D%2C%20%5B55.46%2C%20-21.053%5D%2C%20%5B55.459%2C%20-21.04%5D%2C%20%5B55.467%2C%20-21.023%5D%2C%20%5B55.472%2C%20-21.021%5D%2C%20%5B55.471%2C%20-21.014%5D%2C%20%5B55.479%2C%20-21.015%5D%2C%20%5B55.478%2C%20-21.01%5D%2C%20%5B55.487%2C%20-21.008%5D%2C%20%5B55.499%2C%20-21.011%5D%2C%20%5B55.505%2C%20-21.005%5D%2C%20%5B55.518%2C%20-21.019%5D%2C%20%5B55.538%2C%20-21.008%5D%2C%20%5B55.54%2C%20-21.012%5D%2C%20%5B55.554%2C%20-21.013%5D%2C%20%5B55.578%2C%20-20.997%5D%2C%20%5B55.586%2C%20-21.0%5D%2C%20%5B55.601%2C%20-20.993%5D%2C%20%5B55.599%2C%20-20.987%5D%2C%20%5B55.578%2C%20-20.991%5D%2C%20%5B55.577%2C%20-20.983%5D%2C%20%5B55.564%2C%20-20.98%5D%2C%20%5B55.569%2C%20-20.974%5D%2C%20%5B55.55%2C%20-20.972%5D%2C%20%5B55.555%2C%20-20.955%5D%2C%20%5B55.546%2C%20-20.955%5D%2C%20%5B55.525%2C%20-20.98%5D%2C%20%5B55.516%2C%20-20.974%5D%2C%20%5B55.512%2C%20-20.98%5D%2C%20%5B55.507%2C%20-20.98%5D%2C%20%5B55.507%2C%20-20.957%5D%2C%20%5B55.498%2C%20-20.956%5D%2C%20%5B55.506%2C%20-20.931%5D%2C%20%5B55.496%2C%20-20.954%5D%2C%20%5B55.494%2C%20-20.955%5D%2C%20%5B55.496%2C%20-20.961%5D%2C%20%5B55.491%2C%20-20.963%5D%2C%20%5B55.492%2C%20-20.969%5D%2C%20%5B55.491%2C%20-20.973%5D%2C%20%5B55.489%2C%20-20.975%5D%2C%20%5B55.49%2C%20-20.962%5D%2C%20%5B55.495%2C%20-20.959%5D%2C%20%5B55.493%2C%20-20.956%5D%2C%20%5B55.501%2C%20-20.937%5D%2C%20%5B55.483%2C%20-20.966%5D%2C%20%5B55.47%2C%20-20.964%5D%2C%20%5B55.48%2C%20-20.95%5D%2C%20%5B55.479%2C%20-20.933%5D%2C%20%5B55.47%2C%20-20.951%5D%2C%20%5B55.464%2C%20-20.943%5D%2C%20%5B55.464%2C%20-20.932%5D%2C%20%5B55.455%2C%20-20.935%5D%2C%20%5B55.453%2C%20-20.932%5D%2C%20%5B55.444%2C%20-20.949%5D%2C%20%5B55.441%2C%20-20.939%5D%2C%20%5B55.436%2C%20-20.954%5D%2C%20%5B55.423%2C%20-20.943%5D%2C%20%5B55.427%2C%20-20.937%5D%2C%20%5B55.425%2C%20-20.918%5D%2C%20%5B55.436%2C%20-20.907%5D%2C%20%5B55.432%2C%20-20.902%5D%2C%20%5B55.415%2C%20-20.918%5D%2C%20%5B55.404%2C%20-20.941%5D%2C%20%5B55.395%2C%20-20.933%5D%2C%20%5B55.386%2C%20-20.916%5D%2C%20%5B55.389%2C%20-20.906%5D%2C%20%5B55.398%2C%20-20.903%5D%2C%20%5B55.391%2C%20-20.894%5D%2C%20%5B55.377%2C%20-20.901%5D%2C%20%5B55.378%2C%20-20.904%5D%2C%20%5B55.379%2C%20-20.909%5D%2C%20%5B55.379%2C%20-20.911%5D%2C%20%5B55.376%2C%20-20.902%5D%2C%20%5B55.359%2C%20-20.918%5D%2C%20%5B55.354%2C%20-20.912%5D%2C%20%5B55.395%2C%20-20.883%5D%2C%20%5B55.406%2C%20-20.88%5D%2C%20%5B55.409%2C%20-20.899%5D%2C%20%5B55.405%2C%20-20.914%5D%2C%20%5B55.407%2C%20-20.915%5D%2C%20%5B55.421%2C%20-20.903%5D%2C%20%5B55.422%2C%20-20.895%5D%2C%20%5B55.433%2C%20-20.9%5D%2C%20%5B55.435%2C%20-20.889%5D%2C%20%5B55.445%2C%20-20.884%5D%2C%20%5B55.444%2C%20-20.875%5D%2C%20%5B55.446%2C%20-20.884%5D%2C%20%5B55.441%2C%20-20.905%5D%2C%20%5B55.446%2C%20-20.909%5D%2C%20%5B55.454%2C%20-20.899%5D%2C%20%5B55.456%2C%20-20.914%5D%2C%20%5B55.467%2C%20-20.92%5D%2C%20%5B55.469%2C%20-20.905%5D%2C%20%5B55.473%2C%20-20.9%5D%2C%20%5B55.471%2C%20-20.92%5D%2C%20%5B55.48%2C%20-20.928%5D%2C%20%5B55.489%2C%20-20.919%5D%2C%20%5B55.486%2C%20-20.932%5D%2C%20%5B55.493%2C%20-20.937%5D%2C%20%5B55.511%2C%20-20.923%5D%2C%20%5B55.503%2C%20-20.897%5D%2C%20%5B55.504%2C%20-20.882%5D%2C%20%5B55.507%2C%20-20.911%5D%2C%20%5B55.522%2C%20-20.93%5D%2C%20%5B55.522%2C%20-20.94%5D%2C%20%5B55.566%2C%20-20.941%5D%2C%20%5B55.581%2C%20-20.949%5D%2C%20%5B55.585%2C%20-20.936%5D%2C%20%5B55.596%2C%20-20.924%5D%2C%20%5B55.613%2C%20-20.915%5D%2C%20%5B55.607%2C%20-20.91%5D%2C%20%5B55.611%2C%20-20.907%5D%2C%20%5B55.617%2C%20-20.909%5D%2C%20%5B55.616%2C%20-20.916%5D%2C%20%5B55.6%2C%20-20.923%5D%2C%20%5B55.595%2C%20-20.932%5D%2C%20%5B55.604%2C%20-20.949%5D%2C%20%5B55.61%2C%20-20.95%5D%2C%20%5B55.626%2C%20-20.944%5D%2C%20%5B55.634%2C%20-20.935%5D%2C%20%5B55.629%2C%20-20.926%5D%2C%20%5B55.631%2C%20-20.911%5D%2C%20%5B55.631%2C%20-20.926%5D%2C%20%5B55.634%2C%20-20.925%5D%2C%20%5B55.641%2C%20-20.93%5D%2C%20%5B55.646%2C%20-20.936%5D%2C%20%5B55.646%2C%20-20.939%5D%2C%20%5B55.638%2C%20-20.956%5D%2C%20%5B55.628%2C%20-20.957%5D%2C%20%5B55.623%2C%20-20.953%5D%2C%20%5B55.612%2C%20-20.962%5D%2C%20%5B55.624%2C%20-20.977%5D%2C%20%5B55.621%2C%20-20.98%5D%2C%20%5B55.625%2C%20-20.978%5D%2C%20%5B55.626%2C%20-20.984%5D%2C%20%5B55.644%2C%20-20.976%5D%2C%20%5B55.672%2C%20-20.982%5D%2C%20%5B55.7%2C%20-20.975%5D%2C%20%5B55.7%2C%20-20.987%5D%2C%20%5B55.693%2C%20-20.983%5D%2C%20%5B55.672%2C%20-20.989%5D%2C%20%5B55.655%2C%20-20.979%5D%2C%20%5B55.638%2C%20-20.982%5D%2C%20%5B55.648%2C%20-20.99%5D%2C%20%5B55.649%2C%20-20.998%5D%2C%20%5B55.654%2C%20-20.997%5D%2C%20%5B55.65%2C%20-21.003%5D%2C%20%5B55.659%2C%20-21.003%5D%2C%20%5B55.658%2C%20-21.01%5D%2C%20%5B55.662%2C%20-21.004%5D%2C%20%5B55.669%2C%20-21.007%5D%2C%20%5B55.665%2C%20-21.013%5D%2C%20%5B55.671%2C%20-21.013%5D%2C%20%5B55.67%2C%20-21.017%5D%2C%20%5B55.674%2C%20-21.017%5D%2C%20%5B55.679%2C%20-21.009%5D%2C%20%5B55.692%2C%20-21.004%5D%2C%20%5B55.701%2C%20-21.005%5D%2C%20%5B55.67%2C%20-21.02%5D%2C%20%5B55.678%2C%20-21.026%5D%2C%20%5B55.676%2C%20-21.028%5D%2C%20%5B55.675%2C%20-21.03%5D%2C%20%5B55.679%2C%20-21.027%5D%2C%20%5B55.678%2C%20-21.031%5D%2C%20%5B55.683%2C%20-21.034%5D%2C%20%5B55.68%2C%20-21.039%5D%2C%20%5B55.705%2C%20-21.046%5D%2C%20%5B55.712%2C%20-21.043%5D%2C%20%5B55.713%2C%20-21.038%5D%2C%20%5B55.716%2C%20-21.031%5D%2C%20%5B55.718%2C%20-21.032%5D%2C%20%5B55.713%2C%20-21.043%5D%2C%20%5B55.707%2C%20-21.05%5D%2C%20%5B55.682%2C%20-21.043%5D%2C%20%5B55.686%2C%20-21.051%5D%2C%20%5B55.684%2C%20-21.059%5D%2C%20%5B55.693%2C%20-21.064%5D%2C%20%5B55.687%2C%20-21.079%5D%2C%20%5B55.737%2C%20-21.118%5D%2C%20%5B55.751%2C%20-21.118%5D%2C%20%5B55.767%2C%20-21.104%5D%2C%20%5B55.783%2C%20-21.125%5D%2C%20%5B55.796%2C%20-21.125%5D%2C%20%5B55.81%2C%20-21.138%5D%2C%20%5B55.827%2C%20-21.144%5D%2C%20%5B55.835%2C%20-21.16%5D%2C%20%5B55.837%2C%20-21.183%5D%2C%20%5B55.826%2C%20-21.186%5D%2C%20%5B55.824%2C%20-21.206%5D%2C%20%5B55.806%2C%20-21.217%5D%5D%2C%20%5B%5B55.391%2C%20-20.894%5D%2C%20%5B55.391%2C%20-20.894%5D%2C%20%5B55.391%2C%20-20.894%5D%2C%20%5B55.391%2C%20-20.894%5D%5D%2C%20%5B%5B55.611%2C%20-20.96%5D%2C%20%5B55.623%2C%20-20.953%5D%2C%20%5B55.63%2C%20-20.955%5D%2C%20%5B55.64%2C%20-20.943%5D%2C%20%5B55.645%2C%20-20.943%5D%2C%20%5B55.646%2C%20-20.936%5D%2C%20%5B55.642%2C%20-20.934%5D%2C%20%5B55.642%2C%20-20.93%5D%2C%20%5B55.64%2C%20-20.93%5D%2C%20%5B55.638%2C%20-20.929%5D%2C%20%5B55.636%2C%20-20.929%5D%2C%20%5B55.634%2C%20-20.925%5D%2C%20%5B55.63%2C%20-20.926%5D%2C%20%5B55.636%2C%20-20.935%5D%2C%20%5B55.628%2C%20-20.945%5D%2C%20%5B55.601%2C%20-20.957%5D%2C%20%5B55.611%2C%20-20.96%5D%5D%5D%2C%20%5B%5B%5B55.414%2C%20-21.268%5D%2C%20%5B55.412%2C%20-21.266%5D%2C%20%5B55.417%2C%20-21.254%5D%2C%20%5B55.414%2C%20-21.248%5D%2C%20%5B55.409%2C%20-21.25%5D%2C%20%5B55.411%2C%20-21.263%5D%2C%20%5B55.409%2C%20-21.267%5D%2C%20%5B55.408%2C%20-21.248%5D%2C%20%5B55.399%2C%20-21.244%5D%2C%20%5B55.38%2C%20-21.249%5D%2C%20%5B55.379%2C%20-21.244%5D%2C%20%5B55.372%2C%20-21.242%5D%2C%20%5B55.364%2C%20-21.248%5D%2C%20%5B55.352%2C%20-21.229%5D%2C%20%5B55.357%2C%20-21.22%5D%2C%20%5B55.366%2C%20-21.215%5D%2C%20%5B55.363%2C%20-21.224%5D%2C%20%5B55.371%2C%20-21.223%5D%2C%20%5B55.374%2C%20-21.23%5D%2C%20%5B55.385%2C%20-21.22%5D%2C%20%5B55.383%2C%20-21.228%5D%2C%20%5B55.396%2C%20-21.236%5D%2C%20%5B55.401%2C%20-21.23%5D%2C%20%5B55.396%2C%20-21.205%5D%2C%20%5B55.404%2C%20-21.201%5D%2C%20%5B55.406%2C%20-21.192%5D%2C%20%5B55.41%2C%20-21.195%5D%2C%20%5B55.415%2C%20-21.191%5D%2C%20%5B55.409%2C%20-21.182%5D%2C%20%5B55.419%2C%20-21.186%5D%2C%20%5B55.425%2C%20-21.184%5D%2C%20%5B55.429%2C%20-21.193%5D%2C%20%5B55.43%2C%20-21.182%5D%2C%20%5B55.432%2C%20-21.19%5D%2C%20%5B55.438%2C%20-21.191%5D%2C%20%5B55.438%2C%20-21.205%5D%2C%20%5B55.416%2C%20-21.216%5D%2C%20%5B55.413%2C%20-21.215%5D%2C%20%5B55.42%2C%20-21.212%5D%2C%20%5B55.407%2C%20-21.215%5D%2C%20%5B55.414%2C%20-21.231%5D%2C%20%5B55.415%2C%20-21.226%5D%2C%20%5B55.423%2C%20-21.226%5D%2C%20%5B55.43%2C%20-21.232%5D%2C%20%5B55.417%2C%20-21.24%5D%2C%20%5B55.419%2C%20-21.26%5D%2C%20%5B55.414%2C%20-21.268%5D%5D%5D%2C%20%5B%5B%5B55.461%2C%20-21.283%5D%2C%20%5B55.467%2C%20-21.271%5D%2C%20%5B55.471%2C%20-21.27%5D%2C%20%5B55.47%2C%20-21.273%5D%2C%20%5B55.461%2C%20-21.283%5D%5D%5D%2C%20%5B%5B%5B55.409%2C%20-21.307%5D%2C%20%5B55.399%2C%20-21.298%5D%2C%20%5B55.453%2C%20-21.282%5D%2C%20%5B55.452%2C%20-21.271%5D%2C%20%5B55.458%2C%20-21.257%5D%2C%20%5B55.433%2C%20-21.244%5D%2C%20%5B55.434%2C%20-21.236%5D%2C%20%5B55.429%2C%20-21.239%5D%2C%20%5B55.439%2C%20-21.224%5D%2C%20%5B55.443%2C%20-21.225%5D%2C%20%5B55.444%2C%20-21.214%5D%2C%20%5B55.452%2C%20-21.23%5D%2C%20%5B55.45%2C%20-21.242%5D%2C%20%5B55.452%2C%20-21.243%5D%2C%20%5B55.456%2C%20-21.234%5D%2C%20%5B55.45%2C%20-21.209%5D%2C%20%5B55.452%2C%20-21.212%5D%2C%20%5B55.453%2C%20-21.212%5D%2C%20%5B55.454%2C%20-21.211%5D%2C%20%5B55.445%2C%20-21.194%5D%2C%20%5B55.449%2C%20-21.187%5D%2C%20%5B55.437%2C%20-21.18%5D%2C%20%5B55.445%2C%20-21.174%5D%2C%20%5B55.441%2C%20-21.166%5D%2C%20%5B55.424%2C%20-21.165%5D%2C%20%5B55.419%2C%20-21.152%5D%2C%20%5B55.427%2C%20-21.14%5D%2C%20%5B55.442%2C%20-21.14%5D%2C%20%5B55.447%2C%20-21.118%5D%2C%20%5B55.457%2C%20-21.114%5D%2C%20%5B55.456%2C%20-21.124%5D%2C%20%5B55.47%2C%20-21.13%5D%2C%20%5B55.468%2C%20-21.124%5D%2C%20%5B55.473%2C%20-21.121%5D%2C%20%5B55.496%2C%20-21.125%5D%2C%20%5B55.5%2C%20-21.139%5D%2C%20%5B55.489%2C%20-21.145%5D%2C%20%5B55.489%2C%20-21.156%5D%2C%20%5B55.485%2C%20-21.159%5D%2C%20%5B55.49%2C%20-21.161%5D%2C%20%5B55.486%2C%20-21.168%5D%2C%20%5B55.49%2C%20-21.177%5D%2C%20%5B55.48%2C%20-21.183%5D%2C%20%5B55.464%2C%20-21.181%5D%2C%20%5B55.468%2C%20-21.189%5D%2C%20%5B55.455%2C%20-21.192%5D%2C%20%5B55.448%2C%20-21.199%5D%2C%20%5B55.457%2C%20-21.211%5D%2C%20%5B55.456%2C%20-21.243%5D%2C%20%5B55.464%2C%20-21.254%5D%2C%20%5B55.455%2C%20-21.286%5D%2C%20%5B55.461%2C%20-21.283%5D%2C%20%5B55.44%2C%20-21.295%5D%2C%20%5B55.423%2C%20-21.297%5D%2C%20%5B55.409%2C%20-21.307%5D%5D%5D%2C%20%5B%5B%5B55.536%2C%20-21.334%5D%2C%20%5B55.531%2C%20-21.322%5D%2C%20%5B55.521%2C%20-21.332%5D%2C%20%5B55.53%2C%20-21.32%5D%2C%20%5B55.519%2C%20-21.301%5D%2C%20%5B55.511%2C%20-21.302%5D%2C%20%5B55.509%2C%20-21.301%5D%2C%20%5B55.509%2C%20-21.299%5D%2C%20%5B55.519%2C%20-21.3%5D%2C%20%5B55.535%2C%20-21.317%5D%2C%20%5B55.574%2C%20-21.296%5D%2C%20%5B55.585%2C%20-21.282%5D%2C%20%5B55.596%2C%20-21.283%5D%2C%20%5B55.589%2C%20-21.289%5D%2C%20%5B55.603%2C%20-21.286%5D%2C%20%5B55.594%2C%20-21.29%5D%2C%20%5B55.58%2C%20-21.31%5D%2C%20%5B55.549%2C%20-21.321%5D%2C%20%5B55.544%2C%20-21.327%5D%2C%20%5B55.545%2C%20-21.331%5D%2C%20%5B55.545%2C%20-21.332%5D%2C%20%5B55.545%2C%20-21.332%5D%2C%20%5B55.545%2C%20-21.332%5D%2C%20%5B55.536%2C%20-21.334%5D%5D%5D%5D%2C%20%22type%22%3A%20%22MultiPolygon%22%7D%2C%20%22id%22%3A%20%2219%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/2007%22%2C%20%22is_marine%22%3A%20%22False%22%2C%20%22iucn_cat%22%3A%20%22II%22%2C%20%22orig_name%22%3A%20%22R%5Cu00e9union%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22R%5Cu00e9union%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22National%20Park%20-%20Core%20Area%22%2C%20%22wdpa_id%22%3A%20388669%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B55.391%2C%20-20.894%5D%2C%20%5B55.391%2C%20-20.894%5D%2C%20%5B55.392%2C%20-20.896%5D%2C%20%5B55.392%2C%20-20.896%5D%2C%20%5B55.392%2C%20-20.897%5D%2C%20%5B55.394%2C%20-20.901%5D%2C%20%5B55.398%2C%20-20.903%5D%2C%20%5B55.389%2C%20-20.906%5D%2C%20%5B55.386%2C%20-20.916%5D%2C%20%5B55.395%2C%20-20.933%5D%2C%20%5B55.404%2C%20-20.941%5D%2C%20%5B55.415%2C%20-20.918%5D%2C%20%5B55.432%2C%20-20.902%5D%2C%20%5B55.436%2C%20-20.907%5D%2C%20%5B55.425%2C%20-20.918%5D%2C%20%5B55.427%2C%20-20.937%5D%2C%20%5B55.423%2C%20-20.943%5D%2C%20%5B55.436%2C%20-20.954%5D%2C%20%5B55.441%2C%20-20.939%5D%2C%20%5B55.444%2C%20-20.949%5D%2C%20%5B55.453%2C%20-20.932%5D%2C%20%5B55.455%2C%20-20.935%5D%2C%20%5B55.464%2C%20-20.932%5D%2C%20%5B55.464%2C%20-20.943%5D%2C%20%5B55.47%2C%20-20.951%5D%2C%20%5B55.479%2C%20-20.933%5D%2C%20%5B55.48%2C%20-20.95%5D%2C%20%5B55.47%2C%20-20.964%5D%2C%20%5B55.483%2C%20-20.966%5D%2C%20%5B55.501%2C%20-20.937%5D%2C%20%5B55.493%2C%20-20.956%5D%2C%20%5B55.495%2C%20-20.959%5D%2C%20%5B55.49%2C%20-20.962%5D%2C%20%5B55.489%2C%20-20.975%5D%2C%20%5B55.491%2C%20-20.963%5D%2C%20%5B55.496%2C%20-20.961%5D%2C%20%5B55.494%2C%20-20.955%5D%2C%20%5B55.496%2C%20-20.954%5D%2C%20%5B55.498%2C%20-20.946%5D%2C%20%5B55.502%2C%20-20.942%5D%2C%20%5B55.503%2C%20-20.936%5D%2C%20%5B55.505%2C%20-20.931%5D%2C%20%5B55.506%2C%20-20.931%5D%2C%20%5B55.498%2C%20-20.956%5D%2C%20%5B55.507%2C%20-20.957%5D%2C%20%5B55.507%2C%20-20.98%5D%2C%20%5B55.512%2C%20-20.98%5D%2C%20%5B55.516%2C%20-20.974%5D%2C%20%5B55.525%2C%20-20.98%5D%2C%20%5B55.546%2C%20-20.955%5D%2C%20%5B55.555%2C%20-20.955%5D%2C%20%5B55.55%2C%20-20.972%5D%2C%20%5B55.569%2C%20-20.974%5D%2C%20%5B55.564%2C%20-20.98%5D%2C%20%5B55.577%2C%20-20.983%5D%2C%20%5B55.578%2C%20-20.991%5D%2C%20%5B55.595%2C%20-20.987%5D%2C%20%5B55.602%2C%20-20.992%5D%2C%20%5B55.586%2C%20-21.0%5D%2C%20%5B55.578%2C%20-20.997%5D%2C%20%5B55.554%2C%20-21.013%5D%2C%20%5B55.54%2C%20-21.012%5D%2C%20%5B55.538%2C%20-21.008%5D%2C%20%5B55.518%2C%20-21.019%5D%2C%20%5B55.509%2C%20-21.005%5D%2C%20%5B55.501%2C%20-21.005%5D%2C%20%5B55.499%2C%20-21.011%5D%2C%20%5B55.478%2C%20-21.01%5D%2C%20%5B55.479%2C%20-21.015%5D%2C%20%5B55.471%2C%20-21.014%5D%2C%20%5B55.472%2C%20-21.021%5D%2C%20%5B55.467%2C%20-21.023%5D%2C%20%5B55.459%2C%20-21.04%5D%2C%20%5B55.46%2C%20-21.053%5D%2C%20%5B55.469%2C%20-21.053%5D%2C%20%5B55.466%2C%20-21.061%5D%2C%20%5B55.476%2C%20-21.065%5D%2C%20%5B55.482%2C%20-21.054%5D%2C%20%5B55.487%2C%20-21.056%5D%2C%20%5B55.489%2C%20-21.064%5D%2C%20%5B55.504%2C%20-21.071%5D%2C%20%5B55.515%2C%20-21.088%5D%2C%20%5B55.528%2C%20-21.072%5D%2C%20%5B55.528%2C%20-21.061%5D%2C%20%5B55.537%2C%20-21.048%5D%2C%20%5B55.535%2C%20-21.04%5D%2C%20%5B55.554%2C%20-21.018%5D%2C%20%5B55.58%2C%20-21.0%5D%2C%20%5B55.606%2C%20-21.006%5D%2C%20%5B55.623%2C%20-20.994%5D%2C%20%5B55.61%2C%20-21.03%5D%2C%20%5B55.624%2C%20-21.011%5D%2C%20%5B55.637%2C%20-21.003%5D%2C%20%5B55.642%2C%20-21.013%5D%2C%20%5B55.634%2C%20-21.027%5D%2C%20%5B55.646%2C%20-21.033%5D%2C%20%5B55.638%2C%20-21.038%5D%2C%20%5B55.64%2C%20-21.041%5D%2C%20%5B55.664%2C%20-21.034%5D%2C%20%5B55.625%2C%20-21.08%5D%2C%20%5B55.63%2C%20-21.08%5D%2C%20%5B55.64%2C%20-21.065%5D%2C%20%5B55.646%2C%20-21.065%5D%2C%20%5B55.66%2C%20-21.052%5D%2C%20%5B55.66%2C%20-21.061%5D%2C%20%5B55.671%2C%20-21.055%5D%2C%20%5B55.679%2C%20-21.055%5D%2C%20%5B55.681%2C%20-21.058%5D%2C%20%5B55.673%2C%20-21.058%5D%2C%20%5B55.666%2C%20-21.068%5D%2C%20%5B55.677%2C%20-21.072%5D%2C%20%5B55.672%2C%20-21.075%5D%2C%20%5B55.68%2C%20-21.083%5D%2C%20%5B55.675%2C%20-21.091%5D%2C%20%5B55.661%2C%20-21.095%5D%2C%20%5B55.652%2C%20-21.092%5D%2C%20%5B55.654%2C%20-21.098%5D%2C%20%5B55.666%2C%20-21.103%5D%2C%20%5B55.658%2C%20-21.108%5D%2C%20%5B55.662%2C%20-21.113%5D%2C%20%5B55.68%2C%20-21.102%5D%2C%20%5B55.684%2C%20-21.106%5D%2C%20%5B55.678%2C%20-21.113%5D%2C%20%5B55.687%2C%20-21.107%5D%2C%20%5B55.69%2C%20-21.111%5D%2C%20%5B55.684%2C%20-21.118%5D%2C%20%5B55.686%2C%20-21.126%5D%2C%20%5B55.694%2C%20-21.121%5D%2C%20%5B55.696%2C%20-21.128%5D%2C%20%5B55.699%2C%20-21.117%5D%2C%20%5B55.703%2C%20-21.122%5D%2C%20%5B55.701%2C%20-21.129%5D%2C%20%5B55.723%2C%20-21.14%5D%2C%20%5B55.736%2C%20-21.126%5D%2C%20%5B55.74%2C%20-21.134%5D%2C%20%5B55.746%2C%20-21.126%5D%2C%20%5B55.745%2C%20-21.134%5D%2C%20%5B55.753%2C%20-21.136%5D%2C%20%5B55.752%2C%20-21.143%5D%2C%20%5B55.757%2C%20-21.138%5D%2C%20%5B55.78%2C%20-21.155%5D%2C%20%5B55.78%2C%20-21.161%5D%2C%20%5B55.785%2C%20-21.157%5D%2C%20%5B55.793%2C%20-21.166%5D%2C%20%5B55.8%2C%20-21.165%5D%2C%20%5B55.808%2C%20-21.184%5D%2C%20%5B55.805%2C%20-21.193%5D%2C%20%5B55.798%2C%20-21.198%5D%2C%20%5B55.804%2C%20-21.199%5D%2C%20%5B55.803%2C%20-21.214%5D%2C%20%5B55.799%2C%20-21.215%5D%2C%20%5B55.814%2C%20-21.214%5D%2C%20%5B55.801%2C%20-21.26%5D%2C%20%5B55.808%2C%20-21.29%5D%2C%20%5B55.806%2C%20-21.293%5D%2C%20%5B55.785%2C%20-21.288%5D%2C%20%5B55.79%2C%20-21.306%5D%2C%20%5B55.78%2C%20-21.309%5D%2C%20%5B55.79%2C%20-21.317%5D%2C%20%5B55.792%2C%20-21.331%5D%2C%20%5B55.783%2C%20-21.339%5D%2C%20%5B55.761%2C%20-21.346%5D%2C%20%5B55.75%2C%20-21.347%5D%2C%20%5B55.749%2C%20-21.341%5D%2C%20%5B55.746%2C%20-21.343%5D%2C%20%5B55.747%2C%20-21.358%5D%2C%20%5B55.743%2C%20-21.359%5D%2C%20%5B55.735%2C%20-21.354%5D%2C%20%5B55.734%2C%20-21.341%5D%2C%20%5B55.724%2C%20-21.341%5D%2C%20%5B55.723%2C%20-21.336%5D%2C%20%5B55.711%2C%20-21.342%5D%2C%20%5B55.702%2C%20-21.34%5D%2C%20%5B55.698%2C%20-21.327%5D%2C%20%5B55.699%2C%20-21.345%5D%2C%20%5B55.695%2C%20-21.346%5D%2C%20%5B55.696%2C%20-21.334%5D%2C%20%5B55.69%2C%20-21.324%5D%2C%20%5B55.681%2C%20-21.32%5D%2C%20%5B55.68%2C%20-21.31%5D%2C%20%5B55.65%2C%20-21.31%5D%2C%20%5B55.646%2C%20-21.318%5D%2C%20%5B55.65%2C%20-21.342%5D%2C%20%5B55.648%2C%20-21.346%5D%2C%20%5B55.642%2C%20-21.311%5D%2C%20%5B55.654%2C%20-21.281%5D%2C%20%5B55.645%2C%20-21.289%5D%2C%20%5B55.637%2C%20-21.312%5D%2C%20%5B55.642%2C%20-21.329%5D%2C%20%5B55.642%2C%20-21.346%5D%2C%20%5B55.632%2C%20-21.302%5D%2C%20%5B55.641%2C%20-21.298%5D%2C%20%5B55.645%2C%20-21.28%5D%2C%20%5B55.63%2C%20-21.275%5D%2C%20%5B55.62%2C%20-21.291%5D%2C%20%5B55.633%2C%20-21.31%5D%2C%20%5B55.626%2C%20-21.346%5D%2C%20%5B55.628%2C%20-21.311%5D%2C%20%5B55.621%2C%20-21.307%5D%2C%20%5B55.621%2C%20-21.298%5D%2C%20%5B55.614%2C%20-21.294%5D%2C%20%5B55.622%2C%20-21.283%5D%2C%20%5B55.622%2C%20-21.277%5D%2C%20%5B55.615%2C%20-21.283%5D%2C%20%5B55.612%2C%20-21.273%5D%2C%20%5B55.617%2C%20-21.273%5D%2C%20%5B55.614%2C%20-21.27%5D%2C%20%5B55.621%2C%20-21.266%5D%2C%20%5B55.613%2C%20-21.254%5D%2C%20%5B55.617%2C%20-21.253%5D%2C%20%5B55.616%2C%20-21.243%5D%2C%20%5B55.608%2C%20-21.257%5D%2C%20%5B55.613%2C%20-21.265%5D%2C%20%5B55.61%2C%20-21.293%5D%2C%20%5B55.617%2C%20-21.299%5D%2C%20%5B55.616%2C%20-21.308%5D%2C%20%5B55.622%2C%20-21.316%5D%2C%20%5B55.619%2C%20-21.337%5D%2C%20%5B55.622%2C%20-21.346%5D%2C%20%5B55.619%2C%20-21.346%5D%2C%20%5B55.612%2C%20-21.31%5D%2C%20%5B55.609%2C%20-21.313%5D%2C%20%5B55.606%2C%20-21.307%5D%2C%20%5B55.606%2C%20-21.314%5D%2C%20%5B55.596%2C%20-21.31%5D%2C%20%5B55.599%2C%20-21.296%5D%2C%20%5B55.588%2C%20-21.3%5D%2C%20%5B55.594%2C%20-21.29%5D%2C%20%5B55.603%2C%20-21.286%5D%2C%20%5B55.587%2C%20-21.289%5D%2C%20%5B55.596%2C%20-21.283%5D%2C%20%5B55.589%2C%20-21.281%5D%2C%20%5B55.595%2C%20-21.276%5D%2C%20%5B55.587%2C%20-21.276%5D%2C%20%5B55.591%2C%20-21.271%5D%2C%20%5B55.584%2C%20-21.255%5D%2C%20%5B55.59%2C%20-21.253%5D%2C%20%5B55.598%2C%20-21.263%5D%2C%20%5B55.602%2C%20-21.262%5D%2C%20%5B55.601%2C%20-21.247%5D%2C%20%5B55.608%2C%20-21.223%5D%2C%20%5B55.615%2C%20-21.21%5D%2C%20%5B55.635%2C%20-21.195%5D%2C%20%5B55.624%2C%20-21.194%5D%2C%20%5B55.625%2C%20-21.189%5D%2C%20%5B55.599%2C%20-21.192%5D%2C%20%5B55.596%2C%20-21.18%5D%2C%20%5B55.6%2C%20-21.175%5D%2C%20%5B55.59%2C%20-21.176%5D%2C%20%5B55.586%2C%20-21.163%5D%2C%20%5B55.58%2C%20-21.166%5D%2C%20%5B55.573%2C%20-21.159%5D%2C%20%5B55.577%2C%20-21.144%5D%2C%20%5B55.555%2C%20-21.152%5D%2C%20%5B55.558%2C%20-21.16%5D%2C%20%5B55.543%2C%20-21.174%5D%2C%20%5B55.549%2C%20-21.181%5D%2C%20%5B55.547%2C%20-21.184%5D%2C%20%5B55.536%2C%20-21.182%5D%2C%20%5B55.542%2C%20-21.166%5D%2C%20%5B55.538%2C%20-21.172%5D%2C%20%5B55.535%2C%20-21.169%5D%2C%20%5B55.538%2C%20-21.159%5D%2C%20%5B55.532%2C%20-21.168%5D%2C%20%5B55.535%2C%20-21.18%5D%2C%20%5B55.521%2C%20-21.19%5D%2C%20%5B55.52%2C%20-21.199%5D%2C%20%5B55.508%2C%20-21.209%5D%2C%20%5B55.504%2C%20-21.222%5D%2C%20%5B55.493%2C%20-21.235%5D%2C%20%5B55.485%2C%20-21.236%5D%2C%20%5B55.486%2C%20-21.246%5D%2C%20%5B55.472%2C%20-21.256%5D%2C%20%5B55.485%2C%20-21.244%5D%2C%20%5B55.483%2C%20-21.236%5D%2C%20%5B55.496%2C%20-21.226%5D%2C%20%5B55.494%2C%20-21.211%5D%2C%20%5B55.498%2C%20-21.214%5D%2C%20%5B55.497%2C%20-21.223%5D%2C%20%5B55.501%2C%20-21.222%5D%2C%20%5B55.498%2C%20-21.193%5D%2C%20%5B55.502%2C%20-21.206%5D%2C%20%5B55.503%2C%20-21.188%5D%2C%20%5B55.506%2C%20-21.2%5D%2C%20%5B55.51%2C%20-21.197%5D%2C%20%5B55.503%2C%20-21.18%5D%2C%20%5B55.512%2C%20-21.192%5D%2C%20%5B55.515%2C%20-21.187%5D%2C%20%5B55.51%2C%20-21.179%5D%2C%20%5B55.515%2C%20-21.186%5D%2C%20%5B55.519%2C%20-21.183%5D%2C%20%5B55.497%2C%20-21.172%5D%2C%20%5B55.495%2C%20-21.179%5D%2C%20%5B55.48%2C%20-21.189%5D%2C%20%5B55.491%2C%20-21.192%5D%2C%20%5B55.489%2C%20-21.213%5D%2C%20%5B55.494%2C%20-21.214%5D%2C%20%5B55.493%2C%20-21.221%5D%2C%20%5B55.489%2C%20-21.223%5D%2C%20%5B55.486%2C%20-21.218%5D%2C%20%5B55.477%2C%20-21.228%5D%2C%20%5B55.477%2C%20-21.21%5D%2C%20%5B55.472%2C%20-21.222%5D%2C%20%5B55.472%2C%20-21.218%5D%2C%20%5B55.465%2C%20-21.225%5D%2C%20%5B55.461%2C%20-21.222%5D%2C%20%5B55.465%2C%20-21.227%5D%2C%20%5B55.464%2C%20-21.233%5D%2C%20%5B55.459%2C%20-21.235%5D%2C%20%5B55.462%2C%20-21.249%5D%2C%20%5B55.456%2C%20-21.239%5D%2C%20%5B55.457%2C%20-21.211%5D%2C%20%5B55.448%2C%20-21.199%5D%2C%20%5B55.455%2C%20-21.192%5D%2C%20%5B55.468%2C%20-21.189%5D%2C%20%5B55.464%2C%20-21.181%5D%2C%20%5B55.48%2C%20-21.183%5D%2C%20%5B55.49%2C%20-21.177%5D%2C%20%5B55.486%2C%20-21.168%5D%2C%20%5B55.49%2C%20-21.161%5D%2C%20%5B55.485%2C%20-21.159%5D%2C%20%5B55.489%2C%20-21.156%5D%2C%20%5B55.489%2C%20-21.145%5D%2C%20%5B55.5%2C%20-21.139%5D%2C%20%5B55.496%2C%20-21.125%5D%2C%20%5B55.473%2C%20-21.121%5D%2C%20%5B55.468%2C%20-21.124%5D%2C%20%5B55.47%2C%20-21.13%5D%2C%20%5B55.456%2C%20-21.124%5D%2C%20%5B55.457%2C%20-21.114%5D%2C%20%5B55.447%2C%20-21.118%5D%2C%20%5B55.442%2C%20-21.14%5D%2C%20%5B55.427%2C%20-21.14%5D%2C%20%5B55.419%2C%20-21.152%5D%2C%20%5B55.424%2C%20-21.165%5D%2C%20%5B55.441%2C%20-21.166%5D%2C%20%5B55.446%2C%20-21.174%5D%2C%20%5B55.437%2C%20-21.18%5D%2C%20%5B55.449%2C%20-21.188%5D%2C%20%5B55.444%2C%20-21.194%5D%2C%20%5B55.454%2C%20-21.211%5D%2C%20%5B55.45%2C%20-21.209%5D%2C%20%5B55.45%2C%20-21.217%5D%2C%20%5B55.456%2C%20-21.234%5D%2C%20%5B55.45%2C%20-21.244%5D%2C%20%5B55.452%2C%20-21.23%5D%2C%20%5B55.444%2C%20-21.214%5D%2C%20%5B55.443%2C%20-21.225%5D%2C%20%5B55.439%2C%20-21.224%5D%2C%20%5B55.429%2C%20-21.236%5D%2C%20%5B55.429%2C%20-21.229%5D%2C%20%5B55.423%2C%20-21.226%5D%2C%20%5B55.415%2C%20-21.226%5D%2C%20%5B55.414%2C%20-21.231%5D%2C%20%5B55.408%2C%20-21.219%5D%2C%20%5B55.409%2C%20-21.213%5D%2C%20%5B55.42%2C%20-21.212%5D%2C%20%5B55.413%2C%20-21.215%5D%2C%20%5B55.416%2C%20-21.216%5D%2C%20%5B55.439%2C%20-21.205%5D%2C%20%5B55.438%2C%20-21.191%5D%2C%20%5B55.432%2C%20-21.19%5D%2C%20%5B55.43%2C%20-21.182%5D%2C%20%5B55.427%2C%20-21.185%5D%2C%20%5B55.431%2C%20-21.19%5D%2C%20%5B55.429%2C%20-21.193%5D%2C%20%5B55.425%2C%20-21.184%5D%2C%20%5B55.419%2C%20-21.186%5D%2C%20%5B55.409%2C%20-21.182%5D%2C%20%5B55.415%2C%20-21.191%5D%2C%20%5B55.41%2C%20-21.195%5D%2C%20%5B55.406%2C%20-21.192%5D%2C%20%5B55.404%2C%20-21.201%5D%2C%20%5B55.396%2C%20-21.205%5D%2C%20%5B55.401%2C%20-21.23%5D%2C%20%5B55.396%2C%20-21.236%5D%2C%20%5B55.383%2C%20-21.228%5D%2C%20%5B55.385%2C%20-21.22%5D%2C%20%5B55.374%2C%20-21.23%5D%2C%20%5B55.371%2C%20-21.223%5D%2C%20%5B55.363%2C%20-21.224%5D%2C%20%5B55.374%2C%20-21.205%5D%2C%20%5B55.369%2C%20-21.209%5D%2C%20%5B55.354%2C%20-21.204%5D%2C%20%5B55.344%2C%20-21.208%5D%2C%20%5B55.357%2C%20-21.191%5D%2C%20%5B55.355%2C%20-21.2%5D%2C%20%5B55.361%2C%20-21.193%5D%2C%20%5B55.364%2C%20-21.185%5D%2C%20%5B55.386%2C%20-21.181%5D%2C%20%5B55.388%2C%20-21.175%5D%2C%20%5B55.367%2C%20-21.16%5D%2C%20%5B55.367%2C%20-21.154%5D%2C%20%5B55.365%2C%20-21.073%5D%2C%20%5B55.379%2C%20-21.039%5D%2C%20%5B55.374%2C%20-21.035%5D%2C%20%5B55.37%2C%20-21.042%5D%2C%20%5B55.357%2C%20-21.033%5D%2C%20%5B55.371%2C%20-21.018%5D%2C%20%5B55.352%2C%20-20.997%5D%2C%20%5B55.361%2C%20-20.989%5D%2C%20%5B55.349%2C%20-20.978%5D%2C%20%5B55.353%2C%20-20.976%5D%2C%20%5B55.36%2C%20-20.982%5D%2C%20%5B55.364%2C%20-20.975%5D%2C%20%5B55.382%2C%20-20.99%5D%2C%20%5B55.39%2C%20-20.991%5D%2C%20%5B55.401%2C%20-20.984%5D%2C%20%5B55.399%2C%20-20.974%5D%2C%20%5B55.381%2C%20-20.979%5D%2C%20%5B55.369%2C%20-20.975%5D%2C%20%5B55.372%2C%20-20.97%5D%2C%20%5B55.357%2C%20-20.961%5D%2C%20%5B55.372%2C%20-20.962%5D%2C%20%5B55.353%2C%20-20.95%5D%2C%20%5B55.369%2C%20-20.953%5D%2C%20%5B55.37%2C%20-20.943%5D%2C%20%5B55.389%2C%20-20.935%5D%2C%20%5B55.373%2C%20-20.912%5D%2C%20%5B55.368%2C%20-20.921%5D%2C%20%5B55.354%2C%20-20.922%5D%2C%20%5B55.376%2C%20-20.902%5D%2C%20%5B55.379%2C%20-20.911%5D%2C%20%5B55.377%2C%20-20.901%5D%2C%20%5B55.389%2C%20-20.893%5D%2C%20%5B55.39%2C%20-20.893%5D%2C%20%5B55.391%2C%20-20.894%5D%2C%20%5B55.391%2C%20-20.894%5D%2C%20%5B55.391%2C%20-20.894%5D%2C%20%5B55.391%2C%20-20.894%5D%5D%2C%20%5B%5B55.612%2C%20-21.273%5D%2C%20%5B55.612%2C%20-21.273%5D%2C%20%5B55.612%2C%20-21.273%5D%2C%20%5B55.612%2C%20-21.273%5D%5D%2C%20%5B%5B55.621%2C%20-21.176%5D%2C%20%5B55.637%2C%20-21.167%5D%2C%20%5B55.647%2C%20-21.149%5D%2C%20%5B55.642%2C%20-21.139%5D%2C%20%5B55.657%2C%20-21.133%5D%2C%20%5B55.652%2C%20-21.128%5D%2C%20%5B55.661%2C%20-21.124%5D%2C%20%5B55.66%2C%20-21.116%5D%2C%20%5B55.649%2C%20-21.126%5D%2C%20%5B55.645%2C%20-21.123%5D%2C%20%5B55.653%2C%20-21.114%5D%2C%20%5B55.644%2C%20-21.111%5D%2C%20%5B55.634%2C%20-21.12%5D%2C%20%5B55.626%2C%20-21.121%5D%2C%20%5B55.623%2C%20-21.127%5D%2C%20%5B55.605%2C%20-21.129%5D%2C%20%5B55.599%2C%20-21.134%5D%2C%20%5B55.6%2C%20-21.146%5D%2C%20%5B55.584%2C%20-21.13%5D%2C%20%5B55.58%2C%20-21.131%5D%2C%20%5B55.585%2C%20-21.138%5D%2C%20%5B55.583%2C%20-21.145%5D%2C%20%5B55.588%2C%20-21.143%5D%2C%20%5B55.595%2C%20-21.155%5D%2C%20%5B55.603%2C%20-21.154%5D%2C%20%5B55.603%2C%20-21.168%5D%2C%20%5B55.615%2C%20-21.171%5D%2C%20%5B55.621%2C%20-21.164%5D%2C%20%5B55.617%2C%20-21.17%5D%2C%20%5B55.621%2C%20-21.176%5D%5D%2C%20%5B%5B55.391%2C%20-20.894%5D%2C%20%5B55.391%2C%20-20.894%5D%2C%20%5B55.391%2C%20-20.894%5D%2C%20%5B55.391%2C%20-20.894%5D%5D%5D%2C%20%22type%22%3A%20%22Polygon%22%7D%2C%20%22id%22%3A%20%2220%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/2007%22%2C%20%22is_marine%22%3A%20%22False%22%2C%20%22iucn_cat%22%3A%20%22V%22%2C%20%22orig_name%22%3A%20%22R%5Cu00e9union%20%5BAire%20D%5Cu0027Adh%5Cu00e9sion%5D%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22R%5Cu00e9union%20%5BAire%20D%5Cu0027Adh%5Cu00e9sion%5D%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22National%20Park%20-%20Buffer%20Zone/Area%20Of%20Adhesion%22%2C%20%22wdpa_id%22%3A%20388670%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B%5B55.288%2C%20-20.988%5D%2C%20%5B55.309%2C%20-20.994%5D%2C%20%5B55.3%2C%20-21.006%5D%2C%20%5B55.276%2C%20-21.012%5D%2C%20%5B55.29%2C%20-20.991%5D%2C%20%5B55.281%2C%20-20.991%5D%2C%20%5B55.281%2C%20-20.985%5D%2C%20%5B55.288%2C%20-20.988%5D%5D%5D%2C%20%5B%5B%5B55.276%2C%20-21.011%5D%2C%20%5B55.275%2C%20-21.014%5D%2C%20%5B55.273%2C%20-21.015%5D%2C%20%5B55.274%2C%20-21.013%5D%2C%20%5B55.276%2C%20-21.011%5D%5D%5D%5D%2C%20%22type%22%3A%20%22MultiPolygon%22%7D%2C%20%22id%22%3A%20%2221%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/2008%22%2C%20%22is_marine%22%3A%20%22False%22%2C%20%22iucn_cat%22%3A%20%22IV%22%2C%20%22orig_name%22%3A%20%22%5Cu00c9tang%20De%20Saint-Paul%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22%5Cu00c9tang%20De%20Saint-Paul%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22National%20Nature%20Reserve%22%2C%20%22wdpa_id%22%3A%20391921%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B%5B55.272%2C%20-21.136%5D%2C%20%5B55.272%2C%20-21.141%5D%2C%20%5B55.273%2C%20-21.148%5D%2C%20%5B55.276%2C%20-21.151%5D%2C%20%5B55.272%2C%20-21.15%5D%2C%20%5B55.27%2C%20-21.144%5D%2C%20%5B55.272%2C%20-21.136%5D%5D%2C%20%5B%5B55.272%2C%20-21.143%5D%2C%20%5B55.271%2C%20-21.143%5D%2C%20%5B55.271%2C%20-21.143%5D%2C%20%5B55.271%2C%20-21.143%5D%2C%20%5B55.271%2C%20-21.143%5D%2C%20%5B55.271%2C%20-21.143%5D%2C%20%5B55.271%2C%20-21.143%5D%2C%20%5B55.272%2C%20-21.143%5D%5D%2C%20%5B%5B55.271%2C%20-21.146%5D%2C%20%5B55.271%2C%20-21.146%5D%2C%20%5B55.271%2C%20-21.146%5D%2C%20%5B55.271%2C%20-21.146%5D%2C%20%5B55.271%2C%20-21.146%5D%5D%2C%20%5B%5B55.272%2C%20-21.148%5D%2C%20%5B55.272%2C%20-21.148%5D%2C%20%5B55.273%2C%20-21.148%5D%2C%20%5B55.273%2C%20-21.148%5D%2C%20%5B55.272%2C%20-21.148%5D%2C%20%5B55.272%2C%20-21.148%5D%5D%2C%20%5B%5B55.275%2C%20-21.15%5D%2C%20%5B55.275%2C%20-21.15%5D%2C%20%5B55.275%2C%20-21.15%5D%2C%20%5B55.275%2C%20-21.15%5D%5D%2C%20%5B%5B55.275%2C%20-21.15%5D%2C%20%5B55.275%2C%20-21.15%5D%2C%20%5B55.275%2C%20-21.15%5D%2C%20%5B55.275%2C%20-21.15%5D%5D%2C%20%5B%5B55.275%2C%20-21.149%5D%2C%20%5B55.274%2C%20-21.148%5D%2C%20%5B55.273%2C%20-21.146%5D%2C%20%5B55.273%2C%20-21.149%5D%2C%20%5B55.275%2C%20-21.149%5D%5D%2C%20%5B%5B55.272%2C%20-21.138%5D%2C%20%5B55.272%2C%20-21.139%5D%2C%20%5B55.272%2C%20-21.138%5D%2C%20%5B55.272%2C%20-21.138%5D%2C%20%5B55.272%2C%20-21.138%5D%5D%2C%20%5B%5B55.272%2C%20-21.137%5D%2C%20%5B55.272%2C%20-21.137%5D%2C%20%5B55.272%2C%20-21.136%5D%2C%20%5B55.272%2C%20-21.136%5D%2C%20%5B55.272%2C%20-21.137%5D%5D%5D%2C%20%5B%5B%5B55.273%2C%20-21.143%5D%2C%20%5B55.272%2C%20-21.141%5D%2C%20%5B55.273%2C%20-21.137%5D%2C%20%5B55.273%2C%20-21.14%5D%2C%20%5B55.273%2C%20-21.143%5D%5D%5D%5D%2C%20%22type%22%3A%20%22MultiPolygon%22%7D%2C%20%22id%22%3A%20%2222%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/1981%22%2C%20%22is_marine%22%3A%20%22True%22%2C%20%22iucn_cat%22%3A%20%22IV%22%2C%20%22orig_name%22%3A%20%22Rochers%20Des%20Colimacons%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Rochers%20Des%20Colimacons%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22Land%20Acquired%20By%20Conservatoire%20Du%20Littoral%20%28National%20Seaside%20And%20Lakeside%20Conservancy%29%22%2C%20%22wdpa_id%22%3A%20391978%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B%5B55.29%2C%20-21.116%5D%2C%20%5B55.284%2C%20-21.122%5D%2C%20%5B55.28%2C%20-21.123%5D%2C%20%5B55.283%2C%20-21.118%5D%2C%20%5B55.29%2C%20-21.116%5D%5D%5D%2C%20%5B%5B%5B55.272%2C%20-21.135%5D%2C%20%5B55.272%2C%20-21.135%5D%2C%20%5B55.272%2C%20-21.135%5D%2C%20%5B55.272%2C%20-21.135%5D%2C%20%5B55.272%2C%20-21.135%5D%5D%5D%2C%20%5B%5B%5B55.272%2C%20-21.135%5D%2C%20%5B55.272%2C%20-21.135%5D%2C%20%5B55.272%2C%20-21.134%5D%2C%20%5B55.272%2C%20-21.134%5D%2C%20%5B55.272%2C%20-21.135%5D%5D%5D%2C%20%5B%5B%5B55.272%2C%20-21.135%5D%2C%20%5B55.271%2C%20-21.133%5D%2C%20%5B55.271%2C%20-21.132%5D%2C%20%5B55.272%2C%20-21.133%5D%2C%20%5B55.272%2C%20-21.135%5D%5D%5D%2C%20%5B%5B%5B55.272%2C%20-21.133%5D%2C%20%5B55.272%2C%20-21.132%5D%2C%20%5B55.27%2C%20-21.129%5D%2C%20%5B55.272%2C%20-21.131%5D%2C%20%5B55.272%2C%20-21.133%5D%5D%5D%2C%20%5B%5B%5B55.269%2C%20-21.128%5D%2C%20%5B55.269%2C%20-21.129%5D%2C%20%5B55.269%2C%20-21.128%5D%2C%20%5B55.269%2C%20-21.128%5D%5D%5D%2C%20%5B%5B%5B55.269%2C%20-21.128%5D%2C%20%5B55.269%2C%20-21.128%5D%2C%20%5B55.268%2C%20-21.127%5D%2C%20%5B55.269%2C%20-21.127%5D%2C%20%5B55.269%2C%20-21.128%5D%5D%5D%2C%20%5B%5B%5B55.269%2C%20-21.128%5D%2C%20%5B55.269%2C%20-21.129%5D%2C%20%5B55.269%2C%20-21.129%5D%2C%20%5B55.27%2C%20-21.13%5D%2C%20%5B55.271%2C%20-21.132%5D%2C%20%5B55.271%2C%20-21.133%5D%2C%20%5B55.272%2C%20-21.136%5D%2C%20%5B55.268%2C%20-21.13%5D%2C%20%5B55.269%2C%20-21.128%5D%5D%2C%20%5B%5B55.271%2C%20-21.131%5D%2C%20%5B55.271%2C%20-21.131%5D%2C%20%5B55.271%2C%20-21.131%5D%2C%20%5B55.27%2C%20-21.131%5D%2C%20%5B55.271%2C%20-21.131%5D%5D%5D%2C%20%5B%5B%5B55.268%2C%20-21.127%5D%2C%20%5B55.268%2C%20-21.127%5D%2C%20%5B55.268%2C%20-21.127%5D%2C%20%5B55.268%2C%20-21.127%5D%2C%20%5B55.268%2C%20-21.127%5D%2C%20%5B55.268%2C%20-21.127%5D%5D%5D%2C%20%5B%5B%5B55.269%2C%20-21.128%5D%2C%20%5B55.269%2C%20-21.127%5D%2C%20%5B55.269%2C%20-21.127%5D%2C%20%5B55.269%2C%20-21.127%5D%2C%20%5B55.269%2C%20-21.128%5D%5D%5D%2C%20%5B%5B%5B55.269%2C%20-21.126%5D%2C%20%5B55.268%2C%20-21.126%5D%2C%20%5B55.268%2C%20-21.126%5D%2C%20%5B55.268%2C%20-21.126%5D%2C%20%5B55.269%2C%20-21.126%5D%5D%5D%2C%20%5B%5B%5B55.277%2C%20-21.123%5D%2C%20%5B55.28%2C%20-21.124%5D%2C%20%5B55.271%2C%20-21.123%5D%2C%20%5B55.275%2C%20-21.121%5D%2C%20%5B55.277%2C%20-21.123%5D%5D%5D%2C%20%5B%5B%5B55.272%2C%20-21.124%5D%2C%20%5B55.272%2C%20-21.124%5D%2C%20%5B55.272%2C%20-21.124%5D%2C%20%5B55.272%2C%20-21.124%5D%2C%20%5B55.272%2C%20-21.124%5D%5D%5D%5D%2C%20%22type%22%3A%20%22MultiPolygon%22%7D%2C%20%22id%22%3A%20%2223%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/2006%22%2C%20%22is_marine%22%3A%20%22True%22%2C%20%22iucn_cat%22%3A%20%22IV%22%2C%20%22orig_name%22%3A%20%22Grande%20Ravine%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Grande%20Ravine%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22Land%20Acquired%20By%20Conservatoire%20Du%20Littoral%20%28National%20Seaside%20And%20Lakeside%20Conservancy%29%22%2C%20%22wdpa_id%22%3A%20392043%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B55.568%2C%20-21.377%5D%2C%20%5B55.568%2C%20-21.376%5D%2C%20%5B55.569%2C%20-21.376%5D%2C%20%5B55.567%2C%20-21.378%5D%2C%20%5B55.568%2C%20-21.377%5D%5D%5D%2C%20%22type%22%3A%20%22Polygon%22%7D%2C%20%22id%22%3A%20%2224%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/2006%22%2C%20%22is_marine%22%3A%20%22True%22%2C%20%22iucn_cat%22%3A%20%22IV%22%2C%20%22orig_name%22%3A%20%22Rocher%20De%20Petite%20Ile%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Rocher%20De%20Petite%20Ile%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22Land%20Acquired%20By%20Conservatoire%20Du%20Littoral%20%28National%20Seaside%20And%20Lakeside%20Conservancy%29%22%2C%20%22wdpa_id%22%3A%20392139%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B%5B55.256%2C%20-21.109%5D%2C%20%5B55.256%2C%20-21.111%5D%2C%20%5B55.254%2C%20-21.113%5D%2C%20%5B55.258%2C%20-21.117%5D%2C%20%5B55.256%2C%20-21.117%5D%2C%20%5B55.253%2C%20-21.113%5D%2C%20%5B55.256%2C%20-21.109%5D%5D%2C%20%5B%5B55.256%2C%20-21.111%5D%2C%20%5B55.256%2C%20-21.111%5D%2C%20%5B55.256%2C%20-21.111%5D%2C%20%5B55.256%2C%20-21.111%5D%2C%20%5B55.256%2C%20-21.111%5D%5D%2C%20%5B%5B55.256%2C%20-21.111%5D%2C%20%5B55.256%2C%20-21.111%5D%2C%20%5B55.257%2C%20-21.111%5D%2C%20%5B55.257%2C%20-21.111%5D%2C%20%5B55.256%2C%20-21.111%5D%5D%2C%20%5B%5B55.256%2C%20-21.11%5D%2C%20%5B55.256%2C%20-21.11%5D%2C%20%5B55.256%2C%20-21.109%5D%2C%20%5B55.256%2C%20-21.11%5D%2C%20%5B55.256%2C%20-21.11%5D%5D%5D%2C%20%5B%5B%5B55.257%2C%20-21.118%5D%2C%20%5B55.258%2C%20-21.117%5D%2C%20%5B55.258%2C%20-21.117%5D%2C%20%5B55.258%2C%20-21.117%5D%2C%20%5B55.257%2C%20-21.118%5D%5D%5D%5D%2C%20%22type%22%3A%20%22MultiPolygon%22%7D%2C%20%22id%22%3A%20%2225%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/2006%22%2C%20%22is_marine%22%3A%20%22True%22%2C%20%22iucn_cat%22%3A%20%22IV%22%2C%20%22orig_name%22%3A%20%22Pointe%20Des%20Trois%20Bassins%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Pointe%20Des%20Trois%20Bassins%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22Land%20Acquired%20By%20Conservatoire%20Du%20Littoral%20%28National%20Seaside%20And%20Lakeside%20Conservancy%29%22%2C%20%22wdpa_id%22%3A%20392140%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B55.686%2C%20-21.374%5D%2C%20%5B55.671%2C%20-21.384%5D%2C%20%5B55.667%2C%20-21.384%5D%2C%20%5B55.667%2C%20-21.383%5D%2C%20%5B55.686%2C%20-21.374%5D%5D%2C%20%5B%5B55.673%2C%20-21.382%5D%2C%20%5B55.673%2C%20-21.382%5D%2C%20%5B55.673%2C%20-21.382%5D%2C%20%5B55.673%2C%20-21.381%5D%2C%20%5B55.673%2C%20-21.382%5D%5D%5D%2C%20%22type%22%3A%20%22Polygon%22%7D%2C%20%22id%22%3A%20%2226%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/2006%22%2C%20%22is_marine%22%3A%20%22True%22%2C%20%22iucn_cat%22%3A%20%22IV%22%2C%20%22orig_name%22%3A%20%22Marine%20De%20Vincendo%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Marine%20De%20Vincendo%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22Land%20Acquired%20By%20Conservatoire%20Du%20Littoral%20%28National%20Seaside%20And%20Lakeside%20Conservancy%29%22%2C%20%22wdpa_id%22%3A%20392141%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B%5B55.389%2C%20-20.893%5D%2C%20%5B55.398%2C%20-20.903%5D%2C%20%5B55.389%2C%20-20.906%5D%2C%20%5B55.386%2C%20-20.916%5D%2C%20%5B55.395%2C%20-20.933%5D%2C%20%5B55.404%2C%20-20.941%5D%2C%20%5B55.414%2C%20-20.919%5D%2C%20%5B55.432%2C%20-20.902%5D%2C%20%5B55.436%2C%20-20.907%5D%2C%20%5B55.425%2C%20-20.918%5D%2C%20%5B55.427%2C%20-20.937%5D%2C%20%5B55.423%2C%20-20.943%5D%2C%20%5B55.436%2C%20-20.954%5D%2C%20%5B55.441%2C%20-20.939%5D%2C%20%5B55.444%2C%20-20.949%5D%2C%20%5B55.453%2C%20-20.932%5D%2C%20%5B55.455%2C%20-20.935%5D%2C%20%5B55.464%2C%20-20.932%5D%2C%20%5B55.464%2C%20-20.943%5D%2C%20%5B55.47%2C%20-20.951%5D%2C%20%5B55.479%2C%20-20.933%5D%2C%20%5B55.48%2C%20-20.95%5D%2C%20%5B55.47%2C%20-20.964%5D%2C%20%5B55.483%2C%20-20.966%5D%2C%20%5B55.501%2C%20-20.937%5D%2C%20%5B55.493%2C%20-20.956%5D%2C%20%5B55.495%2C%20-20.959%5D%2C%20%5B55.49%2C%20-20.962%5D%2C%20%5B55.489%2C%20-20.975%5D%2C%20%5B55.491%2C%20-20.963%5D%2C%20%5B55.496%2C%20-20.961%5D%2C%20%5B55.494%2C%20-20.955%5D%2C%20%5B55.496%2C%20-20.954%5D%2C%20%5B55.498%2C%20-20.946%5D%2C%20%5B55.502%2C%20-20.942%5D%2C%20%5B55.503%2C%20-20.936%5D%2C%20%5B55.505%2C%20-20.931%5D%2C%20%5B55.506%2C%20-20.931%5D%2C%20%5B55.498%2C%20-20.956%5D%2C%20%5B55.507%2C%20-20.957%5D%2C%20%5B55.507%2C%20-20.98%5D%2C%20%5B55.512%2C%20-20.98%5D%2C%20%5B55.516%2C%20-20.974%5D%2C%20%5B55.525%2C%20-20.98%5D%2C%20%5B55.546%2C%20-20.955%5D%2C%20%5B55.555%2C%20-20.955%5D%2C%20%5B55.55%2C%20-20.972%5D%2C%20%5B55.569%2C%20-20.974%5D%2C%20%5B55.564%2C%20-20.98%5D%2C%20%5B55.577%2C%20-20.983%5D%2C%20%5B55.578%2C%20-20.991%5D%2C%20%5B55.595%2C%20-20.987%5D%2C%20%5B55.602%2C%20-20.992%5D%2C%20%5B55.586%2C%20-21.0%5D%2C%20%5B55.578%2C%20-20.997%5D%2C%20%5B55.555%2C%20-21.013%5D%2C%20%5B55.541%2C%20-21.012%5D%2C%20%5B55.537%2C%20-21.008%5D%2C%20%5B55.518%2C%20-21.019%5D%2C%20%5B55.512%2C%20-21.015%5D%2C%20%5B55.509%2C%20-21.005%5D%2C%20%5B55.496%2C%20-21.01%5D%2C%20%5B55.478%2C%20-21.01%5D%2C%20%5B55.479%2C%20-21.015%5D%2C%20%5B55.471%2C%20-21.014%5D%2C%20%5B55.472%2C%20-21.021%5D%2C%20%5B55.467%2C%20-21.023%5D%2C%20%5B55.459%2C%20-21.04%5D%2C%20%5B55.46%2C%20-21.053%5D%2C%20%5B55.469%2C%20-21.053%5D%2C%20%5B55.466%2C%20-21.061%5D%2C%20%5B55.476%2C%20-21.065%5D%2C%20%5B55.483%2C%20-21.054%5D%2C%20%5B55.488%2C%20-21.063%5D%2C%20%5B55.506%2C%20-21.073%5D%2C%20%5B55.508%2C%20-21.083%5D%2C%20%5B55.515%2C%20-21.088%5D%2C%20%5B55.528%2C%20-21.072%5D%2C%20%5B55.528%2C%20-21.061%5D%2C%20%5B55.537%2C%20-21.048%5D%2C%20%5B55.535%2C%20-21.04%5D%2C%20%5B55.556%2C%20-21.016%5D%2C%20%5B55.58%2C%20-21.001%5D%2C%20%5B55.606%2C%20-21.006%5D%2C%20%5B55.623%2C%20-20.994%5D%2C%20%5B55.61%2C%20-21.03%5D%2C%20%5B55.624%2C%20-21.011%5D%2C%20%5B55.637%2C%20-21.003%5D%2C%20%5B55.642%2C%20-21.013%5D%2C%20%5B55.634%2C%20-21.027%5D%2C%20%5B55.645%2C%20-21.03%5D%2C%20%5B55.647%2C%20-21.035%5D%2C%20%5B55.638%2C%20-21.037%5D%2C%20%5B55.64%2C%20-21.041%5D%2C%20%5B55.664%2C%20-21.034%5D%2C%20%5B55.625%2C%20-21.08%5D%2C%20%5B55.63%2C%20-21.08%5D%2C%20%5B55.64%2C%20-21.065%5D%2C%20%5B55.646%2C%20-21.065%5D%2C%20%5B55.66%2C%20-21.052%5D%2C%20%5B55.66%2C%20-21.061%5D%2C%20%5B55.671%2C%20-21.055%5D%2C%20%5B55.679%2C%20-21.055%5D%2C%20%5B55.681%2C%20-21.058%5D%2C%20%5B55.673%2C%20-21.058%5D%2C%20%5B55.666%2C%20-21.068%5D%2C%20%5B55.677%2C%20-21.072%5D%2C%20%5B55.672%2C%20-21.075%5D%2C%20%5B55.68%2C%20-21.083%5D%2C%20%5B55.675%2C%20-21.091%5D%2C%20%5B55.661%2C%20-21.095%5D%2C%20%5B55.652%2C%20-21.092%5D%2C%20%5B55.654%2C%20-21.098%5D%2C%20%5B55.666%2C%20-21.103%5D%2C%20%5B55.658%2C%20-21.108%5D%2C%20%5B55.662%2C%20-21.113%5D%2C%20%5B55.68%2C%20-21.102%5D%2C%20%5B55.684%2C%20-21.106%5D%2C%20%5B55.678%2C%20-21.113%5D%2C%20%5B55.687%2C%20-21.107%5D%2C%20%5B55.69%2C%20-21.111%5D%2C%20%5B55.684%2C%20-21.118%5D%2C%20%5B55.686%2C%20-21.126%5D%2C%20%5B55.694%2C%20-21.121%5D%2C%20%5B55.696%2C%20-21.128%5D%2C%20%5B55.699%2C%20-21.117%5D%2C%20%5B55.703%2C%20-21.122%5D%2C%20%5B55.701%2C%20-21.129%5D%2C%20%5B55.723%2C%20-21.14%5D%2C%20%5B55.736%2C%20-21.126%5D%2C%20%5B55.74%2C%20-21.134%5D%2C%20%5B55.746%2C%20-21.126%5D%2C%20%5B55.745%2C%20-21.134%5D%2C%20%5B55.753%2C%20-21.136%5D%2C%20%5B55.752%2C%20-21.143%5D%2C%20%5B55.757%2C%20-21.138%5D%2C%20%5B55.78%2C%20-21.155%5D%2C%20%5B55.78%2C%20-21.161%5D%2C%20%5B55.785%2C%20-21.157%5D%2C%20%5B55.793%2C%20-21.166%5D%2C%20%5B55.801%2C%20-21.166%5D%2C%20%5B55.808%2C%20-21.184%5D%2C%20%5B55.805%2C%20-21.193%5D%2C%20%5B55.798%2C%20-21.198%5D%2C%20%5B55.804%2C%20-21.199%5D%2C%20%5B55.803%2C%20-21.214%5D%2C%20%5B55.799%2C%20-21.215%5D%2C%20%5B55.814%2C%20-21.214%5D%2C%20%5B55.801%2C%20-21.26%5D%2C%20%5B55.805%2C%20-21.29%5D%2C%20%5B55.785%2C%20-21.288%5D%2C%20%5B55.79%2C%20-21.306%5D%2C%20%5B55.78%2C%20-21.309%5D%2C%20%5B55.79%2C%20-21.317%5D%2C%20%5B55.792%2C%20-21.331%5D%2C%20%5B55.783%2C%20-21.339%5D%2C%20%5B55.761%2C%20-21.346%5D%2C%20%5B55.746%2C%20-21.343%5D%2C%20%5B55.746%2C%20-21.356%5D%2C%20%5B55.753%2C%20-21.362%5D%2C%20%5B55.748%2C%20-21.368%5D%2C%20%5B55.743%2C%20-21.368%5D%2C%20%5B55.739%2C%20-21.354%5D%2C%20%5B55.735%2C%20-21.354%5D%2C%20%5B55.734%2C%20-21.341%5D%2C%20%5B55.724%2C%20-21.341%5D%2C%20%5B55.724%2C%20-21.336%5D%2C%20%5B55.711%2C%20-21.342%5D%2C%20%5B55.702%2C%20-21.34%5D%2C%20%5B55.703%2C%20-21.334%5D%2C%20%5B55.697%2C%20-21.327%5D%2C%20%5B55.699%2C%20-21.343%5D%2C%20%5B55.695%2C%20-21.346%5D%2C%20%5B55.696%2C%20-21.334%5D%2C%20%5B55.69%2C%20-21.324%5D%2C%20%5B55.681%2C%20-21.32%5D%2C%20%5B55.68%2C%20-21.31%5D%2C%20%5B55.65%2C%20-21.31%5D%2C%20%5B55.646%2C%20-21.318%5D%2C%20%5B55.65%2C%20-21.342%5D%2C%20%5B55.648%2C%20-21.346%5D%2C%20%5B55.642%2C%20-21.311%5D%2C%20%5B55.654%2C%20-21.281%5D%2C%20%5B55.645%2C%20-21.289%5D%2C%20%5B55.637%2C%20-21.312%5D%2C%20%5B55.642%2C%20-21.329%5D%2C%20%5B55.642%2C%20-21.346%5D%2C%20%5B55.632%2C%20-21.302%5D%2C%20%5B55.641%2C%20-21.298%5D%2C%20%5B55.645%2C%20-21.28%5D%2C%20%5B55.639%2C%20-21.275%5D%2C%20%5B55.629%2C%20-21.276%5D%2C%20%5B55.62%2C%20-21.291%5D%2C%20%5B55.633%2C%20-21.31%5D%2C%20%5B55.626%2C%20-21.346%5D%2C%20%5B55.628%2C%20-21.311%5D%2C%20%5B55.621%2C%20-21.307%5D%2C%20%5B55.621%2C%20-21.298%5D%2C%20%5B55.614%2C%20-21.294%5D%2C%20%5B55.622%2C%20-21.283%5D%2C%20%5B55.622%2C%20-21.277%5D%2C%20%5B55.615%2C%20-21.283%5D%2C%20%5B55.612%2C%20-21.273%5D%2C%20%5B55.617%2C%20-21.273%5D%2C%20%5B55.614%2C%20-21.27%5D%2C%20%5B55.621%2C%20-21.265%5D%2C%20%5B55.613%2C%20-21.254%5D%2C%20%5B55.617%2C%20-21.253%5D%2C%20%5B55.616%2C%20-21.243%5D%2C%20%5B55.608%2C%20-21.257%5D%2C%20%5B55.613%2C%20-21.265%5D%2C%20%5B55.61%2C%20-21.293%5D%2C%20%5B55.617%2C%20-21.299%5D%2C%20%5B55.616%2C%20-21.308%5D%2C%20%5B55.622%2C%20-21.316%5D%2C%20%5B55.619%2C%20-21.337%5D%2C%20%5B55.622%2C%20-21.346%5D%2C%20%5B55.619%2C%20-21.346%5D%2C%20%5B55.618%2C%20-21.323%5D%2C%20%5B55.612%2C%20-21.31%5D%2C%20%5B55.609%2C%20-21.313%5D%2C%20%5B55.606%2C%20-21.307%5D%2C%20%5B55.606%2C%20-21.314%5D%2C%20%5B55.596%2C%20-21.31%5D%2C%20%5B55.599%2C%20-21.296%5D%2C%20%5B55.588%2C%20-21.3%5D%2C%20%5B55.594%2C%20-21.29%5D%2C%20%5B55.603%2C%20-21.286%5D%2C%20%5B55.587%2C%20-21.289%5D%2C%20%5B55.596%2C%20-21.283%5D%2C%20%5B55.589%2C%20-21.281%5D%2C%20%5B55.595%2C%20-21.276%5D%2C%20%5B55.587%2C%20-21.276%5D%2C%20%5B55.591%2C%20-21.271%5D%2C%20%5B55.584%2C%20-21.255%5D%2C%20%5B55.59%2C%20-21.253%5D%2C%20%5B55.598%2C%20-21.264%5D%2C%20%5B55.602%2C%20-21.262%5D%2C%20%5B55.601%2C%20-21.247%5D%2C%20%5B55.608%2C%20-21.223%5D%2C%20%5B55.615%2C%20-21.21%5D%2C%20%5B55.635%2C%20-21.195%5D%2C%20%5B55.624%2C%20-21.194%5D%2C%20%5B55.625%2C%20-21.189%5D%2C%20%5B55.599%2C%20-21.192%5D%2C%20%5B55.596%2C%20-21.18%5D%2C%20%5B55.6%2C%20-21.175%5D%2C%20%5B55.59%2C%20-21.176%5D%2C%20%5B55.586%2C%20-21.163%5D%2C%20%5B55.58%2C%20-21.166%5D%2C%20%5B55.573%2C%20-21.159%5D%2C%20%5B55.577%2C%20-21.144%5D%2C%20%5B55.555%2C%20-21.152%5D%2C%20%5B55.558%2C%20-21.161%5D%2C%20%5B55.543%2C%20-21.174%5D%2C%20%5B55.549%2C%20-21.181%5D%2C%20%5B55.547%2C%20-21.184%5D%2C%20%5B55.536%2C%20-21.182%5D%2C%20%5B55.542%2C%20-21.166%5D%2C%20%5B55.538%2C%20-21.172%5D%2C%20%5B55.535%2C%20-21.169%5D%2C%20%5B55.538%2C%20-21.159%5D%2C%20%5B55.532%2C%20-21.168%5D%2C%20%5B55.535%2C%20-21.18%5D%2C%20%5B55.521%2C%20-21.19%5D%2C%20%5B55.52%2C%20-21.199%5D%2C%20%5B55.508%2C%20-21.209%5D%2C%20%5B55.504%2C%20-21.222%5D%2C%20%5B55.493%2C%20-21.235%5D%2C%20%5B55.485%2C%20-21.236%5D%2C%20%5B55.486%2C%20-21.246%5D%2C%20%5B55.472%2C%20-21.256%5D%2C%20%5B55.485%2C%20-21.244%5D%2C%20%5B55.483%2C%20-21.236%5D%2C%20%5B55.496%2C%20-21.226%5D%2C%20%5B55.494%2C%20-21.211%5D%2C%20%5B55.498%2C%20-21.214%5D%2C%20%5B55.497%2C%20-21.223%5D%2C%20%5B55.501%2C%20-21.222%5D%2C%20%5B55.498%2C%20-21.193%5D%2C%20%5B55.502%2C%20-21.206%5D%2C%20%5B55.503%2C%20-21.188%5D%2C%20%5B55.506%2C%20-21.2%5D%2C%20%5B55.51%2C%20-21.197%5D%2C%20%5B55.503%2C%20-21.18%5D%2C%20%5B55.512%2C%20-21.192%5D%2C%20%5B55.515%2C%20-21.187%5D%2C%20%5B55.51%2C%20-21.179%5D%2C%20%5B55.515%2C%20-21.186%5D%2C%20%5B55.519%2C%20-21.183%5D%2C%20%5B55.497%2C%20-21.172%5D%2C%20%5B55.495%2C%20-21.179%5D%2C%20%5B55.48%2C%20-21.189%5D%2C%20%5B55.491%2C%20-21.192%5D%2C%20%5B55.489%2C%20-21.213%5D%2C%20%5B55.494%2C%20-21.214%5D%2C%20%5B55.493%2C%20-21.221%5D%2C%20%5B55.489%2C%20-21.223%5D%2C%20%5B55.486%2C%20-21.218%5D%2C%20%5B55.477%2C%20-21.228%5D%2C%20%5B55.477%2C%20-21.21%5D%2C%20%5B55.472%2C%20-21.222%5D%2C%20%5B55.472%2C%20-21.218%5D%2C%20%5B55.465%2C%20-21.225%5D%2C%20%5B55.461%2C%20-21.222%5D%2C%20%5B55.465%2C%20-21.227%5D%2C%20%5B55.464%2C%20-21.233%5D%2C%20%5B55.459%2C%20-21.235%5D%2C%20%5B55.462%2C%20-21.249%5D%2C%20%5B55.456%2C%20-21.239%5D%2C%20%5B55.457%2C%20-21.211%5D%2C%20%5B55.448%2C%20-21.199%5D%2C%20%5B55.455%2C%20-21.192%5D%2C%20%5B55.468%2C%20-21.189%5D%2C%20%5B55.464%2C%20-21.181%5D%2C%20%5B55.48%2C%20-21.183%5D%2C%20%5B55.49%2C%20-21.177%5D%2C%20%5B55.486%2C%20-21.168%5D%2C%20%5B55.49%2C%20-21.161%5D%2C%20%5B55.485%2C%20-21.159%5D%2C%20%5B55.489%2C%20-21.156%5D%2C%20%5B55.489%2C%20-21.145%5D%2C%20%5B55.5%2C%20-21.139%5D%2C%20%5B55.496%2C%20-21.125%5D%2C%20%5B55.473%2C%20-21.121%5D%2C%20%5B55.468%2C%20-21.13%5D%2C%20%5B55.456%2C%20-21.124%5D%2C%20%5B55.457%2C%20-21.115%5D%2C%20%5B55.447%2C%20-21.119%5D%2C%20%5B55.455%2C%20-21.135%5D%2C%20%5B55.427%2C%20-21.14%5D%2C%20%5B55.419%2C%20-21.152%5D%2C%20%5B55.424%2C%20-21.165%5D%2C%20%5B55.441%2C%20-21.166%5D%2C%20%5B55.446%2C%20-21.174%5D%2C%20%5B55.437%2C%20-21.18%5D%2C%20%5B55.449%2C%20-21.188%5D%2C%20%5B55.444%2C%20-21.194%5D%2C%20%5B55.454%2C%20-21.211%5D%2C%20%5B55.45%2C%20-21.209%5D%2C%20%5B55.45%2C%20-21.217%5D%2C%20%5B55.456%2C%20-21.234%5D%2C%20%5B55.45%2C%20-21.244%5D%2C%20%5B55.452%2C%20-21.23%5D%2C%20%5B55.444%2C%20-21.214%5D%2C%20%5B55.443%2C%20-21.225%5D%2C%20%5B55.439%2C%20-21.224%5D%2C%20%5B55.429%2C%20-21.236%5D%2C%20%5B55.429%2C%20-21.229%5D%2C%20%5B55.423%2C%20-21.226%5D%2C%20%5B55.415%2C%20-21.226%5D%2C%20%5B55.414%2C%20-21.231%5D%2C%20%5B55.408%2C%20-21.219%5D%2C%20%5B55.409%2C%20-21.213%5D%2C%20%5B55.42%2C%20-21.212%5D%2C%20%5B55.413%2C%20-21.215%5D%2C%20%5B55.416%2C%20-21.216%5D%2C%20%5B55.439%2C%20-21.205%5D%2C%20%5B55.438%2C%20-21.191%5D%2C%20%5B55.432%2C%20-21.19%5D%2C%20%5B55.43%2C%20-21.182%5D%2C%20%5B55.427%2C%20-21.185%5D%2C%20%5B55.431%2C%20-21.19%5D%2C%20%5B55.429%2C%20-21.194%5D%2C%20%5B55.425%2C%20-21.184%5D%2C%20%5B55.419%2C%20-21.186%5D%2C%20%5B55.409%2C%20-21.182%5D%2C%20%5B55.415%2C%20-21.191%5D%2C%20%5B55.41%2C%20-21.195%5D%2C%20%5B55.406%2C%20-21.192%5D%2C%20%5B55.404%2C%20-21.201%5D%2C%20%5B55.396%2C%20-21.205%5D%2C%20%5B55.401%2C%20-21.23%5D%2C%20%5B55.396%2C%20-21.236%5D%2C%20%5B55.383%2C%20-21.228%5D%2C%20%5B55.385%2C%20-21.22%5D%2C%20%5B55.374%2C%20-21.23%5D%2C%20%5B55.371%2C%20-21.223%5D%2C%20%5B55.363%2C%20-21.224%5D%2C%20%5B55.374%2C%20-21.205%5D%2C%20%5B55.369%2C%20-21.209%5D%2C%20%5B55.354%2C%20-21.204%5D%2C%20%5B55.343%2C%20-21.207%5D%2C%20%5B55.359%2C%20-21.191%5D%2C%20%5B55.354%2C%20-21.199%5D%2C%20%5B55.356%2C%20-21.2%5D%2C%20%5B55.364%2C%20-21.185%5D%2C%20%5B55.386%2C%20-21.181%5D%2C%20%5B55.388%2C%20-21.175%5D%2C%20%5B55.367%2C%20-21.16%5D%2C%20%5B55.367%2C%20-21.154%5D%2C%20%5B55.365%2C%20-21.073%5D%2C%20%5B55.379%2C%20-21.039%5D%2C%20%5B55.374%2C%20-21.035%5D%2C%20%5B55.37%2C%20-21.042%5D%2C%20%5B55.357%2C%20-21.033%5D%2C%20%5B55.371%2C%20-21.018%5D%2C%20%5B55.352%2C%20-20.997%5D%2C%20%5B55.361%2C%20-20.989%5D%2C%20%5B55.349%2C%20-20.978%5D%2C%20%5B55.353%2C%20-20.976%5D%2C%20%5B55.36%2C%20-20.982%5D%2C%20%5B55.364%2C%20-20.975%5D%2C%20%5B55.382%2C%20-20.99%5D%2C%20%5B55.39%2C%20-20.991%5D%2C%20%5B55.401%2C%20-20.984%5D%2C%20%5B55.399%2C%20-20.974%5D%2C%20%5B55.381%2C%20-20.979%5D%2C%20%5B55.369%2C%20-20.975%5D%2C%20%5B55.372%2C%20-20.97%5D%2C%20%5B55.357%2C%20-20.961%5D%2C%20%5B55.372%2C%20-20.962%5D%2C%20%5B55.353%2C%20-20.95%5D%2C%20%5B55.369%2C%20-20.953%5D%2C%20%5B55.37%2C%20-20.943%5D%2C%20%5B55.389%2C%20-20.935%5D%2C%20%5B55.373%2C%20-20.912%5D%2C%20%5B55.368%2C%20-20.921%5D%2C%20%5B55.354%2C%20-20.922%5D%2C%20%5B55.369%2C%20-20.909%5D%2C%20%5B55.367%2C%20-20.904%5D%2C%20%5B55.371%2C%20-20.897%5D%2C%20%5B55.389%2C%20-20.893%5D%5D%2C%20%5B%5B55.642%2C%20-21.113%5D%2C%20%5B55.626%2C%20-21.121%5D%2C%20%5B55.623%2C%20-21.127%5D%2C%20%5B55.599%2C%20-21.133%5D%2C%20%5B55.6%2C%20-21.146%5D%2C%20%5B55.584%2C%20-21.13%5D%2C%20%5B55.58%2C%20-21.131%5D%2C%20%5B55.585%2C%20-21.138%5D%2C%20%5B55.583%2C%20-21.145%5D%2C%20%5B55.588%2C%20-21.143%5D%2C%20%5B55.595%2C%20-21.155%5D%2C%20%5B55.603%2C%20-21.154%5D%2C%20%5B55.603%2C%20-21.168%5D%2C%20%5B55.615%2C%20-21.171%5D%2C%20%5B55.621%2C%20-21.164%5D%2C%20%5B55.617%2C%20-21.17%5D%2C%20%5B55.621%2C%20-21.176%5D%2C%20%5B55.637%2C%20-21.167%5D%2C%20%5B55.647%2C%20-21.149%5D%2C%20%5B55.642%2C%20-21.139%5D%2C%20%5B55.653%2C%20-21.136%5D%2C%20%5B55.657%2C%20-21.133%5D%2C%20%5B55.652%2C%20-21.128%5D%2C%20%5B55.662%2C%20-21.119%5D%2C%20%5B55.655%2C%20-21.118%5D%2C%20%5B55.649%2C%20-21.126%5D%2C%20%5B55.645%2C%20-21.123%5D%2C%20%5B55.653%2C%20-21.114%5D%2C%20%5B55.642%2C%20-21.113%5D%5D%5D%2C%20%5B%5B%5B55.507%2C%20-21.048%5D%2C%20%5B55.498%2C%20-21.05%5D%2C%20%5B55.492%2C%20-21.041%5D%2C%20%5B55.494%2C%20-21.037%5D%2C%20%5B55.503%2C%20-21.035%5D%2C%20%5B55.507%2C%20-21.048%5D%5D%5D%5D%2C%20%22type%22%3A%20%22MultiPolygon%22%7D%2C%20%22id%22%3A%20%2227%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/2010%22%2C%20%22is_marine%22%3A%20%22False%22%2C%20%22iucn_cat%22%3A%20%22Not%20Applicable%22%2C%20%22orig_name%22%3A%20%22Pitons%2C%20cirques%20et%20remparts%20de%20l%5Cu2019ile%20de%20la%20R%5Cu00e9union%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Pitons%2C%20cirques%20and%20remparts%20of%20Reunion%20Island%22%2C%20%22status%22%3A%20%22Inscribed%22%2C%20%22type%22%3A%20%22World%20Heritage%20Site%20%28natural%20or%20mixed%29%22%2C%20%22wdpa_id%22%3A%20555512006%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B55.419%2C%20-21.32%5D%2C%20%5B55.425%2C%20-21.324%5D%2C%20%5B55.432%2C%20-21.326%5D%2C%20%5B55.425%2C%20-21.324%5D%2C%20%5B55.417%2C%20-21.319%5D%2C%20%5B55.414%2C%20-21.317%5D%2C%20%5B55.414%2C%20-21.316%5D%2C%20%5B55.414%2C%20-21.315%5D%2C%20%5B55.413%2C%20-21.314%5D%2C%20%5B55.413%2C%20-21.314%5D%2C%20%5B55.414%2C%20-21.313%5D%2C%20%5B55.419%2C%20-21.32%5D%5D%5D%2C%20%22type%22%3A%20%22Polygon%22%7D%2C%20%22id%22%3A%20%2228%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/2010%22%2C%20%22is_marine%22%3A%20%22True%22%2C%20%22iucn_cat%22%3A%20%22IV%22%2C%20%22orig_name%22%3A%20%22Pierrefonds%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Pierrefonds%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22Land%20Acquired%20By%20Conservatoire%20Du%20Littoral%20%28National%20Seaside%20And%20Lakeside%20Conservancy%29%22%2C%20%22wdpa_id%22%3A%20555546432%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B%5B55.687%2C%20-21.101%5D%2C%20%5B55.662%2C%20-21.113%5D%2C%20%5B55.658%2C%20-21.108%5D%2C%20%5B55.665%2C%20-21.102%5D%2C%20%5B55.687%2C%20-21.101%5D%5D%5D%2C%20%5B%5B%5B55.662%2C%20-21.119%5D%2C%20%5B55.657%2C%20-21.127%5D%2C%20%5B55.649%2C%20-21.128%5D%2C%20%5B55.651%2C%20-21.121%5D%2C%20%5B55.654%2C%20-21.12%5D%2C%20%5B55.652%2C%20-21.123%5D%2C%20%5B55.653%2C%20-21.124%5D%2C%20%5B55.66%2C%20-21.116%5D%2C%20%5B55.662%2C%20-21.119%5D%5D%5D%2C%20%5B%5B%5B55.643%2C%20-21.114%5D%2C%20%5B55.649%2C%20-21.112%5D%2C%20%5B55.653%2C%20-21.114%5D%2C%20%5B55.647%2C%20-21.115%5D%2C%20%5B55.643%2C%20-21.121%5D%2C%20%5B55.643%2C%20-21.114%5D%5D%2C%20%5B%5B55.647%2C%20-21.115%5D%2C%20%5B55.646%2C%20-21.114%5D%2C%20%5B55.645%2C%20-21.116%5D%2C%20%5B55.645%2C%20-21.117%5D%2C%20%5B55.647%2C%20-21.115%5D%5D%5D%2C%20%5B%5B%5B55.657%2C%20-21.133%5D%2C%20%5B55.653%2C%20-21.136%5D%2C%20%5B55.648%2C%20-21.134%5D%2C%20%5B55.654%2C%20-21.13%5D%2C%20%5B55.657%2C%20-21.133%5D%5D%5D%2C%20%5B%5B%5B55.648%2C%20-21.12%5D%2C%20%5B55.647%2C%20-21.125%5D%2C%20%5B55.643%2C%20-21.128%5D%2C%20%5B55.643%2C%20-21.121%5D%2C%20%5B55.648%2C%20-21.12%5D%5D%5D%2C%20%5B%5B%5B55.651%2C%20-21.118%5D%2C%20%5B55.649%2C%20-21.119%5D%2C%20%5B55.648%2C%20-21.118%5D%2C%20%5B55.649%2C%20-21.116%5D%2C%20%5B55.651%2C%20-21.118%5D%5D%5D%5D%2C%20%22type%22%3A%20%22MultiPolygon%22%7D%2C%20%22id%22%3A%20%2229%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/2011%22%2C%20%22is_marine%22%3A%20%22False%22%2C%20%22iucn_cat%22%3A%20%22IV%22%2C%20%22orig_name%22%3A%20%22Pandanaie%20Des%20Hauts%20De%20L%5Cu0027Est%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Pandanaie%20Des%20Hauts%20De%20L%5Cu0027Est%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22Biotope%20Protection%20Order%22%2C%20%22wdpa_id%22%3A%20555547168%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B%5B55.73%2C%20-21.06%5D%2C%20%5B55.73%2C%20-21.06%5D%2C%20%5B55.73%2C%20-21.06%5D%2C%20%5B55.73%2C%20-21.06%5D%2C%20%5B55.73%2C%20-21.06%5D%5D%5D%2C%20%5B%5B%5B55.73%2C%20-21.059%5D%2C%20%5B55.73%2C%20-21.059%5D%2C%20%5B55.73%2C%20-21.059%5D%2C%20%5B55.73%2C%20-21.059%5D%2C%20%5B55.73%2C%20-21.059%5D%5D%5D%5D%2C%20%22type%22%3A%20%22MultiPolygon%22%7D%2C%20%22id%22%3A%20%2230%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/2014%22%2C%20%22is_marine%22%3A%20%22False%22%2C%20%22iucn_cat%22%3A%20%22IV%22%2C%20%22orig_name%22%3A%20%22Saint%20Francois%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Saint%20Francois%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22Land%20Acquired%20By%20Conservatoire%20Du%20Littoral%20%28National%20Seaside%20And%20Lakeside%20Conservancy%29%22%2C%20%22wdpa_id%22%3A%20555561898%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B%5B55.795%2C%20-21.309%5D%2C%20%5B55.79%2C%20-21.308%5D%2C%20%5B55.773%2C%20-21.307%5D%2C%20%5B55.792%2C%20-21.306%5D%2C%20%5B55.795%2C%20-21.309%5D%5D%5D%2C%20%5B%5B%5B55.805%2C%20-21.323%5D%2C%20%5B55.803%2C%20-21.322%5D%2C%20%5B55.803%2C%20-21.321%5D%2C%20%5B55.804%2C%20-21.321%5D%2C%20%5B55.805%2C%20-21.323%5D%5D%5D%5D%2C%20%22type%22%3A%20%22MultiPolygon%22%7D%2C%20%22id%22%3A%20%2231%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/2015%22%2C%20%22is_marine%22%3A%20%22False%22%2C%20%22iucn_cat%22%3A%20%22IV%22%2C%20%22orig_name%22%3A%20%22Pentes%20Du%20Piton%20Takamaka%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Pentes%20Du%20Piton%20Takamaka%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22Land%20Acquired%20By%20Conservatoire%20Du%20Littoral%20%28National%20Seaside%20And%20Lakeside%20Conservancy%29%22%2C%20%22wdpa_id%22%3A%20555595768%7D%2C%20%22type%22%3A%20%22Feature%22%7D%2C%20%7B%22geometry%22%3A%20%7B%22coordinates%22%3A%20%5B%5B%5B%5B55.352%2C%20-21.067%5D%2C%20%5B55.357%2C%20-21.068%5D%2C%20%5B55.352%2C%20-21.078%5D%2C%20%5B55.344%2C%20-21.074%5D%2C%20%5B55.346%2C%20-21.067%5D%2C%20%5B55.352%2C%20-21.067%5D%5D%5D%2C%20%5B%5B%5B55.37%2C%20-21.18%5D%2C%20%5B55.368%2C%20-21.183%5D%2C%20%5B55.36%2C%20-21.176%5D%2C%20%5B55.363%2C%20-21.174%5D%2C%20%5B55.37%2C%20-21.18%5D%5D%5D%5D%2C%20%22type%22%3A%20%22MultiPolygon%22%7D%2C%20%22id%22%3A%20%2232%22%2C%20%22properties%22%3A%20%7B%22ctry_iso3%22%3A%20%22REU%22%2C%20%22date%22%3A%20%2201/01/2016%22%2C%20%22is_marine%22%3A%20%22False%22%2C%20%22iucn_cat%22%3A%20%22IV%22%2C%20%22orig_name%22%3A%20%22Tamarinaies%20Des%20Hauts%20Sous%20Le%20Vent%20%28Des%29%22%2C%20%22owner_type%22%3A%20%22Not%20Reported%22%2C%20%22pa_name%22%3A%20%22Tamarinaies%20Des%20Hauts%20Sous%20Le%20Vent%20%28Des%29%22%2C%20%22status%22%3A%20%22Designated%22%2C%20%22type%22%3A%20%22Forest%20Managed%20Biological%20Reserve%22%2C%20%22wdpa_id%22%3A%20555640666%7D%2C%20%22type%22%3A%20%22Feature%22%7D%5D%2C%20%22type%22%3A%20%22FeatureCollection%22%7D%29%3B%0A%0A%20%20%20%20%20%20%20%20%0A%3C/script%3E onload="this.contentDocument.open();this.contentDocument.write(    decodeURIComponent(this.getAttribute('data-html')));this.contentDocument.close();" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe></div></div></div>
 </div>
 </div>
-<div class="section" id="Command-line">
-<h2>Command line<a class="headerlink" href="#Command-line" title="Permalink to this headline">¶</a></h2>
-<p>The function <code class="docutils literal notranslate"><span class="pre">.get_wdpa()</span></code> can be directly executed in a shell using the <code class="docutils literal notranslate"><span class="pre">pywdpa</span></code> command followed by the country iso code as argument. This will download the shapefile of the protected areas for the Reunion Island in the current working directory.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
+<div class="cell markdown docutils container">
+<p class="rubric" id="command-line">Command line</p>
+<p>The function <code class="docutils literal notranslate"><span class="pre">.get_wdpa()</span></code> can be directly executed in a shell
+using the <code class="docutils literal notranslate"><span class="pre">pywdpa</span></code> command followed by the country iso code as
+argument. This will download the shapefile of the protected areas for
+the Reunion Island in the current working directory.</p>
 </div>
-<div class="input_area highlight-bash notranslate"><div class="highlight"><pre>
-<span></span>%%bash
+<div class="cell code docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">bash</span>
 <span class="c1"># In a shell</span>
-pywdpa REU
+<span class="n">pywdpa</span> <span class="n">REU</span>
+</pre></div>
+</div>
+<div class="output stream stdout docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Executing</span> <span class="n">pywdpa</span> <span class="n">version</span> <span class="mf">0.1.5</span><span class="o">.</span>
+<span class="n">For</span> <span class="n">country</span> <span class="k">with</span> <span class="n">isocode</span><span class="p">:</span> <span class="n">REU</span><span class="o">.</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
 </div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Executing pywdpa version 0.1.5.
-For country with isocode: REU.
-</pre></div></div>
-</div>
-</div>
-</div>
+</section>
 
 
           </div>
@@ -654,14 +322,14 @@ For country with isocode: REU.
     <div class="clearer"></div>
   </div>
     <div class="footer">
-      &copy;2020, Ghislain Vieilledent.
+      &#169;2024, Cirad.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.3.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
       
       |
-      <a href="../_sources/notebooks/get_started.ipynb.txt"
+      <a href="../_sources/notebooks/get_started.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

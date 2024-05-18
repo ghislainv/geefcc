@@ -9,21 +9,20 @@
 # license         :GPLv3
 # ==============================================================================
 
-import sys
-
-from .get_wdpa import get_wdpa
-
-__version__ = "0.1.5"
+import pyfcc
 
 
 def main():
+    """pyfcc.pyfcc: provides entry point main().
+
+    Running ``pyfcc`` in the terminal prints ``pyfcc``
+    description and version. Can be used to check that the
+    ``pyfcc`` Python package has been correctly imported.
+
     """
-    pywdpa.pywdpa: provides entry point main().
-    """
-    isocode = sys.argv[1]
-    print("Executing pywdpa version {}.".format(__version__))
-    print("For country with isocode: {}.".format(isocode))
-    get_wdpa(isocode)
-    return None
+
+    print(pyfcc.__doc__)
+    print(f"version {pyfcc.__version__}.")
+
 
 # End
