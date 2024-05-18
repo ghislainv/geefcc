@@ -6,6 +6,6 @@
 
 def get_fcc():
     """Get forest cover change data."""
-    print("get_fcc() function")
+    return "get_fcc"
 
 # End
