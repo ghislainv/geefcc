@@ -27,7 +27,7 @@ The ``pyfcc`` Python package is...
 .. image:: https://ecology.ghislainv.fr/pyfcc/_static/banner_pyfcc.png
    :align: center
    :target: https://ecology.ghislainv.fr/pyfcc
-   :alt: protected-planet
+   :alt: banner_pyfcc
 
 Installation
 ============
