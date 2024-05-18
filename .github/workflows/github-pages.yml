@@ -1,0 +1,46 @@
+name: Publish to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v3
+
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+           python-version: '3.11'
+
+      - name: Install gdal
+        run: |
+          sudo add-apt-repository --yes ppa:ubuntugis/ppa
+          sudo apt-get --quiet update
+          sudo apt-get install --yes gdal-bin libgdal-dev
+
+      - name: Installing Python packages
+        run: |
+          python3 -m pip install --upgrade pip setuptools wheel
+          # Install NumPy before GDAL
+          python3 -m pip install numpy
+          python3 -m pip install gdal==$(gdal-config --version)
+          python3 -m pip install -r requirements.txt
+          python3 -m pip install sphinx
+          python3 -m pip install .
+
+      - name: Building documentation
+        run: sphinx-build docsrc docs/html -b html -d docs/doctree
+
+      - name: Adding nojekyll file
+        run: touch docs/html/.nojekyll
+
+      - name: Deploy generated content to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        with:
+          branch: gh-pages
+          folder: docs/html
