@@ -102,14 +102,23 @@
 <p><a class="reference external" href="https://pypi.org/project/geefcc"><img alt="Python version" src="https://img.shields.io/pypi/pyversions/geefcc?logo=python&amp;logoColor=ffd43b&amp;color=306998" /></a> <a class="reference external" href="https://pypi.org/project/geefcc"><img alt="PyPI version" src="https://img.shields.io/pypi/v/geefcc" /></a> <a class="reference external" href="https://github.com/ghislainv/geefcc/actions"><img alt="GitHub Actions" src="https://github.com/ghislainv/geefcc/workflows/PyPkg/badge.svg" /></a> <a class="reference external" href="https://www.gnu.org/licenses/gpl-3.0.html"><img alt="License GPLv3" src="https://img.shields.io/badge/licence-GPLv3-8f10cb.svg" /></a> <a class="reference external" href="https://doi.org/10.5281/zenodo.4275513"><img alt="Zenodo" src="https://zenodo.org/badge/DOI/10.5281/zenodo.4275513.svg" /></a></p>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">geefcc</span></code> Python package is…</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">geefcc</span></code> Python package can be used to make forest cover change (fcc) maps from Google Earth Engine (GEE) and download them locally. Forest cover change maps are obtained from two global tree/forest cover change products: <a class="reference external" href="https://https://glad.earthengine.app/view/global-forest-change">Global Forest Change</a> or <a class="reference external" href="https://forobs.jrc.ec.europa.eu/TMF">Tropical Moist Forests</a>. These two products are derived from the Landsat satellite image archive and provide tree/forest cover data at 30 m resolution.</p>
 <a class="reference external image-reference" href="https://ecology.ghislainv.fr/geefcc"><img alt="banner_geefcc" class="align-center" src="https://ecology.ghislainv.fr/geefcc/_static/banner_geefcc.png" />
 </a>
+<p>The <code class="docutils literal notranslate"><span class="pre">geefcc</span></code> package depends on the <a class="reference external" href="https://github.com/google/Xee">xee</a> Python package, which allows opening GEE datasets locally without exporting data to GEE assets or Google Drive. The user only has to specify an area of interest (aoi), either with an extent, a polygon vector file, or a country iso code (e.g. PER for Peru), and the years defining the time periods considered for the forest cover change (e.g. 2000, 2010, 2020). For the Global Forest Change product, the users also has to specify a tree cover threshold to define the forest (e.g. 75%).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The current version of the package uses GFC data up to year 2023 (<a class="reference external" href="https://developers.google.com/earth-engine/datasets/catalog/UMD_hansen_global_forest_change_2023_v1_11">GFC v1.11 2023</a>) and TMF data up to year 2022 (<a class="reference external" href="https://forobs.jrc.ec.europa.eu/TMF/data">TMF v1 2022</a>) so that years for computing forest cover change can be in the interval 2001–2024 for GFC (GFC does not provide loss for the year 2000) and 2000–2023 for TMF. Forest cover is given on the 1<sup>st</sup> of January for each year. The current version of the package only considers <strong>deforestation as change</strong> and <strong>not forest gain or regrowth</strong>.</p>
+</div>
+</section>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">¶</a></h2>
+<p>To use the <code class="docutils literal notranslate"><span class="pre">geefcc</span></code> Python package, you need a Google account and an <a class="reference external" href="https://developers.google.com/earth-engine/guides/access#a-role-in-a-cloud-project">access to Earth Engine</a> either via a Google Cloud project that’s registered to use Earth Engine or via an individually signed-up account. Please follow this link <a class="reference external" href="https://code.earthengine.google.com/register">to register for Earth Engine</a>.</p>
 </section>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
 <p>The easiest way to install the <code class="docutils literal notranslate"><span class="pre">geefcc</span></code> Python package is via <a class="reference external" href="https://pip.pypa.io/en/stable/">pip</a>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="c1"># For version on PyPI</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="c1"># For last stable version on PyPI</span>
 $<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>geefcc
 </pre></div>
 </div>
