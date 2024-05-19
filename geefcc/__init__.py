@@ -1,6 +1,6 @@
 """
-pyfcc: Forest cover change from Google Earth Engine.
-https://ecology.ghislainv.fr/pyfcc/
+geefcc: Forest cover change from Google Earth Engine.
+https://ecology.ghislainv.fr/geefcc/
 """
 
 from .get_fcc import get_fcc

@@ -19,7 +19,7 @@ from setuptools import setup
 # find_version
 def find_version():
     """Finding package version."""
-    with open("pyfcc/__init__.py", encoding="utf-8") as init_file:
+    with open("geefcc/__init__.py", encoding="utf-8") as init_file:
         init_text = init_file.read()
     far_version = (re.search('^__version__\\s*=\\s*"(.*)"',
                              init_text, re.M)
@@ -35,17 +35,17 @@ with io.open("README.rst", encoding="utf-8") as f:
 
 # Project URLs
 project_urls = {
-    "Documentation": "https://ecology.ghislainv.fr/pyfcc",
-    "Source": "https://github.com/ghislainv/pyfcc/",
-    "Traker": "https://github.com/ghislainv/pyfcc/issues",
+    "Documentation": "https://ecology.ghislainv.fr/geefcc",
+    "Source": "https://github.com/ghislainv/geefcc/",
+    "Traker": "https://github.com/ghislainv/geefcc/issues",
 }
 
 # Setup
-setup(name="pyfcc",
+setup(name="geefcc",
       version=version,
       author="Ghislain Vieilledent",
       author_email="ghislain.vieilledent@cirad.fr",
-      url="https://ecology.ghislainv.fr/pyfcc",
+      url="https://ecology.ghislainv.fr/geefcc",
       project_urls=project_urls,
       license="GPLv3",
       description="Forest cover change from Google Earth Engine",
@@ -60,9 +60,9 @@ setup(name="pyfcc",
       keywords=("deforestation tropical forests forest "
                 "cover change map google earth engine"),
       python_requires=">=3.6",
-      packages=["pyfcc"],
-      package_dir={"pyfcc": "pyfcc"},
-      entry_points={"console_scripts": ["pyfcc = pyfcc.pyfcc:main"]},
+      packages=["geefcc"],
+      package_dir={"geefcc": "geefcc"},
+      entry_points={"console_scripts": ["geefcc = geefcc.geefcc:main"]},
       install_requires=["numpy", "gdal", "xarray", "xee"],
       extras_require={
           "interactive": ["jupyter", "geopandas",

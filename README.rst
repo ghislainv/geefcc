@@ -6,13 +6,13 @@
    # license         :GPLv3
    # ==============================================================================
 
-.. image:: https://ecology.ghislainv.fr/pyfcc/_static/logo-pyfcc.svg
+.. image:: https://ecology.ghislainv.fr/geefcc/_static/logo-geefcc.svg
    :align: right
-   :target: https://ecology.ghislainv.fr/pyfcc
-   :alt: Logo pyfcc
+   :target: https://ecology.ghislainv.fr/geefcc
+   :alt: Logo geefcc
    :width: 140px
 	   
-``pyfcc`` Python package
+``geefcc`` Python package
 *************************
 
 
@@ -22,60 +22,60 @@
 Overview
 ========
 
-The ``pyfcc`` Python package is...
+The ``geefcc`` Python package is...
 
-.. image:: https://ecology.ghislainv.fr/pyfcc/_static/banner_pyfcc.png
+.. image:: https://ecology.ghislainv.fr/geefcc/_static/banner_geefcc.png
    :align: center
-   :target: https://ecology.ghislainv.fr/pyfcc
-   :alt: banner_pyfcc
+   :target: https://ecology.ghislainv.fr/geefcc
+   :alt: banner_geefcc
 
 Installation
 ============
 
-The easiest way to install the ``pyfcc`` Python package is via `pip <https://pip.pypa.io/en/stable/>`_:
+The easiest way to install the ``geefcc`` Python package is via `pip <https://pip.pypa.io/en/stable/>`_:
 
 .. code-block:: bash
 
    $ # For version on PyPI
-   $ python -m pip install pyfcc
+   $ python -m pip install geefcc
 
 or 
 
 .. code-block:: bash
 
    $ # For development version on GitHub
-   $ python -m pip install https://github.com/ghislainv/pyfcc/archive/master.zip
+   $ python -m pip install https://github.com/ghislainv/geefcc/archive/master.zip
 
-but you can also install ``pyfcc`` executing the ``setup.py`` file:
+but you can also install ``geefcc`` executing the ``setup.py`` file:
 
 .. code-block:: bash
 
-   $ git clone https://github.com/ghislainv/pyfcc
-   $ cd pyfcc
+   $ git clone https://github.com/ghislainv/geefcc
+   $ cd geefcc
    $ python setup.py install
 
 Contributing
 ============
 
-The ``pyfcc`` Python package is Open Source and released under
+The ``geefcc`` Python package is Open Source and released under
 the `GNU GPL version 3 license
-<https://ecology.ghislainv.fr/pyfcc/license.html>`__. Anybody
+<https://ecology.ghislainv.fr/geefcc/license.html>`__. Anybody
 who is interested can contribute to the package development following
 our `Community guidelines
-<https://ecology.ghislainv.fr/pyfcc/contributing.html>`__. Every
+<https://ecology.ghislainv.fr/geefcc/contributing.html>`__. Every
 contributor must agree to follow the project's `Code of conduct
-<https://ecology.ghislainv.fr/pyfcc/code_of_conduct.html>`__.
+<https://ecology.ghislainv.fr/geefcc/code_of_conduct.html>`__.
    
-.. |Python version| image:: https://img.shields.io/pypi/pyversions/pyfcc?logo=python&logoColor=ffd43b&color=306998
-   :target: https://pypi.org/project/pyfcc
+.. |Python version| image:: https://img.shields.io/pypi/pyversions/geefcc?logo=python&logoColor=ffd43b&color=306998
+   :target: https://pypi.org/project/geefcc
    :alt: Python version
 
-.. |PyPI version| image:: https://img.shields.io/pypi/v/pyfcc
-   :target: https://pypi.org/project/pyfcc
+.. |PyPI version| image:: https://img.shields.io/pypi/v/geefcc
+   :target: https://pypi.org/project/geefcc
    :alt: PyPI version
 
-.. |GitHub Actions| image:: https://github.com/ghislainv/pyfcc/workflows/PyPkg/badge.svg
-   :target: https://github.com/ghislainv/pyfcc/actions
+.. |GitHub Actions| image:: https://github.com/ghislainv/geefcc/workflows/PyPkg/badge.svg
+   :target: https://github.com/ghislainv/geefcc/actions
    :alt: GitHub Actions
 	 
 .. |License| image:: https://img.shields.io/badge/licence-GPLv3-8f10cb.svg

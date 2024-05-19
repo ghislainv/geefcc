@@ -11,7 +11,7 @@
 
 # Import
 import os.path
-from pyfcc import get_fcc
+from geefcc import get_fcc
 
 
 # test_get_fcc

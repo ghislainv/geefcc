@@ -9,20 +9,20 @@
 # license         :GPLv3
 # ==============================================================================
 
-import pyfcc
+import geefcc
 
 
 def main():
-    """pyfcc.pyfcc: provides entry point main().
+    """geefcc.geefcc: provides entry point main().
 
-    Running ``pyfcc`` in the terminal prints ``pyfcc``
+    Running ``geefcc`` in the terminal prints ``geefcc``
     description and version. Can be used to check that the
-    ``pyfcc`` Python package has been correctly imported.
+    ``geefcc`` Python package has been correctly imported.
 
     """
 
-    print(pyfcc.__doc__)
-    print(f"version {pyfcc.__version__}.")
+    print(geefcc.__doc__)
+    print(f"version {geefcc.__version__}.")
 
 
 # End

@@ -18,7 +18,7 @@ import re  # Regular expression
 
 def find_author_release():
     """Finding package authors and release."""
-    with open("../pyfcc/__init__.py", encoding="utf-8") as file:
+    with open("../geefcc/__init__.py", encoding="utf-8") as file:
         file_text = file.read()
     _author = re.search('^__author__\\s*=\\s*"(.*)"',
                         file_text, re.M).group(1)
@@ -29,7 +29,7 @@ def find_author_release():
 
 # -- Project information -----------------------------------------------------
 
-project = "pyfcc"
+project = "geefcc"
 (author, release) = find_author_release()
 _today = datetime.date.today()
 year = _today.year
@@ -79,12 +79,12 @@ html_theme_options = {
     'sidebar_text': '#49443E',
     'github_banner': 'false',
     'github_user': 'ghislainv',
-    'github_repo': 'pyfcc',
+    'github_repo': 'geefcc',
     'github_button': 'true',
     'github_type': 'star',
     'travis_button': 'false',
     'codecov_button': 'false',
-    'logo': 'logo-pyfcc.svg',
+    'logo': 'logo-geefcc.svg',
     'logo_name': 'true',
     'page_width': '1300px',
     'body_max_width': 'auto',
@@ -92,9 +92,9 @@ html_theme_options = {
 }
 
 html_favicon = "_static/favicon.ico"
-html_title = "pyfcc — Forest cover change from Google Earth Engine"
-html_short_title = "pyfcc"
-html_base_url = "https://ecology.ghislainv.fr/pyfcc/"
+html_title = "geefcc — Forest cover change from Google Earth Engine"
+html_short_title = "geefcc"
+html_base_url = "https://ecology.ghislainv.fr/geefcc/"
 
 
 # Add any paths that contain custom static files (such as style sheets) here,

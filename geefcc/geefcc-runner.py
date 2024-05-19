@@ -10,10 +10,10 @@
 # ==============================================================================
 
 """
-Convenience wrapper for running pyfcc directly from source tree. See https://gehrcke.de/2014/02/distributing-a-python-command-line-application/.
+Convenience wrapper for running geefcc directly from source tree. See https://gehrcke.de/2014/02/distributing-a-python-command-line-application/.
 """
 
-from pyfcc.pyfcc import main
+from geefcc.geefcc import main
 
 if __name__ == '__main__':
     main()
