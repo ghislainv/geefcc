@@ -46,6 +46,6 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       env:
-        earthengine_token: ${{ secrets.earthengine_token }}
+        EARTHENGINE_TOKEN: ${{ secrets.earthengine_token }}
       run: |
         pytest
