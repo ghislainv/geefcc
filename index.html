@@ -114,6 +114,14 @@
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">¶</a></h2>
 <p>To use the <code class="docutils literal notranslate"><span class="pre">geefcc</span></code> Python package, you need a Google account and an <a class="reference external" href="https://developers.google.com/earth-engine/guides/access#a-role-in-a-cloud-project">access to Earth Engine</a> either via a Google Cloud project that’s registered to use Earth Engine or via an individually signed-up account. Please follow this link <a class="reference external" href="https://code.earthengine.google.com/register">to register for Earth Engine</a>.</p>
+<p>You must always initialize GEE before using <code class="docutils literal notranslate"><span class="pre">geefcc</span></code> functions specifying a Google Cloud project name and <a class="reference external" href="https://developers.google.com/earth-engine/cloud/highvolume">Earth Engine high-volume endpoint</a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ee</span><span class="o">.</span><span class="n">Initialize</span><span class="p">(</span>
+  <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
+  <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+  <span class="n">opt_url</span><span class="o">=</span><span class="s2">&quot;https://earthengine-highvolume.googleapis.com&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
 </section>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
