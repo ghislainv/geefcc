@@ -2,9 +2,9 @@
 
 import os
 
-from download_gadm import download_gadm
-from make_grid import create_buffer
-from get_vector_extent import get_vector_extent
+from .download_gadm import download_gadm
+from .make_grid import create_buffer
+from .get_vector_extent import get_vector_extent
 
 opj = os.path.join
 opd = os.path.dirname

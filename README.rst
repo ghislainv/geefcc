@@ -38,7 +38,16 @@ Prerequisites
 =============
 
 To use the ``geefcc`` Python package, you need a Google account and an `access to Earth Engine <https://developers.google.com/earth-engine/guides/access#a-role-in-a-cloud-project>`_ either via a Google Cloud project that's registered to use Earth Engine or via an individually signed-up account. Please follow this link `to register for Earth Engine <https://code.earthengine.google.com/register>`_.
-	 
+
+You must always initialize GEE before using ``geefcc`` functions specifying a Google Cloud project name and `Earth Engine high-volume endpoint <https://developers.google.com/earth-engine/cloud/highvolume>`_:
+
+.. code-block:: python
+
+    ee.Initialize(
+      credentials=credentials,
+      project=project,
+      opt_url="https://earthengine-highvolume.googleapis.com"
+    )
 
 Installation
 ============

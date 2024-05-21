@@ -3,12 +3,12 @@
 import os
 import multiprocessing as mp
 
-from get_extent_from_aoi import get_extent_from_aoi
-from make_dir import make_dir
-from make_grid import make_grid, grid_intersection
-from geeic2geotiff import geeic2geotiff
-from ee_tmf import ee_tmf
-from geotiff_from_tiles import geotiff_from_tiles
+from .get_extent_from_aoi import get_extent_from_aoi
+from .make_dir import make_dir
+from .make_grid import make_grid, grid_intersection
+from .geeic2geotiff import geeic2geotiff
+from .ee_tmf import ee_tmf
+from .geotiff_from_tiles import geotiff_from_tiles
 
 opj = os.path.join
 opd = os.path.dirname
@@ -98,16 +98,5 @@ def get_fcc(ee_project,
     # Geotiff from tiles
     geotiff_from_tiles(extent_latlong, scale, out_dir)
 
-
-
-# # Test
-# ee_project = "forestatrisk"
-# aoi = "REU"
-# buff = 0.08983152841195216
-# years = [2000, 2010, 2020]
-# source = "tmf"
-# perc = 75
-# tile_size = 0.5
-# output_file = "tmp_outputs/fcc.tiff"
 
 # End

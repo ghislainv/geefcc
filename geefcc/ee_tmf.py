@@ -3,10 +3,8 @@
 import ee
 
 
-def ee_tmf(ee_project, years):
+def ee_tmf(years):
     """Compute fcc on GEE using the TMF product.
-
-    :param ee_project: Earth Engine project name.
 
     :param years: List of years defining time-periods for estimating
         forest cover change. Years for computing forest cover change
@@ -17,11 +15,6 @@ def ee_tmf(ee_project, years):
         correspond to a year.
 
     """
-
-    # Initialize Earth Engine
-    ee.Initialize(project=ee_project,
-                  opt_url=("https://earthengine-highvolume"
-                           ".googleapis.com"))
 
     # Get annual product
     annual_product = ee.ImageCollection(
