@@ -23,7 +23,7 @@ from geefcc import get_fcc, ee_initialize
 
 # Initialize GEE
 ee_initialize(
-    ee_token="EARTHENGINE_TOKEN",
+    token_name="EARTHENGINE_TOKEN",
     project="forestatrisk",
     opt_url="https://earthengine-highvolume.googleapis.com")
 
@@ -38,8 +38,8 @@ def test_get_fcc():
         source="tmf",
         perc=75,
         tile_size=0.5,
-        output_file="tmp_outputs/fcc.tiff",
+        output_file="fcc.tiff",
     )
-    assert os.path.isfile("tmp_outputs/fcc.tiff")
+    assert os.path.isfile("fcc.tiff")
 
 # End
