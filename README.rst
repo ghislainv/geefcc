@@ -49,6 +49,8 @@ You must always initialize GEE before using ``geefcc`` functions specifying a Go
       opt_url="https://earthengine-highvolume.googleapis.com"
     )
 
+The ``geefcc`` package downloads country administrative borders from the `GADM <https://gadm.org/data.html>`_ website. From time to time, their server is not responding. In case of problem with downloading country borders, check directly on the GADM website that data can be downloaded manually to be sure that the problem is coming from ``geefcc``.
+
 Installation
 ============
 

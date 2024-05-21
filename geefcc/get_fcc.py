@@ -14,8 +14,7 @@ opj = os.path.join
 opd = os.path.dirname
 
 
-def get_fcc(ee_project,
-            aoi,
+def get_fcc(aoi,
             buff=0,
             years=[2000, 2010, 2020],
             source="tmf",
@@ -23,8 +22,6 @@ def get_fcc(ee_project,
             tile_size=1,
             output_file="fcc.tiff"):
     """Get forest cover change data.
-
-    :param ee_project: Earth Engine project name.
 
     :param aoi: Area of interest defined either by a country iso code
         (three letters), a vector file, or an extent in lat/long
@@ -80,7 +77,7 @@ def get_fcc(ee_project,
 
     # Forest image collection
     if source == "tmf":
-        forest = ee_tmf(ee_project, years)
+        forest = ee_tmf(years)
 
     # Create dir for forest tiles
     out_dir_tiles = opj(out_dir, "forest_tiles")
