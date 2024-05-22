@@ -33,7 +33,7 @@ jobs:
           export C_INCLUDE_PATH=/usr/include/gdal
           python3 -m pip install gdal==$(gdal-config --version)
           python3 -m pip install -r requirements.txt
-          python3 -m pip install sphinx
+          python3 -m pip install sphinx nbsphinx
           python3 -m pip install .
 
       - name: Building documentation
