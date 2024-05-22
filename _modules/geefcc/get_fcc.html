@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>geefcc.get_fcc &#8212; geefcc — Forest cover change from Google Earth Engine</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=b21ac067" />
+    <script src="../../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/logo-geefcc.svg" alt="Logo" />
+    
+    <h1 class="logo logo-name">geefcc</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Forest cover change from Google Earth Engine</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ghislainv&repo=geefcc&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/get_started.html">Get started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../indices.html">Indices and tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for geefcc.get_fcc</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Get forest cover change data.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
+
+<span class="kn">from</span> <span class="nn">.get_extent_from_aoi</span> <span class="kn">import</span> <span class="n">get_extent_from_aoi</span>
+<span class="kn">from</span> <span class="nn">.make_dir</span> <span class="kn">import</span> <span class="n">make_dir</span>
+<span class="kn">from</span> <span class="nn">.make_grid</span> <span class="kn">import</span> <span class="n">make_grid</span><span class="p">,</span> <span class="n">grid_intersection</span>
+<span class="kn">from</span> <span class="nn">.geeic2geotiff</span> <span class="kn">import</span> <span class="n">geeic2geotiff</span>
+<span class="kn">from</span> <span class="nn">.geotiff_from_tiles</span> <span class="kn">import</span> <span class="n">geotiff_from_tiles</span>
+<span class="kn">from</span> <span class="nn">.ee_tmf</span> <span class="kn">import</span> <span class="n">ee_tmf</span>
+<span class="kn">from</span> <span class="nn">.ee_gfc</span> <span class="kn">import</span> <span class="n">ee_gfc</span>
+
+<span class="n">opj</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span>
+<span class="n">opd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span>
+
+
+<div class="viewcode-block" id="get_fcc">
+<a class="viewcode-back" href="../../reference.html#geefcc.get_fcc">[docs]</a>
+<span class="k">def</span> <span class="nf">get_fcc</span><span class="p">(</span><span class="n">aoi</span><span class="p">,</span>
+            <span class="n">buff</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">years</span><span class="o">=</span><span class="p">[</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">2010</span><span class="p">,</span> <span class="mi">2020</span><span class="p">],</span>
+            <span class="n">source</span><span class="o">=</span><span class="s2">&quot;tmf&quot;</span><span class="p">,</span>
+            <span class="n">perc</span><span class="o">=</span><span class="mi">75</span><span class="p">,</span>
+            <span class="n">tile_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;fcc.tif&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get forest cover change data.</span>
+
+<span class="sd">     Produce a forest cover change raster file. One band for each</span>
+<span class="sd">     year. Value 1 for forest and 0 for non-forest.</span>
+
+<span class="sd">    :param aoi: Area of interest defined either by a country iso code</span>
+<span class="sd">        (three letters), a vector file, or an extent in lat/long</span>
+<span class="sd">        (tuple with (xmin, ymin, xmax, ymax)).</span>
+
+<span class="sd">    :param buff: Buffer around the aoi. In decimal degrees</span>
+<span class="sd">        (e.g. 0.08983152841195216 correspond to ~10 km at the</span>
+<span class="sd">        equator).</span>
+
+<span class="sd">    :param years: List of years defining time-periods for estimating</span>
+<span class="sd">        forest cover change. Years for computing forest cover change</span>
+<span class="sd">        can be in the interval 2001--2024 for GFC (GFC does not</span>
+<span class="sd">        provide loss for the year 2000) and 2000--2023 for TMF.</span>
+
+<span class="sd">    :param source: Either &quot;gfc&quot; for Global Forest Change or &quot;tmf&quot; for</span>
+<span class="sd">        Tropical Moist Forest. If &quot;gfc&quot;, the tree cover threshold</span>
+<span class="sd">        defining the forest must be specified with parameter ``perc``.</span>
+
+<span class="sd">    :param perc: Tree cover threshold defining the forest for GFC</span>
+<span class="sd">        product.</span>
+
+<span class="sd">    :param tile_size: Tile size for parallel computing.</span>
+
+<span class="sd">    :param output_file: Path to output GeoTIFF file. If directories in path</span>
+<span class="sd">        do not exist they will be created.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Output dir</span>
+    <span class="n">out_dir</span> <span class="o">=</span> <span class="n">opd</span><span class="p">(</span><span class="n">output_file</span><span class="p">)</span>
+    <span class="n">make_dir</span><span class="p">(</span><span class="n">out_dir</span><span class="p">)</span>
+
+    <span class="c1"># Variables</span>
+    <span class="n">proj</span> <span class="o">=</span> <span class="s2">&quot;EPSG:4326&quot;</span>
+    <span class="n">epsg_code</span> <span class="o">=</span> <span class="mi">4326</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="mf">0.000269494585235856472</span>  <span class="c1"># in dd, ~30 m</span>
+
+    <span class="c1"># Get aoi</span>
+    <span class="n">ext</span> <span class="o">=</span> <span class="n">get_extent_from_aoi</span><span class="p">(</span><span class="n">aoi</span><span class="p">,</span> <span class="n">buff</span><span class="p">,</span> <span class="n">out_dir</span><span class="p">)</span>
+    <span class="n">aoi_isfile</span> <span class="o">=</span> <span class="n">ext</span><span class="p">[</span><span class="s2">&quot;aoi_isfile&quot;</span><span class="p">]</span>
+    <span class="n">borders_gpkg</span> <span class="o">=</span> <span class="n">ext</span><span class="p">[</span><span class="s2">&quot;borders_gpkg&quot;</span><span class="p">]</span>
+    <span class="n">extent_latlong</span> <span class="o">=</span> <span class="n">ext</span><span class="p">[</span><span class="s2">&quot;extent_latlong&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Make minimal grid</span>
+    <span class="n">grid_gpkg</span> <span class="o">=</span> <span class="n">opj</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;grid.gpkg&quot;</span><span class="p">)</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">make_grid</span><span class="p">(</span><span class="n">extent_latlong</span><span class="p">,</span> <span class="n">buff</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tile_size</span><span class="o">=</span><span class="n">tile_size</span><span class="p">,</span>
+                     <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span> <span class="n">proj</span><span class="o">=</span><span class="n">epsg_code</span><span class="p">,</span> <span class="n">ofile</span><span class="o">=</span><span class="n">grid_gpkg</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">aoi_isfile</span><span class="p">:</span>
+        <span class="n">min_grid</span> <span class="o">=</span> <span class="n">opj</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;min_grid.gpkg&quot;</span><span class="p">)</span>
+        <span class="n">grid_i</span> <span class="o">=</span> <span class="n">grid_intersection</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">grid_gpkg</span><span class="p">,</span> <span class="n">min_grid</span><span class="p">,</span>
+                                   <span class="n">borders_gpkg</span><span class="p">)</span>
+        <span class="c1"># Update grid and file</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="n">grid_i</span>
+        <span class="n">grid_gpkg</span> <span class="o">=</span> <span class="n">min_grid</span>
+
+    <span class="c1"># Number of tiles</span>
+    <span class="n">ntiles</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+
+    <span class="c1"># Forest image collection</span>
+    <span class="k">if</span> <span class="n">source</span> <span class="o">==</span> <span class="s2">&quot;tmf&quot;</span><span class="p">:</span>
+        <span class="n">forest</span> <span class="o">=</span> <span class="n">ee_tmf</span><span class="p">(</span><span class="n">years</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">source</span> <span class="o">==</span> <span class="s2">&quot;gfc&quot;</span><span class="p">:</span>
+        <span class="n">forest</span> <span class="o">=</span> <span class="n">ee_gfc</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">perc</span><span class="p">)</span>
+
+    <span class="c1"># Create dir for forest tiles</span>
+    <span class="n">out_dir_tiles</span> <span class="o">=</span> <span class="n">opj</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;forest_tiles&quot;</span><span class="p">)</span>
+    <span class="n">make_dir</span><span class="p">(</span><span class="n">out_dir_tiles</span><span class="p">)</span>
+
+    <span class="c1"># Write tiles in parallel</span>
+    <span class="c1"># https://superfastpython.com/multiprocessing-pool-starmap_async/</span>
+    <span class="n">ncpu</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="c1"># Message</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;get_fcc running, </span><span class="si">{</span><span class="n">ntiles</span><span class="si">}</span><span class="s2"> tiles .&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># create and configure the process pool</span>
+    <span class="k">with</span> <span class="n">mp</span><span class="o">.</span><span class="n">Pool</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span><span class="n">ncpu</span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
+        <span class="c1"># prepare arguments</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">ext</span><span class="p">,</span> <span class="n">ntiles</span><span class="p">,</span> <span class="n">forest</span><span class="p">,</span> <span class="n">proj</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">out_dir_tiles</span><span class="p">)</span>
+                <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">grid</span><span class="p">)]</span>
+        <span class="c1"># issue many tasks asynchronously to the process pool</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">starmap_async</span><span class="p">(</span><span class="n">geeic2geotiff</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        <span class="c1"># close the pool</span>
+        <span class="n">pool</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="c1"># wait for all issued tasks to complete</span>
+        <span class="n">pool</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+    <span class="c1"># Geotiff from tiles</span>
+    <span class="n">geotiff_from_tiles</span><span class="p">(</span><span class="n">extent_latlong</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">output_file</span><span class="p">)</span></div>
+
+
+<span class="c1"># End</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &#169;2024, Cirad.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.3.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
