@@ -10,16 +10,17 @@ opj = os.path.join
 opd = os.path.dirname
 
 
-def geotiff_from_tiles(extent_latlong, scale, out_dir):
+def geotiff_from_tiles(extent_latlong, scale, output_file):
     """Make geotiff from tiles.
 
     :param extent_latlong: Extent in lat/long.
     :param scale: Resolution.
-    :param out_dir: Output directory.
+    :param output_file: Output file.
 
     """
 
     # Dir for forest tiles
+    out_dir = opd(output_file)
     out_dir_tiles = opj(out_dir, "forest_tiles")
 
     # Make vrt
@@ -52,9 +53,8 @@ def geotiff_from_tiles(extent_latlong, scale, out_dir):
 
     # Call to gdal_translate
     ifile = opj(out_dir, "forest.vrt")
-    ofile = opj(out_dir, "fcc.tif")
     # projWin = [ulx, uly, lrx, lry]
-    gdal.Translate(ofile, ifile,
+    gdal.Translate(output_file, ifile,
                    maskBand=None,
                    projWin=[xmin, ymax_tap, xmax_tap, ymin],
                    creationOptions=copts,

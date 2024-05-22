@@ -1,20 +1,11 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-# ==============================================================================
-# author          :Ghislain Vieilledent
-# email           :ghislain.vieilledent@cirad.fr, ghislainv@gmail.com
-# web             :https://ecology.ghislainv.fr
-# python_version  :>=2.7
-# license         :GPLv3
-# ==============================================================================
+"""Test for gee_fcc()."""
 
 # Import
 import os
 
 from geefcc import get_fcc, ee_initialize
 
-# "EARTHENGINE_TOKEN"
+# "EARTHENGINE_TOKEN" for GitHub actions
 # https://github.com/gee-community/geemap/discussions/1341
 # Find the Earth Engine credentials file on your computer.
 # Open the credentials file and copy its content.
@@ -28,7 +19,7 @@ ee_initialize(
     opt_url="https://earthengine-highvolume.googleapis.com")
 
 
-def test_get_fcc():
+def test_get_fcc_extent_tmf():
     """Testing get_fcc()."""
     get_fcc(
         # Extent for Reunion Island
@@ -36,10 +27,24 @@ def test_get_fcc():
         buff=0.08983152841195216,
         years=[2000, 2010, 2020],
         source="tmf",
-        perc=75,
         tile_size=0.5,
-        output_file="fcc.tiff",
+        output_file="out_tmf/fcc_tmf.tif",
     )
-    assert os.path.isfile("fcc.tiff")
+    assert os.path.isfile("out_tmf/fcc_tmf.tif")
+
+
+def test_get_fcc_extent_gfc():
+    """Testing get_fcc()."""
+    get_fcc(
+        # Extent for Reunion Island
+        aoi=(55.21625137, -21.38986015, 55.83736038, -20.87180519),
+        buff=0.08983152841195216,
+        years=[2001, 2010, 2020],
+        source="gfc",
+        perc=50,
+        tile_size=0.5,
+        output_file="out_gfc_50/fcc_gfc_50.tif",
+    )
+    assert os.path.isfile("out_gfc_50/fcc_gfc_50.tif")
 
 # End

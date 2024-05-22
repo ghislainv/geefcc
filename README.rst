@@ -22,7 +22,7 @@
 Overview
 ========
 
-The ``geefcc`` Python package can be used to make forest cover change (fcc) maps from Google Earth Engine (GEE) and download them locally. Forest cover change maps are obtained from two global tree/forest cover change products: `Global Forest Change <https://https://glad.earthengine.app/view/global-forest-change>`_ or `Tropical Moist Forests <https://forobs.jrc.ec.europa.eu/TMF>`_. These two products are derived from the Landsat satellite image archive and provide tree/forest cover data at 30 m resolution.
+The ``geefcc`` Python package can be used to make forest cover change (fcc) maps from Google Earth Engine (GEE) and download them locally. Forest cover change maps are obtained from two global tree/forest cover change products: `Global Forest Change <https://glad.earthengine.app/view/global-forest-change>`_ or `Tropical Moist Forests <https://forobs.jrc.ec.europa.eu/TMF>`_. These two products are derived from the Landsat satellite image archive and provide tree/forest cover data at 30 m resolution.
 
 .. image:: https://ecology.ghislainv.fr/geefcc/_static/banner_geefcc.png
    :align: center

@@ -7,8 +7,9 @@ from .get_extent_from_aoi import get_extent_from_aoi
 from .make_dir import make_dir
 from .make_grid import make_grid, grid_intersection
 from .geeic2geotiff import geeic2geotiff
-from .ee_tmf import ee_tmf
 from .geotiff_from_tiles import geotiff_from_tiles
+from .ee_tmf import ee_tmf
+from .ee_gfc import ee_gfc
 
 opj = os.path.join
 opd = os.path.dirname
@@ -20,8 +21,11 @@ def get_fcc(aoi,
             source="tmf",
             perc=75,
             tile_size=1,
-            output_file="fcc.tiff"):
+            output_file="fcc.tif"):
     """Get forest cover change data.
+
+     Produce a forest cover change raster file. One band for each
+     year. Value 1 for forest and 0 for non-forest.
 
     :param aoi: Area of interest defined either by a country iso code
         (three letters), a vector file, or an extent in lat/long
@@ -40,17 +44,19 @@ def get_fcc(aoi,
         Tropical Moist Forest. If "gfc", the tree cover threshold
         defining the forest must be specified with parameter `perc`.
 
-    :param perc: Tree cover threshold defining the forest.
+    :param perc: Tree cover threshold defining the forest for GFC
+        product.
 
     :param tile_size: Tile size for parallel computing.
 
-    :output_file: Path to output GeoTIFF file. One band for each
-        year. Value 1 for forest and 0 for non-forest.
+    :output_file: Path to output GeoTIFF file. If directories in path
+        do not exist they will be created.
 
     """
 
     # Output dir
     out_dir = opd(output_file)
+    make_dir(out_dir)
 
     # Variables
     proj = "EPSG:4326"
@@ -75,25 +81,37 @@ def get_fcc(aoi,
         grid = grid_i
         grid_gpkg = min_grid
 
+    # Number of tiles
+    ntiles = len(grid)
+
     # Forest image collection
     if source == "tmf":
         forest = ee_tmf(years)
+    if source == "gfc":
+        forest = ee_gfc(years, perc)
 
     # Create dir for forest tiles
     out_dir_tiles = opj(out_dir, "forest_tiles")
     make_dir(out_dir_tiles)
 
     # Write tiles in parallel
+    # https://superfastpython.com/multiprocessing-pool-starmap_async/
     ncpu = os.cpu_count() - 1
-    pool = mp.Pool(processes=ncpu)
-    args = [(i, ext, forest, proj, scale, out_dir_tiles)
-            for (i, ext) in enumerate(grid)]
-    pool.starmap_async(geeic2geotiff, args).get()
-    pool.close()
-    pool.join()
+    # Message
+    print(f"get_fcc running, {ntiles} tiles .", end="", flush=True)
+    # create and configure the process pool
+    with mp.Pool(processes=ncpu) as pool:
+        # prepare arguments
+        args = [(i, ext, ntiles, forest, proj, scale, out_dir_tiles)
+                for (i, ext) in enumerate(grid)]
+        # issue many tasks asynchronously to the process pool
+        _ = pool.starmap_async(geeic2geotiff, args)
+        # close the pool
+        pool.close()
+        # wait for all issued tasks to complete
+        pool.join()
 
     # Geotiff from tiles
-    geotiff_from_tiles(extent_latlong, scale, out_dir)
-
+    geotiff_from_tiles(extent_latlong, scale, output_file)
 
 # End

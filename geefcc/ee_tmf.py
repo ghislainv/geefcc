@@ -26,18 +26,22 @@ def ee_tmf(years):
     ap_forest = annual_product.where(annual_product.eq(2), 1)
     ap_all_year = ap_forest.where(ap_forest.neq(1), 0)
 
+    # Forest list
     forest_list = []
-    band_names = []
 
     for year in years:
+        # Get forest
         id_year = year - 1990 - 1
         ap = ap_all_year.select(list(range(id_year, 33)))
         forest_yr = ap.reduce(ee.Reducer.sum()).gte(1)
+        # Set time
         forest_yr = forest_yr.set(
             "system:time_start",
             ee.Date.fromYMD(year, 1, 1).millis())
+        # Rename band
+        forest_yr = forest_yr.rename(["forest_cover"])
+        # Append to list
         forest_list.append(forest_yr)
-        band_names.append(f"forest{year}")
 
     forest_ic = ee.ImageCollection(forest_list)
 

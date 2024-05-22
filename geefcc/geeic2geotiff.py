@@ -5,9 +5,24 @@ https://gist.github.com/GerardoLopez/35123d4a15aa31f3ea4b01efb5b26d4d
 """
 
 import os
+import sys
 
 from osgeo import gdal, osr, gdal_array
 import xarray as xr
+
+
+def progress_bar_sequence(index, ntiles):
+    """Progress bar."""
+    j = (index + 1) / ntiles
+    sys.stdout.write("\r")
+    sys.stdout.write("[%-20s] %d%%" % ('='*int(20 * j), 100 * j))
+    sys.stdout.flush()
+
+
+def progress_bar_async(index, ntiles):
+    """Progress bar."""
+    (_, _) = (index, ntiles)
+    print(".", end="", flush=True)
 
 
 def get_dst_dataset(dst_img, cols, rows, layers, dtype, proj, gt):
@@ -151,11 +166,12 @@ def xarray2geotiff(xarray, data_var, out_dir, index):
     del dst_ds
 
 
-def geeic2geotiff(index, extent, forest, proj, scale, out_dir):
+def geeic2geotiff(index, extent, ntiles, forest, proj, scale, out_dir):
     """Write a GEE image collection to a geotiff.
 
     :param index: Tile index.
     :param extent: Tile extent.
+    :param ntiles: Total number of tiles.
     :param forest: Forest image collection from GEE.
     :param proj: Projection.
     :param scale: Scale.
@@ -175,12 +191,13 @@ def geeic2geotiff(index, extent, forest, proj, scale, out_dir):
         )
         .astype("b")
         .rename({"lon": "longitude", "lat": "latitude"})
-        .rename({"sum": "forest_cover"})
     )
     ds = ds.load()
 
     # Load and write data to geotiff
     xarray2geotiff(ds, "forest_cover", out_dir, index)
 
+    # Progress bar
+    progress_bar_async(index, ntiles)
 
 # End Of File
