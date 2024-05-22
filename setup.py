@@ -21,10 +21,10 @@ def find_version():
     """Finding package version."""
     with open("geefcc/__init__.py", encoding="utf-8") as init_file:
         init_text = init_file.read()
-    far_version = (re.search('^__version__\\s*=\\s*"(.*)"',
-                             init_text, re.M)
-                   .group(1))
-    return far_version
+    _version = (re.search('^__version__\\s*=\\s*"(.*)"',
+                          init_text, re.M)
+                .group(1))
+    return _version
 
 
 version = find_version()

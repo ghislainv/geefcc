@@ -26,7 +26,6 @@ def find_author_release():
                          file_text, re.M).group(1)
     return (_author, _release)
 
-
 # -- Project information -----------------------------------------------------
 
 project = "geefcc"
@@ -45,7 +44,7 @@ add_function_parentheses = True
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = ["sphinx.ext.autodoc", "sphinx.ext.viewcode",
-              "sphinx.ext.mathjax"]
+              "sphinx.ext.mathjax", "nbsphinx"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]

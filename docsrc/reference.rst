@@ -1,19 +1,8 @@
 Python API
 **********
 
-get_token
+get_fcc
 =========
 
-.. automodule:: pywdpa.get_token
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-get_wdpa
-========
-
-.. automodule:: pywdpa.get_wdpa
-   :members:
-   :undoc-members:
-   :show-inheritance:
+.. autofunction:: geefcc.get_fcc
 

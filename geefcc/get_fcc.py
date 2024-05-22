@@ -42,14 +42,14 @@ def get_fcc(aoi,
 
     :param source: Either "gfc" for Global Forest Change or "tmf" for
         Tropical Moist Forest. If "gfc", the tree cover threshold
-        defining the forest must be specified with parameter `perc`.
+        defining the forest must be specified with parameter ``perc``.
 
     :param perc: Tree cover threshold defining the forest for GFC
         product.
 
     :param tile_size: Tile size for parallel computing.
 
-    :output_file: Path to output GeoTIFF file. If directories in path
+    :param output_file: Path to output GeoTIFF file. If directories in path
         do not exist they will be created.
 
     """

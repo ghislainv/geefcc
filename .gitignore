@@ -1,6 +1,7 @@
 # Local website
 tmp_outputs
 docs
+docsrc/notebooks/out*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
