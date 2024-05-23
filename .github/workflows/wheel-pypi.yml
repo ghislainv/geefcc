@@ -4,11 +4,11 @@
 
 name: Build wheel and upload to PyPI
   
-# Publish when a (published) GitHub Release is created
+# When pushing with a tag (i.e. new version)
 on:
   push:
     tags:
-    - "v*"
+    - "*"
 
 jobs:
 
@@ -92,22 +92,38 @@ jobs:
       - name: Check dist
         run: |
           twine check dist/*
-        
+
   upload_pypi:
     name: Upload to PyPI
-    needs: [check-current-branch, build_wheels, build_sdist]
+    needs: [dist_check]
     runs-on: ubuntu-latest
+    # upload to PyPI on every tag starting with 'v'
     if: contains(${{ needs.check.outputs.branch }}, 'main')
-    environment:
-      name: pypi
-      url: https://pypi.org/p/geefcc
-    permissions:
-      id-token: write  # Mandatory for trusted publishing.
     steps:
       - uses: actions/download-artifact@v3
         with:
           name: artifact
           path: dist
-      - uses: pypa/gh-action-pypi-publish@release/v1
+      - uses: pypa/gh-action-pypi-publish@master
+        with:
+          user: __token__
+          password: ${{ secrets.pypi_password }}
+          
+  # upload_pypi:
+  #   name: Upload to PyPI
+  #   needs: [check-current-branch, build_wheels, build_sdist]
+  #   runs-on: ubuntu-latest
+  #   if: contains(${{ needs.check.outputs.branch }}, 'main')
+  #   environment:
+  #     name: pypi
+  #     url: https://pypi.org/p/geefcc
+  #   permissions:
+  #     id-token: write  # Mandatory for trusted publishing.
+  #   steps:
+  #     - uses: actions/download-artifact@v3
+  #       with:
+  #         name: artifact
+  #         path: dist
+  #     - uses: pypa/gh-action-pypi-publish@release/v1
 
 # End
