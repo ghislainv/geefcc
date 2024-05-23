@@ -47,5 +47,7 @@ def ee_initialize(token_name, project, **kwargs):
                 f.write(credential)
 
     # Initialize
-    ee.Initialize(project=project,
-                  **kwargs)
+    ee.Initialize(project=project, **kwargs)
+
+
+# End
