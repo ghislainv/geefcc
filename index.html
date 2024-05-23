@@ -116,6 +116,8 @@
 </section>
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">¶</a></h2>
+<section id="access-to-google-earth-engine">
+<h3>Access to Google Earth Engine<a class="headerlink" href="#access-to-google-earth-engine" title="Link to this heading">¶</a></h3>
 <p>To use the <code class="docutils literal notranslate"><span class="pre">geefcc</span></code> Python package, you need a Google account and an <a class="reference external" href="https://developers.google.com/earth-engine/guides/access#a-role-in-a-cloud-project">access to Earth Engine</a> either via a Google Cloud project that’s registered to use Earth Engine or via an individually signed-up account. Please follow this link <a class="reference external" href="https://code.earthengine.google.com/register">to register for Earth Engine</a>.</p>
 <p>You must always initialize GEE before using <code class="docutils literal notranslate"><span class="pre">geefcc</span></code> functions specifying a Google Cloud project name and <a class="reference external" href="https://developers.google.com/earth-engine/cloud/highvolume">Earth Engine high-volume endpoint</a>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ee</span><span class="o">.</span><span class="n">Initialize</span><span class="p">(</span>
@@ -125,24 +127,58 @@
 <span class="p">)</span>
 </pre></div>
 </div>
+</section>
+<section id="gdal">
+<h3>GDAL<a class="headerlink" href="#gdal" title="Link to this heading">¶</a></h3>
+<p>GDAL must be installed on your system.</p>
+<p>To install GDAL on Windows, use the <a class="reference external" href="https://trac.osgeo.org/osgeo4w/">OSGeo4W</a> network installer. OSGeo4W is a binary distribution of a broad set of open source geospatial software for Windows environments (Windows 11 down to 7). Select <em>Express Install</em> and install GDAL. Several Gb of space will be needed on disk to install this programs. This will also install <em>OSGeo4W Shell</em> to execute command lines.</p>
+<p>To install GDAL on other systems, use your package manager, for example <code class="docutils literal notranslate"><span class="pre">apt</span></code> for Debian/Ubuntu Linux distributions.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>gdal-bin<span class="w"> </span>libgdal-dev
+</pre></div>
+</div>
+<p>After installing GDAL, you can test the installation by running <code class="docutils literal notranslate"><span class="pre">gdalinfo</span> <span class="pre">--version</span></code> in the command prompt or terminal, which should display the installed GDAL version.</p>
+</section>
+<section id="gadm-website">
+<h3>GADM website<a class="headerlink" href="#gadm-website" title="Link to this heading">¶</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">geefcc</span></code> package downloads country administrative borders from the <a class="reference external" href="https://gadm.org/data.html">GADM</a> website. From time to time, their server is not responding. In case of problem with downloading country borders, check directly on the GADM website that data can be downloaded manually to be sure that the problem is coming from <code class="docutils literal notranslate"><span class="pre">geefcc</span></code>.</p>
+</section>
 </section>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
-<p>The easiest way to install the <code class="docutils literal notranslate"><span class="pre">geefcc</span></code> Python package is via <a class="reference external" href="https://pip.pypa.io/en/stable/">pip</a>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="c1"># For last stable version on PyPI</span>
-$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>geefcc
+<p>The easiest way to install the <code class="docutils literal notranslate"><span class="pre">geefcc</span></code> Python package is via <a class="reference external" href="https://pip.pypa.io/en/stable/">pip</a> in the <em>OSGeo4W Shell</em> for Windows or in a virtual environment for Linux.</p>
+<p>For Linux, create and activate a virtual environment before install <code class="docutils literal notranslate"><span class="pre">geefcc</span></code> with <code class="docutils literal notranslate"><span class="pre">pip</span></code>:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~
+<span class="c1"># Create a directory for virtual environments</span>
+mkdir<span class="w"> </span>venvs
+<span class="c1"># Create the virtual environment with venv</span>
+python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>~/venvs/venv-geefcc
+<span class="c1"># Activate (start) the virtual environment</span>
+<span class="nb">source</span><span class="w"> </span>~/venvs/venv-geefcc/bin/activate
 </pre></div>
 </div>
-<p>or</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="c1"># For development version on GitHub</span>
-$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>https://github.com/ghislainv/geefcc/archive/master.zip
+<p>Install Python dependencies and <code class="docutils literal notranslate"><span class="pre">geefcc</span></code> in the <em>OSGeo4W Shell</em> or in the newly created virtual environment:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># Upgrade pip, setuptools, and wheel</span>
+python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip<span class="w"> </span>setuptools<span class="w"> </span>wheel
+<span class="c1"># Install numpy</span>
+python3<span class="w"> </span>-m<span class="w"> </span>numpy
+<span class="c1"># Install gdal Python bindings (the correct version)</span>
+python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">gdal</span><span class="o">==</span><span class="k">$(</span>gdal-config<span class="w"> </span>--version<span class="k">)</span>
+<span class="c1"># Install geefcc. This will install all other dependencies</span>
+python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>geefcc
 </pre></div>
 </div>
-<p>but you can also install <code class="docutils literal notranslate"><span class="pre">geefcc</span></code> executing the <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> file:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ghislainv/geefcc
-$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>geefcc
-$<span class="w"> </span>python<span class="w"> </span>setup.py<span class="w"> </span>install
+<p>If you want to install the development version of <code class="docutils literal notranslate"><span class="pre">geefcc</span></code>, replace the last line with:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>https://github.com/ghislainv/geefcc/archive/master.zip
+</pre></div>
+</div>
+<p>To deactivate and delete the virtual environment:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>deactivate
+rm<span class="w"> </span>-R<span class="w"> </span>~/venvs/venv-geefcc<span class="w"> </span><span class="c1"># Just remove the repository</span>
+</pre></div>
+</div>
+<p>In case of problem while installing GDAL Python bindings, try the following command:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w">  </span>--no-cache-dir<span class="w"> </span>--force-reinstall<span class="w"> </span><span class="nv">gdal</span><span class="o">==</span><span class="k">$(</span>gdal-config<span class="w"> </span>--version<span class="k">)</span>
 </pre></div>
 </div>
 </section>
