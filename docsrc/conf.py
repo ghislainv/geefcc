@@ -10,29 +10,26 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+import os
+import sys
 import datetime
 import re  # Regular expression
+sys.path.insert(0, os.path.abspath('..'))
 
-# sys.path.insert(0, os.path.abspath('..'))
-
-
-def find_author_release():
-    """Finding package authors and release."""
-    with open("../geefcc/__init__.py", encoding="utf-8") as file:
-        file_text = file.read()
-    _author = re.search('^__author__\\s*=\\s*"(.*)"',
-                        file_text, re.M).group(1)
-    _release = re.search('^__version__\\s*=\\s*"(.*)"',
-                         file_text, re.M).group(1)
-    return (_author, _release)
 
 # -- Project information -----------------------------------------------------
 
 project = "geefcc"
-(author, release) = find_author_release()
 _today = datetime.date.today()
 year = _today.year
 copyright = f"{year}, Cirad"
+
+# The full version, including alpha/beta/rc tags
+with open("../geefcc/__init__.py", encoding="utf-8") as init_file:
+    init_text = init_file.read()
+author = re.search('^__author__\\s*=\\s*"(.*)"', init_text, re.M).group(1)
+version = re.search('^__version__\\s*=\\s*"(.*)"', init_text, re.M).group(1)
+release = version
 
 # -- Sphynx options ----------------------------------------------------------
 add_module_names = False

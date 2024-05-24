@@ -21,15 +21,17 @@ def create_buffer(input_file, output_file, buffer_dist):
 
     """
     input_ds = ogr.Open(input_file)
-    input_lyr = input_ds.GetLayer()
+    # Get first layer
+    input_lyr = input_ds.GetLayer(0)
 
     driver = ogr.GetDriverByName("GPKG")
     if os.path.exists(output_file):
         driver.DeleteDataSource(output_file)
     ds = driver.CreateDataSource(output_file)
+    # Must be MultiPolygon here
     lyr = ds.CreateLayer(
         "buffer",
-        geom_type=ogr.wkbPolygon)
+        geom_type=ogr.wkbMultiPolygon)
     feature_defn = lyr.GetLayerDefn()
 
     for feature in input_lyr:
