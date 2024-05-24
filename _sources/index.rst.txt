@@ -7,7 +7,8 @@ Table of contents
    :maxdepth: 2
 
    Home <self>
-   notebooks/get_started
+   notebooks/get_started/get_started
+   articles
    reference
    indices
    changelog

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Get started &#8212; geefcc — Forest cover change from Google Earth Engine</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=b21ac067" />
+    <script src="../../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Articles" href="../../articles.html" />
+    <link rel="prev" title="geefcc Python package" href="../../index.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/logo-geefcc.svg" alt="Logo" />
+    
+    <h1 class="logo logo-name">geefcc</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Forest cover change from Google Earth Engine</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ghislainv&repo=geefcc&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Get started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#get-forest-cover-change-from-tmf">Get forest cover change from TMF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#compare-with-forest-cover-change-from-gfc">Compare with forest cover change from GFC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#comparing-forest-cover-in-2020-between-tmf-and-gfc">Comparing forest cover in 2020 between TMF and GFC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#download-data-from-an-extent">Download data from an extent</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../articles.html">Articles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../indices.html">Indices and tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../../index.html" title="previous chapter"><code class="docutils literal notranslate"><span class="pre">geefcc</span></code> Python package</a></li>
+      <li>Next: <a href="../../articles.html" title="next chapter">Articles</a></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="get-started">
+<h1>Get started<a class="headerlink" href="#get-started" title="Link to this heading">¶</a></h1>
+<section id="get-forest-cover-change-from-tmf">
+<span id="id1"></span><h2>Get forest cover change from TMF<a class="headerlink" href="#get-forest-cover-change-from-tmf" title="Link to this heading">¶</a></h2>
+<p>The function <code class="docutils literal notranslate"><span class="pre">.get_fcc()</span></code> can be used to download forest cover change
+from the Tropical Moist Forest product. We will use the Reunion Island
+(isocode “REU”) as a case study.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">ee</span>
+<span class="kn">import</span> <span class="nn">geefcc</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">ListedColormap</span>
+<span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="nn">mpatches</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">rioxarray</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize GEE</span>
+<span class="n">ee</span><span class="o">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s2">&quot;forestatrisk&quot;</span><span class="p">,</span> <span class="n">opt_url</span><span class="o">=</span><span class="s2">&quot;https://earthengine-highvolume.googleapis.com&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download data from GEE</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s2">&quot;out_tmf/forest_tmf.tif&quot;</span><span class="p">):</span>
+    <span class="n">geefcc</span><span class="o">.</span><span class="n">get_fcc</span><span class="p">(</span>
+        <span class="n">aoi</span><span class="o">=</span><span class="s2">&quot;REU&quot;</span><span class="p">,</span>
+        <span class="n">years</span><span class="o">=</span><span class="p">[</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">2010</span><span class="p">,</span> <span class="mi">2020</span><span class="p">],</span>
+        <span class="n">source</span><span class="o">=</span><span class="s2">&quot;tmf&quot;</span><span class="p">,</span>
+        <span class="n">tile_size</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;out_tmf/forest_tmf.tif&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load data</span>
+<span class="n">forest_tmf</span> <span class="o">=</span> <span class="n">rioxarray</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="s2">&quot;out_tmf/forest_tmf.tif&quot;</span><span class="p">)</span>
+<span class="n">forest_tmf</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">xarray</span><span class="o">.</span><span class="n">DataArray</span> <span class="p">(</span><span class="n">band</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mi">1923</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="mi">2305</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">Size</span><span class="p">:</span> <span class="mi">13</span><span class="n">MB</span>
+<span class="p">[</span><span class="mi">13297545</span> <span class="n">values</span> <span class="k">with</span> <span class="n">dtype</span><span class="o">=</span><span class="n">int8</span><span class="p">]</span>
+<span class="n">Coordinates</span><span class="p">:</span>
+  <span class="o">*</span> <span class="n">band</span>         <span class="p">(</span><span class="n">band</span><span class="p">)</span> <span class="n">int64</span> <span class="mi">24</span><span class="n">B</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span>
+  <span class="o">*</span> <span class="n">x</span>            <span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="n">float64</span> <span class="mi">18</span><span class="n">kB</span> <span class="mf">55.22</span> <span class="mf">55.22</span> <span class="mf">55.22</span> <span class="mf">55.22</span> <span class="o">...</span> <span class="mf">55.84</span> <span class="mf">55.84</span> <span class="mf">55.84</span>
+  <span class="o">*</span> <span class="n">y</span>            <span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="n">float64</span> <span class="mi">15</span><span class="n">kB</span> <span class="o">-</span><span class="mf">20.87</span> <span class="o">-</span><span class="mf">20.87</span> <span class="o">-</span><span class="mf">20.87</span> <span class="o">...</span> <span class="o">-</span><span class="mf">21.39</span> <span class="o">-</span><span class="mf">21.39</span> <span class="o">-</span><span class="mf">21.39</span>
+    <span class="n">spatial_ref</span>  <span class="n">int64</span> <span class="mi">8</span><span class="n">B</span> <span class="mi">0</span>
+<span class="n">Attributes</span><span class="p">:</span>
+    <span class="n">AREA_OR_POINT</span><span class="p">:</span>  <span class="n">Area</span>
+    <span class="n">scale_factor</span><span class="p">:</span>   <span class="mf">1.0</span>
+    <span class="n">add_offset</span><span class="p">:</span>     <span class="mf">0.0</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Computing the sum</span>
+<span class="n">fcc_tmf</span> <span class="o">=</span> <span class="n">forest_tmf</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s2">&quot;band&quot;</span><span class="p">)</span>
+<span class="n">fcc_tmf</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">xarray</span><span class="o">.</span><span class="n">DataArray</span> <span class="p">(</span><span class="n">y</span><span class="p">:</span> <span class="mi">1923</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="mi">2305</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">Size</span><span class="p">:</span> <span class="mi">35</span><span class="n">MB</span>
+<span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+       <span class="o">...</span><span class="p">,</span>
+       <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="n">Coordinates</span><span class="p">:</span>
+  <span class="o">*</span> <span class="n">x</span>            <span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="n">float64</span> <span class="mi">18</span><span class="n">kB</span> <span class="mf">55.22</span> <span class="mf">55.22</span> <span class="mf">55.22</span> <span class="mf">55.22</span> <span class="o">...</span> <span class="mf">55.84</span> <span class="mf">55.84</span> <span class="mf">55.84</span>
+  <span class="o">*</span> <span class="n">y</span>            <span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="n">float64</span> <span class="mi">15</span><span class="n">kB</span> <span class="o">-</span><span class="mf">20.87</span> <span class="o">-</span><span class="mf">20.87</span> <span class="o">-</span><span class="mf">20.87</span> <span class="o">...</span> <span class="o">-</span><span class="mf">21.39</span> <span class="o">-</span><span class="mf">21.39</span> <span class="o">-</span><span class="mf">21.39</span>
+    <span class="n">spatial_ref</span>  <span class="n">int64</span> <span class="mi">8</span><span class="n">B</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Colors</span>
+<span class="n">cols</span><span class="o">=</span><span class="p">[(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">165</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="p">(</span><span class="mi">227</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="p">(</span><span class="mi">34</span><span class="p">,</span> <span class="mi">139</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">255</span><span class="p">)]</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>  <span class="c1"># transparent white for 0</span>
+<span class="n">cmax</span> <span class="o">=</span> <span class="mf">255.0</span>  <span class="c1"># float for division</span>
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
+    <span class="n">col_class</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">i</span> <span class="o">/</span> <span class="n">cmax</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">col</span><span class="p">])</span>
+    <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col_class</span><span class="p">)</span>
+<span class="n">color_map</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span>
+
+<span class="c1"># Labels</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;non-forest in 2000&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="s2">&quot;deforestation 2000-2009&quot;</span><span class="p">,</span>
+          <span class="mi">2</span><span class="p">:</span><span class="s2">&quot;deforestation 2010-2019&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span><span class="s2">&quot;forest in 2020&quot;</span><span class="p">}</span>
+<span class="n">patches</span> <span class="o">=</span><span class="p">[</span><span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+                         <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">colors</span><span class="p">)]</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">raster_image</span> <span class="o">=</span> <span class="n">fcc_tmf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">color_map</span><span class="p">,</span> <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Forest cover change 2000-2010-2020, TMF&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">patches</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;tmf.png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/tmf.png"><img alt="../../_images/tmf.png" class="align-center" src="../../_images/tmf.png" style="width: 800px;" />
+</a>
+</section>
+<section id="compare-with-forest-cover-change-from-gfc">
+<span id="id2"></span><h2>Compare with forest cover change from GFC<a class="headerlink" href="#compare-with-forest-cover-change-from-gfc" title="Link to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get data from GEE</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s2">&quot;out_gfc_50/forest_gfc_50.tif&quot;</span><span class="p">):</span>
+    <span class="n">geefcc</span><span class="o">.</span><span class="n">get_fcc</span><span class="p">(</span>
+        <span class="n">aoi</span><span class="o">=</span><span class="s2">&quot;REU&quot;</span><span class="p">,</span>
+        <span class="n">years</span><span class="o">=</span><span class="p">[</span><span class="mi">2001</span><span class="p">,</span> <span class="mi">2010</span><span class="p">,</span> <span class="mi">2020</span><span class="p">],</span>  <span class="c1"># Here, first year must be 2001 (1st Jan)</span>
+        <span class="n">source</span><span class="o">=</span><span class="s2">&quot;gfc&quot;</span><span class="p">,</span>
+        <span class="n">perc</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+        <span class="n">tile_size</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;out_gfc_50/forest_gfc_50.tif&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load data</span>
+<span class="n">forest_gfc</span> <span class="o">=</span> <span class="n">rioxarray</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="s2">&quot;out_gfc_50/forest_gfc_50.tif&quot;</span><span class="p">)</span>
+<span class="n">fcc_gfc</span> <span class="o">=</span> <span class="n">forest_gfc</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s2">&quot;band&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">raster_image</span> <span class="o">=</span> <span class="n">fcc_gfc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">color_map</span><span class="p">,</span> <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Forest cover change 2001-2010-2020, GFC&quot;</span><span class="p">)</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;non-forest in 2001&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="s2">&quot;deforestation 2001-2009&quot;</span><span class="p">,</span>
+          <span class="mi">2</span><span class="p">:</span><span class="s2">&quot;deforestation 2010-2019&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span><span class="s2">&quot;forest in 2020&quot;</span><span class="p">}</span>
+<span class="n">patches</span> <span class="o">=</span><span class="p">[</span><span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+                         <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">colors</span><span class="p">)]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">patches</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;gfc.png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/gfc.png"><img alt="../../_images/gfc.png" class="align-center" src="../../_images/gfc.png" style="width: 800px;" />
+</a>
+</section>
+<section id="comparing-forest-cover-in-2020-between-tmf-and-gfc">
+<span id="id3"></span><h2>Comparing forest cover in 2020 between TMF and GFC<a class="headerlink" href="#comparing-forest-cover-in-2020-between-tmf-and-gfc" title="Link to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Computing difference and sum</span>
+<span class="n">forest_diff</span> <span class="o">=</span> <span class="n">forest_tmf</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">band</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="o">-</span> <span class="n">forest_gfc</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">band</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">forest_sum</span> <span class="o">=</span> <span class="n">forest_tmf</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">band</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="n">forest_gfc</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">band</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">forest_diff</span> <span class="o">=</span> <span class="n">forest_diff</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">forest_sum</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Colors</span>
+<span class="n">cols</span><span class="o">=</span><span class="p">[(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="p">(</span><span class="mi">34</span><span class="p">,</span> <span class="mi">139</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)]</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>  <span class="c1"># transparent white for -2</span>
+<span class="n">cmax</span> <span class="o">=</span> <span class="mf">255.0</span>  <span class="c1"># float for division</span>
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
+    <span class="n">col_class</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">i</span> <span class="o">/</span> <span class="n">cmax</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">col</span><span class="p">])</span>
+    <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col_class</span><span class="p">)</span>
+<span class="n">color_map</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Labels</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;non-forest tmf, non-forest gfc&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="s2">&quot;non-forest tmf / forest gfc&quot;</span><span class="p">,</span>
+          <span class="mi">2</span><span class="p">:</span><span class="s2">&quot;forest tmf / forest gfc&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span><span class="s2">&quot;forest tmf, non-forest gfc&quot;</span><span class="p">}</span>
+<span class="n">patches</span> <span class="o">=</span><span class="p">[</span><span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+                         <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">colors</span><span class="p">)]</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">raster_image</span> <span class="o">=</span> <span class="n">forest_diff</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">color_map</span><span class="p">,</span> <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Difference between TMF and GFC for forest cover in 2020&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">patches</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;comp.png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/comp.png"><img alt="../../_images/comp.png" class="align-center" src="../../_images/comp.png" style="width: 800px;" />
+</a>
+<p>Differences are quite important between the two data-sets. This might
+change depending on the tree cover threshold (here = 75%) we select for
+defining forest with the GFC dataset.</p>
+</section>
+<section id="download-data-from-an-extent">
+<span id="id4"></span><h2>Download data from an extent<a class="headerlink" href="#download-data-from-an-extent" title="Link to this heading">¶</a></h2>
+<p>We will use the following extent which corresponds to a region around
+the Analamazaotra special reserve in Madagascar.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s2">&quot;out_tmf_extent/forest_tmf_extent.tif&quot;</span><span class="p">):</span>
+    <span class="n">geefcc</span><span class="o">.</span><span class="n">get_fcc</span><span class="p">(</span>
+        <span class="n">aoi</span><span class="o">=</span><span class="p">(</span><span class="mf">48.4</span><span class="p">,</span> <span class="o">-</span><span class="mf">19.0</span><span class="p">,</span> <span class="mf">48.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">18.8</span><span class="p">),</span>
+        <span class="n">years</span><span class="o">=</span><span class="p">[</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">2010</span><span class="p">,</span> <span class="mi">2020</span><span class="p">],</span>
+        <span class="n">source</span><span class="o">=</span><span class="s2">&quot;tmf&quot;</span><span class="p">,</span>
+        <span class="n">tile_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+        <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;out_tmf_extent/forest_tmf_extent.tif&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load data</span>
+<span class="n">forest_tmf_mdg</span> <span class="o">=</span> <span class="n">rioxarray</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="s2">&quot;out_tmf_extent/forest_tmf_extent.tif&quot;</span><span class="p">)</span>
+<span class="n">fcc_tmf_mdg</span> <span class="o">=</span> <span class="n">forest_tmf_mdg</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s2">&quot;band&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Colors</span>
+<span class="n">cols</span><span class="o">=</span><span class="p">[(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">165</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="p">(</span><span class="mi">227</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="p">(</span><span class="mi">34</span><span class="p">,</span> <span class="mi">139</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">255</span><span class="p">)]</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>  <span class="c1"># transparent white for 0</span>
+<span class="n">cmax</span> <span class="o">=</span> <span class="mf">255.0</span>  <span class="c1"># float for division</span>
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
+    <span class="n">col_class</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">i</span> <span class="o">/</span> <span class="n">cmax</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">col</span><span class="p">])</span>
+    <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col_class</span><span class="p">)</span>
+<span class="n">color_map</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span>
+
+<span class="c1"># Labels</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;non-forest in 2000&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="s2">&quot;deforestation 2000-2009&quot;</span><span class="p">,</span>
+          <span class="mi">2</span><span class="p">:</span><span class="s2">&quot;deforestation 2010-2019&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span><span class="s2">&quot;forest in 2020&quot;</span><span class="p">}</span>
+<span class="n">patches</span> <span class="o">=</span><span class="p">[</span><span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+                         <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">colors</span><span class="p">)]</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">raster_image</span> <span class="o">=</span> <span class="n">fcc_tmf_mdg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">color_map</span><span class="p">,</span> <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Forest cover change 2000-2010-2020, TMF&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">patches</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;extent.png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/extent.png"><img alt="../../_images/extent.png" class="align-center" src="../../_images/extent.png" style="width: 700px;" />
+</a>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &#169;2024, Cirad.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.3.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="../../_sources/notebooks/get_started/get_started.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
