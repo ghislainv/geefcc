@@ -179,25 +179,27 @@ def geeic2geotiff(index, extent, ntiles, forest, proj, scale, out_dir):
 
     """
 
-    # Open dataset
-    ds = (
-        xr.open_dataset(
-            forest,
-            engine="ee",
-            crs=proj,
-            scale=scale,
-            geometry=extent,
-            chunks={"time": -1},
+    ofile = os.path.join(out_dir, f"forest_{index}.tif")
+    if not os.path.isfile(ofile):
+        # Open dataset
+        ds = (
+            xr.open_dataset(
+                forest,
+                engine="ee",
+                crs=proj,
+                scale=scale,
+                geometry=extent,
+                chunks={"time": -1},
+            )
+            .astype("b")
+            .rename({"lon": "longitude", "lat": "latitude"})
         )
-        .astype("b")
-        .rename({"lon": "longitude", "lat": "latitude"})
-    )
-    ds = ds.load()
+        ds = ds.load()
 
-    # Load and write data to geotiff
-    xarray2geotiff(ds, "forest_cover", out_dir, index)
+        # Load and write data to geotiff
+        xarray2geotiff(ds, "forest_cover", out_dir, index)
 
-    # Progress bar
-    progress_bar_async(index, ntiles)
+        # Progress bar
+        progress_bar_async(index, ntiles)
 
 # End Of File

@@ -104,8 +104,8 @@ color_map = ListedColormap(colors)
 # Labels
 labels = {0: "non-forest in 2000", 1:"deforestation 2000-2009",
           2:"deforestation 2010-2019", 3:"forest in 2020"}
-patches =[mpatches.Patch(facecolor=col, edgecolor="black",
-                         label=labels[i]) for (i, col) in enumerate(colors)]
+patches = [mpatches.Patch(facecolor=col, edgecolor="black",
+                          label=labels[i]) for (i, col) in enumerate(colors)]
 #+end_src
 
 #+RESULTS:
@@ -160,8 +160,8 @@ raster_image = fcc_gfc.plot(ax=ax, cmap=color_map, add_colorbar=False)
 plt.title("Forest cover change 2001-2010-2020, GFC")
 labels = {0: "non-forest in 2001", 1:"deforestation 2001-2009",
           2:"deforestation 2010-2019", 3:"forest in 2020"}
-patches =[mpatches.Patch(facecolor=col, edgecolor="black",
-                         label=labels[i]) for (i, col) in enumerate(colors)]
+patches = [mpatches.Patch(facecolor=col, edgecolor="black",
+                          label=labels[i]) for (i, col) in enumerate(colors)]
 plt.legend(handles=patches, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
 fig.savefig("gfc.png", bbox_inches="tight", dpi=100)
 #+end_src
@@ -201,7 +201,7 @@ color_map = ListedColormap(colors)
 # Labels
 labels = {0: "non-forest tmf, non-forest gfc", 1:"non-forest tmf / forest gfc",
           2:"forest tmf / forest gfc", 3:"forest tmf, non-forest gfc"}
-patches =[mpatches.Patch(facecolor=col, edgecolor="black",
+patches = [mpatches.Patch(facecolor=col, edgecolor="black",
                          label=labels[i]) for (i, col) in enumerate(colors)]
 #+end_src
 
