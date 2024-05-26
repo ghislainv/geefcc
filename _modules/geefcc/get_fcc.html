@@ -104,7 +104,7 @@
 <span class="kn">import</span> <span class="nn">multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
 
 <span class="kn">from</span> <span class="nn">.get_extent_from_aoi</span> <span class="kn">import</span> <span class="n">get_extent_from_aoi</span>
-<span class="kn">from</span> <span class="nn">.make_dir</span> <span class="kn">import</span> <span class="n">make_dir</span>
+<span class="kn">from</span> <span class="nn">.misc</span> <span class="kn">import</span> <span class="n">make_dir</span>
 <span class="kn">from</span> <span class="nn">.make_grid</span> <span class="kn">import</span> <span class="n">make_grid</span><span class="p">,</span> <span class="n">grid_intersection</span>
 <span class="kn">from</span> <span class="nn">.geeic2geotiff</span> <span class="kn">import</span> <span class="n">geeic2geotiff</span>
 <span class="kn">from</span> <span class="nn">.geotiff_from_tiles</span> <span class="kn">import</span> <span class="n">geotiff_from_tiles</span>
@@ -123,6 +123,8 @@
             <span class="n">source</span><span class="o">=</span><span class="s2">&quot;tmf&quot;</span><span class="p">,</span>
             <span class="n">perc</span><span class="o">=</span><span class="mi">75</span><span class="p">,</span>
             <span class="n">tile_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="c1"># crop_to_aoi=False,</span>
+            <span class="n">ncpu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;fcc.tif&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get forest cover change data.</span>
 
@@ -150,6 +152,11 @@
 <span class="sd">        product.</span>
 
 <span class="sd">    :param tile_size: Tile size for parallel computing.</span>
+
+<span class="sd">    :param ncpu: Number of CPU to use for parallel computing.</span>
+
+<span class="sd">    :param crop_to_aoi: Crop the raster GeoTIFF file to aoi. If False,</span>
+<span class="sd">        the output file will match the grid covering the aoi with buffer.</span>
 
 <span class="sd">    :param output_file: Path to output GeoTIFF file. If directories in path</span>
 <span class="sd">        do not exist they will be created.</span>
@@ -198,10 +205,11 @@
 
     <span class="c1"># Write tiles in parallel</span>
     <span class="c1"># https://superfastpython.com/multiprocessing-pool-starmap_async/</span>
-    <span class="n">ncpu</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="c1"># Message</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;get_fcc running, </span><span class="si">{</span><span class="n">ntiles</span><span class="si">}</span><span class="s2"> tiles .&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="c1"># create and configure the process pool</span>
+    <span class="k">if</span> <span class="n">ncpu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ncpu</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="k">with</span> <span class="n">mp</span><span class="o">.</span><span class="n">Pool</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span><span class="n">ncpu</span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
         <span class="c1"># prepare arguments</span>
         <span class="n">args</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">ext</span><span class="p">,</span> <span class="n">ntiles</span><span class="p">,</span> <span class="n">forest</span><span class="p">,</span> <span class="n">proj</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">out_dir_tiles</span><span class="p">)</span>
@@ -214,7 +222,7 @@
         <span class="n">pool</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
 
     <span class="c1"># Geotiff from tiles</span>
-    <span class="n">geotiff_from_tiles</span><span class="p">(</span><span class="n">extent_latlong</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">output_file</span><span class="p">)</span></div>
+    <span class="n">geotiff_from_tiles</span><span class="p">(</span><span class="n">output_file</span><span class="p">)</span></div>
 
 
 <span class="c1"># End</span>
