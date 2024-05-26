@@ -4,7 +4,7 @@ import os
 import multiprocessing as mp
 
 from .get_extent_from_aoi import get_extent_from_aoi
-from .make_dir import make_dir
+from .misc import make_dir
 from .make_grid import make_grid, grid_intersection
 from .geeic2geotiff import geeic2geotiff
 from .geotiff_from_tiles import geotiff_from_tiles
@@ -21,6 +21,8 @@ def get_fcc(aoi,
             source="tmf",
             perc=75,
             tile_size=1,
+            # crop_to_aoi=False,
+            ncpu=None,
             output_file="fcc.tif"):
     """Get forest cover change data.
 
@@ -48,6 +50,11 @@ def get_fcc(aoi,
         product.
 
     :param tile_size: Tile size for parallel computing.
+
+    :param ncpu: Number of CPU to use for parallel computing.
+
+    :param crop_to_aoi: Crop the raster GeoTIFF file to aoi. If False,
+        the output file will match the grid covering the aoi with buffer.
 
     :param output_file: Path to output GeoTIFF file. If directories in path
         do not exist they will be created.
@@ -96,10 +103,11 @@ def get_fcc(aoi,
 
     # Write tiles in parallel
     # https://superfastpython.com/multiprocessing-pool-starmap_async/
-    ncpu = os.cpu_count() - 1
     # Message
     print(f"get_fcc running, {ntiles} tiles .", end="", flush=True)
     # create and configure the process pool
+    if ncpu is None:
+        ncpu = os.cpu_count() - 1
     with mp.Pool(processes=ncpu) as pool:
         # prepare arguments
         args = [(i, ext, ntiles, forest, proj, scale, out_dir_tiles)
@@ -112,6 +120,6 @@ def get_fcc(aoi,
         pool.join()
 
     # Geotiff from tiles
-    geotiff_from_tiles(extent_latlong, scale, output_file)
+    geotiff_from_tiles(output_file)
 
 # End

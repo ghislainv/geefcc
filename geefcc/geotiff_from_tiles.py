@@ -10,7 +10,7 @@ opj = os.path.join
 opd = os.path.dirname
 
 
-def geotiff_from_tiles(extent_latlong, scale, output_file):
+def geotiff_from_tiles(output_file):
     """Make geotiff from tiles.
 
     :param extent_latlong: Extent in lat/long.
@@ -39,24 +39,13 @@ def geotiff_from_tiles(extent_latlong, scale, output_file):
     # python-equivalent-of-gdalbuildvrt
     forest_vrt.FlushCache()
     forest_vrt = None
+    vrt_file = opj(out_dir, "forest.vrt")
 
     # VRT to GeoTIFF
     # Creation options
     copts = ["COMPRESS=DEFLATE", "BIGTIFF=YES"]
-    # Adjusted extent
-    xmin = extent_latlong[0]
-    xmax = extent_latlong[2]
-    xmax_tap = xmin + math.ceil((xmax - xmin) / scale) * scale
-    ymin = extent_latlong[1]
-    ymax = extent_latlong[3]
-    ymax_tap = ymin + math.ceil((ymax - ymin) / scale) * scale
-
-    # Call to gdal_translate
-    ifile = opj(out_dir, "forest.vrt")
-    # projWin = [ulx, uly, lrx, lry]
-    gdal.Translate(output_file, ifile,
+    gdal.Translate(output_file, vrt_file,
                    maskBand=None,
-                   projWin=[xmin, ymax_tap, xmax_tap, ymin],
                    creationOptions=copts,
                    callback=cback)
 

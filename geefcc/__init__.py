@@ -12,8 +12,9 @@ __version__ = "0.1"
 # GDAL exceptions
 from osgeo import gdal
 
-from .get_fcc import get_fcc
 from .ee_initialize import ee_initialize
+from .get_fcc import get_fcc
+from .sum_raster_bands import sum_raster_bands
 
 # GDAL exceptions
 gdal.UseExceptions()

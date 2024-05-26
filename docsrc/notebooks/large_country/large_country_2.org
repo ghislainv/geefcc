@@ -18,14 +18,13 @@ import time
 
 import ee
 import numpy as np
-from osgeo import gdal
-from geefcc import get_fcc, sum_raster_bands
+from geefcc import get_fcc
 import xarray as xr
-import geopandas
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 import matplotlib.patches as mpatches
 import cartopy.crs as ccrs
+from dask.distributed import Client, LocalCluster, Lock
 #+end_src
 
 #+RESULTS:
@@ -79,30 +78,10 @@ print('Execution time:', round(elapsed_time, 2), 'minutes')
 
 * Transform multiband fcc raster in one band raster 
 
-We transform the data to have only one band describing the forest cover change with 0 for non-forest, 1 for deforestation on the period 2000--2009, 2 for deforestation on the period 2010--2019, and 3 for the remaining forest in 2020. To do so, we just sum the values of the raster bands.
-
-#+begin_src python :results value
-sum_raster_bands(input_file="out_tmf/forest_tmf.tif",
-                 output_file="out_tmf/fcc_tmf.tif",
-                 verbose=False)
-#+end_src
-
-#+RESULTS:
-
-We resample at a lower resolution for plotting.
+We transform the data to have only one band describing the forest cover change with 0 for non-forest, 1 for deforestation on the period 2000--2009, 2 for deforestation on the period 2010--2019, and 3 for the remaining forest in 2020. To do so, we compute the sum of the bands.
 
 #+begin_src python
-from osgeo import gdal
 
-infn = "out_tmf/fcc_tmf.tif"
-outfn = "out_tmf/fcc_tmf_coarsen.tif"
-scale = gdal.Open(infn).GetGeoTransform()[1]
-xres = 20 * scale
-yres = 20 * scale
-resample_alg = "near"
-
-ds = gdal.Warp(outfn, infn, xRes=xres, yRes=yres, resampleAlg=resample_alg)
-ds = None
 #+end_src
 
 #+RESULTS:
@@ -130,22 +109,17 @@ patches = [mpatches.Patch(facecolor=col, edgecolor="black",
 
 #+RESULTS:
 
-We load the data: forest cover change, country borders, buffer, and grid.
+We load the country borders, buffer, and grid with GeoPandas.
 
 #+begin_src python
-# Forest cover change
-fcc_tmf_coarsen = xr.open_dataset("out_tmf/fcc_tmf_coarsen.tif",
-    engine="rasterio").astype("byte")
+import geopandas
 
-# Borders
 borders_gpkg = os.path.join("out_tmf", "gadm41_PER_0.gpkg")
 borders = geopandas.read_file(borders_gpkg)
 
-# Buffer
 buffer_gpkg = os.path.join("out_tmf", "gadm41_PER_buffer.gpkg")
 buffer = geopandas.read_file(buffer_gpkg)
 
-# Grid
 grid_gpkg = os.path.join("out_tmf", "min_grid.gpkg")
 grid = geopandas.read_file(grid_gpkg)
 #+end_src
@@ -158,7 +132,7 @@ We plot the forest cover change map.
 # Plot
 fig = plt.figure()
 ax = fig.add_axes([0, 0, 1, 1], projection=ccrs.PlateCarree())
-raster_image = fcc_tmf_coarsen["band_data"].plot(ax=ax, cmap=color_map, add_colorbar=False)
+raster_image = fcc_tmf_coarsen["fcc"].plot(ax=ax, cmap=color_map, add_colorbar=False)
 grid_image = grid.boundary.plot(ax=ax, color="grey", linewidth=0.5)
 borders_image = borders.boundary.plot(ax=ax, color="black", linewidth=0.5)
 buffer_image = buffer.boundary.plot(ax=ax, color="black", linewidth=0.5)
@@ -170,27 +144,5 @@ fig.savefig("fcc.png", bbox_inches="tight", dpi=100)
 #+attr_rst: :width 700 :align center
 #+RESULTS:
 [[file:fcc.png]]
-
-* Test to plot with gdal and imshow                                :noexport:
-
-#+begin_src python :results graphics file output :file fcc_tmp.png
-with gdal.Open("out_tmf/fcc_tmf_coarsen.tif", gdal.GA_ReadOnly) as ds:
-    raster_image = ds.ReadAsArray()
-
-# Plot
-fig = plt.figure()
-ax = fig.add_axes([0, 0, 1, 1], projection=ccrs.PlateCarree())
-plt.imshow(raster_image, cmap=color_map)
-grid_image = grid.boundary.plot(ax=ax, color="grey", linewidth=0.5)
-borders_image = borders.boundary.plot(ax=ax, color="black", linewidth=0.5)
-buffer_image = buffer.boundary.plot(ax=ax, color="black", linewidth=0.5)
-plt.title("Forest cover change 2000-2010-2020, TMF")
-plt.legend(handles=patches, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
-fig.savefig("fcc_tmp.png", bbox_inches="tight", dpi=100)
-#+end_src
-
-#+RESULTS:
-[[file:fcc_tmp.png]]
-
 
 # End
