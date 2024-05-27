@@ -1,6 +1,12 @@
 Changelog
 *********
 
+geefcc 0.1.1
+============
+
+* Adding function sum_raster_band().
+* New tutorial for large countries.
+
 geefcc 0.1
 ==========
 
