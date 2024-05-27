@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>geefcc.sum_raster_bands &#8212; geefcc — Forest cover change from Google Earth Engine</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=b21ac067" />
+    <script src="../../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/logo-geefcc.svg" alt="Logo" />
+    
+    <h1 class="logo logo-name">geefcc</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Forest cover change from Google Earth Engine</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ghislainv&repo=geefcc&type=star&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/get_started/get_started.html">Get started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../articles.html">Articles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../indices.html">Indices and tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for geefcc.sum_raster_bands</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Summing raster bands.</span>
+<span class="sd">See: https://github.com/mstrimas/gdal-summarize/blob/master/gdal-summarize.py</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">osgeo</span> <span class="kn">import</span> <span class="n">gdal</span>
+
+<span class="kn">from</span> <span class="nn">.misc</span> <span class="kn">import</span> <span class="n">progress_bar</span><span class="p">,</span> <span class="n">makeblock</span>
+
+
+<div class="viewcode-block" id="sum_raster_bands">
+<a class="viewcode-back" href="../../reference.html#geefcc.sum_raster_bands">[docs]</a>
+<span class="k">def</span> <span class="nf">sum_raster_bands</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;sum.tif&quot;</span><span class="p">,</span>
+                     <span class="n">blk_rows</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Summing the raster bands.</span>
+
+<span class="sd">    :param input file: Input file with several bands.</span>
+
+<span class="sd">    :param output_file: Output file with one band corresponding to the</span>
+<span class="sd">        sum of the input bands.</span>
+
+<span class="sd">    :param blk_rows: Number of rows for block. This is used to break</span>
+<span class="sd">        lage raster files in several blocks of data that can be hold</span>
+<span class="sd">        in memory.</span>
+
+<span class="sd">    :param verbose: Logical. Whether to print messages or not.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Load input raster info</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">input_file</span><span class="p">)</span>
+    <span class="n">gt</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">GetGeoTransform</span><span class="p">()</span>
+    <span class="n">proj</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">GetProjection</span><span class="p">()</span>
+    <span class="n">ncol</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">RasterXSize</span>
+    <span class="n">nrow</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">RasterYSize</span>
+    <span class="n">nband</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">RasterCount</span>
+
+    <span class="c1"># Create output raster file</span>
+    <span class="n">driver</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">GetDriverByName</span><span class="p">(</span><span class="s2">&quot;GTiff&quot;</span><span class="p">)</span>
+    <span class="n">ds_out</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span>
+        <span class="n">output_file</span><span class="p">,</span>
+        <span class="n">ncol</span><span class="p">,</span> <span class="n">nrow</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">gdal</span><span class="o">.</span><span class="n">GDT_Byte</span><span class="p">,</span>
+        <span class="p">[</span><span class="s2">&quot;COMPRESS=DEFLATE&quot;</span><span class="p">,</span> <span class="s2">&quot;BIGTIFF=YES&quot;</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="n">ds_out</span><span class="o">.</span><span class="n">SetGeoTransform</span><span class="p">(</span><span class="n">gt</span><span class="p">)</span>
+    <span class="n">ds_out</span><span class="o">.</span><span class="n">SetProjection</span><span class="p">(</span><span class="n">proj</span><span class="p">)</span>
+    <span class="n">band_out</span> <span class="o">=</span> <span class="n">ds_out</span><span class="o">.</span><span class="n">GetRasterBand</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">band_out</span><span class="o">.</span><span class="n">SetNoDataValue</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+    <span class="n">band_out</span><span class="o">.</span><span class="n">SetDescription</span><span class="p">(</span><span class="s2">&quot;fcc&quot;</span><span class="p">)</span>  <span class="c1"># band name</span>
+
+    <span class="c1"># Make blocks</span>
+    <span class="n">blockinfo</span> <span class="o">=</span> <span class="n">makeblock</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="n">blk_rows</span><span class="o">=</span><span class="n">blk_rows</span><span class="p">)</span>
+    <span class="n">nblock</span> <span class="o">=</span> <span class="n">blockinfo</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">nblock_x</span> <span class="o">=</span> <span class="n">blockinfo</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">blockinfo</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">blockinfo</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+    <span class="n">nx</span> <span class="o">=</span> <span class="n">blockinfo</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">ny</span> <span class="o">=</span> <span class="n">blockinfo</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+
+    <span class="c1"># Loop on blocks of data</span>
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nblock</span><span class="p">):</span>
+        <span class="c1"># Progress bar</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="n">progress_bar</span><span class="p">(</span><span class="n">nblock</span><span class="p">,</span> <span class="n">b</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># Position in 1D-arrays</span>
+        <span class="n">px</span> <span class="o">=</span> <span class="n">b</span> <span class="o">%</span> <span class="n">nblock_x</span>
+        <span class="n">py</span> <span class="o">=</span> <span class="n">b</span> <span class="o">//</span> <span class="n">nblock_x</span>
+        <span class="c1"># Make stack to store data</span>
+        <span class="n">stack</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nband</span><span class="p">,</span> <span class="n">ny</span><span class="p">[</span><span class="n">py</span><span class="p">],</span> <span class="n">nx</span><span class="p">[</span><span class="n">px</span><span class="p">]),</span>
+                         <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+        <span class="c1"># Data for one block</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nband</span><span class="p">):</span>
+            <span class="n">stack</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">GetRasterBand</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                        <span class="o">.</span><span class="n">ReadAsArray</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">px</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">py</span><span class="p">],</span> <span class="n">nx</span><span class="p">[</span><span class="n">px</span><span class="p">],</span> <span class="n">ny</span><span class="p">[</span><span class="n">py</span><span class="p">]))</span>
+        <span class="c1"># Compute sum</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">stack</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># Write data</span>
+        <span class="n">band_out</span><span class="o">.</span><span class="n">WriteArray</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="n">px</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">py</span><span class="p">])</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Compute statistics&quot;</span><span class="p">)</span>
+    <span class="n">band_out</span><span class="o">.</span><span class="n">FlushCache</span><span class="p">()</span>  <span class="c1"># Write cache data to disk</span>
+    <span class="n">band_out</span><span class="o">.</span><span class="n">ComputeStatistics</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># Dereference driver</span>
+    <span class="n">band_out</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">del</span> <span class="n">ds_out</span></div>
+
+
+
+<span class="c1"># End</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &#169;2024, Cirad.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.3.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
