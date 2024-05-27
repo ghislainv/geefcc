@@ -22,12 +22,10 @@ cores, n-1 cores will be used in parallel.
     import numpy as np
     from osgeo import gdal
     from geefcc import get_fcc, sum_raster_bands
-    import xarray as xr
     import geopandas
     import matplotlib.pyplot as plt
     from matplotlib.colors import ListedColormap
     import matplotlib.patches as mpatches
-    import cartopy.crs as ccrs
 
 We initialize Google Earth Engine.
 
@@ -46,10 +44,12 @@ We can compute the number of cores used for the computation.
 
 ::
 
-    7
+    3
 
 
-We download the forest cover change data from GEE for Peru for years 2000, 2010 and 2020, using a buffer of about 10 km around the border (0.089... decimal degrees) and a tile size of 1 degree. 
+We download the forest cover change data from GEE for Peru for years 2000, 2010 and 2020, using a buffer of about 10 km around the border (0.089... decimal degrees) and a tile size of one degree.
+
+A buffer can be useful if we want to avoid “edge effects”, while computing distance to forest edge for example. One degree tiles are used to download the data from GEE in parallel.
 
 .. code:: python
 
@@ -73,7 +73,7 @@ We estimate the computation time to download 159 1-degree tiles using several co
 
 ::
 
-    Execution time: 1.15 minutes
+    Execution time: 20.15 minutes
 
 Transform multiband fcc raster in one band raster
 -------------------------------------------------
@@ -148,17 +148,26 @@ We plot the forest cover change map.
 
 .. code:: python
 
+    with gdal.Open("out_tmf/fcc_tmf_coarsen.tif", gdal.GA_ReadOnly) as ds:
+        raster_image = ds.ReadAsArray()
+        nrow, ncol = raster_image.shape
+        xmin, xres, _, ymax, _, yres = ds.GetGeoTransform()
+        extent = [xmin, xmin + xres * ncol, ymax + yres * nrow, ymax]
+
     # Plot
     fig = plt.figure()
-    ax = fig.add_axes([0, 0, 1, 1], projection=ccrs.PlateCarree())
-    raster_image = fcc_tmf_coarsen["band_data"].plot(ax=ax, cmap=color_map, add_colorbar=False)
+    ax = plt.subplot(111)
+    ax.imshow(raster_image, cmap=color_map, extent=extent,
+              resample=False)
     grid_image = grid.boundary.plot(ax=ax, color="grey", linewidth=0.5)
     borders_image = borders.boundary.plot(ax=ax, color="black", linewidth=0.5)
     buffer_image = buffer.boundary.plot(ax=ax, color="black", linewidth=0.5)
     plt.title("Forest cover change 2000-2010-2020, TMF")
     plt.legend(handles=patches, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
-    fig.savefig("fcc.png", bbox_inches="tight", dpi=100)
+    fig.savefig("fcc.png", bbox_inches="tight", dpi=200)
 
 .. image:: fcc.png
     :width: 700
     :align: center
+
+Lines in black represent country borders and the 10 km buffer. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.

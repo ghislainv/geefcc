@@ -121,12 +121,10 @@ cores, n-1 cores will be used in parallel.</p>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">osgeo</span> <span class="kn">import</span> <span class="n">gdal</span>
 <span class="kn">from</span> <span class="nn">geefcc</span> <span class="kn">import</span> <span class="n">get_fcc</span><span class="p">,</span> <span class="n">sum_raster_bands</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 <span class="kn">import</span> <span class="nn">geopandas</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">ListedColormap</span>
 <span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="nn">mpatches</span>
-<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
 </pre></div>
 </div>
 <p>We initialize Google Earth Engine.</p>
@@ -140,10 +138,11 @@ cores, n-1 cores will be used in parallel.</p>
 <span class="n">ncpu</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">7</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">3</span>
 </pre></div>
 </div>
-<p>We download the forest cover change data from GEE for Peru for years 2000, 2010 and 2020, using a buffer of about 10 km around the border (0.089… decimal degrees) and a tile size of 1 degree.</p>
+<p>We download the forest cover change data from GEE for Peru for years 2000, 2010 and 2020, using a buffer of about 10 km around the border (0.089… decimal degrees) and a tile size of one degree.</p>
+<p>A buffer can be useful if we want to avoid “edge effects”, while computing distance to forest edge for example. One degree tiles are used to download the data from GEE in parallel.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="n">get_fcc</span><span class="p">(</span>
     <span class="n">aoi</span><span class="o">=</span><span class="s2">&quot;PER&quot;</span><span class="p">,</span>
@@ -161,7 +160,7 @@ cores, n-1 cores will be used in parallel.</p>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Execution time:&#39;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;minutes&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Execution</span> <span class="n">time</span><span class="p">:</span> <span class="mf">1.15</span> <span class="n">minutes</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Execution</span> <span class="n">time</span><span class="p">:</span> <span class="mf">20.15</span> <span class="n">minutes</span>
 </pre></div>
 </div>
 </section>
@@ -226,20 +225,28 @@ cores, n-1 cores will be used in parallel.</p>
 </pre></div>
 </div>
 <p>We plot the forest cover change map.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="s2">&quot;out_tmf/fcc_tmf_coarsen.tif&quot;</span><span class="p">,</span> <span class="n">gdal</span><span class="o">.</span><span class="n">GA_ReadOnly</span><span class="p">)</span> <span class="k">as</span> <span class="n">ds</span><span class="p">:</span>
+    <span class="n">raster_image</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">ReadAsArray</span><span class="p">()</span>
+    <span class="n">nrow</span><span class="p">,</span> <span class="n">ncol</span> <span class="o">=</span> <span class="n">raster_image</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">xmin</span><span class="p">,</span> <span class="n">xres</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">ymax</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">yres</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">GetGeoTransform</span><span class="p">()</span>
+    <span class="n">extent</span> <span class="o">=</span> <span class="p">[</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmin</span> <span class="o">+</span> <span class="n">xres</span> <span class="o">*</span> <span class="n">ncol</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">+</span> <span class="n">yres</span> <span class="o">*</span> <span class="n">nrow</span><span class="p">,</span> <span class="n">ymax</span><span class="p">]</span>
+
+<span class="c1"># Plot</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
-<span class="n">raster_image</span> <span class="o">=</span> <span class="n">fcc_tmf_coarsen</span><span class="p">[</span><span class="s2">&quot;band_data&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">color_map</span><span class="p">,</span> <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">raster_image</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">color_map</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span>
+          <span class="n">resample</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">grid_image</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">borders_image</span> <span class="o">=</span> <span class="n">borders</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">buffer_image</span> <span class="o">=</span> <span class="n">buffer</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Forest cover change 2000-2010-2020, TMF&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">patches</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;fcc.png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;fcc.png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../../_images/fcc.png"><img alt="../../_images/fcc.png" class="align-center" src="../../_images/fcc.png" style="width: 700px;" />
 </a>
+<p>Lines in black represent country borders and the 10 km buffer. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.</p>
 </section>
 </section>
 

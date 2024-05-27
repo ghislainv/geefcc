@@ -61,6 +61,7 @@
 <li class="toctree-l1"><a class="reference internal" href="articles.html">Articles</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Python API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#get-fcc">get_fcc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sum-raster-bands">sum_raster_bands</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="indices.html">Indices and tables</a></li>
@@ -139,6 +140,28 @@ product.</p></li>
 the output file will match the grid covering the aoi with buffer.</p></li>
 <li><p><strong>output_file</strong> – Path to output GeoTIFF file. If directories in path
 do not exist they will be created.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="sum-raster-bands">
+<h2>sum_raster_bands<a class="headerlink" href="#sum-raster-bands" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="geefcc.sum_raster_bands">
+<span class="sig-name descname"><span class="pre">sum_raster_bands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sum.tif'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blk_rows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/geefcc/sum_raster_bands.html#sum_raster_bands"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geefcc.sum_raster_bands" title="Link to this definition">¶</a></dt>
+<dd><p>Summing the raster bands.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file</strong> (<em>input</em>) – Input file with several bands.</p></li>
+<li><p><strong>output_file</strong> – Output file with one band corresponding to the
+sum of the input bands.</p></li>
+<li><p><strong>blk_rows</strong> – Number of rows for block. This is used to break
+lage raster files in several blocks of data that can be hold
+in memory.</p></li>
+<li><p><strong>verbose</strong> – Logical. Whether to print messages or not.</p></li>
 </ul>
 </dd>
 </dl>
