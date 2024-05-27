@@ -75,7 +75,7 @@ print('Execution time:', round(elapsed_time, 2), 'minutes')
 #+end_src
 
 #+RESULTS:
-: Execution time: 20.15 minutes
+: Execution time: 30.76 minutes
 
 * Transform multiband fcc raster in one band raster 
 
