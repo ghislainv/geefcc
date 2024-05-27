@@ -14,7 +14,8 @@ def sum_raster_bands(input_file, output_file="sum.tif",
 
     :param input file: Input file with several bands.
 
-    :param output_file: Output file with several bands.
+    :param output_file: Output file with one band corresponding to the
+        sum of the input bands.
 
     :param blk_rows: Number of rows for block. This is used to break
         lage raster files in several blocks of data that can be hold
