@@ -78,7 +78,7 @@ Installation
 
 The easiest way to install the ``geefcc`` Python package is via `pip <https://pip.pypa.io/en/stable/>`_ in the *OSGeo4W Shell* for Windows or in a virtual environment for Linux.
 
-For Linux, create and activate a virtual environment before install ``geefcc`` with ``pip``:
+For Linux, create and activate a virtual environment before installing ``geefcc`` with ``pip``:
 
 .. code-block:: shell
 
@@ -120,7 +120,7 @@ In case of problem while installing GDAL Python bindings, try the following comm
 
 .. code-block:: shell
 		
-   python3 -m pip install  --no-cache-dir --force-reinstall gdal==$(gdal-config --version)
+   python3 -m pip install --no-cache-dir --force-reinstall gdal==$(gdal-config --version)
    
 Contributing
 ============

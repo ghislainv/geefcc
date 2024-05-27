@@ -37,7 +37,7 @@ jobs:
         export C_INCLUDE_PATH=/usr/include/gdal
         python -m pip install gdal==$(gdal-config --version)
         python -m pip install -r requirements.txt
-        # Develoment mode for pytest to work
+        # Development mode for pytest to work
         python -m pip install -e .
     - name: Lint with flake8
       run: |

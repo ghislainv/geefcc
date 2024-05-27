@@ -19,7 +19,7 @@ def download_gadm(iso3, output_file):
     # Check for existing file
     if not os.path.isfile(output_file):
 
-        # Download the zipfile from gadm.org
+        # Download the file from gadm.org
         url = ("https://geodata.ucdavis.edu/gadm/gadm4.1/"
                f"gpkg/gadm41_{iso3}.gpkg")
         urlretrieve(url, output_file)
