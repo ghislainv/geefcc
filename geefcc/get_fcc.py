@@ -4,7 +4,7 @@ import os
 import multiprocessing as mp
 
 from .get_extent_from_aoi import get_extent_from_aoi
-from .misc import make_dir
+from .misc.miscellaneous import make_dir
 from .make_grid import make_grid, grid_intersection
 from .geeic2geotiff import geeic2geotiff
 from .geotiff_from_tiles import geotiff_from_tiles
