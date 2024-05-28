@@ -5,5 +5,5 @@ Articles
    :maxdepth: 1
 
    notebooks/get_started/get_started.ipynb
-   notebooks/large_country/large_country
+   notebooks/large_countries/large_countries
   
