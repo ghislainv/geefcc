@@ -104,7 +104,7 @@
 <span class="kn">import</span> <span class="nn">multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
 
 <span class="kn">from</span> <span class="nn">.get_extent_from_aoi</span> <span class="kn">import</span> <span class="n">get_extent_from_aoi</span>
-<span class="kn">from</span> <span class="nn">.misc</span> <span class="kn">import</span> <span class="n">make_dir</span>
+<span class="kn">from</span> <span class="nn">.misc.miscellaneous</span> <span class="kn">import</span> <span class="n">make_dir</span>
 <span class="kn">from</span> <span class="nn">.make_grid</span> <span class="kn">import</span> <span class="n">make_grid</span><span class="p">,</span> <span class="n">grid_intersection</span>
 <span class="kn">from</span> <span class="nn">.geeic2geotiff</span> <span class="kn">import</span> <span class="n">geeic2geotiff</span>
 <span class="kn">from</span> <span class="nn">.geotiff_from_tiles</span> <span class="kn">import</span> <span class="n">geotiff_from_tiles</span>
@@ -153,13 +153,16 @@
 
 <span class="sd">    :param tile_size: Tile size for parallel computing.</span>
 
-<span class="sd">    :param ncpu: Number of CPU to use for parallel computing.</span>
+<span class="sd">    :param ncpu: Number of CPU to use for parallel computing. If None,</span>
+<span class="sd">        it will be set to the number of cores on the computer minus</span>
+<span class="sd">        one.</span>
 
 <span class="sd">    :param crop_to_aoi: Crop the raster GeoTIFF file to aoi. If False,</span>
-<span class="sd">        the output file will match the grid covering the aoi with buffer.</span>
+<span class="sd">        the output file will match the grid covering the aoi with</span>
+<span class="sd">        buffer.</span>
 
-<span class="sd">    :param output_file: Path to output GeoTIFF file. If directories in path</span>
-<span class="sd">        do not exist they will be created.</span>
+<span class="sd">    :param output_file: Path to output GeoTIFF file. If directories in</span>
+<span class="sd">        path do not exist they will be created.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 

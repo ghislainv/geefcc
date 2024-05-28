@@ -146,7 +146,7 @@ sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> <
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
 <p>The easiest way to install the <code class="docutils literal notranslate"><span class="pre">geefcc</span></code> Python package is via <a class="reference external" href="https://pip.pypa.io/en/stable/">pip</a> in the <em>OSGeo4W Shell</em> for Windows or in a virtual environment for Linux.</p>
-<p>For Linux, create and activate a virtual environment before install <code class="docutils literal notranslate"><span class="pre">geefcc</span></code> with <code class="docutils literal notranslate"><span class="pre">pip</span></code>:</p>
+<p>For Linux, create and activate a virtual environment before installing <code class="docutils literal notranslate"><span class="pre">geefcc</span></code> with <code class="docutils literal notranslate"><span class="pre">pip</span></code>:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~
 <span class="c1"># Create a directory for virtual environments</span>
 mkdir<span class="w"> </span>venvs
@@ -177,7 +177,7 @@ rm<span class="w"> </span>-R<span class="w"> </span>~/venvs/venv-geefcc<span cla
 </pre></div>
 </div>
 <p>In case of problem while installing GDAL Python bindings, try the following command:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w">  </span>--no-cache-dir<span class="w"> </span>--force-reinstall<span class="w"> </span><span class="nv">gdal</span><span class="o">==</span><span class="k">$(</span>gdal-config<span class="w"> </span>--version<span class="k">)</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span>--force-reinstall<span class="w"> </span><span class="nv">gdal</span><span class="o">==</span><span class="k">$(</span>gdal-config<span class="w"> </span>--version<span class="k">)</span>
 </pre></div>
 </div>
 </section>

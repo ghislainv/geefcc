@@ -135,11 +135,14 @@ defining the forest must be specified with parameter <code class="docutils liter
 <li><p><strong>perc</strong> – Tree cover threshold defining the forest for GFC
 product.</p></li>
 <li><p><strong>tile_size</strong> – Tile size for parallel computing.</p></li>
-<li><p><strong>ncpu</strong> – Number of CPU to use for parallel computing.</p></li>
+<li><p><strong>ncpu</strong> – Number of CPU to use for parallel computing. If None,
+it will be set to the number of cores on the computer minus
+one.</p></li>
 <li><p><strong>crop_to_aoi</strong> – Crop the raster GeoTIFF file to aoi. If False,
-the output file will match the grid covering the aoi with buffer.</p></li>
-<li><p><strong>output_file</strong> – Path to output GeoTIFF file. If directories in path
-do not exist they will be created.</p></li>
+the output file will match the grid covering the aoi with
+buffer.</p></li>
+<li><p><strong>output_file</strong> – Path to output GeoTIFF file. If directories in
+path do not exist they will be created.</p></li>
 </ul>
 </dd>
 </dl>
