@@ -4,7 +4,7 @@ import os
 import multiprocessing as mp
 
 from .get_extent_from_aoi import get_extent_from_aoi
-from .misc import make_dir
+from .misc.miscellaneous import make_dir
 from .make_grid import make_grid, grid_intersection
 from .geeic2geotiff import geeic2geotiff
 from .geotiff_from_tiles import geotiff_from_tiles
@@ -51,13 +51,16 @@ def get_fcc(aoi,
 
     :param tile_size: Tile size for parallel computing.
 
-    :param ncpu: Number of CPU to use for parallel computing.
+    :param ncpu: Number of CPU to use for parallel computing. If None,
+        it will be set to the number of cores on the computer minus
+        one.
 
     :param crop_to_aoi: Crop the raster GeoTIFF file to aoi. If False,
-        the output file will match the grid covering the aoi with buffer.
+        the output file will match the grid covering the aoi with
+        buffer.
 
-    :param output_file: Path to output GeoTIFF file. If directories in path
-        do not exist they will be created.
+    :param output_file: Path to output GeoTIFF file. If directories in
+        path do not exist they will be created.
 
     """
 

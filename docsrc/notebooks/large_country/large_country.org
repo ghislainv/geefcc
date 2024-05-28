@@ -33,7 +33,8 @@ We initialize Google Earth Engine.
 #+begin_src python
 # Initialize GEE
 ee.Initialize(project="forestatrisk",
-              opt_url="https://earthengine-highvolume.googleapis.com")
+              opt_url=("https://earthengine-highvolume."
+                       "googleapis.com"))
 #+end_src
 
 #+RESULTS:
