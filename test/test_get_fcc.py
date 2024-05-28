@@ -3,7 +3,7 @@
 # Import
 import os
 
-from geefcc import get_fcc, ee_initialize
+import geefcc as gf
 
 # "EARTHENGINE_TOKEN" for GitHub actions
 # https://github.com/gee-community/geemap/discussions/1341
@@ -13,7 +13,7 @@ from geefcc import get_fcc, ee_initialize
 # with the name EARTHENGINE_TOKEN.
 
 # Initialize GEE
-ee_initialize(
+gf.ee_initialize(
     token_name="EARTHENGINE_TOKEN",
     project="forestatrisk",
     opt_url="https://earthengine-highvolume.googleapis.com")
@@ -21,7 +21,7 @@ ee_initialize(
 
 def test_get_fcc_extent_tmf():
     """Testing get_fcc()."""
-    get_fcc(
+    gf.get_fcc(
         # Extent for Reunion Island
         aoi=(55.21625137, -21.38986015, 55.83736038, -20.87180519),
         buff=0.08983152841195216,
@@ -35,7 +35,7 @@ def test_get_fcc_extent_tmf():
 
 def test_get_fcc_extent_gfc():
     """Testing get_fcc()."""
-    get_fcc(
+    gf.get_fcc(
         # Extent for Reunion Island
         aoi=(55.21625137, -21.38986015, 55.83736038, -20.87180519),
         buff=0.08983152841195216,
