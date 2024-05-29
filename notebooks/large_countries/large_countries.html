@@ -130,7 +130,8 @@ cores, n-1 cores will be used in parallel.</p>
 <p>We initialize Google Earth Engine.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize GEE</span>
 <span class="n">ee</span><span class="o">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s2">&quot;forestatrisk&quot;</span><span class="p">,</span>
-              <span class="n">opt_url</span><span class="o">=</span><span class="s2">&quot;https://earthengine-highvolume.googleapis.com&quot;</span><span class="p">)</span>
+              <span class="n">opt_url</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;https://earthengine-highvolume.&quot;</span>
+                       <span class="s2">&quot;googleapis.com&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>We can compute the number of cores used for the computation.</p>
@@ -160,7 +161,7 @@ cores, n-1 cores will be used in parallel.</p>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Execution time:&#39;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;minutes&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Execution</span> <span class="n">time</span><span class="p">:</span> <span class="mf">20.15</span> <span class="n">minutes</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Execution</span> <span class="n">time</span><span class="p">:</span> <span class="mf">30.76</span> <span class="n">minutes</span>
 </pre></div>
 </div>
 </section>
@@ -173,9 +174,7 @@ cores, n-1 cores will be used in parallel.</p>
 </pre></div>
 </div>
 <p>We resample at a lower resolution for plotting.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">osgeo</span> <span class="kn">import</span> <span class="n">gdal</span>
-
-<span class="n">infn</span> <span class="o">=</span> <span class="s2">&quot;out_tmf/fcc_tmf.tif&quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">infn</span> <span class="o">=</span> <span class="s2">&quot;out_tmf/fcc_tmf.tif&quot;</span>
 <span class="n">outfn</span> <span class="o">=</span> <span class="s2">&quot;out_tmf/fcc_tmf_coarsen.tif&quot;</span>
 <span class="n">scale</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">infn</span><span class="p">)</span><span class="o">.</span><span class="n">GetGeoTransform</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
 <span class="n">xres</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">scale</span>
