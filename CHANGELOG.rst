@@ -1,6 +1,11 @@
 Changelog
 *********
 
+geefcc 0.1.2
+============
+
+* Changing import statements.
+
 geefcc 0.1.1
 ============
 
