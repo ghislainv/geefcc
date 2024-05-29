@@ -123,13 +123,9 @@ We prepare the colors for the map.
     patches = [mpatches.Patch(facecolor=col, edgecolor="black",
                               label=labels[i]) for (i, col) in enumerate(colors)]
 
-We load the data: forest cover change, country borders, buffer, and grid.
+We load the data: country borders, buffer, and grid.
 
 .. code:: python
-
-    # Forest cover change
-    fcc_tmf_coarsen = xr.open_dataset("out_tmf/fcc_tmf_coarsen.tif",
-        engine="rasterio").astype("byte")
 
     # Borders
     borders_gpkg = os.path.join("out_tmf", "gadm41_PER_0.gpkg")

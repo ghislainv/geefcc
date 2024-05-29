@@ -205,12 +205,8 @@ cores, n-1 cores will be used in parallel.</p>
                           <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">colors</span><span class="p">)]</span>
 </pre></div>
 </div>
-<p>We load the data: forest cover change, country borders, buffer, and grid.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Forest cover change</span>
-<span class="n">fcc_tmf_coarsen</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s2">&quot;out_tmf/fcc_tmf_coarsen.tif&quot;</span><span class="p">,</span>
-    <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;rasterio&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;byte&quot;</span><span class="p">)</span>
-
-<span class="c1"># Borders</span>
+<p>We load the data: country borders, buffer, and grid.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Borders</span>
 <span class="n">borders_gpkg</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;out_tmf&quot;</span><span class="p">,</span> <span class="s2">&quot;gadm41_PER_0.gpkg&quot;</span><span class="p">)</span>
 <span class="n">borders</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">borders_gpkg</span><span class="p">)</span>
 
