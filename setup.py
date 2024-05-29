@@ -60,13 +60,13 @@ setup(name="geefcc",
       keywords=("deforestation tropical forests forest "
                 "cover change map google earth engine"),
       python_requires=">=3.6",
-      packages=["geefcc"],
-      package_dir={"geefcc": "geefcc"},
+      packages=["geefcc", "geefcc/misc"],
+      package_dir={"geefcc": "geefcc", "misc": "geefcc/misc"},
       entry_points={"console_scripts": ["geefcc = geefcc.geefcc:main"]},
       install_requires=["numpy", "gdal", "xarray", "xee"],
       extras_require={
-          "interactive": ["jupyter", "geopandas",
-                          "descartes", "folium"]},
+          "interactive": ["cartopy", "rioxarray",
+                          "matplotlib", "geopandas"]},
       zip_safe=False)
 
 # End

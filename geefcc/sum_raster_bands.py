@@ -5,7 +5,7 @@ See: https://github.com/mstrimas/gdal-summarize/blob/master/gdal-summarize.py
 import numpy as np
 from osgeo import gdal
 
-from .misc.miscellaneous import progress_bar, makeblock
+from .misc import progress_bar, makeblock
 
 
 def sum_raster_bands(input_file, output_file="sum.tif",

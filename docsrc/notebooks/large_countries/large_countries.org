@@ -93,8 +93,6 @@ sum_raster_bands(input_file="out_tmf/forest_tmf.tif",
 We resample at a lower resolution for plotting.
 
 #+begin_src python
-from osgeo import gdal
-
 infn = "out_tmf/fcc_tmf.tif"
 outfn = "out_tmf/fcc_tmf_coarsen.tif"
 scale = gdal.Open(infn).GetGeoTransform()[1]

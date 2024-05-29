@@ -33,7 +33,8 @@ We initialize Google Earth Engine.
 
     # Initialize GEE
     ee.Initialize(project="forestatrisk",
-                  opt_url="https://earthengine-highvolume.googleapis.com")
+                  opt_url=("https://earthengine-highvolume."
+                           "googleapis.com"))
 
 We can compute the number of cores used for the computation.
 
@@ -73,7 +74,7 @@ We estimate the computation time to download 159 1-degree tiles using several co
 
 ::
 
-    Execution time: 20.15 minutes
+    Execution time: 30.76 minutes
 
 Transform multiband fcc raster in one band raster
 -------------------------------------------------
@@ -89,8 +90,6 @@ We transform the data to have only one band describing the forest cover change w
 We resample at a lower resolution for plotting.
 
 .. code:: python
-
-    from osgeo import gdal
 
     infn = "out_tmf/fcc_tmf.tif"
     outfn = "out_tmf/fcc_tmf_coarsen.tif"
