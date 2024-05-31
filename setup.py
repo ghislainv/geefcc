@@ -17,9 +17,9 @@ from setuptools import setup
 
 
 # find_version
-def find_version():
+def find_version(pkg_name):
     """Finding package version."""
-    with open("geefcc/__init__.py", encoding="utf-8") as init_file:
+    with open(f"{pkg_name}/__init__.py", encoding="utf-8") as init_file:
         init_text = init_file.read()
     _version = (re.search('^__version__\\s*=\\s*"(.*)"',
                           init_text, re.M)
@@ -27,7 +27,7 @@ def find_version():
     return _version
 
 
-version = find_version()
+version = find_version("geefcc")
 
 # reStructuredText README file
 with io.open("README.rst", encoding="utf-8") as f:

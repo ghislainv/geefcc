@@ -22,6 +22,7 @@ def get_fcc(aoi,
             perc=75,
             tile_size=1,
             # crop_to_aoi=False,
+            parallel=False,
             ncpu=None,
             output_file="fcc.tif"):
     """Get forest cover change data.
@@ -50,6 +51,9 @@ def get_fcc(aoi,
         product.
 
     :param tile_size: Tile size for parallel computing.
+
+    :param parallel: Logical. Parallel (if ``True``) or sequential (if
+        ``False``) computing. Default to ``False``.
 
     :param ncpu: Number of CPU to use for parallel computing. If None,
         it will be set to the number of cores on the computer minus
@@ -104,23 +108,32 @@ def get_fcc(aoi,
     out_dir_tiles = opj(out_dir, "forest_tiles")
     make_dir(out_dir_tiles)
 
-    # Write tiles in parallel
-    # https://superfastpython.com/multiprocessing-pool-starmap_async/
     # Message
     print(f"get_fcc running, {ntiles} tiles .", end="", flush=True)
-    # create and configure the process pool
-    if ncpu is None:
-        ncpu = os.cpu_count() - 1
-    with mp.Pool(processes=ncpu) as pool:
-        # prepare arguments
-        args = [(i, ext, ntiles, forest, proj, scale, out_dir_tiles)
-                for (i, ext) in enumerate(grid)]
-        # issue many tasks asynchronously to the process pool
-        _ = pool.starmap_async(geeic2geotiff, args)
-        # close the pool
-        pool.close()
-        # wait for all issued tasks to complete
-        pool.join()
+
+    # Sequential computing
+    if parallel is False:
+        # Loop on tiles
+        for (i, ext) in enumerate(grid):
+            geeic2geotiff(i, ext, ntiles, forest, proj, scale, out_dir_tiles)
+
+    # Parallel computing
+    if parallel is True:
+        # Write tiles in parallel
+        # https://superfastpython.com/multiprocessing-pool-starmap_async/
+        # create and configure the process pool
+        if ncpu is None:
+            ncpu = os.cpu_count() - 1
+        with mp.Pool(processes=ncpu) as pool:
+            # prepare arguments
+            args = [(i, ext, ntiles, forest, proj, scale, out_dir_tiles)
+                    for (i, ext) in enumerate(grid)]
+            # issue many tasks asynchronously to the process pool
+            _ = pool.starmap_async(geeic2geotiff, args)
+            # close the pool
+            pool.close()
+            # wait for all issued tasks to complete
+            pool.join()
 
     # Geotiff from tiles
     geotiff_from_tiles(output_file)
