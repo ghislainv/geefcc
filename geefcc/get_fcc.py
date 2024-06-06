@@ -6,13 +6,19 @@ import multiprocessing as mp
 from .get_extent_from_aoi import get_extent_from_aoi
 from .misc import make_dir
 from .make_grid import make_grid, grid_intersection
-from .geeic2geotiff import geeic2geotiff
+from .geeic2geotiff import xarray2geotiff
 from .geotiff_from_tiles import geotiff_from_tiles
-from .ee_tmf import ee_tmf
-from .ee_gfc import ee_gfc
+from .get_forest import get_forest
+from tqdm.autonotebook import tqdm
 
 opj = os.path.join
 opd = os.path.dirname
+
+
+def get_forest_to_geotiff(i, years, ext, source, proj, scale, perc, out_dir_tiles):
+    """Get forest cover change from GEE and write to geotiff."""
+    forest = get_forest(years, ext, source, proj, scale, perc)
+    xarray2geotiff(i, forest, years, proj, out_dir_tiles)
 
 
 def get_fcc(aoi,
@@ -98,12 +104,6 @@ def get_fcc(aoi,
     # Number of tiles
     ntiles = len(grid)
 
-    # Forest image collection
-    if source == "tmf":
-        forest = ee_tmf(years)
-    if source == "gfc":
-        forest = ee_gfc(years, perc)
-
     # Create dir for forest tiles
     out_dir_tiles = opj(out_dir, "forest_tiles")
     make_dir(out_dir_tiles)
@@ -114,8 +114,8 @@ def get_fcc(aoi,
     # Sequential computing
     if parallel is False:
         # Loop on tiles
-        for (i, ext) in enumerate(grid):
-            geeic2geotiff(i, ext, ntiles, forest, proj, scale, out_dir_tiles)
+        for (i, ext) in enumerate(tqdm(grid)):
+            get_forest_to_geotiff(i, years, ext, source, proj, scale, perc, out_dir_tiles)
 
     # Parallel computing
     if parallel is True:
@@ -126,10 +126,10 @@ def get_fcc(aoi,
             ncpu = os.cpu_count() - 1
         with mp.Pool(processes=ncpu) as pool:
             # prepare arguments
-            args = [(i, ext, ntiles, forest, proj, scale, out_dir_tiles)
+            args = [(i, years, ext, source, proj, scale, perc, out_dir_tiles)
                     for (i, ext) in enumerate(grid)]
             # issue many tasks asynchronously to the process pool
-            _ = pool.starmap_async(geeic2geotiff, args)
+            _ = pool.starmap_async(get_forest_to_geotiff, args)
             # close the pool
             pool.close()
             # wait for all issued tasks to complete

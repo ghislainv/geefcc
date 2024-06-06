@@ -9,7 +9,8 @@ import sys
 
 from osgeo import gdal, osr, gdal_array
 import xarray as xr
-
+import pandas as pd
+from typing import Union
 
 def progress_bar_sequence(index, ntiles):
     """Progress bar."""
@@ -69,29 +70,34 @@ def get_dst_dataset(dst_img, cols, rows, layers, dtype, proj, gt):
     return dst_ds
 
 
-def get_resolution_from_xarray(xarray):
+def get_resolution_from_xarray(dsa: Union[xr.DataArray, xr.Dataset]) -> tuple[float, float]:
     """Method to create a tuple (x resolution, y resolution) in x and y
     dimensions.
 
-    :param xarray: xarray with latitude and longitude variables.
+    :param ds: dataset or dataarray with `latitude` and `longitude` coordinates.
 
     :return: tuple with x and y resolutions
     """
 
-    x_res = xarray.longitude.values[1] - xarray.longitude.values[0]
-    y_res = xarray.latitude.values[0] - xarray.latitude.values[1]
+    x_res = dsa.longitude.values[1] - dsa.longitude.values[0]
+    y_res = dsa.latitude.values[0] - dsa.latitude.values[1]
 
     return (x_res, y_res)
 
 
-def xarray2geotiff(xarray, data_var, out_dir, index):
-    """Saves an xarray dataset to a Cloud Optimized GeoTIFF (COG).
+def xarray2geotiff(index: int,
+                   forest: xr.Dataset,
+                   years: list[int],
+                   proj: str,
+                   out_dir: str) -> None:
+    """Saves an xarray (forest cover at multiple dates) dataset to a
+    Cloud Optimized GeoTIFF (COG).
 
-    :param xarray: xarray Dataset.
-    :param data_var: Data variable in the xarray dataset.
-    :param out_dir: Output directory.
     :param index: Tile index.
-
+    :param forest: xarray forest Dataset.
+    :param years: List of years.
+    :param proj: Projection.
+    :param out_dir: Output directory.
     """
 
     # Create GeoTransform - perhaps the user requested a
@@ -107,12 +113,17 @@ def xarray2geotiff(xarray, data_var, out_dir, index):
     #  GeoTransform[5] n-s pixel resolution (negative value)
 
     # Reorganize the data
-    xarray = xarray.transpose("time", "latitude", "longitude")
+    forest_date_list = list(forest.keys())
+    forest_date_list.sort() # Sort the dates, for year 2000 with gfc
+    forest = xr.concat([forest[i] for i in forest_date_list],
+                       dim=pd.Index(years, name="time"))
+    forest = forest.rename({"lon": "longitude", "lat": "latitude"}).\
+                    transpose("time", "latitude", "longitude")
 
     # Create tmp xarray DataArray
     _xarray = getattr(xarray, data_var)
 
-    x_res, y_res = get_resolution_from_xarray(_xarray)
+    x_res, y_res = get_resolution_from_xarray(forest)
 
     gt = (_xarray.longitude.data[0] - (x_res / 2.),
           x_res, 0.0,
@@ -121,8 +132,7 @@ def xarray2geotiff(xarray, data_var, out_dir, index):
 
     # Coordinate Reference System (CRS) in a PROJ4 string to a
     # Spatial Reference System Well Known Text (WKT)
-    crs = xarray.attrs['crs']
-    crs = int(crs[5:9])
+    crs = int(proj[5:9])
     srs = osr.SpatialReference()
     srs.ImportFromEPSG(crs)
     proj = srs.ExportToWkt()
