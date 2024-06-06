@@ -6,7 +6,7 @@ import multiprocessing as mp
 from .get_extent_from_aoi import get_extent_from_aoi
 from .misc import make_dir
 from .make_grid import make_grid, grid_intersection
-from .geeic2geotiff import xarray2geotiff
+from .xarray2geotiff import xarray2geotiff, xarray2geotiff_rioxarray
 from .geotiff_from_tiles import geotiff_from_tiles
 from .get_forest import get_forest
 from tqdm.autonotebook import tqdm
@@ -15,10 +15,12 @@ opj = os.path.join
 opd = os.path.dirname
 
 
-def get_forest_to_geotiff(i, years, ext, source, proj, scale, perc, out_dir_tiles):
+def get_forest_to_geotiff(index, years, ext, source, proj, scale, perc, out_dir_tiles):
     """Get forest cover change from GEE and write to geotiff."""
-    forest = get_forest(years, ext, source, proj, scale, perc)
-    xarray2geotiff(i, forest, years, proj, out_dir_tiles)
+    ofile = os.path.join(out_dir_tiles, f"forest_{index}.tif")
+    if not os.path.isfile(ofile):
+        forest = get_forest(years, ext, source, proj, scale, perc)
+        xarray2geotiff_rioxarray(index, forest, years, proj, out_dir_tiles)
 
 
 def get_fcc(aoi,
@@ -114,6 +116,7 @@ def get_fcc(aoi,
     # Sequential computing
     if parallel is False:
         # Loop on tiles
+        print("Sequential computing. Let's go !")
         for (i, ext) in enumerate(tqdm(grid)):
             get_forest_to_geotiff(i, years, ext, source, proj, scale, perc, out_dir_tiles)
 
@@ -122,6 +125,7 @@ def get_fcc(aoi,
         # Write tiles in parallel
         # https://superfastpython.com/multiprocessing-pool-starmap_async/
         # create and configure the process pool
+        print("Parallel computing. Let's go !")
         if ncpu is None:
             ncpu = os.cpu_count() - 1
         with mp.Pool(processes=ncpu) as pool:
