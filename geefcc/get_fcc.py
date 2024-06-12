@@ -1,7 +1,7 @@
 """Get forest cover change data."""
 
 import os
-import multiprocessing as mp
+import multiprocess as mp
 
 from .get_extent_from_aoi import get_extent_from_aoi
 from .misc import make_dir
@@ -13,7 +13,6 @@ from tqdm.autonotebook import tqdm
 
 opj = os.path.join
 opd = os.path.dirname
-
 
 def get_forest_to_geotiff(index, years, ext, source, proj, scale, perc, out_dir_tiles):
     """Get forest cover change from GEE and write to geotiff."""
@@ -111,7 +110,7 @@ def get_fcc(aoi,
     make_dir(out_dir_tiles)
 
     # Message
-    print(f"get_fcc running, {ntiles} tiles .", end="", flush=True)
+    print(f"get_fcc running, {ntiles} tiles.", end="", flush=True)
 
     # Sequential computing
     if parallel is False:
@@ -127,17 +126,20 @@ def get_fcc(aoi,
         # create and configure the process pool
         print("Parallel computing. Let's go !")
         if ncpu is None:
-            ncpu = os.cpu_count() - 1
+            ncpu = max(1, os.cpu_count() - 1)
+        print("Number of CPU:", ncpu)
         with mp.Pool(processes=ncpu) as pool:
             # prepare arguments
             args = [(i, years, ext, source, proj, scale, perc, out_dir_tiles)
                     for (i, ext) in enumerate(grid)]
             # issue many tasks asynchronously to the process pool
-            _ = pool.starmap_async(get_forest_to_geotiff, args)
-            # close the pool
-            pool.close()
-            # wait for all issued tasks to complete
-            pool.join()
+            result = pool.starmap_async(get_forest_to_geotiff, args)
+            ##_ = pool.starmap_async(get_forest_to_geotiff, args)
+            result.get()
+            ### close the pool
+            ##pool.close()
+            ### wait for all issued tasks to complete
+            ##pool.join()
 
     # Geotiff from tiles
     geotiff_from_tiles(output_file)

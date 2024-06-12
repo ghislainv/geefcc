@@ -20,7 +20,7 @@ def get_forest_tmf(years: list[int], proj: str, scale: float,
             .select([f"Dec{year}" for year in date_list])
     ds = xr.open_dataset(IC,engine="ee",crs=proj,scale=scale,
                          geometry=region,).\
-                        isel(time=2).drop_vars('time').squeeze()
+                        isel(time=0).drop_vars('time').squeeze()
     ds = chunk_lon_lat(ds, 1500)
 
     AP = xr.concat([ds[f"Dec{i}"] for i in date_list],

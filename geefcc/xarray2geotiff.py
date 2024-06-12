@@ -90,14 +90,20 @@ def xarray2geotiff_rioxarray(
     forest_date_list = list(forest.keys())
     forest_date_list.sort() # Sort the dates, for year 2000 with gfc
     xr.concat([forest[i] for i in forest_date_list],
-                       dim=pd.Index(years, name="time")).\
+                       dim=pd.Index(years, name="band")).\
             astype('b').\
             rio.write_crs(proj).\
             rename({"lon": "x", "lat": "y"}).\
             rio.write_coordinate_system().\
-            transpose("time", "y", "x").\
+            transpose("band", "y", "x").\
             rename("forest_cover").\
-            rio.to_raster(os.path.join(out_dir, f"forest_{index}.tif"), tiled=True, driver="GTiff", compress="LZW")
+            rio.to_raster(os.path.join(out_dir, f"forest_{index}.tif"),
+                          tiled = True,
+                          BIGTIFF = True,
+                          PREDICTOR = 1,
+                          COPY_SRC_OVERVIEWS = True,
+                          driver = "GTiff",
+                          compress = "Deflate")
 
 
 
