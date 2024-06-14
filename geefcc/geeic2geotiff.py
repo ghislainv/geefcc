@@ -50,7 +50,9 @@ def get_dst_dataset(dst_img, cols, rows, layers, dtype, proj, gt):
                           'TILED=YES',
                           'COPY_SRC_OVERVIEWS=YES']
 
-        # Create driver
+        # Create dataset
+        if os.path.isfile(dst_img):
+            os.remove(dst_img)
         dst_ds = driver.Create(dst_img, cols, rows, layers,
                                dtype, driver_options)
 

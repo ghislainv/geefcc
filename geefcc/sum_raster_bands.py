@@ -2,6 +2,8 @@
 See: https://github.com/mstrimas/gdal-summarize/blob/master/gdal-summarize.py
 """
 
+import os
+
 import numpy as np
 from osgeo import gdal
 
@@ -35,6 +37,8 @@ def sum_raster_bands(input_file, output_file="sum.tif",
 
     # Create output raster file
     driver = gdal.GetDriverByName("GTiff")
+    if os.path.isfile(output_file):
+        os.remove(output_file)
     ds_out = driver.Create(
         output_file,
         ncol, nrow, 1,
