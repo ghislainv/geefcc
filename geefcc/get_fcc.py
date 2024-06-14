@@ -1,7 +1,7 @@
 """Get forest cover change data."""
 
 import os
-import multiprocessing as mp
+import multiprocess as mp
 
 from .get_extent_from_aoi import get_extent_from_aoi
 from .misc import make_dir
