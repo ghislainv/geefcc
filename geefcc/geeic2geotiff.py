@@ -180,7 +180,7 @@ def geeic2geotiff(index, extent, ntiles, forest, proj, scale, out_dir):
     """
 
     ofile = os.path.join(out_dir, f"forest_{index}.tif")
-    if not os.path.isfile(ofile):
+    if (not os.path.isfile(ofile)) or (os.path.getsize(ofile) == 0):
         # Open dataset
         ds = (
             xr.open_dataset(
