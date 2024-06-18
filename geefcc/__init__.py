@@ -17,7 +17,9 @@ from .get_fcc import get_fcc
 from .sum_raster_bands import sum_raster_bands
 from .misc import make_dir
 
-# GDAL exceptions
+# Stop GDAL printing both warnings and errors to STDERR
+gdal.PushErrorHandler('CPLQuietErrorHandler')
+# GDAL exceptions for errors (warnings won't raise an exception)
 gdal.UseExceptions()
 
 # End
