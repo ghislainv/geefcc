@@ -190,13 +190,11 @@ def geeic2geotiff(index, extent, ntiles, forest, proj, scale, out_dir):
                 engine="ee",
                 crs=proj,
                 scale=scale,
-                geometry=extent,
-                chunks={"time": -1},
+                geometry=extent
             )
             .astype("b")
             .rename({"lon": "longitude", "lat": "latitude"})
         )
-        ds = ds.load()
 
         # Load and write data to geotiff
         xarray2geotiff(ds, "forest_cover", out_dir, index)
