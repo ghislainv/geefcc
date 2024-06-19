@@ -123,7 +123,7 @@
             <span class="n">source</span><span class="o">=</span><span class="s2">&quot;tmf&quot;</span><span class="p">,</span>
             <span class="n">perc</span><span class="o">=</span><span class="mi">75</span><span class="p">,</span>
             <span class="n">tile_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-            <span class="c1"># crop_to_aoi=False,</span>
+            <span class="n">crop_to_aoi</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">parallel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">ncpu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;fcc.tif&quot;</span><span class="p">):</span>
@@ -154,16 +154,16 @@
 
 <span class="sd">    :param tile_size: Tile size for parallel computing.</span>
 
+<span class="sd">    :param crop_to_aoi: Crop the raster GeoTIFF file to **aoi with</span>
+<span class="sd">        buffer**. If ``False``, the output file will match the</span>
+<span class="sd">        **grid** covering the aoi with buffer.</span>
+
 <span class="sd">    :param parallel: Logical. Parallel (if ``True``) or sequential (if</span>
 <span class="sd">        ``False``) computing. Default to ``False``.</span>
 
 <span class="sd">    :param ncpu: Number of CPU to use for parallel computing. If None,</span>
 <span class="sd">        it will be set to the number of cores on the computer minus</span>
 <span class="sd">        one.</span>
-
-<span class="sd">    :param crop_to_aoi: Crop the raster GeoTIFF file to aoi. If False,</span>
-<span class="sd">        the output file will match the grid covering the aoi with</span>
-<span class="sd">        buffer.</span>
 
 <span class="sd">    :param output_file: Path to output GeoTIFF file. If directories in</span>
 <span class="sd">        path do not exist they will be created.</span>
@@ -180,10 +180,10 @@
     <span class="n">scale</span> <span class="o">=</span> <span class="mf">0.000269494585235856472</span>  <span class="c1"># in dd, ~30 m</span>
 
     <span class="c1"># Get aoi</span>
-    <span class="n">ext</span> <span class="o">=</span> <span class="n">get_extent_from_aoi</span><span class="p">(</span><span class="n">aoi</span><span class="p">,</span> <span class="n">buff</span><span class="p">,</span> <span class="n">out_dir</span><span class="p">)</span>
-    <span class="n">aoi_isfile</span> <span class="o">=</span> <span class="n">ext</span><span class="p">[</span><span class="s2">&quot;aoi_isfile&quot;</span><span class="p">]</span>
-    <span class="n">borders_gpkg</span> <span class="o">=</span> <span class="n">ext</span><span class="p">[</span><span class="s2">&quot;borders_gpkg&quot;</span><span class="p">]</span>
-    <span class="n">extent_latlong</span> <span class="o">=</span> <span class="n">ext</span><span class="p">[</span><span class="s2">&quot;extent_latlong&quot;</span><span class="p">]</span>
+    <span class="n">extent</span> <span class="o">=</span> <span class="n">get_extent_from_aoi</span><span class="p">(</span><span class="n">aoi</span><span class="p">,</span> <span class="n">buff</span><span class="p">,</span> <span class="n">out_dir</span><span class="p">)</span>
+    <span class="n">aoi_isfile</span> <span class="o">=</span> <span class="n">extent</span><span class="p">[</span><span class="s2">&quot;aoi_isfile&quot;</span><span class="p">]</span>
+    <span class="n">borders_gpkg</span> <span class="o">=</span> <span class="n">extent</span><span class="p">[</span><span class="s2">&quot;borders_gpkg&quot;</span><span class="p">]</span>
+    <span class="n">extent_latlong</span> <span class="o">=</span> <span class="n">extent</span><span class="p">[</span><span class="s2">&quot;extent_latlong&quot;</span><span class="p">]</span>
 
     <span class="c1"># Make minimal grid</span>
     <span class="n">grid_gpkg</span> <span class="o">=</span> <span class="n">opj</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">&quot;grid.gpkg&quot;</span><span class="p">)</span>
@@ -238,7 +238,7 @@
             <span class="n">pool</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
 
     <span class="c1"># Geotiff from tiles</span>
-    <span class="n">geotiff_from_tiles</span><span class="p">(</span><span class="n">output_file</span><span class="p">)</span></div>
+    <span class="n">geotiff_from_tiles</span><span class="p">(</span><span class="n">crop_to_aoi</span><span class="p">,</span> <span class="n">extent</span><span class="p">,</span> <span class="n">output_file</span><span class="p">)</span></div>
 
 
 <span class="c1"># End</span>
