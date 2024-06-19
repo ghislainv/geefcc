@@ -47,7 +47,7 @@ from the Tropical Moist Forest product. We will use the Reunion Island
 
 ::
 
-    get_fcc running, 3 tiles .
+    get_fcc running, 3 tiles ....
 
 
 .. code:: python
