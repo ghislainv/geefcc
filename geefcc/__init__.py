@@ -7,7 +7,7 @@ https://ecology.ghislainv.fr/geefcc/
 # https://peps.python.org/pep-0008/#module-level-dunder-names
 __author__ = "Ghislain Vieilledent and Thomas Arsouze"
 __email__ = "ghislain.vieilledent@cirad.fr, thomas.arsouze@cirad.fr"
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 
 # GDAL exceptions
 from osgeo import gdal
