@@ -39,9 +39,16 @@ from the Tropical Moist Forest product. We will use the Reunion Island
             aoi="REU",
             years=[2000, 2010, 2020],
             source="tmf",
+            parallel=False,
+            crop_to_aoi=True,
             tile_size=0.5,
             output_file="out_tmf/forest_tmf.tif",
         )
+
+::
+
+    get_fcc running, 3 tiles .
+
 
 .. code:: python
 
@@ -98,8 +105,8 @@ from the Tropical Moist Forest product. We will use the Reunion Island
     # Labels
     labels = {0: "non-forest in 2000", 1:"deforestation 2000-2009",
               2:"deforestation 2010-2019", 3:"forest in 2020"}
-    patches =[mpatches.Patch(facecolor=col, edgecolor="black",
-                             label=labels[i]) for (i, col) in enumerate(colors)]
+    patches = [mpatches.Patch(facecolor=col, edgecolor="black",
+                              label=labels[i]) for (i, col) in enumerate(colors)]
 
 .. code:: python
 
@@ -129,9 +136,16 @@ Compare with forest cover change from GFC
             years=[2001, 2010, 2020],  # Here, first year must be 2001 (1st Jan)
             source="gfc",
             perc=50,
+            parallel=False,
+            crop_to_aoi=True,
             tile_size=0.5,
             output_file="out_gfc_50/forest_gfc_50.tif",
         )
+
+::
+
+    get_fcc running, 3 tiles ....
+
 
 .. code:: python
 
@@ -148,8 +162,8 @@ Compare with forest cover change from GFC
     plt.title("Forest cover change 2001-2010-2020, GFC")
     labels = {0: "non-forest in 2001", 1:"deforestation 2001-2009",
               2:"deforestation 2010-2019", 3:"forest in 2020"}
-    patches =[mpatches.Patch(facecolor=col, edgecolor="black",
-                             label=labels[i]) for (i, col) in enumerate(colors)]
+    patches = [mpatches.Patch(facecolor=col, edgecolor="black",
+                              label=labels[i]) for (i, col) in enumerate(colors)]
     plt.legend(handles=patches, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
     fig.savefig("gfc.png", bbox_inches="tight", dpi=100)
 
@@ -185,7 +199,7 @@ Comparing forest cover in 2020 between TMF and GFC
     # Labels
     labels = {0: "non-forest tmf, non-forest gfc", 1:"non-forest tmf / forest gfc",
               2:"forest tmf / forest gfc", 3:"forest tmf, non-forest gfc"}
-    patches =[mpatches.Patch(facecolor=col, edgecolor="black",
+    patches = [mpatches.Patch(facecolor=col, edgecolor="black",
                              label=labels[i]) for (i, col) in enumerate(colors)]
 
 .. code:: python

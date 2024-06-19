@@ -21,7 +21,7 @@ def get_fcc(aoi,
             source="tmf",
             perc=75,
             tile_size=1,
-            # crop_to_aoi=False,
+            crop_to_aoi=False,
             parallel=False,
             ncpu=None,
             output_file="fcc.tif"):
@@ -52,16 +52,16 @@ def get_fcc(aoi,
 
     :param tile_size: Tile size for parallel computing.
 
+    :param crop_to_aoi: Crop the raster GeoTIFF file to **aoi with
+        buffer**. If ``False``, the output file will match the
+        **grid** covering the aoi with buffer.
+
     :param parallel: Logical. Parallel (if ``True``) or sequential (if
         ``False``) computing. Default to ``False``.
 
     :param ncpu: Number of CPU to use for parallel computing. If None,
         it will be set to the number of cores on the computer minus
         one.
-
-    :param crop_to_aoi: Crop the raster GeoTIFF file to aoi. If False,
-        the output file will match the grid covering the aoi with
-        buffer.
 
     :param output_file: Path to output GeoTIFF file. If directories in
         path do not exist they will be created.
@@ -78,10 +78,10 @@ def get_fcc(aoi,
     scale = 0.000269494585235856472  # in dd, ~30 m
 
     # Get aoi
-    ext = get_extent_from_aoi(aoi, buff, out_dir)
-    aoi_isfile = ext["aoi_isfile"]
-    borders_gpkg = ext["borders_gpkg"]
-    extent_latlong = ext["extent_latlong"]
+    extent = get_extent_from_aoi(aoi, buff, out_dir)
+    aoi_isfile = extent["aoi_isfile"]
+    borders_gpkg = extent["borders_gpkg"]
+    extent_latlong = extent["extent_latlong"]
 
     # Make minimal grid
     grid_gpkg = opj(out_dir, "grid.gpkg")
@@ -136,6 +136,6 @@ def get_fcc(aoi,
             pool.join()
 
     # Geotiff from tiles
-    geotiff_from_tiles(output_file)
+    geotiff_from_tiles(crop_to_aoi, extent, output_file)
 
 # End

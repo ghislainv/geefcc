@@ -2,7 +2,6 @@
 
 import os
 from glob import glob
-import math
 
 from osgeo import gdal
 
@@ -10,11 +9,14 @@ opj = os.path.join
 opd = os.path.dirname
 
 
-def geotiff_from_tiles(output_file):
+def geotiff_from_tiles(crop_to_aoi, extent, output_file):
     """Make geotiff from tiles.
 
-    :param extent_latlong: Extent in lat/long.
-    :param scale: Resolution.
+    :param crop_to_aoi: Crop the raster using aoi extent.
+
+    :param extent: Result of ``get_extent_from_aoi()`` function (a
+        dictionary).
+
     :param output_file: Output file.
 
     """
@@ -44,9 +46,29 @@ def geotiff_from_tiles(output_file):
     # VRT to GeoTIFF
     # Creation options
     copts = ["COMPRESS=DEFLATE", "BIGTIFF=YES"]
-    gdal.Translate(output_file, vrt_file,
-                   maskBand=None,
-                   creationOptions=copts,
-                   callback=cback)
+    aoi_isfile = extent["aoi_isfile"]
+    borders_gpkg = extent["borders_gpkg"]
+    extent_latlong = extent["extent_latlong"]
+    if crop_to_aoi:
+        if aoi_isfile:
+            gdal.Warp(output_file, vrt_file,
+                      cropToCutline=True,
+                      warpOptions=["CUTLINE_ALL_TOUCHED=TRUE"],
+                      cutlineDSName=borders_gpkg,
+                      creationOptions=copts,
+                      callback=cback)
+        else:
+            xmin, ymin, xmax, ymax = extent_latlong
+            ulx_uly_lrx_lry = [xmin, ymax, xmax, ymin]
+            gdal.Translate(output_file, vrt_file,
+                           projWin=ulx_uly_lrx_lry,
+                           maskBand=None,
+                           creationOptions=copts,
+                           callback=cback)
+    else:
+        gdal.Translate(output_file, vrt_file,
+                       maskBand=None,
+                       creationOptions=copts,
+                       callback=cback)
 
 # End

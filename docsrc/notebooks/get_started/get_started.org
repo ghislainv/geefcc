@@ -41,12 +41,15 @@ if not os.path.isfile("out_tmf/forest_tmf.tif"):
         aoi="REU",
         years=[2000, 2010, 2020],
         source="tmf",
+        parallel=False,
+        crop_to_aoi=True,
         tile_size=0.5,
         output_file="out_tmf/forest_tmf.tif",
     )
 #+end_src
 
 #+RESULTS:
+: get_fcc running, 3 tiles .
 
 #+begin_src python :results value
 # Load data
@@ -137,12 +140,15 @@ if not os.path.isfile("out_gfc_50/forest_gfc_50.tif"):
         years=[2001, 2010, 2020],  # Here, first year must be 2001 (1st Jan)
         source="gfc",
         perc=50,
+        parallel=False,
+        crop_to_aoi=True,
         tile_size=0.5,
         output_file="out_gfc_50/forest_gfc_50.tif",
     )
 #+end_src
 
 #+RESULTS:
+: get_fcc running, 3 tiles ....
 
 #+begin_src python
 # Load data
