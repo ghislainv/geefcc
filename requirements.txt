@@ -2,3 +2,4 @@ numpy
 gdal
 xarray
 xee
+multiprocess
