@@ -29,7 +29,7 @@ def geotiff_from_tiles(crop_to_aoi, extent, output_file):
     tif_forest_files = glob(opj(out_dir_tiles, "forest_*.tif"))
     # Callback
     verbose = False
-    cback = gdal.TermProgress if verbose else 0
+    cback = gdal.TermProgress_nocb if verbose else 0
     forest_vrt = gdal.BuildVRT(
         opj(out_dir, "forest.vrt"),
         tif_forest_files,
