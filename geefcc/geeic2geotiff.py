@@ -86,13 +86,14 @@ def get_resolution_from_xarray(xarray):
     return (x_res, y_res)
 
 
-def xarray2geotiff(xarray, data_var, out_dir, index):
+def xarray2geotiff(xarray, data_var, out_dir, index, source):
     """Saves an xarray dataset to a Cloud Optimized GeoTIFF (COG).
 
     :param xarray: xarray Dataset.
     :param data_var: Data variable in the xarray dataset.
     :param out_dir: Output directory.
     :param index: Tile index.
+    :param source: Source of the data of the forest cover
 
     """
 
@@ -146,6 +147,8 @@ def xarray2geotiff(xarray, data_var, out_dir, index):
         dst_img=fname, cols=cols, rows=rows,
         layers=layers, dtype=dtype, proj=proj, gt=gt)
 
+    dst_ds.SetMetadataItem('ForestCoverDataset', source)
+
     for layer in range(layers):
         dst_band = dst_ds.GetRasterBand(layer + 1)
 
@@ -168,13 +171,14 @@ def xarray2geotiff(xarray, data_var, out_dir, index):
     del dst_ds
 
 
-def geeic2geotiff(index, extent, ntiles, forest, proj, scale, out_dir):
+def geeic2geotiff(index, extent, ntiles, forest, source, proj, scale, out_dir):
     """Write a GEE image collection to a geotiff.
 
     :param index: Tile index.
     :param extent: Tile extent.
     :param ntiles: Total number of tiles.
     :param forest: Forest image collection from GEE.
+    :param source: Source of the data of the forest image collection.
     :param proj: Projection.
     :param scale: Scale.
     :param output_dir: Output directory.
@@ -197,7 +201,7 @@ def geeic2geotiff(index, extent, ntiles, forest, proj, scale, out_dir):
         )
 
         # Load and write data to geotiff
-        xarray2geotiff(ds, "forest_cover", out_dir, index)
+        xarray2geotiff(ds, "forest_cover", out_dir, index, source)
 
         # Progress bar
         progress_bar_async(index, ntiles)
