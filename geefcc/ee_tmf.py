@@ -9,7 +9,7 @@ def ee_tmf(years):
     :param years: List of years defining time-periods for estimating
         forest cover change. Years for computing forest cover change
         can be in the interval 2001--2024 for GFC (GFC does not
-        provide loss for the year 2000) and 2000--2023 for TMF.
+        provide loss for the year 2000) and 2000--2024 for TMF.
 
     :return: An image collection for forest where each image
         correspond to a year.
@@ -19,7 +19,7 @@ def ee_tmf(years):
     # Get annual product
     annual_product = ee.ImageCollection(
         "projects/JRC/TMF/"
-        "v1_2022/AnnualChanges")
+        "v1_2023/AnnualChanges")
     annual_product = annual_product.mosaic().toByte()
 
     # ap_all_year: forest if Y = 1 or 2.

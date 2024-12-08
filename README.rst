@@ -32,7 +32,7 @@ The ``geefcc`` Python package can be used to make forest cover change (fcc) maps
 The ``geefcc`` package depends on the `xee <https://github.com/google/Xee>`_ Python package, which allows opening GEE datasets locally without exporting data to GEE assets or Google Drive. The user only has to specify an area of interest (aoi), either with an extent, a polygon vector file, or a country iso code (e.g. PER for Peru), and the years defining the time periods considered for the forest cover change (e.g. 2000, 2010, 2020). For the Global Forest Change product, the users also has to specify a tree cover threshold to define the forest (e.g. 75%).
 
 .. note::
-   The current version of the package uses GFC data up to year 2023 (`GFC v1.11 2023 <https://developers.google.com/earth-engine/datasets/catalog/UMD_hansen_global_forest_change_2023_v1_11>`_) and TMF data up to year 2022 (`TMF v1 2022 <https://forobs.jrc.ec.europa.eu/TMF/data>`_) so that years for computing forest cover change can be in the interval 2001--2024 for GFC (GFC does not provide loss for the year 2000) and 2000--2023 for TMF. Forest cover is given on the 1\ :sup:`st` of January for each year. The current version of the package only considers **deforestation as change** and **not forest gain or regrowth**.
+   The current version of the package uses GFC data up to year 2023 (`GFC v1.11 2023 <https://developers.google.com/earth-engine/datasets/catalog/UMD_hansen_global_forest_change_2023_v1_11>`_) and TMF data up to year 2023 (`TMF v1 2023 <https://forobs.jrc.ec.europa.eu/TMF/data>`_) so that years for computing forest cover change can be in the interval 2001--2024 for GFC (GFC does not provide loss for the year 2000) and 2000--2024 for TMF. Forest cover is given on the 1\ :sup:`st` of January for each year. The current version of the package only considers **deforestation as change** and **not forest gain or regrowth**.
 
 Prerequisites
 =============
@@ -97,7 +97,7 @@ Install Python dependencies and ``geefcc`` in the *OSGeo4W Shell* or in the newl
    # Upgrade pip, setuptools, and wheel
    python3 -m pip install --upgrade pip setuptools wheel
    # Install numpy
-   python3 -m numpy
+   python3 -m pip install numpy
    # Install gdal Python bindings (the correct version)
    python3 -m pip install gdal==$(gdal-config --version)
    # Install geefcc. This will install all other dependencies

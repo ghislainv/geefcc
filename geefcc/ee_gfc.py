@@ -9,7 +9,7 @@ def ee_gfc(years, perc):
     :param years: List of years defining time-periods for estimating
         forest cover change. Years for computing forest cover change
         can be in the interval 2001--2024 for GFC (GFC does not
-        provide loss for the year 2000) and 2000--2023 for TMF.
+        provide loss for the year 2000) and 2000--2024 for TMF.
 
     :param perc: Tree cover threshold defining the forest for GFC
         product.
