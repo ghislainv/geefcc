@@ -20,10 +20,6 @@ from the Tropical Moist Forest product. We will use the Reunion Island
 
     import ee
     import geefcc
-    import matplotlib.pyplot as plt
-    from matplotlib.colors import ListedColormap
-    import matplotlib.patches as mpatches
-    import cartopy.crs as ccrs
     import rioxarray
 
 .. code:: python
@@ -70,53 +66,11 @@ from the Tropical Moist Forest product. We will use the Reunion Island
         scale_factor:   1.0
         add_offset:     0.0
 
-.. code:: python
-
-    # Computing the sum
-    fcc_tmf = forest_tmf.sum(dim="band")
-    fcc_tmf
-
-::
-
-    <xarray.DataArray (y: 1923, x: 2305)> Size: 35MB
-    array([[0, 0, 0, ..., 0, 0, 0],
-           [0, 0, 0, ..., 0, 0, 0],
-           [0, 0, 0, ..., 0, 0, 0],
-           ...,
-           [0, 0, 0, ..., 0, 0, 0],
-           [0, 0, 0, ..., 0, 0, 0],
-           [0, 0, 0, ..., 0, 0, 0]])
-    Coordinates:
-      * x            (x) float64 18kB 55.22 55.22 55.22 55.22 ... 55.84 55.84 55.84
-      * y            (y) float64 15kB -20.87 -20.87 -20.87 ... -21.39 -21.39 -21.39
-        spatial_ref  int64 8B 0
-
-.. code:: python
-
-    # Colors
-    cols=[(255, 165, 0, 255), (227, 26, 28, 255), (34, 139, 34, 255)]
-    colors = [(1, 1, 1, 0)]  # transparent white for 0
-    cmax = 255.0  # float for division
-    for col in cols:
-        col_class = tuple([i / cmax for i in col])
-        colors.append(col_class)
-    color_map = ListedColormap(colors)
-
-    # Labels
-    labels = {0: "non-forest in 2000", 1:"deforestation 2000-2009",
-              2:"deforestation 2010-2019", 3:"forest in 2020"}
-    patches = [mpatches.Patch(facecolor=col, edgecolor="black",
-                              label=labels[i]) for (i, col) in enumerate(colors)]
 
 .. code:: python
 
     # Plot
-    fig = plt.figure()
-    ax = fig.add_axes([0, 0, 1, 1], projection=ccrs.PlateCarree())
-    raster_image = fcc_tmf.plot(ax=ax, cmap=color_map, add_colorbar=False)
-    plt.title("Forest cover change 2000-2010-2020, TMF")
-    plt.legend(handles=patches, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
-    fig.savefig("tmf.png", bbox_inches="tight", dpi=100)
+    geefcc.plots.plot_fcc("out_tmf/forest_tmf.tif", output_file="tmf.png")
 
 .. image:: tmf.png
     :width: 800
@@ -149,23 +103,8 @@ Compare with forest cover change from GFC
 
 .. code:: python
 
-    # Load data
-    forest_gfc = rioxarray.open_rasterio("out_gfc_50/forest_gfc_50.tif")
-    fcc_gfc = forest_gfc.sum(dim="band")
-
-.. code:: python
-
     # Plot
-    fig = plt.figure()
-    ax = fig.add_axes([0, 0, 1, 1], projection=ccrs.PlateCarree())
-    raster_image = fcc_gfc.plot(ax=ax, cmap=color_map, add_colorbar=False)
-    plt.title("Forest cover change 2001-2010-2020, GFC")
-    labels = {0: "non-forest in 2001", 1:"deforestation 2001-2009",
-              2:"deforestation 2010-2019", 3:"forest in 2020"}
-    patches = [mpatches.Patch(facecolor=col, edgecolor="black",
-                              label=labels[i]) for (i, col) in enumerate(colors)]
-    plt.legend(handles=patches, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
-    fig.savefig("gfc.png", bbox_inches="tight", dpi=100)
+    geefcc.plots.plot_fcc("out_tmf/forest_gfc.tif", output_file="gfc.png", source="gfc")
 
 .. image:: gfc.png
     :width: 800
@@ -178,39 +117,10 @@ Comparing forest cover in 2020 between TMF and GFC
 
 .. code:: python
 
-    # Computing difference and sum
-    forest_diff = forest_tmf.sel(band=3) - forest_gfc.sel(band=3)
-    forest_sum = forest_tmf.sel(band=3) + forest_gfc.sel(band=3)
-    forest_diff = forest_diff.where(forest_sum != 0, -2)
-
-.. code:: python
-
-    # Colors
-    cols=[(10, 10, 150, 255), (34, 139, 34, 255), (200, 200, 0, 255)]
-    colors = [(1, 1, 1, 0)]  # transparent white for -2
-    cmax = 255.0  # float for division
-    for col in cols:
-        col_class = tuple([i / cmax for i in col])
-        colors.append(col_class)
-    color_map = ListedColormap(colors)
-
-.. code:: python
-
-    # Labels
-    labels = {0: "non-forest tmf, non-forest gfc", 1:"non-forest tmf / forest gfc",
-              2:"forest tmf / forest gfc", 3:"forest tmf, non-forest gfc"}
-    patches = [mpatches.Patch(facecolor=col, edgecolor="black",
-                             label=labels[i]) for (i, col) in enumerate(colors)]
-
-.. code:: python
-
     # Plot
-    fig = plt.figure()
-    ax = fig.add_axes([0, 0, 1, 1], projection=ccrs.PlateCarree())
-    raster_image = forest_diff.plot(ax=ax, cmap=color_map, add_colorbar=False)
-    plt.title("Difference between TMF and GFC for forest cover in 2020")
-    plt.legend(handles=patches, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
-    fig.savefig("comp.png", bbox_inches="tight", dpi=100)
+    geefcc.plots.plot_fc_tmf_vs_gfc(input_tmf_raster = "out_tmf/forest_tmf.tif",
+                                    input_gfc_raster = "out_gfc/forest_gfc.tif",
+                                    output_file="comp.png")
 
 .. image:: comp.png
     :width: 800
@@ -241,36 +151,8 @@ the Analamazaotra special reserve in Madagascar.
 
 .. code:: python
 
-    # Load data
-    forest_tmf_mdg = rioxarray.open_rasterio("out_tmf_extent/forest_tmf_extent.tif")
-    fcc_tmf_mdg = forest_tmf_mdg.sum(dim="band")
-
-.. code:: python
-
-    # Colors
-    cols=[(255, 165, 0, 255), (227, 26, 28, 255), (34, 139, 34, 255)]
-    colors = [(1, 1, 1, 0)]  # transparent white for 0
-    cmax = 255.0  # float for division
-    for col in cols:
-        col_class = tuple([i / cmax for i in col])
-        colors.append(col_class)
-    color_map = ListedColormap(colors)
-
-    # Labels
-    labels = {0: "non-forest in 2000", 1:"deforestation 2000-2009",
-              2:"deforestation 2010-2019", 3:"forest in 2020"}
-    patches =[mpatches.Patch(facecolor=col, edgecolor="black",
-                             label=labels[i]) for (i, col) in enumerate(colors)]
-
-.. code:: python
-
     # Plot
-    fig = plt.figure()
-    ax = fig.add_axes([0, 0, 1, 1], projection=ccrs.PlateCarree())
-    raster_image = fcc_tmf_mdg.plot(ax=ax, cmap=color_map, add_colorbar=False)
-    plt.title("Forest cover change 2000-2010-2020, TMF")
-    plt.legend(handles=patches, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
-    fig.savefig("extent.png", bbox_inches="tight", dpi=100)
+    geefcc.plots.plot_fcc("out_tmf_extent/forest_tmf_extent.tif", output_file="extent.png")
 
 .. image:: extent.png
     :width: 700

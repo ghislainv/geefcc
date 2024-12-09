@@ -115,7 +115,7 @@ def get_fcc(aoi,
     if parallel is False:
         # Loop on tiles
         for (i, ext) in enumerate(grid):
-            geeic2geotiff(i, ext, ntiles, forest, proj, scale, out_dir_tiles)
+            geeic2geotiff(i, ext, ntiles, forest, source, proj, scale, out_dir_tiles)
 
     # Parallel computing
     if parallel is True:
@@ -126,7 +126,7 @@ def get_fcc(aoi,
             ncpu = os.cpu_count() - 1
         with mp.Pool(processes=ncpu) as pool:
             # prepare arguments
-            args = [(i, ext, ntiles, forest, proj, scale, out_dir_tiles)
+            args = [(i, ext, ntiles, forest, source, proj, scale, out_dir_tiles)
                     for (i, ext) in enumerate(grid)]
             # issue many tasks asynchronously to the process pool
             _ = pool.starmap_async(geeic2geotiff, args)
