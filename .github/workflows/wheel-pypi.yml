@@ -49,9 +49,10 @@ jobs:
       - name: Build wheels
         run: |
           python3 setup.py bdist_wheel --universal
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
-          path: dist
+          name: geefcc-wheel
+          path: dist/*.whl
 
   build_sdist:
     name: Build source
@@ -68,8 +69,10 @@ jobs:
       - name: Build sdist
         run: |
           python3 setup.py sdist
-      - uses: actions/upload-artifact@v3
+      - name: Upload artefact
+        uses: actions/upload-artifact@v4
         with:
+          name: geefcc-sdist
           path: dist/*.tar.gz
 
   dist_check:
@@ -85,9 +88,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install twine
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
-          name: artifact
+          name: download-artifact
           path: dist
       - name: Check dist
         run: |
@@ -106,7 +109,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: artifact
+          pattern: geefcc-*
           path: dist
       - uses: pypa/gh-action-pypi-publish@release/v1
 
