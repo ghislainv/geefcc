@@ -90,8 +90,9 @@ jobs:
           pip install twine
       - uses: actions/download-artifact@v4
         with:
-          name: download-artifact
+          pattern: geefcc-*
           path: dist
+          merge-multiple: true
       - name: Check dist
         run: |
           twine check dist/*
@@ -111,6 +112,7 @@ jobs:
         with:
           pattern: geefcc-*
           path: dist
+          merge-multiple: true
       - uses: pypa/gh-action-pypi-publish@release/v1
 
 # End
