@@ -15,8 +15,8 @@ def get_vector_extent(input_file):
 
     """
 
-    in_data_dource = ogr.Open(input_file)
-    in_layer = in_data_dource.GetLayer()
+    in_data_source = ogr.Open(input_file)
+    in_layer = in_data_source.GetLayer()
     extent = in_layer.GetExtent()
     extent = (extent[0], extent[2], extent[1], extent[3])
 
