@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.9', '3.10', '3.11']
+        python-version: ['3.10', '3.11', '3.12']
 
     steps:
     - uses: actions/checkout@v4
@@ -23,7 +23,6 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install system libraries
       run: |
-        sudo add-apt-repository --yes ppa:ubuntugis/ppa
         sudo apt-get --quiet update
         sudo apt-get install --yes libgdal-dev gdal-bin
     - name: Install Python dependencies
@@ -36,6 +35,7 @@ jobs:
         export CPLUS_INCLUDE_PATH=/usr/include/gdal
         export C_INCLUDE_PATH=/usr/include/gdal
         python -m pip install gdal==$(gdal-config --version)
+        # Install requirements
         python -m pip install -r requirements.txt
         python -m pip install .
     - name: Lint with flake8

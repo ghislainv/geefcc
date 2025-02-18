@@ -15,11 +15,10 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v5
         with:
-           python-version: '3.11'
+           python-version: '3.12'
 
       - name: Install gdal
         run: |
-          sudo add-apt-repository --yes ppa:ubuntugis/ppa
           sudo apt-get --quiet update
           sudo apt-get install --yes gdal-bin libgdal-dev
           sudo apt-get install pandoc
@@ -33,6 +32,7 @@ jobs:
           export CPLUS_INCLUDE_PATH=/usr/include/gdal
           export C_INCLUDE_PATH=/usr/include/gdal
           python3 -m pip install gdal==$(gdal-config --version)
+          # Install requirements
           python3 -m pip install -r requirements.txt
           python3 -m pip install sphinx nbsphinx ipython
           python3 -m pip install .
