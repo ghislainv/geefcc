@@ -16,6 +16,7 @@ from .ee_initialize import ee_initialize
 from .get_fcc import get_fcc
 from .sum_raster_bands import sum_raster_bands
 from .misc import make_dir
+from .plots import plot_fcc, plot_fc_tmf_vs_gfc
 
 # Stop GDAL printing both warnings and errors to STDERR
 gdal.PushErrorHandler('CPLQuietErrorHandler')
