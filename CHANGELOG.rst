@@ -5,6 +5,7 @@ geefcc 0.1.5
 ============
 
 * Using version v1_2023 of TMF.
+* Changes: https://github.com/ghislainv/geefcc/compare/v0.1.4...v0.1.5
 
 geefcc 0.1.4
 ============
