@@ -27,9 +27,9 @@ def create_buffer(input_file, output_file, buffer_dist):
     driver = ogr.GetDriverByName("GPKG")
     if os.path.exists(output_file):
         driver.DeleteDataSource(output_file)
-    ds = driver.CreateDataSource(output_file)
+    output_ds = driver.CreateDataSource(output_file)
     # Must be MultiPolygon here
-    lyr = ds.CreateLayer(
+    lyr = output_ds.CreateLayer(
         "buffer",
         geom_type=ogr.wkbMultiPolygon)
     feature_defn = lyr.GetLayerDefn()
@@ -42,6 +42,10 @@ def create_buffer(input_file, output_file, buffer_dist):
         out_feature.SetGeometry(geom_buffer)
         lyr.CreateFeature(out_feature)
         out_feature = None
+
+    # Dereference
+    input_ds = None
+    output_ds = None
 
 
 def gpkg_from_grid(grid, proj=4326, ofile="grid.gpkg"):
@@ -101,7 +105,7 @@ def gpkg_from_grid(grid, proj=4326, ofile="grid.gpkg"):
         layer.CreateFeature(feature)
         feature = None
 
-    # Return
+    # Dereference
     ds = None
 
 
@@ -138,6 +142,7 @@ def make_grid(extent, buff, tile_size, scale, proj=4326,
             for i in range(nx - 1) for j in range(ny - 1)]
     # Create vector file from grid
     gpkg_from_grid(grid, proj, ofile)
+    # Return
     return grid
 
 
@@ -184,10 +189,12 @@ def grid_intersection(grid, input_grid, output_grid, borders_gpkg):
                 # are accessible again
                 lay_b.ResetReading()
                 break
-    # Clean
+
+    # Dereference
     ds = None
     ds_b = None
     ds_g = None
+
     # Return
     return grid_i
 
