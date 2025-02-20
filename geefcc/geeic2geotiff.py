@@ -36,7 +36,7 @@ def get_dst_dataset(dst_img, cols, rows, layers, dtype, proj, gt):
     :param proj: Projection information in WKT format
     :param gt: GeoTransform tupple
 
-    :return dst_ds: GDAL destination dataset object
+    :return: GDAL destination dataset object
 
     """
 
@@ -168,7 +168,8 @@ def xarray2geotiff(xarray, data_var, out_dir, index):
     del dst_ds
 
 
-def geeic2geotiff(index, extent, ntiles, forest, proj, scale, out_dir):
+def geeic2geotiff(index, extent, ntiles, forest,
+                  proj, scale, out_dir, verbose=True):
     """Write a GEE image collection to a geotiff.
 
     :param index: Tile index.
@@ -178,28 +179,28 @@ def geeic2geotiff(index, extent, ntiles, forest, proj, scale, out_dir):
     :param proj: Projection.
     :param scale: Scale.
     :param output_dir: Output directory.
+    :param verbose: If True, shows a progress bar.
 
     """
 
     ofile = os.path.join(out_dir, f"forest_{index}.tif")
     if (not os.path.isfile(ofile)) or (os.path.getsize(ofile) == 0):
         # Open dataset
-        ds = (
-            xr.open_dataset(
+        with xr.open_dataset(
                 forest,
                 engine="ee",
+                chunks=None,
                 crs=proj,
                 scale=scale,
-                geometry=extent
-            )
-            .astype("b")
-            .rename({"lon": "longitude", "lat": "latitude"})
-        )
+                geometry=extent) as dsxr:
+            dsxr = dsxr.astype("b")
+            dsxr = dsxr.rename({"lon": "longitude", "lat": "latitude"})
 
         # Load and write data to geotiff
-        xarray2geotiff(ds, "forest_cover", out_dir, index)
+        xarray2geotiff(dsxr, "forest_cover", out_dir, index)
 
         # Progress bar
-        progress_bar_async(index, ntiles)
+        if verbose:
+            progress_bar_async(index, ntiles)
 
 # End Of File
