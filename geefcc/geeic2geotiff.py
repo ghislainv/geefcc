@@ -28,7 +28,7 @@ def progress_bar_async(index, ntiles):
 def get_dst_dataset(dst_img, cols, rows, layers, dtype, proj, gt):
     """Create a GDAL data set in Cloud Optimized GeoTIFF (COG) format.
 
-    :param dst_img: Output filenane full path
+    :param dst_img: Output filename full path
     :param cols: Number of columns
     :param rows: Number of rows
     :param layers: Number of layers
@@ -164,7 +164,10 @@ def xarray2geotiff(xarray, data_var, out_dir, index):
         data_npa = data_npa[index]
         dst_band.WriteArray(data_npa)
 
-    dst_band = None
+        # Dereference band
+        dst_band = None
+
+    # Dereference dataset
     del dst_ds
 
 
@@ -186,18 +189,19 @@ def geeic2geotiff(index, extent, ntiles, forest,
     ofile = os.path.join(out_dir, f"forest_{index}.tif")
     if (not os.path.isfile(ofile)) or (os.path.getsize(ofile) == 0):
         # Open dataset
-        with xr.open_dataset(
+        ds = (xr.load_dataset(
                 forest,
                 engine="ee",
                 chunks=None,
                 crs=proj,
                 scale=scale,
-                geometry=extent) as dsxr:
-            dsxr = dsxr.astype("b")
-            dsxr = dsxr.rename({"lon": "longitude", "lat": "latitude"})
+                geometry=extent)
+              .astype("b")
+              .rename({"lon": "longitude", "lat": "latitude"})
+              )
 
         # Load and write data to geotiff
-        xarray2geotiff(dsxr, "forest_cover", out_dir, index)
+        xarray2geotiff(ds, "forest_cover", out_dir, index)
 
         # Progress bar
         if verbose:
