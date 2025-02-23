@@ -1,10 +1,19 @@
 Changelog
 *********
 
+geefcc 0.1.6
+============
+
+* Using ``xarray.load_dataset()`` to automatically load and close dataset.
+* Adding pyproject.toml.
+* Dereference gdal datasets properly.
+* Changes: https://github.com/ghislainv/geefcc/compare/v0.1.5...v0.1.6
+
 geefcc 0.1.5
 ============
 
 * Using version v1_2023 of TMF.
+* Adding example with New Caledonia.
 * Changes: https://github.com/ghislainv/geefcc/compare/v0.1.4...v0.1.5
 
 geefcc 0.1.4
