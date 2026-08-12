@@ -147,7 +147,7 @@
 <h2>Using TMF product<a class="headerlink" href="#using-tmf-product" title="Link to this heading">¶</a></h2>
 <section id="downloading-data">
 <h3>Downloading data<a class="headerlink" href="#downloading-data" title="Link to this heading">¶</a></h3>
-<p>We download the forest cover change data from GEE for New Caledonia for years 2001, 2010 and 2020, using a tile size of one degree. We use the TMF product (version <code class="docutils literal notranslate"><span class="pre">v1_2023</span></code> available in geefcc).</p>
+<p>We download the forest cover change data from GEE for New Caledonia for years 2001, 2010 and 2020, using a tile size of one degree. We use the TMF product (version <code class="docutils literal notranslate"><span class="pre">v1_2025</span></code> available in geefcc).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="n">get_fcc</span><span class="p">(</span>
     <span class="n">aoi</span><span class="o">=</span><span class="p">(</span><span class="mf">163.5</span><span class="p">,</span> <span class="o">-</span><span class="mi">23</span><span class="p">,</span> <span class="mf">168.15</span><span class="p">,</span> <span class="o">-</span><span class="mf">19.51</span><span class="p">),</span>
@@ -157,8 +157,12 @@
     <span class="n">tile_size</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
     <span class="n">crop_to_aoi</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;out_tmf/forest_tmf.tif&quot;</span><span class="p">,</span>
-<span class="p">)</span>
+    <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">ncpu</span><span class="o">=</span><span class="n">ncpu</span><span class="p">)</span>
 <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">get_fcc</span> <span class="n">running</span><span class="p">,</span> <span class="mi">20</span> <span class="n">tiles</span> <span class="o">.....................</span>
 </pre></div>
 </div>
 <p>We estimate the computation time to download 20 1-degree tiles using several cores.</p>
@@ -166,7 +170,7 @@
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Execution time:&#39;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;minutes&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Execution</span> <span class="n">time</span><span class="p">:</span> <span class="mf">9.55</span> <span class="n">minutes</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Execution</span> <span class="n">time</span><span class="p">:</span> <span class="mf">1.2</span> <span class="n">minutes</span>
 </pre></div>
 </div>
 </section>
@@ -210,6 +214,23 @@
                           <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">colors</span><span class="p">)]</span>
 </pre></div>
 </div>
+<p>We created a short function to plot the forest cover change map.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_fcc</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">out_file</span><span class="p">):</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">raster_image</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">color_map</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span>
+              <span class="n">resample</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+    <span class="n">grid_image</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">borders_image</span> <span class="o">=</span> <span class="n">borders</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">patches</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">((</span><span class="mi">163</span><span class="p">,</span> <span class="mi">169</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">((</span><span class="o">-</span><span class="mf">23.25</span><span class="p">,</span> <span class="o">-</span><span class="mf">18.75</span><span class="p">))</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">out_file</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>We load the data: country borders and grid. The borders can be downloaded from the <a class="reference external" href="https://gadm.org/download_country.html">gadm</a> website.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Borders</span>
 <span class="n">borders_gpkg</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;borders_NCL.gpkg&quot;</span><span class="p">)</span>
@@ -226,24 +247,12 @@
     <span class="n">nrow</span><span class="p">,</span> <span class="n">ncol</span> <span class="o">=</span> <span class="n">raster_image</span><span class="o">.</span><span class="n">shape</span>
     <span class="n">xmin</span><span class="p">,</span> <span class="n">xres</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">ymax</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">yres</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">GetGeoTransform</span><span class="p">()</span>
     <span class="n">extent</span> <span class="o">=</span> <span class="p">[</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmin</span> <span class="o">+</span> <span class="n">xres</span> <span class="o">*</span> <span class="n">ncol</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">+</span> <span class="n">yres</span> <span class="o">*</span> <span class="n">nrow</span><span class="p">,</span> <span class="n">ymax</span><span class="p">]</span>
-
-<span class="c1"># Plot</span>
-<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">raster_image</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">color_map</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span>
-          <span class="n">resample</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
-<span class="n">grid_image</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">borders_image</span> <span class="o">=</span> <span class="n">borders</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Forest cover change 2001-2010-2020, TMF&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">patches</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">((</span><span class="mi">163</span><span class="p">,</span> <span class="mi">169</span><span class="p">))</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;fcc_tmf.png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+    <span class="n">plot_fcc</span><span class="p">(</span><span class="s2">&quot;Forest cover change 2001-2010-2020, TMF&quot;</span><span class="p">,</span> <span class="s2">&quot;fcc_tmf.png&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../../_images/fcc_tmf.png"><img alt="../../_images/fcc_tmf.png" class="align-center" src="../../_images/fcc_tmf.png" width="700" />
 </a>
-<p>Lines in black represent country borders and the 10 km buffer. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.</p>
+<p>Lines in black represent country borders. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.</p>
 </section>
 <section id="reproject-in-epsg-3163-for-area-computation">
 <h3>Reproject in EPSG:3163 for area computation<a class="headerlink" href="#reproject-in-epsg-3163-for-area-computation" title="Link to this heading">¶</a></h3>
@@ -258,16 +267,16 @@
 <section id="compute-statistics">
 <h3>Compute statistics<a class="headerlink" href="#compute-statistics" title="Link to this heading">¶</a></h3>
 <p>We use the tool “Raster layer unique values report” in QGIS to get the number of pixels per pixel value in the raster.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pixel_count</span> <span class="o">=</span> <span class="p">[</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n3</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">273463</span><span class="p">,</span> <span class="mi">257445</span><span class="p">,</span> <span class="mi">9402021</span><span class="p">]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pixel_count</span> <span class="o">=</span> <span class="p">[</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n3</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">291545</span><span class="p">,</span> <span class="mi">258015</span><span class="p">,</span> <span class="mi">9381325</span><span class="p">]</span>
 <span class="n">areas</span> <span class="o">=</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="p">(</span><span class="mi">30</span> <span class="o">*</span> <span class="mi">30</span> <span class="o">/</span> <span class="mi">10000</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pixel_count</span><span class="p">]</span>
-<span class="n">tmf_areas</span><span class="o">=</span> <span class="p">{</span><span class="s2">&quot;product&quot;</span><span class="p">:</span> <span class="s2">&quot;tmf&quot;</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;v1_2023&quot;</span><span class="p">,</span> <span class="s2">&quot;perc&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="n">tmf_areas</span><span class="o">=</span> <span class="p">{</span><span class="s2">&quot;product&quot;</span><span class="p">:</span> <span class="s2">&quot;tmf&quot;</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;v1_2025&quot;</span><span class="p">,</span> <span class="s2">&quot;perc&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
  <span class="s2">&quot;fc2001&quot;</span><span class="p">:</span> <span class="n">areas</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">areas</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">areas</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
  <span class="s2">&quot;fc2010&quot;</span><span class="p">:</span> <span class="n">areas</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">areas</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;fc2020&quot;</span><span class="p">:</span> <span class="n">areas</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
  <span class="s2">&quot;d1&quot;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">areas</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">9</span><span class="p">),</span> <span class="s2">&quot;d2&quot;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">areas</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)}</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">tmf_areas</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;product&#39;</span><span class="p">:</span> <span class="s1">&#39;tmf&#39;</span><span class="p">,</span> <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="s1">&#39;v1_2023&#39;</span><span class="p">,</span> <span class="s1">&#39;perc&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;fc2001&#39;</span><span class="p">:</span> <span class="mi">893964</span><span class="p">,</span> <span class="s1">&#39;fc2010&#39;</span><span class="p">:</span> <span class="mi">869352</span><span class="p">,</span> <span class="s1">&#39;fc2020&#39;</span><span class="p">:</span> <span class="mi">846182</span><span class="p">,</span> <span class="s1">&#39;d1&#39;</span><span class="p">:</span> <span class="mi">2735</span><span class="p">,</span> <span class="s1">&#39;d2&#39;</span><span class="p">:</span> <span class="mi">2317</span><span class="p">}</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;product&#39;</span><span class="p">:</span> <span class="s1">&#39;tmf&#39;</span><span class="p">,</span> <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="s1">&#39;v1_2025&#39;</span><span class="p">,</span> <span class="s1">&#39;perc&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;fc2001&#39;</span><span class="p">:</span> <span class="mi">893779</span><span class="p">,</span> <span class="s1">&#39;fc2010&#39;</span><span class="p">:</span> <span class="mi">867540</span><span class="p">,</span> <span class="s1">&#39;fc2020&#39;</span><span class="p">:</span> <span class="mi">844319</span><span class="p">,</span> <span class="s1">&#39;d1&#39;</span><span class="p">:</span> <span class="mi">2915</span><span class="p">,</span> <span class="s1">&#39;d2&#39;</span><span class="p">:</span> <span class="mi">2322</span><span class="p">}</span>
 </pre></div>
 </div>
 </section>
@@ -287,7 +296,8 @@
     <span class="n">tile_size</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
     <span class="n">crop_to_aoi</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;out_gfc80/forest_gfc80.tif&quot;</span><span class="p">,</span>
-<span class="p">)</span>
+    <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">ncpu</span><span class="o">=</span><span class="n">ncpu</span><span class="p">)</span>
 <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -296,7 +306,7 @@
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Execution time:&#39;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;minutes&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Execution</span> <span class="n">time</span><span class="p">:</span> <span class="mf">9.1</span> <span class="n">minutes</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Execution</span> <span class="n">time</span><span class="p">:</span> <span class="mf">1.0</span> <span class="n">minutes</span>
 </pre></div>
 </div>
 </section>
@@ -346,24 +356,12 @@
     <span class="n">nrow</span><span class="p">,</span> <span class="n">ncol</span> <span class="o">=</span> <span class="n">raster_image</span><span class="o">.</span><span class="n">shape</span>
     <span class="n">xmin</span><span class="p">,</span> <span class="n">xres</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">ymax</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">yres</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">GetGeoTransform</span><span class="p">()</span>
     <span class="n">extent</span> <span class="o">=</span> <span class="p">[</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmin</span> <span class="o">+</span> <span class="n">xres</span> <span class="o">*</span> <span class="n">ncol</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">+</span> <span class="n">yres</span> <span class="o">*</span> <span class="n">nrow</span><span class="p">,</span> <span class="n">ymax</span><span class="p">]</span>
-
-<span class="c1"># Plot</span>
-<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">raster_image</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">color_map</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span>
-          <span class="n">resample</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
-<span class="n">grid_image</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">borders_image</span> <span class="o">=</span> <span class="n">borders</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Forest cover change 2001-2010-2020, GFC 80%&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">patches</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">((</span><span class="mi">163</span><span class="p">,</span> <span class="mi">169</span><span class="p">))</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;fcc_gfc80.png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+    <span class="n">plot_fcc</span><span class="p">(</span><span class="s2">&quot;Forest cover change 2001-2010-2020, GFC 80%&quot;</span><span class="p">,</span> <span class="s2">&quot;fcc_gfc80.png&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../../_images/fcc_gfc80.png"><img alt="../../_images/fcc_gfc80.png" class="align-center" src="../../_images/fcc_gfc80.png" width="700" />
 </a>
-<p>Lines in black represent country borders and the 10 km buffer. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.</p>
+<p>Lines in black represent country borders. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.</p>
 </section>
 <section id="id4">
 <h3>Reproject in EPSG:3163 for area computation<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h3>
@@ -377,16 +375,16 @@
 </section>
 <section id="id5">
 <h3>Compute statistics<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pixel_count</span> <span class="o">=</span> <span class="p">[</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n3</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">41629</span><span class="p">,</span> <span class="mi">27698</span><span class="p">,</span> <span class="mi">7276643</span><span class="p">]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pixel_count</span> <span class="o">=</span> <span class="p">[</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n3</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">41624</span><span class="p">,</span> <span class="mi">27874</span><span class="p">,</span> <span class="mi">7275205</span><span class="p">]</span>
 <span class="n">areas</span> <span class="o">=</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="p">(</span><span class="mi">30</span> <span class="o">*</span> <span class="mi">30</span> <span class="o">/</span> <span class="mi">10000</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pixel_count</span><span class="p">]</span>
-<span class="n">gfc80_areas</span><span class="o">=</span> <span class="p">{</span><span class="s2">&quot;product&quot;</span><span class="p">:</span> <span class="s2">&quot;gfc&quot;</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;v1_11(2023)&quot;</span><span class="p">,</span> <span class="s2">&quot;perc&quot;</span><span class="p">:</span> <span class="mi">80</span><span class="p">,</span>
+<span class="n">gfc80_areas</span><span class="o">=</span> <span class="p">{</span><span class="s2">&quot;product&quot;</span><span class="p">:</span> <span class="s2">&quot;gfc&quot;</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;v1_13(2025)&quot;</span><span class="p">,</span> <span class="s2">&quot;perc&quot;</span><span class="p">:</span> <span class="mi">80</span><span class="p">,</span>
  <span class="s2">&quot;fc2001&quot;</span><span class="p">:</span> <span class="n">areas</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">areas</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">areas</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
  <span class="s2">&quot;fc2010&quot;</span><span class="p">:</span> <span class="n">areas</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">areas</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;fc2020&quot;</span><span class="p">:</span> <span class="n">areas</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
  <span class="s2">&quot;d1&quot;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">areas</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">9</span><span class="p">),</span> <span class="s2">&quot;d2&quot;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">areas</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)}</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">gfc80_areas</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;product&#39;</span><span class="p">:</span> <span class="s1">&#39;gfc&#39;</span><span class="p">,</span> <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="s1">&#39;v1_11(2023)&#39;</span><span class="p">,</span> <span class="s1">&#39;perc&#39;</span><span class="p">:</span> <span class="mi">80</span><span class="p">,</span> <span class="s1">&#39;fc2001&#39;</span><span class="p">:</span> <span class="mi">661138</span><span class="p">,</span> <span class="s1">&#39;fc2010&#39;</span><span class="p">:</span> <span class="mi">657391</span><span class="p">,</span> <span class="s1">&#39;fc2020&#39;</span><span class="p">:</span> <span class="mi">654898</span><span class="p">,</span> <span class="s1">&#39;d1&#39;</span><span class="p">:</span> <span class="mi">416</span><span class="p">,</span> <span class="s1">&#39;d2&#39;</span><span class="p">:</span> <span class="mi">249</span><span class="p">}</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;product&#39;</span><span class="p">:</span> <span class="s1">&#39;gfc&#39;</span><span class="p">,</span> <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="s1">&#39;v1_13(2025)&#39;</span><span class="p">,</span> <span class="s1">&#39;perc&#39;</span><span class="p">:</span> <span class="mi">80</span><span class="p">,</span> <span class="s1">&#39;fc2001&#39;</span><span class="p">:</span> <span class="mi">661023</span><span class="p">,</span> <span class="s1">&#39;fc2010&#39;</span><span class="p">:</span> <span class="mi">657277</span><span class="p">,</span> <span class="s1">&#39;fc2020&#39;</span><span class="p">:</span> <span class="mi">654768</span><span class="p">,</span> <span class="s1">&#39;d1&#39;</span><span class="p">:</span> <span class="mi">416</span><span class="p">,</span> <span class="s1">&#39;d2&#39;</span><span class="p">:</span> <span class="mi">251</span><span class="p">}</span>
 </pre></div>
 </div>
 </section>
@@ -406,7 +404,8 @@
     <span class="n">tile_size</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
     <span class="n">crop_to_aoi</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;out_gfc60/forest_gfc60.tif&quot;</span><span class="p">,</span>
-<span class="p">)</span>
+    <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">ncpu</span><span class="o">=</span><span class="n">ncpu</span><span class="p">)</span>
 <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -415,7 +414,7 @@
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Execution time:&#39;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;minutes&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Execution</span> <span class="n">time</span><span class="p">:</span> <span class="mf">8.87</span> <span class="n">minutes</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Execution</span> <span class="n">time</span><span class="p">:</span> <span class="mf">1.12</span> <span class="n">minutes</span>
 </pre></div>
 </div>
 </section>
@@ -448,24 +447,12 @@
     <span class="n">nrow</span><span class="p">,</span> <span class="n">ncol</span> <span class="o">=</span> <span class="n">raster_image</span><span class="o">.</span><span class="n">shape</span>
     <span class="n">xmin</span><span class="p">,</span> <span class="n">xres</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">ymax</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">yres</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">GetGeoTransform</span><span class="p">()</span>
     <span class="n">extent</span> <span class="o">=</span> <span class="p">[</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmin</span> <span class="o">+</span> <span class="n">xres</span> <span class="o">*</span> <span class="n">ncol</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">+</span> <span class="n">yres</span> <span class="o">*</span> <span class="n">nrow</span><span class="p">,</span> <span class="n">ymax</span><span class="p">]</span>
-
-<span class="c1"># Plot</span>
-<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">raster_image</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">color_map</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span>
-          <span class="n">resample</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
-<span class="n">grid_image</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">borders_image</span> <span class="o">=</span> <span class="n">borders</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Forest cover change 2001-2010-2020, GFC 50%&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">patches</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">((</span><span class="mi">163</span><span class="p">,</span> <span class="mi">169</span><span class="p">))</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;fcc_gfc60.png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+    <span class="n">plot_fcc</span><span class="p">(</span><span class="s2">&quot;Forest cover change 2001-2010-2020, GFC 60%&quot;</span><span class="p">,</span> <span class="s2">&quot;fcc_gfc60.png&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../../_images/fcc_gfc60.png"><img alt="../../_images/fcc_gfc60.png" class="align-center" src="../../_images/fcc_gfc60.png" width="700" />
 </a>
-<p>Lines in black represent country borders and the 10 km buffer. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.</p>
+<p>Lines in black represent country borders. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.</p>
 </section>
 <section id="id9">
 <h3>Reproject in EPSG:3163 for area computation<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h3>
@@ -479,16 +466,16 @@
 </section>
 <section id="id10">
 <h3>Compute statistics<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pixel_count</span> <span class="o">=</span> <span class="p">[</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n3</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">73891</span><span class="p">,</span> <span class="mi">60240</span><span class="p">,</span> <span class="mi">9860795</span><span class="p">]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pixel_count</span> <span class="o">=</span> <span class="p">[</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n3</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">73854</span><span class="p">,</span> <span class="mi">60386</span><span class="p">,</span> <span class="mi">9860124</span><span class="p">]</span>
 <span class="n">areas</span> <span class="o">=</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="p">(</span><span class="mi">30</span> <span class="o">*</span> <span class="mi">30</span> <span class="o">/</span> <span class="mi">10000</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pixel_count</span><span class="p">]</span>
-<span class="n">gfc60_areas</span><span class="o">=</span> <span class="p">{</span><span class="s2">&quot;product&quot;</span><span class="p">:</span> <span class="s2">&quot;gfc&quot;</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;v1_11(2023)&quot;</span><span class="p">,</span> <span class="s2">&quot;perc&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span>
+<span class="n">gfc60_areas</span><span class="o">=</span> <span class="p">{</span><span class="s2">&quot;product&quot;</span><span class="p">:</span> <span class="s2">&quot;gfc&quot;</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;v1_13(2025)&quot;</span><span class="p">,</span> <span class="s2">&quot;perc&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span>
  <span class="s2">&quot;fc2001&quot;</span><span class="p">:</span> <span class="n">areas</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">areas</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">areas</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
  <span class="s2">&quot;fc2010&quot;</span><span class="p">:</span> <span class="n">areas</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">areas</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;fc2020&quot;</span><span class="p">:</span> <span class="n">areas</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
  <span class="s2">&quot;d1&quot;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">areas</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">9</span><span class="p">),</span> <span class="s2">&quot;d2&quot;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">areas</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)}</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">gfc60_areas</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;product&#39;</span><span class="p">:</span> <span class="s1">&#39;gfc&#39;</span><span class="p">,</span> <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="s1">&#39;v1_11(2023)&#39;</span><span class="p">,</span> <span class="s1">&#39;perc&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span> <span class="s1">&#39;fc2001&#39;</span><span class="p">:</span> <span class="mi">899544</span><span class="p">,</span> <span class="s1">&#39;fc2010&#39;</span><span class="p">:</span> <span class="mi">892894</span><span class="p">,</span> <span class="s1">&#39;fc2020&#39;</span><span class="p">:</span> <span class="mi">887472</span><span class="p">,</span> <span class="s1">&#39;d1&#39;</span><span class="p">:</span> <span class="mi">739</span><span class="p">,</span> <span class="s1">&#39;d2&#39;</span><span class="p">:</span> <span class="mi">542</span><span class="p">}</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;product&#39;</span><span class="p">:</span> <span class="s1">&#39;gfc&#39;</span><span class="p">,</span> <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="s1">&#39;v1_13(2025)&#39;</span><span class="p">,</span> <span class="s1">&#39;perc&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span> <span class="s1">&#39;fc2001&#39;</span><span class="p">:</span> <span class="mi">899493</span><span class="p">,</span> <span class="s1">&#39;fc2010&#39;</span><span class="p">:</span> <span class="mi">892846</span><span class="p">,</span> <span class="s1">&#39;fc2020&#39;</span><span class="p">:</span> <span class="mi">887411</span><span class="p">,</span> <span class="s1">&#39;d1&#39;</span><span class="p">:</span> <span class="mi">739</span><span class="p">,</span> <span class="s1">&#39;d2&#39;</span><span class="p">:</span> <span class="mi">544</span><span class="p">}</span>
 </pre></div>
 </div>
 </section>
@@ -517,37 +504,37 @@
 <tbody>
 <tr class="row-even"><td><p>0</p></td>
 <td><p>tmf</p></td>
-<td><p>v1_2023</p></td>
+<td><p>v1_2025</p></td>
 <td><p></p></td>
-<td><p>893964</p></td>
-<td><p>869352</p></td>
-<td><p>846182</p></td>
-<td><p>2735</p></td>
-<td><p>2317</p></td>
+<td><p>893779</p></td>
+<td><p>867540</p></td>
+<td><p>844319</p></td>
+<td><p>2915</p></td>
+<td><p>2322</p></td>
 </tr>
 <tr class="row-odd"><td><p>1</p></td>
 <td><p>gfc</p></td>
-<td><p>v1_11(2023)</p></td>
+<td><p>v1_13(2025)</p></td>
 <td><p>80</p></td>
-<td><p>661138</p></td>
-<td><p>657391</p></td>
-<td><p>654898</p></td>
+<td><p>661023</p></td>
+<td><p>657277</p></td>
+<td><p>654768</p></td>
 <td><p>416</p></td>
-<td><p>249</p></td>
+<td><p>251</p></td>
 </tr>
 <tr class="row-even"><td><p>2</p></td>
 <td><p>gfc</p></td>
-<td><p>v1_11(2023)</p></td>
+<td><p>v1_13(2025)</p></td>
 <td><p>60</p></td>
-<td><p>899544</p></td>
-<td><p>892894</p></td>
-<td><p>887472</p></td>
+<td><p>899493</p></td>
+<td><p>892846</p></td>
+<td><p>887411</p></td>
 <td><p>739</p></td>
-<td><p>542</p></td>
+<td><p>544</p></td>
 </tr>
 </tbody>
 </table>
-<p>Forest cover for TMF and GFC with tree cover <span class="math notranslate nohighlight">\(\ge\)</span> 60% are similar in 2020 (about 850,000 ha) but the annual deforestation is 4-5 times lower when using the GFC product (e.g. 542 ha/yr for GFC in the period 2010–2020 against 2317 ha/yr for TMF for the same period).</p>
+<p>Forest cover for TMF and GFC with tree cover <span class="math notranslate nohighlight">\(\ge\)</span> 60% are similar in 2020 (about 850,000 ha) but the annual deforestation is 4-5 times lower when using the GFC product (e.g. 544 ha/yr for GFC in the period 2010–2020 against 2322 ha/yr for TMF for the same period).</p>
 </section>
 </section>
 

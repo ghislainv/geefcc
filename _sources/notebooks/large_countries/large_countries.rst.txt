@@ -4,7 +4,6 @@ Large countries
 
 
 
-
 Download the data from GEE
 --------------------------
 
@@ -32,7 +31,7 @@ We initialize Google Earth Engine.
 .. code:: python
 
     # Initialize GEE
-    ee.Initialize(project="forestatrisk",
+    ee.Initialize(project="deforisk",
                   opt_url=("https://earthengine-highvolume."
                            "googleapis.com"))
 
@@ -45,7 +44,7 @@ We can compute the number of cores used for the computation.
 
 ::
 
-    3
+    7
 
 
 We download the forest cover change data from GEE for Peru for years 2000, 2010 and 2020, using a buffer of about 10 km around the border (0.089... decimal degrees) and a tile size of one degree.
@@ -62,8 +61,14 @@ A buffer can be useful if we want to avoid “edge effects”, while computing d
         source="tmf",
         tile_size=1,
         output_file="out_tmf/forest_tmf.tif",
-    )
+        parallel=True,
+        ncpu=ncpu)
     end_time = time.time()
+
+::
+
+    get_fcc running, 159 tiles ...
+
 
 We estimate the computation time to download 159 1-degree tiles using several cores. 
 
@@ -74,7 +79,7 @@ We estimate the computation time to download 159 1-degree tiles using several co
 
 ::
 
-    Execution time: 30.76 minutes
+    Execution time: 8.97 minutes
 
 Transform multiband fcc raster in one band raster
 -------------------------------------------------
@@ -129,7 +134,7 @@ We load the data: country borders, buffer, and grid.
 
     # Borders
     borders_gpkg = os.path.join("out_tmf", "gadm41_PER_0.gpkg")
-    borders = geopandas.read_file(borders_gpkg)
+    borders = geopandas.read_file(borders_gpkg, layer="ADM_ADM_0")
 
     # Buffer
     buffer_gpkg = os.path.join("out_tmf", "gadm41_PER_buffer.gpkg")

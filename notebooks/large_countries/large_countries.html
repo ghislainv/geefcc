@@ -129,7 +129,7 @@ cores, n-1 cores will be used in parallel.</p>
 </div>
 <p>We initialize Google Earth Engine.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize GEE</span>
-<span class="n">ee</span><span class="o">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s2">&quot;forestatrisk&quot;</span><span class="p">,</span>
+<span class="n">ee</span><span class="o">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s2">&quot;deforisk&quot;</span><span class="p">,</span>
               <span class="n">opt_url</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;https://earthengine-highvolume.&quot;</span>
                        <span class="s2">&quot;googleapis.com&quot;</span><span class="p">))</span>
 </pre></div>
@@ -139,7 +139,7 @@ cores, n-1 cores will be used in parallel.</p>
 <span class="n">ncpu</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">3</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">7</span>
 </pre></div>
 </div>
 <p>We download the forest cover change data from GEE for Peru for years 2000, 2010 and 2020, using a buffer of about 10 km around the border (0.089… decimal degrees) and a tile size of one degree.</p>
@@ -152,8 +152,12 @@ cores, n-1 cores will be used in parallel.</p>
     <span class="n">source</span><span class="o">=</span><span class="s2">&quot;tmf&quot;</span><span class="p">,</span>
     <span class="n">tile_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;out_tmf/forest_tmf.tif&quot;</span><span class="p">,</span>
-<span class="p">)</span>
+    <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">ncpu</span><span class="o">=</span><span class="n">ncpu</span><span class="p">)</span>
 <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">get_fcc</span> <span class="n">running</span><span class="p">,</span> <span class="mi">159</span> <span class="n">tiles</span> <span class="o">...</span>
 </pre></div>
 </div>
 <p>We estimate the computation time to download 159 1-degree tiles using several cores.</p>
@@ -161,7 +165,7 @@ cores, n-1 cores will be used in parallel.</p>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Execution time:&#39;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;minutes&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Execution</span> <span class="n">time</span><span class="p">:</span> <span class="mf">30.76</span> <span class="n">minutes</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Execution</span> <span class="n">time</span><span class="p">:</span> <span class="mf">8.97</span> <span class="n">minutes</span>
 </pre></div>
 </div>
 </section>
@@ -208,7 +212,7 @@ cores, n-1 cores will be used in parallel.</p>
 <p>We load the data: country borders, buffer, and grid.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Borders</span>
 <span class="n">borders_gpkg</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;out_tmf&quot;</span><span class="p">,</span> <span class="s2">&quot;gadm41_PER_0.gpkg&quot;</span><span class="p">)</span>
-<span class="n">borders</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">borders_gpkg</span><span class="p">)</span>
+<span class="n">borders</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">borders_gpkg</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s2">&quot;ADM_ADM_0&quot;</span><span class="p">)</span>
 
 <span class="c1"># Buffer</span>
 <span class="n">buffer_gpkg</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;out_tmf&quot;</span><span class="p">,</span> <span class="s2">&quot;gadm41_PER_buffer.gpkg&quot;</span><span class="p">)</span>
