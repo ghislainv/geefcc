@@ -6,10 +6,14 @@ import ee
 def ee_gfc(years, perc):
     """Compute fcc on GEE using the GFC product.
 
+    GFC product documentation is available here:
+    `https://developers.google.com/earth-engine/datasets/catalog/\
+    UMD_hansen_global_forest_change_2025_v1_13`_.
+
     :param years: List of years defining time-periods for estimating
         forest cover change. Years for computing forest cover change
-        can be in the interval 2001--2024 for GFC (GFC does not
-        provide loss for the year 2000) and 2000--2024 for TMF.
+        can be in the interval 2001--2025 for GFC (GFC does not
+        provide loss for the year 2000).
 
     :param perc: Tree cover threshold defining the forest for GFC
         product.
@@ -20,7 +24,9 @@ def ee_gfc(years, perc):
     """
 
     # Hansen map
-    gfc = ee.Image("UMD/hansen/global_forest_change_2023_v1_11")
+    year_version = 2025
+    gfc_version = f"{year_version}_v1_13"
+    gfc = ee.Image(f"UMD/hansen/global_forest_change_{gfc_version}")
 
     # Tree cover, loss, and gain
     treecover = gfc.select(["treecover2000"])
