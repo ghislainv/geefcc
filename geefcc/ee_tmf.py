@@ -6,10 +6,12 @@ import ee
 def ee_tmf(years):
     """Compute fcc on GEE using the TMF product.
 
+    TMF product documentation is available here:
+    `https://forobs.jrc.ec.europa.eu/TMF`_.
+
     :param years: List of years defining time-periods for estimating
         forest cover change. Years for computing forest cover change
-        can be in the interval 2001--2024 for GFC (GFC does not
-        provide loss for the year 2000) and 2000--2024 for TMF.
+        can be in the interval 2000--2026 for TMF.
 
     :return: An image collection for forest where each image
         correspond to a year.
@@ -17,9 +19,11 @@ def ee_tmf(years):
     """
 
     # Get annual product
+    year_version = 2025
+    tmf_version = f"v1_{year_version}"
     annual_product = ee.ImageCollection(
         "projects/JRC/TMF/"
-        "v1_2023/AnnualChanges")
+        f"{tmf_version}/AnnualChanges")
     annual_product = annual_product.mosaic().toByte()
 
     # ap_all_year: forest if Y = 1 or 2.
@@ -31,8 +35,11 @@ def ee_tmf(years):
 
     for year in years:
         # Get forest
-        id_year = year - 1990 - 1
-        ap = ap_all_year.select(list(range(id_year, 33)))
+        year_start = 1990
+        id_year = year - year_start - 1
+        ap = ap_all_year.select(
+            list(range(id_year, year_version - year_start))
+        )
         forest_yr = ap.reduce(ee.Reducer.sum()).gte(1)
         # Set time
         forest_yr = forest_yr.set(
