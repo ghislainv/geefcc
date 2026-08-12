@@ -1,5 +1,6 @@
 numpy
 gdal
+rioxarray
 xarray
 xee
 multiprocess

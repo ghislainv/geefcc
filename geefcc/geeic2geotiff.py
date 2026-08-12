@@ -8,7 +8,14 @@ import os
 import sys
 
 from osgeo import gdal, osr, gdal_array
+import shapely
+import rioxarray
 import xarray as xr
+from xee import helpers
+
+
+# Dummy variable
+_ = rioxarray
 
 
 def progress_bar_sequence(index, ntiles):
@@ -81,7 +88,7 @@ def get_resolution_from_xarray(xarray):
     """
 
     x_res = xarray.longitude.values[1] - xarray.longitude.values[0]
-    y_res = xarray.latitude.values[0] - xarray.latitude.values[1]
+    y_res = xarray.latitude.values[1] - xarray.latitude.values[0]
 
     return (x_res, y_res)
 
@@ -97,7 +104,7 @@ def xarray2geotiff(xarray, data_var, out_dir, index):
     """
 
     # Create GeoTransform - perhaps the user requested a
-    # spatial subset, therefore is compulsory to update it
+    # spatial subset, therefore it is mandatory to update it
 
     # GeoTransform -- case of a "north up" image without
     #                 any rotation or shearing
@@ -108,8 +115,8 @@ def xarray2geotiff(xarray, data_var, out_dir, index):
     #  GeoTransform[4] 0
     #  GeoTransform[5] n-s pixel resolution (negative value)
 
-    # Reorganize the data
-    xarray = xarray.transpose("time", "latitude", "longitude")
+    # Reorganize the data (not necessary with version xee >= v0.1.0
+    # xarray = xarray.transpose("time", "latitude", "longitude")
 
     # Create tmp xarray DataArray
     _xarray = getattr(xarray, data_var)
@@ -118,13 +125,12 @@ def xarray2geotiff(xarray, data_var, out_dir, index):
 
     gt = (_xarray.longitude.data[0] - (x_res / 2.),
           x_res, 0.0,
-          _xarray.latitude.data[-1] - (y_res / 2.),
+          _xarray.latitude.data[0] - (y_res / 2.),
           0.0, y_res)
 
     # Coordinate Reference System (CRS) in a PROJ4 string to a
     # Spatial Reference System Well Known Text (WKT)
-    crs = xarray.attrs['crs']
-    crs = int(crs[5:9])
+    crs = xarray.rio.crs.to_epsg()
     srs = osr.SpatialReference()
     srs.ImportFromEPSG(crs)
     proj = srs.ExportToWkt()
@@ -160,8 +166,8 @@ def xarray2geotiff(xarray, data_var, out_dir, index):
 
         # Data
         data_npa = _xarray[layer].data
-        index = list(reversed(range(rows)))
-        data_npa = data_npa[index]
+        # index = list(reversed(range(rows)))
+        # data_npa = data_npa[index]
         dst_band.WriteArray(data_npa)
 
         # Dereference band
@@ -189,19 +195,32 @@ def geeic2geotiff(index, extent, ntiles, forest,
     ofile = os.path.join(out_dir, f"forest_{index}.tif")
     if (not os.path.isfile(ofile)) or (os.path.getsize(ofile) == 0):
         # Open dataset
+        shapely_geom = shapely.geometry.box(
+            extent[0], extent[1], extent[2], extent[3])
+        grid_params = helpers.fit_geometry(
+            geometry=shapely_geom,
+            grid_crs=proj,
+            grid_scale=(scale, -scale)
+        )
         ds = (xr.load_dataset(
-                forest,
-                engine="ee",
-                chunks=None,
-                crs=proj,
-                scale=scale,
-                geometry=extent)
+            forest,
+            engine="ee",
+            chunks=None,
+            **grid_params)
               .astype("b")
-              .rename({"lon": "longitude", "lat": "latitude"})
+              .rename({"x": "longitude", "y": "latitude"})
               )
 
         # Load and write data to geotiff
-        xarray2geotiff(ds, "forest_cover", out_dir, index)
+        # xarray2geotiff(ds, "forest_cover", out_dir, index)
+        # Simplified with rioxarray
+        da = ds["forest_cover"]
+        gdal_args = {
+            "COMPRESS": "DEFLATE", "PREDICTOR": "1",
+            "BIGTIFF": "YES", "TILED": "YES",
+            "COPY_SRC_OVERVIEWS": "YES"
+        }
+        da.rio.to_raster(ofile, driver="GTiff", dtype="uint8", **gdal_args)
 
         # Progress bar
         if verbose:
