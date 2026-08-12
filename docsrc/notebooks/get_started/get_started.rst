@@ -4,7 +4,6 @@ Get started
 
 
 
-
 .. _get-forest-cover-change-from-tmf:
 
 Get forest cover change from TMF
@@ -29,7 +28,7 @@ from the Tropical Moist Forest product. We will use the Reunion Island
 .. code:: python
 
     # Initialize GEE
-    ee.Initialize(project="forestatrisk", opt_url="https://earthengine-highvolume.googleapis.com")
+    ee.Initialize(project="deforisk", opt_url="https://earthengine-highvolume.googleapis.com")
 
 .. code:: python
 
@@ -58,15 +57,17 @@ from the Tropical Moist Forest product. We will use the Reunion Island
 
 ::
 
-    <xarray.DataArray (band: 3, y: 1923, x: 2305)> Size: 13MB
-    [13297545 values with dtype=int8]
+    <xarray.DataArray (band: 3, y: 1924, x: 2305)> Size: 13MB
+    [13304460 values with dtype=int8]
     Coordinates:
       * band         (band) int64 24B 1 2 3
-      * x            (x) float64 18kB 55.22 55.22 55.22 55.22 ... 55.84 55.84 55.84
       * y            (y) float64 15kB -20.87 -20.87 -20.87 ... -21.39 -21.39 -21.39
+      * x            (x) float64 18kB 55.22 55.22 55.22 55.22 ... 55.84 55.84 55.84
         spatial_ref  int64 8B 0
     Attributes:
         AREA_OR_POINT:  Area
+        data_var:       forest_cover
+        time:           2000-01-01T00:00:00.000
         scale_factor:   1.0
         add_offset:     0.0
 
@@ -78,18 +79,24 @@ from the Tropical Moist Forest product. We will use the Reunion Island
 
 ::
 
-    <xarray.DataArray (y: 1923, x: 2305)> Size: 35MB
+    <xarray.DataArray (y: 1924, x: 2305)> Size: 35MB
     array([[0, 0, 0, ..., 0, 0, 0],
            [0, 0, 0, ..., 0, 0, 0],
            [0, 0, 0, ..., 0, 0, 0],
            ...,
            [0, 0, 0, ..., 0, 0, 0],
            [0, 0, 0, ..., 0, 0, 0],
-           [0, 0, 0, ..., 0, 0, 0]])
+           [0, 0, 0, ..., 0, 0, 0]], shape=(1924, 2305))
     Coordinates:
-      * x            (x) float64 18kB 55.22 55.22 55.22 55.22 ... 55.84 55.84 55.84
       * y            (y) float64 15kB -20.87 -20.87 -20.87 ... -21.39 -21.39 -21.39
+      * x            (x) float64 18kB 55.22 55.22 55.22 55.22 ... 55.84 55.84 55.84
         spatial_ref  int64 8B 0
+    Attributes:
+        AREA_OR_POINT:  Area
+        data_var:       forest_cover
+        time:           2000-01-01T00:00:00.000
+        scale_factor:   1.0
+        add_offset:     0.0
 
 .. code:: python
 
@@ -117,6 +124,7 @@ from the Tropical Moist Forest product. We will use the Reunion Island
     plt.title("Forest cover change 2000-2010-2020, TMF")
     plt.legend(handles=patches, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
     fig.savefig("tmf.png", bbox_inches="tight", dpi=100)
+    plt.close(fig)
 
 .. image:: tmf.png
     :width: 800
@@ -141,11 +149,6 @@ Compare with forest cover change from GFC
             tile_size=0.5,
             output_file="out_gfc_50/forest_gfc_50.tif",
         )
-
-::
-
-    get_fcc running, 3 tiles ....
-
 
 .. code:: python
 
@@ -238,6 +241,11 @@ the Analamazaotra special reserve in Madagascar.
             tile_size=0.2,
             output_file="out_tmf_extent/forest_tmf_extent.tif",
         )
+
+::
+
+    get_fcc running, 4 tiles .....
+
 
 .. code:: python
 
