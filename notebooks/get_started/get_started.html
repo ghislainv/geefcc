@@ -9,9 +9,9 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=3f530b75" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=8fb1bb4b" />
-    <script src="../../_static/documentation_options.js?v=6e0256f3"></script>
-    <script src="../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/documentation_options.js?v=ca7ad2ea"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -124,7 +124,7 @@ from the Tropical Moist Forest product. We will use the Reunion Island
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize GEE</span>
-<span class="n">ee</span><span class="o">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s2">&quot;forestatrisk&quot;</span><span class="p">,</span> <span class="n">opt_url</span><span class="o">=</span><span class="s2">&quot;https://earthengine-highvolume.googleapis.com&quot;</span><span class="p">)</span>
+<span class="n">ee</span><span class="o">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s2">&quot;deforisk&quot;</span><span class="p">,</span> <span class="n">opt_url</span><span class="o">=</span><span class="s2">&quot;https://earthengine-highvolume.googleapis.com&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download data from GEE</span>
@@ -148,15 +148,17 @@ from the Tropical Moist Forest product. We will use the Reunion Island
 <span class="n">forest_tmf</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">xarray</span><span class="o">.</span><span class="n">DataArray</span> <span class="p">(</span><span class="n">band</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mi">1923</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="mi">2305</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">Size</span><span class="p">:</span> <span class="mi">13</span><span class="n">MB</span>
-<span class="p">[</span><span class="mi">13297545</span> <span class="n">values</span> <span class="k">with</span> <span class="n">dtype</span><span class="o">=</span><span class="n">int8</span><span class="p">]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">xarray</span><span class="o">.</span><span class="n">DataArray</span> <span class="p">(</span><span class="n">band</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mi">1924</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="mi">2305</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">Size</span><span class="p">:</span> <span class="mi">13</span><span class="n">MB</span>
+<span class="p">[</span><span class="mi">13304460</span> <span class="n">values</span> <span class="k">with</span> <span class="n">dtype</span><span class="o">=</span><span class="n">int8</span><span class="p">]</span>
 <span class="n">Coordinates</span><span class="p">:</span>
   <span class="o">*</span> <span class="n">band</span>         <span class="p">(</span><span class="n">band</span><span class="p">)</span> <span class="n">int64</span> <span class="mi">24</span><span class="n">B</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span>
-  <span class="o">*</span> <span class="n">x</span>            <span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="n">float64</span> <span class="mi">18</span><span class="n">kB</span> <span class="mf">55.22</span> <span class="mf">55.22</span> <span class="mf">55.22</span> <span class="mf">55.22</span> <span class="o">...</span> <span class="mf">55.84</span> <span class="mf">55.84</span> <span class="mf">55.84</span>
   <span class="o">*</span> <span class="n">y</span>            <span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="n">float64</span> <span class="mi">15</span><span class="n">kB</span> <span class="o">-</span><span class="mf">20.87</span> <span class="o">-</span><span class="mf">20.87</span> <span class="o">-</span><span class="mf">20.87</span> <span class="o">...</span> <span class="o">-</span><span class="mf">21.39</span> <span class="o">-</span><span class="mf">21.39</span> <span class="o">-</span><span class="mf">21.39</span>
+  <span class="o">*</span> <span class="n">x</span>            <span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="n">float64</span> <span class="mi">18</span><span class="n">kB</span> <span class="mf">55.22</span> <span class="mf">55.22</span> <span class="mf">55.22</span> <span class="mf">55.22</span> <span class="o">...</span> <span class="mf">55.84</span> <span class="mf">55.84</span> <span class="mf">55.84</span>
     <span class="n">spatial_ref</span>  <span class="n">int64</span> <span class="mi">8</span><span class="n">B</span> <span class="mi">0</span>
 <span class="n">Attributes</span><span class="p">:</span>
     <span class="n">AREA_OR_POINT</span><span class="p">:</span>  <span class="n">Area</span>
+    <span class="n">data_var</span><span class="p">:</span>       <span class="n">forest_cover</span>
+    <span class="n">time</span><span class="p">:</span>           <span class="mi">2000</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="n">T00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mf">00.000</span>
     <span class="n">scale_factor</span><span class="p">:</span>   <span class="mf">1.0</span>
     <span class="n">add_offset</span><span class="p">:</span>     <span class="mf">0.0</span>
 </pre></div>
@@ -166,18 +168,24 @@ from the Tropical Moist Forest product. We will use the Reunion Island
 <span class="n">fcc_tmf</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">xarray</span><span class="o">.</span><span class="n">DataArray</span> <span class="p">(</span><span class="n">y</span><span class="p">:</span> <span class="mi">1923</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="mi">2305</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">Size</span><span class="p">:</span> <span class="mi">35</span><span class="n">MB</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">xarray</span><span class="o">.</span><span class="n">DataArray</span> <span class="p">(</span><span class="n">y</span><span class="p">:</span> <span class="mi">1924</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="mi">2305</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">Size</span><span class="p">:</span> <span class="mi">35</span><span class="n">MB</span>
 <span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
        <span class="o">...</span><span class="p">,</span>
        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-       <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+       <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1924</span><span class="p">,</span> <span class="mi">2305</span><span class="p">))</span>
 <span class="n">Coordinates</span><span class="p">:</span>
-  <span class="o">*</span> <span class="n">x</span>            <span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="n">float64</span> <span class="mi">18</span><span class="n">kB</span> <span class="mf">55.22</span> <span class="mf">55.22</span> <span class="mf">55.22</span> <span class="mf">55.22</span> <span class="o">...</span> <span class="mf">55.84</span> <span class="mf">55.84</span> <span class="mf">55.84</span>
   <span class="o">*</span> <span class="n">y</span>            <span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="n">float64</span> <span class="mi">15</span><span class="n">kB</span> <span class="o">-</span><span class="mf">20.87</span> <span class="o">-</span><span class="mf">20.87</span> <span class="o">-</span><span class="mf">20.87</span> <span class="o">...</span> <span class="o">-</span><span class="mf">21.39</span> <span class="o">-</span><span class="mf">21.39</span> <span class="o">-</span><span class="mf">21.39</span>
+  <span class="o">*</span> <span class="n">x</span>            <span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="n">float64</span> <span class="mi">18</span><span class="n">kB</span> <span class="mf">55.22</span> <span class="mf">55.22</span> <span class="mf">55.22</span> <span class="mf">55.22</span> <span class="o">...</span> <span class="mf">55.84</span> <span class="mf">55.84</span> <span class="mf">55.84</span>
     <span class="n">spatial_ref</span>  <span class="n">int64</span> <span class="mi">8</span><span class="n">B</span> <span class="mi">0</span>
+<span class="n">Attributes</span><span class="p">:</span>
+    <span class="n">AREA_OR_POINT</span><span class="p">:</span>  <span class="n">Area</span>
+    <span class="n">data_var</span><span class="p">:</span>       <span class="n">forest_cover</span>
+    <span class="n">time</span><span class="p">:</span>           <span class="mi">2000</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="n">T00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mf">00.000</span>
+    <span class="n">scale_factor</span><span class="p">:</span>   <span class="mf">1.0</span>
+    <span class="n">add_offset</span><span class="p">:</span>     <span class="mf">0.0</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Colors</span>
@@ -203,9 +211,10 @@ from the Tropical Moist Forest product. We will use the Reunion Island
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Forest cover change 2000-2010-2020, TMF&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">patches</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;tmf.png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/tmf.png"><img alt="../../_images/tmf.png" class="align-center" src="../../_images/tmf.png" style="width: 800px;" />
+<a class="reference internal image-reference" href="../../_images/tmf.png"><img alt="../../_images/tmf.png" class="align-center" src="../../_images/tmf.png" width="800" />
 </a>
 </section>
 <section id="compare-with-forest-cover-change-from-gfc">
@@ -222,9 +231,6 @@ from the Tropical Moist Forest product. We will use the Reunion Island
         <span class="n">tile_size</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
         <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;out_gfc_50/forest_gfc_50.tif&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">get_fcc</span> <span class="n">running</span><span class="p">,</span> <span class="mi">3</span> <span class="n">tiles</span> <span class="o">....</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load data</span>
@@ -245,7 +251,7 @@ from the Tropical Moist Forest product. We will use the Reunion Island
 <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;gfc.png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/gfc.png"><img alt="../../_images/gfc.png" class="align-center" src="../../_images/gfc.png" style="width: 800px;" />
+<a class="reference internal image-reference" href="../../_images/gfc.png"><img alt="../../_images/gfc.png" class="align-center" src="../../_images/gfc.png" width="800" />
 </a>
 </section>
 <section id="comparing-forest-cover-in-2020-between-tmf-and-gfc">
@@ -282,7 +288,7 @@ from the Tropical Moist Forest product. We will use the Reunion Island
 <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;comp.png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/comp.png"><img alt="../../_images/comp.png" class="align-center" src="../../_images/comp.png" style="width: 800px;" />
+<a class="reference internal image-reference" href="../../_images/comp.png"><img alt="../../_images/comp.png" class="align-center" src="../../_images/comp.png" width="800" />
 </a>
 <p>Differences are quite important between the two data-sets. This might
 change depending on the tree cover threshold (here = 75%) we select for
@@ -300,6 +306,9 @@ the Analamazaotra special reserve in Madagascar.</p>
         <span class="n">tile_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
         <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;out_tmf_extent/forest_tmf_extent.tif&quot;</span><span class="p">,</span>
     <span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">get_fcc</span> <span class="n">running</span><span class="p">,</span> <span class="mi">4</span> <span class="n">tiles</span> <span class="o">.....</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load data</span>
@@ -332,7 +341,7 @@ the Analamazaotra special reserve in Madagascar.</p>
 <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;extent.png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/extent.png"><img alt="../../_images/extent.png" class="align-center" src="../../_images/extent.png" style="width: 700px;" />
+<a class="reference internal image-reference" href="../../_images/extent.png"><img alt="../../_images/extent.png" class="align-center" src="../../_images/extent.png" width="700" />
 </a>
 </section>
 </section>
@@ -345,10 +354,10 @@ the Analamazaotra special reserve in Madagascar.</p>
     <div class="clearer"></div>
   </div>
     <div class="footer">
-      &#169;2025, Cirad.
+      &#169;2026, Cirad.
       
       |
-      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.1</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
       &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
       
       |
