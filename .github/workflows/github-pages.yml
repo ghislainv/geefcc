@@ -10,18 +10,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
-           python-version: '3.12'
+           python-version: '3.14'
 
       - name: Install gdal
         run: |
           sudo apt-get --quiet update
           sudo apt-get install --yes gdal-bin libgdal-dev
-          sudo apt-get install pandoc
+          sudo apt-get install --yes pandoc
 
       - name: Installing Python packages
         run: |
@@ -31,7 +31,7 @@ jobs:
           # Install GDAL
           export CPLUS_INCLUDE_PATH=/usr/include/gdal
           export C_INCLUDE_PATH=/usr/include/gdal
-          python3 -m pip install gdal==$(gdal-config --version)
+          python3 -m pip install --no-build-isolation gdal==$(gdal-config --version)
           # Install requirements
           python3 -m pip install -r requirements.txt
           python3 -m pip install sphinx nbsphinx ipython

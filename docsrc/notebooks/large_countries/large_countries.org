@@ -32,7 +32,7 @@ We initialize Google Earth Engine.
 
 #+begin_src python
 # Initialize GEE
-ee.Initialize(project="forestatrisk",
+ee.Initialize(project="deforisk",
               opt_url=("https://earthengine-highvolume."
                        "googleapis.com"))
 #+end_src
@@ -47,7 +47,7 @@ ncpu
 #+end_src
 
 #+RESULTS:
-: 3
+: 7
 
 We download the forest cover change data from GEE for Peru for years 2000, 2010 and 2020, using a buffer of about 10 km around the border (0.089... decimal degrees) and a tile size of one degree.
 
@@ -62,11 +62,13 @@ get_fcc(
     source="tmf",
     tile_size=1,
     output_file="out_tmf/forest_tmf.tif",
-)
+    parallel=True,
+    ncpu=ncpu)
 end_time = time.time()
 #+end_src
 
 #+RESULTS:
+: get_fcc running, 159 tiles ...
 
 We estimate the computation time to download 159 1-degree tiles using several cores. 
 
@@ -76,23 +78,21 @@ print('Execution time:', round(elapsed_time, 2), 'minutes')
 #+end_src
 
 #+RESULTS:
-: Execution time: 30.76 minutes
+: Execution time: 8.97 minutes
 
 * Transform multiband fcc raster in one band raster 
 
 We transform the data to have only one band describing the forest cover change with 0 for non-forest, 1 for deforestation on the period 2000--2009, 2 for deforestation on the period 2010--2019, and 3 for the remaining forest in 2020. To do so, we just sum the values of the raster bands.
 
-#+begin_src python :results value
+#+begin_src python :results none
 sum_raster_bands(input_file="out_tmf/forest_tmf.tif",
                  output_file="out_tmf/fcc_tmf.tif",
                  verbose=False)
 #+end_src
 
-#+RESULTS:
-
 We resample at a lower resolution for plotting.
 
-#+begin_src python
+#+begin_src python :results none
 infn = "out_tmf/fcc_tmf.tif"
 outfn = "out_tmf/fcc_tmf_coarsen.tif"
 scale = gdal.Open(infn).GetGeoTransform()[1]
@@ -103,8 +103,6 @@ resample_alg = "near"
 ds = gdal.Warp(outfn, infn, xRes=xres, yRes=yres, resampleAlg=resample_alg)
 ds = None
 #+end_src
-
-#+RESULTS:
 
 * Plot the forest cover change map
 
@@ -134,7 +132,7 @@ We load the data: country borders, buffer, and grid.
 #+begin_src python
 # Borders
 borders_gpkg = os.path.join("out_tmf", "gadm41_PER_0.gpkg")
-borders = geopandas.read_file(borders_gpkg)
+borders = geopandas.read_file(borders_gpkg, layer="ADM_ADM_0")
 
 # Buffer
 buffer_gpkg = os.path.join("out_tmf", "gadm41_PER_buffer.gpkg")
@@ -149,7 +147,7 @@ grid = geopandas.read_file(grid_gpkg)
 
 We plot the forest cover change map.
 
-#+begin_src python :results graphics file output :file fcc.png
+#+begin_src python :results none
 with gdal.Open("out_tmf/fcc_tmf_coarsen.tif", gdal.GA_ReadOnly) as ds:
     raster_image = ds.ReadAsArray()
     nrow, ncol = raster_image.shape
@@ -170,7 +168,6 @@ fig.savefig("fcc.png", bbox_inches="tight", dpi=200)
 #+end_src
 
 #+attr_rst: :width 700 :align center
-#+RESULTS:
 [[file:fcc.png]]
 
 Lines in black represent country borders and the 10 km buffer. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.

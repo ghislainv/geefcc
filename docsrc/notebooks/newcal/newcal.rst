@@ -4,7 +4,6 @@ New Caledonia
 
 
 
-
 Downloading data in parallel
 ----------------------------
 
@@ -52,7 +51,7 @@ Using TMF product
 Downloading data
 ~~~~~~~~~~~~~~~~
 
-We download the forest cover change data from GEE for New Caledonia for years 2001, 2010 and 2020, using a tile size of one degree. We use the TMF product (version ``v1_2023`` available in geefcc).
+We download the forest cover change data from GEE for New Caledonia for years 2001, 2010 and 2020, using a tile size of one degree. We use the TMF product (version ``v1_2025`` available in geefcc).
 
 .. code:: python
 
@@ -65,8 +64,14 @@ We download the forest cover change data from GEE for New Caledonia for years 20
         tile_size=1.0,
         crop_to_aoi=True,
         output_file="out_tmf/forest_tmf.tif",
-    )
+        parallel=True,
+        ncpu=ncpu)
     end_time = time.time()
+
+::
+
+    get_fcc running, 20 tiles .....................
+
 
 We estimate the computation time to download 20 1-degree tiles using several cores. 
 
@@ -77,7 +82,7 @@ We estimate the computation time to download 20 1-degree tiles using several cor
 
 ::
 
-    Execution time: 9.55 minutes
+    Execution time: 1.2 minutes
 
 Transform multiband fcc raster in one band raster
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -126,6 +131,25 @@ We prepare the colors for the map.
     patches = [mpatches.Patch(facecolor=col, edgecolor="black",
                               label=labels[i]) for (i, col) in enumerate(colors)]
 
+We created a short function to plot the forest cover change map.
+
+.. code:: python
+
+    def plot_fcc(title, out_file):
+        fig = plt.figure()
+        ax = plt.subplot(111)
+        ax.imshow(raster_image, cmap=color_map, extent=extent,
+                  resample=False)
+        ax.set_aspect("equal") 
+        grid_image = grid.boundary.plot(ax=ax, color="grey", linewidth=0.5)
+        borders_image = borders.boundary.plot(ax=ax, color="black", linewidth=0.5)
+        plt.title(title)
+        plt.legend(handles=patches, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+        plt.xlim((163, 169))
+        plt.ylim((-23.25, -18.75))
+        fig.savefig(out_file, bbox_inches="tight", dpi=200)
+        plt.close(fig)
+
 We load the data: country borders and grid. The borders can be downloaded from the `gadm <https://gadm.org/download_country.html>`_ website. 
 
 .. code:: python
@@ -147,25 +171,13 @@ We plot the forest cover change map.
         nrow, ncol = raster_image.shape
         xmin, xres, _, ymax, _, yres = ds.GetGeoTransform()
         extent = [xmin, xmin + xres * ncol, ymax + yres * nrow, ymax]
-
-    # Plot
-    fig = plt.figure()
-    ax = plt.subplot(111)
-    ax.imshow(raster_image, cmap=color_map, extent=extent,
-              resample=False)
-    ax.set_aspect("equal") 
-    grid_image = grid.boundary.plot(ax=ax, color="grey", linewidth=0.5)
-    borders_image = borders.boundary.plot(ax=ax, color="black", linewidth=0.5)
-    plt.title("Forest cover change 2001-2010-2020, TMF")
-    plt.legend(handles=patches, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
-    plt.xlim((163, 169))
-    fig.savefig("fcc_tmf.png", bbox_inches="tight", dpi=200)
+        plot_fcc("Forest cover change 2001-2010-2020, TMF", "fcc_tmf.png")
 
 .. image:: fcc_tmf.png
     :width: 700
     :align: center
 
-Lines in black represent country borders and the 10 km buffer. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.
+Lines in black represent country borders. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.
 
 Reproject in EPSG:3163 for area computation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -185,9 +197,9 @@ We use the tool “Raster layer unique values report” in QGIS to get the numbe
 
 .. code:: python
 
-    pixel_count = [n1, n2, n3] = [273463, 257445, 9402021]
+    pixel_count = [n1, n2, n3] = [291545, 258015, 9381325]
     areas = [round(i * (30 * 30 / 10000)) for i in pixel_count]
-    tmf_areas= {"product": "tmf", "version": "v1_2023", "perc": "",
+    tmf_areas= {"product": "tmf", "version": "v1_2025", "perc": "",
      "fc2001": areas[0] + areas[1] + areas[2],
      "fc2010": areas[1] + areas[2], "fc2020": areas[2],
      "d1": round(areas[0] / 9), "d2": round(areas[1] / 10)}
@@ -195,7 +207,7 @@ We use the tool “Raster layer unique values report” in QGIS to get the numbe
 
 ::
 
-    {'product': 'tmf', 'version': 'v1_2023', 'perc': '', 'fc2001': 893964, 'fc2010': 869352, 'fc2020': 846182, 'd1': 2735, 'd2': 2317}
+    {'product': 'tmf', 'version': 'v1_2025', 'perc': '', 'fc2001': 893779, 'fc2010': 867540, 'fc2020': 844319, 'd1': 2915, 'd2': 2322}
 
 Using GFC product and tree cover :math:`\ge` 80%
 ------------------------------------------------
@@ -217,7 +229,8 @@ We download the forest cover change data from GEE for New Caledonia for years 20
         tile_size=1.0,
         crop_to_aoi=True,
         output_file="out_gfc80/forest_gfc80.tif",
-    )
+        parallel=True,
+        ncpu=ncpu)
     end_time = time.time()
 
 We estimate the computation time to download 20 1-degree tiles using several cores. 
@@ -229,7 +242,7 @@ We estimate the computation time to download 20 1-degree tiles using several cor
 
 ::
 
-    Execution time: 9.1 minutes
+    Execution time: 1.0 minutes
 
 Transform multiband fcc raster in one band raster
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -287,25 +300,13 @@ We plot the forest cover change map.
         nrow, ncol = raster_image.shape
         xmin, xres, _, ymax, _, yres = ds.GetGeoTransform()
         extent = [xmin, xmin + xres * ncol, ymax + yres * nrow, ymax]
-
-    # Plot
-    fig = plt.figure()
-    ax = plt.subplot(111)
-    ax.imshow(raster_image, cmap=color_map, extent=extent,
-              resample=False)
-    ax.set_aspect("equal") 
-    grid_image = grid.boundary.plot(ax=ax, color="grey", linewidth=0.5)
-    borders_image = borders.boundary.plot(ax=ax, color="black", linewidth=0.5)
-    plt.title("Forest cover change 2001-2010-2020, GFC 80%")
-    plt.legend(handles=patches, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
-    plt.xlim((163, 169))
-    fig.savefig("fcc_gfc80.png", bbox_inches="tight", dpi=200)
+        plot_fcc("Forest cover change 2001-2010-2020, GFC 80%", "fcc_gfc80.png")
 
 .. image:: fcc_gfc80.png
     :width: 700
     :align: center
 
-Lines in black represent country borders and the 10 km buffer. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.
+Lines in black represent country borders. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.
 
 Reproject in EPSG:3163 for area computation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -323,9 +324,9 @@ Compute statistics
 
 .. code:: python
 
-    pixel_count = [n1, n2, n3] = [41629, 27698, 7276643]
+    pixel_count = [n1, n2, n3] = [41624, 27874, 7275205]
     areas = [round(i * (30 * 30 / 10000)) for i in pixel_count]
-    gfc80_areas= {"product": "gfc", "version": "v1_11(2023)", "perc": 80,
+    gfc80_areas= {"product": "gfc", "version": "v1_13(2025)", "perc": 80,
      "fc2001": areas[0] + areas[1] + areas[2],
      "fc2010": areas[1] + areas[2], "fc2020": areas[2],
      "d1": round(areas[0] / 9), "d2": round(areas[1] / 10)}
@@ -333,7 +334,7 @@ Compute statistics
 
 ::
 
-    {'product': 'gfc', 'version': 'v1_11(2023)', 'perc': 80, 'fc2001': 661138, 'fc2010': 657391, 'fc2020': 654898, 'd1': 416, 'd2': 249}
+    {'product': 'gfc', 'version': 'v1_13(2025)', 'perc': 80, 'fc2001': 661023, 'fc2010': 657277, 'fc2020': 654768, 'd1': 416, 'd2': 251}
 
 Using GFC product and tree cover :math:`\ge` 60%
 ------------------------------------------------
@@ -355,7 +356,8 @@ We download the forest cover change data from GEE for New Caledonia for years 20
         tile_size=1.0,
         crop_to_aoi=True,
         output_file="out_gfc60/forest_gfc60.tif",
-    )
+        parallel=True,
+        ncpu=ncpu)
     end_time = time.time()
 
 We estimate the computation time to download 20 1-degree tiles using several cores. 
@@ -367,7 +369,7 @@ We estimate the computation time to download 20 1-degree tiles using several cor
 
 ::
 
-    Execution time: 8.87 minutes
+    Execution time: 1.12 minutes
 
 Transform multiband fcc raster in one band raster
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -406,25 +408,13 @@ We plot the forest cover change map.
         nrow, ncol = raster_image.shape
         xmin, xres, _, ymax, _, yres = ds.GetGeoTransform()
         extent = [xmin, xmin + xres * ncol, ymax + yres * nrow, ymax]
-
-    # Plot
-    fig = plt.figure()
-    ax = plt.subplot(111)
-    ax.imshow(raster_image, cmap=color_map, extent=extent,
-              resample=False)
-    ax.set_aspect("equal") 
-    grid_image = grid.boundary.plot(ax=ax, color="grey", linewidth=0.5)
-    borders_image = borders.boundary.plot(ax=ax, color="black", linewidth=0.5)
-    plt.title("Forest cover change 2001-2010-2020, GFC 50%")
-    plt.legend(handles=patches, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
-    plt.xlim((163, 169))
-    fig.savefig("fcc_gfc60.png", bbox_inches="tight", dpi=200)
+        plot_fcc("Forest cover change 2001-2010-2020, GFC 60%", "fcc_gfc60.png")
 
 .. image:: fcc_gfc60.png
     :width: 700
     :align: center
 
-Lines in black represent country borders and the 10 km buffer. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.
+Lines in black represent country borders. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.
 
 Reproject in EPSG:3163 for area computation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -442,9 +432,9 @@ Compute statistics
 
 .. code:: python
 
-    pixel_count = [n1, n2, n3] = [73891, 60240, 9860795]
+    pixel_count = [n1, n2, n3] = [73854, 60386, 9860124]
     areas = [round(i * (30 * 30 / 10000)) for i in pixel_count]
-    gfc60_areas= {"product": "gfc", "version": "v1_11(2023)", "perc": 60,
+    gfc60_areas= {"product": "gfc", "version": "v1_13(2025)", "perc": 60,
      "fc2001": areas[0] + areas[1] + areas[2],
      "fc2010": areas[1] + areas[2], "fc2020": areas[2],
      "d1": round(areas[0] / 9), "d2": round(areas[1] / 10)}
@@ -452,7 +442,7 @@ Compute statistics
 
 ::
 
-    {'product': 'gfc', 'version': 'v1_11(2023)', 'perc': 60, 'fc2001': 899544, 'fc2010': 892894, 'fc2020': 887472, 'd1': 739, 'd2': 542}
+    {'product': 'gfc', 'version': 'v1_13(2025)', 'perc': 60, 'fc2001': 899493, 'fc2010': 892846, 'fc2020': 887411, 'd1': 739, 'd2': 544}
 
 Summary of the results
 ----------------------
@@ -463,17 +453,16 @@ Summary of the results
     res_df.to_csv(os.path.join("comparison_geefcc_nc.csv"), index=False)
     tabulate(res_df, headers=res_df.columns, tablefmt="orgtbl")
 
-
 .. table:: **Comparing forest-cover change products for New Caledonia.** **fc**: forest cover (in ha), **d1**: mean annual deforestation (in ha) in the first period 2001--2010, **d2**: mean annual deforestation (in ha) in the second period 2010--2020, **perc**: tree cover threshold (in %) used to define the forest with GFC.
 
     +---+---------+--------------+------+--------+--------+--------+------+------+
     | \ | product | version      | perc | fc2001 | fc2010 | fc2020 |   d1 |   d2 |
     +===+=========+==============+======+========+========+========+======+======+
-    | 0 | tmf     | v1\_2023     | \    | 893964 | 869352 | 846182 | 2735 | 2317 |
+    | 0 | tmf     | v1\_2025     | \    | 893779 | 867540 | 844319 | 2915 | 2322 |
     +---+---------+--------------+------+--------+--------+--------+------+------+
-    | 1 | gfc     | v1\_11(2023) |   80 | 661138 | 657391 | 654898 |  416 |  249 |
+    | 1 | gfc     | v1\_13(2025) |   80 | 661023 | 657277 | 654768 |  416 |  251 |
     +---+---------+--------------+------+--------+--------+--------+------+------+
-    | 2 | gfc     | v1\_11(2023) |   60 | 899544 | 892894 | 887472 |  739 |  542 |
+    | 2 | gfc     | v1\_13(2025) |   60 | 899493 | 892846 | 887411 |  739 |  544 |
     +---+---------+--------------+------+--------+--------+--------+------+------+
 
-Forest cover for TMF and GFC with tree cover :math:`\ge` 60% are similar in 2020 (about 850,000 ha) but the annual deforestation is 4-5 times lower when using the GFC product (e.g. 542 ha/yr for GFC in the period 2010--2020 against 2317 ha/yr for TMF for the same period).
+Forest cover for TMF and GFC with tree cover :math:`\ge` 60% are similar in 2020 (about 850,000 ha) but the annual deforestation is 4-5 times lower when using the GFC product (e.g. 544 ha/yr for GFC in the period 2010--2020 against 2322 ha/yr for TMF for the same period).

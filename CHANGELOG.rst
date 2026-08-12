@@ -1,6 +1,15 @@
 Changelog
 *********
 
+geefcc 0.1.7
+============
+
+* Using version v1_2025 of TMF.
+* Using version 2025_v1_13 of GFC.
+* Updating code to use Xee v0.1.0.
+* Use of rioxarray to convert Xarray dataset to GeoTIFF. This makes several internal functions deprecated.
+* Changes: https://github.com/ghislainv/geefcc/compare/v0.16...v0.1.7
+
 geefcc 0.1.6
 ============
 

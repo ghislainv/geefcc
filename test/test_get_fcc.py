@@ -15,7 +15,7 @@ import geefcc as gf
 # Initialize GEE
 gf.ee_initialize(
     token_name="EARTHENGINE_TOKEN",
-    project="forestatrisk",
+    project="deforisk",
     opt_url="https://earthengine-highvolume.googleapis.com")
 
 
