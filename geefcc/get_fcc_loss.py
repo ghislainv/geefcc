@@ -15,16 +15,17 @@ opj = os.path.join
 opd = os.path.dirname
 
 
-def get_fcc(aoi,
-            buff=0,
-            years=[2000, 2010, 2020],
-            source="tmf",
-            perc=75,
-            tile_size=1,
-            crop_to_aoi=False,
-            parallel=False,
-            ncpu=None,
-            output_file="fcc.tif"):
+def get_fcc_loss(
+        aoi,
+        buff=0,
+        years=[2000, 2010, 2020],
+        source="tmf",
+        perc=75,
+        tile_size=1,
+        crop_to_aoi=False,
+        parallel=False,
+        ncpu=None,
+        output_file="fcc.tif"):
     """Get forest cover change data.
 
      Produce a forest cover change raster file. One band for each

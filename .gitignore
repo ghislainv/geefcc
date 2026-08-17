@@ -4,7 +4,6 @@ docs
 docsrc/notebooks/*/out*
 docsrc/notebooks/*/data*
 test/out*
-docsrc/notebooks/sumatra
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

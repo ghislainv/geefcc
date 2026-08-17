@@ -1,0 +1,8 @@
+label,count,area_ha
+stable non-forest,2672678,240541
+stable forest,1387668,124890
+forest --> deforested,67986,6119
+non-forest --> old regrowth,49882,4489
+forest --> old regrowth (via deforestation),1057,95
+stable old-regrowth,14629,1317
+old regrowth --> deforested,946,85

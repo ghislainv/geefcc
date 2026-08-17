@@ -1,6 +1,15 @@
 Changelog
 *********
 
+geefcc 0.1.8 (dev)
+============
+
+* This version includes forest gain in addition to forest loss when
+  deriving the forest cover change map.
+* Function `get_fcc` is deprecated and has been replaced by `get_fcc_loss`.
+* Function `get_fcc_loss_gain` has been added.
+* Changes: https://github.com/ghislainv/geefcc/compare/v0.1.7...v0.1.8
+
 geefcc 0.1.7
 ============
 
@@ -8,7 +17,7 @@ geefcc 0.1.7
 * Using version 2025_v1_13 of GFC.
 * Migrating code to use Xee v0.1.0.
 * Use of rioxarray to convert Xarray dataset to GeoTIFF. This makes several internal functions deprecated.
-* Changes: https://github.com/ghislainv/geefcc/compare/v0.16...v0.1.7
+* Changes: https://github.com/ghislainv/geefcc/compare/v0.1.6...v0.1.7
 
 geefcc 0.1.6
 ============

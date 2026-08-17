@@ -211,10 +211,13 @@ def geeic2geotiff(index, extent, ntiles, forest,
               .rename({"x": "longitude", "y": "latitude"})
               )
 
+        # Var name
+        var_name = list(ds.data_vars)[0]
+
         # Load and write data to geotiff
-        # xarray2geotiff(ds, "forest_cover", out_dir, index)
+        # xarray2geotiff(ds, var_name, out_dir, index)
         # Simplified with rioxarray
-        da = ds["forest_cover"]
+        da = ds[var_name]
         gdal_args = {
             "COMPRESS": "DEFLATE", "PREDICTOR": "1",
             "BIGTIFF": "YES", "TILED": "YES",
