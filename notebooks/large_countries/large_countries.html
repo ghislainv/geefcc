@@ -9,14 +9,14 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=3f530b75" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=8fb1bb4b" />
-    <script src="../../_static/documentation_options.js?v=ca7ad2ea"></script>
+    <script src="../../_static/documentation_options.js?v=22607128"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="New Caledonia" href="../newcal/newcal.html" />
-    <link rel="prev" title="Articles" href="../../articles.html" />
+    <link rel="prev" title="Loss and gain" href="../loss_gain/loss_gain.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -69,6 +69,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../get_started/get_started.html">Get started</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../articles.html">Articles</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../get_started/get_started.html">Get started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../loss_gain/loss_gain.html">Loss and gain</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Large countries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../newcal/newcal.html">New Caledonia</a></li>
 </ul>
@@ -84,7 +85,7 @@
 <ul>
   <li><a href="../../index.html">Documentation overview</a><ul>
   <li><a href="../../articles.html">Articles</a><ul>
-      <li>Previous: <a href="../../articles.html" title="previous chapter">Articles</a></li>
+      <li>Previous: <a href="../loss_gain/loss_gain.html" title="previous chapter">Loss and gain</a></li>
       <li>Next: <a href="../newcal/newcal.html" title="next chapter">New Caledonia</a></li>
   </ul></li>
   </ul></li>
@@ -129,9 +130,9 @@ cores, n-1 cores will be used in parallel.</p>
 </div>
 <p>We initialize Google Earth Engine.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize GEE</span>
-<span class="n">ee</span><span class="o">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s2">&quot;deforisk&quot;</span><span class="p">,</span>
-              <span class="n">opt_url</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;https://earthengine-highvolume.&quot;</span>
-                       <span class="s2">&quot;googleapis.com&quot;</span><span class="p">))</span>
+<span class="n">ee</span><span class="o">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s2">"deforisk"</span><span class="p">,</span>
+              <span class="n">opt_url</span><span class="o">=</span><span class="p">(</span><span class="s2">"https://earthengine-highvolume."</span>
+                       <span class="s2">"googleapis.com"</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>We can compute the number of cores used for the computation.</p>
@@ -146,12 +147,12 @@ cores, n-1 cores will be used in parallel.</p>
 <p>A buffer can be useful if we want to avoid “edge effects”, while computing distance to forest edge for example. One degree tiles are used to download the data from GEE in parallel.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="n">get_fcc</span><span class="p">(</span>
-    <span class="n">aoi</span><span class="o">=</span><span class="s2">&quot;PER&quot;</span><span class="p">,</span>
+    <span class="n">aoi</span><span class="o">=</span><span class="s2">"PER"</span><span class="p">,</span>
     <span class="n">buff</span><span class="o">=</span><span class="mf">0.08983152841195216</span><span class="p">,</span>
     <span class="n">years</span><span class="o">=</span><span class="p">[</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">2010</span><span class="p">,</span> <span class="mi">2020</span><span class="p">],</span>
-    <span class="n">source</span><span class="o">=</span><span class="s2">&quot;tmf&quot;</span><span class="p">,</span>
+    <span class="n">source</span><span class="o">=</span><span class="s2">"tmf"</span><span class="p">,</span>
     <span class="n">tile_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;out_tmf/forest_tmf.tif&quot;</span><span class="p">,</span>
+    <span class="n">output_file</span><span class="o">=</span><span class="s2">"out_tmf/forest_tmf.tif"</span><span class="p">,</span>
     <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">ncpu</span><span class="o">=</span><span class="n">ncpu</span><span class="p">)</span>
 <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
@@ -162,7 +163,7 @@ cores, n-1 cores will be used in parallel.</p>
 </div>
 <p>We estimate the computation time to download 159 1-degree tiles using several cores.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">elapsed_time</span> <span class="o">=</span> <span class="p">(</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span> <span class="o">/</span> <span class="mi">60</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Execution time:&#39;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;minutes&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Execution time:'</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s1">'minutes'</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Execution</span> <span class="n">time</span><span class="p">:</span> <span class="mf">8.97</span> <span class="n">minutes</span>
@@ -172,18 +173,18 @@ cores, n-1 cores will be used in parallel.</p>
 <section id="transform-multiband-fcc-raster-in-one-band-raster">
 <h2>Transform multiband fcc raster in one band raster<a class="headerlink" href="#transform-multiband-fcc-raster-in-one-band-raster" title="Link to this heading">¶</a></h2>
 <p>We transform the data to have only one band describing the forest cover change with 0 for non-forest, 1 for deforestation on the period 2000–2009, 2 for deforestation on the period 2010–2019, and 3 for the remaining forest in 2020. To do so, we just sum the values of the raster bands.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sum_raster_bands</span><span class="p">(</span><span class="n">input_file</span><span class="o">=</span><span class="s2">&quot;out_tmf/forest_tmf.tif&quot;</span><span class="p">,</span>
-                 <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;out_tmf/fcc_tmf.tif&quot;</span><span class="p">,</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sum_raster_bands</span><span class="p">(</span><span class="n">input_file</span><span class="o">=</span><span class="s2">"out_tmf/forest_tmf.tif"</span><span class="p">,</span>
+                 <span class="n">output_file</span><span class="o">=</span><span class="s2">"out_tmf/fcc_tmf.tif"</span><span class="p">,</span>
                  <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>We resample at a lower resolution for plotting.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">infn</span> <span class="o">=</span> <span class="s2">&quot;out_tmf/fcc_tmf.tif&quot;</span>
-<span class="n">outfn</span> <span class="o">=</span> <span class="s2">&quot;out_tmf/fcc_tmf_coarsen.tif&quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">infn</span> <span class="o">=</span> <span class="s2">"out_tmf/fcc_tmf.tif"</span>
+<span class="n">outfn</span> <span class="o">=</span> <span class="s2">"out_tmf/fcc_tmf_coarsen.tif"</span>
 <span class="n">scale</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">infn</span><span class="p">)</span><span class="o">.</span><span class="n">GetGeoTransform</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
 <span class="n">xres</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">scale</span>
 <span class="n">yres</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">scale</span>
-<span class="n">resample_alg</span> <span class="o">=</span> <span class="s2">&quot;near&quot;</span>
+<span class="n">resample_alg</span> <span class="o">=</span> <span class="s2">"near"</span>
 
 <span class="n">ds</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Warp</span><span class="p">(</span><span class="n">outfn</span><span class="p">,</span> <span class="n">infn</span><span class="p">,</span> <span class="n">xRes</span><span class="o">=</span><span class="n">xres</span><span class="p">,</span> <span class="n">yRes</span><span class="o">=</span><span class="n">yres</span><span class="p">,</span> <span class="n">resampleAlg</span><span class="o">=</span><span class="n">resample_alg</span><span class="p">)</span>
 <span class="n">ds</span> <span class="o">=</span> <span class="kc">None</span>
@@ -203,28 +204,28 @@ cores, n-1 cores will be used in parallel.</p>
 <span class="n">color_map</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span>
 
 <span class="c1"># Labels</span>
-<span class="n">labels</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;non-forest in 2000&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="s2">&quot;deforestation 2000-2009&quot;</span><span class="p">,</span>
-          <span class="mi">2</span><span class="p">:</span><span class="s2">&quot;deforestation 2010-2019&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span><span class="s2">&quot;forest in 2020&quot;</span><span class="p">}</span>
-<span class="n">patches</span> <span class="o">=</span> <span class="p">[</span><span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">"non-forest in 2000"</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="s2">"deforestation 2000-2009"</span><span class="p">,</span>
+          <span class="mi">2</span><span class="p">:</span><span class="s2">"deforestation 2010-2019"</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span><span class="s2">"forest in 2020"</span><span class="p">}</span>
+<span class="n">patches</span> <span class="o">=</span> <span class="p">[</span><span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
                           <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">colors</span><span class="p">)]</span>
 </pre></div>
 </div>
 <p>We load the data: country borders, buffer, and grid.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Borders</span>
-<span class="n">borders_gpkg</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;out_tmf&quot;</span><span class="p">,</span> <span class="s2">&quot;gadm41_PER_0.gpkg&quot;</span><span class="p">)</span>
-<span class="n">borders</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">borders_gpkg</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s2">&quot;ADM_ADM_0&quot;</span><span class="p">)</span>
+<span class="n">borders_gpkg</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">"out_tmf"</span><span class="p">,</span> <span class="s2">"gadm41_PER_0.gpkg"</span><span class="p">)</span>
+<span class="n">borders</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">borders_gpkg</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s2">"ADM_ADM_0"</span><span class="p">)</span>
 
 <span class="c1"># Buffer</span>
-<span class="n">buffer_gpkg</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;out_tmf&quot;</span><span class="p">,</span> <span class="s2">&quot;gadm41_PER_buffer.gpkg&quot;</span><span class="p">)</span>
+<span class="n">buffer_gpkg</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">"out_tmf"</span><span class="p">,</span> <span class="s2">"gadm41_PER_buffer.gpkg"</span><span class="p">)</span>
 <span class="n">buffer</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">buffer_gpkg</span><span class="p">)</span>
 
 <span class="c1"># Grid</span>
-<span class="n">grid_gpkg</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;out_tmf&quot;</span><span class="p">,</span> <span class="s2">&quot;min_grid.gpkg&quot;</span><span class="p">)</span>
+<span class="n">grid_gpkg</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">"out_tmf"</span><span class="p">,</span> <span class="s2">"min_grid.gpkg"</span><span class="p">)</span>
 <span class="n">grid</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">grid_gpkg</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>We plot the forest cover change map.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="s2">&quot;out_tmf/fcc_tmf_coarsen.tif&quot;</span><span class="p">,</span> <span class="n">gdal</span><span class="o">.</span><span class="n">GA_ReadOnly</span><span class="p">)</span> <span class="k">as</span> <span class="n">ds</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="s2">"out_tmf/fcc_tmf_coarsen.tif"</span><span class="p">,</span> <span class="n">gdal</span><span class="o">.</span><span class="n">GA_ReadOnly</span><span class="p">)</span> <span class="k">as</span> <span class="n">ds</span><span class="p">:</span>
     <span class="n">raster_image</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">ReadAsArray</span><span class="p">()</span>
     <span class="n">nrow</span><span class="p">,</span> <span class="n">ncol</span> <span class="o">=</span> <span class="n">raster_image</span><span class="o">.</span><span class="n">shape</span>
     <span class="n">xmin</span><span class="p">,</span> <span class="n">xres</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">ymax</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">yres</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">GetGeoTransform</span><span class="p">()</span>
@@ -235,12 +236,12 @@ cores, n-1 cores will be used in parallel.</p>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">raster_image</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">color_map</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span>
           <span class="n">resample</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">grid_image</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">borders_image</span> <span class="o">=</span> <span class="n">borders</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">buffer_image</span> <span class="o">=</span> <span class="n">buffer</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Forest cover change 2000-2010-2020, TMF&quot;</span><span class="p">)</span>
+<span class="n">grid_image</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"grey"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">borders_image</span> <span class="o">=</span> <span class="n">borders</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">buffer_image</span> <span class="o">=</span> <span class="n">buffer</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"Forest cover change 2000-2010-2020, TMF"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">patches</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;fcc.png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">"fcc.png"</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../../_images/fcc.png"><img alt="../../_images/fcc.png" class="align-center" src="../../_images/fcc.png" width="700" />

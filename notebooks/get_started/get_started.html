@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=3f530b75" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=8fb1bb4b" />
-    <script src="../../_static/documentation_options.js?v=ca7ad2ea"></script>
+    <script src="../../_static/documentation_options.js?v=22607128"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <link rel="icon" href="../../_static/favicon.ico"/>
@@ -124,19 +124,19 @@ from the Tropical Moist Forest product. We will use the Reunion Island
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize GEE</span>
-<span class="n">ee</span><span class="o">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s2">&quot;deforisk&quot;</span><span class="p">,</span> <span class="n">opt_url</span><span class="o">=</span><span class="s2">&quot;https://earthengine-highvolume.googleapis.com&quot;</span><span class="p">)</span>
+<span class="n">ee</span><span class="o">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s2">"deforisk"</span><span class="p">,</span> <span class="n">opt_url</span><span class="o">=</span><span class="s2">"https://earthengine-highvolume.googleapis.com"</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download data from GEE</span>
-<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s2">&quot;out_tmf/forest_tmf.tif&quot;</span><span class="p">):</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s2">"out_tmf/forest_tmf.tif"</span><span class="p">):</span>
     <span class="n">geefcc</span><span class="o">.</span><span class="n">get_fcc</span><span class="p">(</span>
-        <span class="n">aoi</span><span class="o">=</span><span class="s2">&quot;REU&quot;</span><span class="p">,</span>
+        <span class="n">aoi</span><span class="o">=</span><span class="s2">"REU"</span><span class="p">,</span>
         <span class="n">years</span><span class="o">=</span><span class="p">[</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">2010</span><span class="p">,</span> <span class="mi">2020</span><span class="p">],</span>
-        <span class="n">source</span><span class="o">=</span><span class="s2">&quot;tmf&quot;</span><span class="p">,</span>
+        <span class="n">source</span><span class="o">=</span><span class="s2">"tmf"</span><span class="p">,</span>
         <span class="n">parallel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">crop_to_aoi</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">tile_size</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-        <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;out_tmf/forest_tmf.tif&quot;</span><span class="p">,</span>
+        <span class="n">output_file</span><span class="o">=</span><span class="s2">"out_tmf/forest_tmf.tif"</span><span class="p">,</span>
     <span class="p">)</span>
 </pre></div>
 </div>
@@ -144,7 +144,7 @@ from the Tropical Moist Forest product. We will use the Reunion Island
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load data</span>
-<span class="n">forest_tmf</span> <span class="o">=</span> <span class="n">rioxarray</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="s2">&quot;out_tmf/forest_tmf.tif&quot;</span><span class="p">)</span>
+<span class="n">forest_tmf</span> <span class="o">=</span> <span class="n">rioxarray</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="s2">"out_tmf/forest_tmf.tif"</span><span class="p">)</span>
 <span class="n">forest_tmf</span>
 </pre></div>
 </div>
@@ -164,7 +164,7 @@ from the Tropical Moist Forest product. We will use the Reunion Island
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Computing the sum</span>
-<span class="n">fcc_tmf</span> <span class="o">=</span> <span class="n">forest_tmf</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s2">&quot;band&quot;</span><span class="p">)</span>
+<span class="n">fcc_tmf</span> <span class="o">=</span> <span class="n">forest_tmf</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s2">"band"</span><span class="p">)</span>
 <span class="n">fcc_tmf</span>
 </pre></div>
 </div>
@@ -198,9 +198,9 @@ from the Tropical Moist Forest product. We will use the Reunion Island
 <span class="n">color_map</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span>
 
 <span class="c1"># Labels</span>
-<span class="n">labels</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;non-forest in 2000&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="s2">&quot;deforestation 2000-2009&quot;</span><span class="p">,</span>
-          <span class="mi">2</span><span class="p">:</span><span class="s2">&quot;deforestation 2010-2019&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span><span class="s2">&quot;forest in 2020&quot;</span><span class="p">}</span>
-<span class="n">patches</span> <span class="o">=</span> <span class="p">[</span><span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">"non-forest in 2000"</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="s2">"deforestation 2000-2009"</span><span class="p">,</span>
+          <span class="mi">2</span><span class="p">:</span><span class="s2">"deforestation 2010-2019"</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span><span class="s2">"forest in 2020"</span><span class="p">}</span>
+<span class="n">patches</span> <span class="o">=</span> <span class="p">[</span><span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
                           <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">colors</span><span class="p">)]</span>
 </pre></div>
 </div>
@@ -208,9 +208,9 @@ from the Tropical Moist Forest product. We will use the Reunion Island
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
 <span class="n">raster_image</span> <span class="o">=</span> <span class="n">fcc_tmf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">color_map</span><span class="p">,</span> <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Forest cover change 2000-2010-2020, TMF&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"Forest cover change 2000-2010-2020, TMF"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">patches</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;tmf.png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">"tmf.png"</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -220,35 +220,35 @@ from the Tropical Moist Forest product. We will use the Reunion Island
 <section id="compare-with-forest-cover-change-from-gfc">
 <span id="id2"></span><h2>Compare with forest cover change from GFC<a class="headerlink" href="#compare-with-forest-cover-change-from-gfc" title="Link to this heading">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get data from GEE</span>
-<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s2">&quot;out_gfc_50/forest_gfc_50.tif&quot;</span><span class="p">):</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s2">"out_gfc_50/forest_gfc_50.tif"</span><span class="p">):</span>
     <span class="n">geefcc</span><span class="o">.</span><span class="n">get_fcc</span><span class="p">(</span>
-        <span class="n">aoi</span><span class="o">=</span><span class="s2">&quot;REU&quot;</span><span class="p">,</span>
+        <span class="n">aoi</span><span class="o">=</span><span class="s2">"REU"</span><span class="p">,</span>
         <span class="n">years</span><span class="o">=</span><span class="p">[</span><span class="mi">2001</span><span class="p">,</span> <span class="mi">2010</span><span class="p">,</span> <span class="mi">2020</span><span class="p">],</span>  <span class="c1"># Here, first year must be 2001 (1st Jan)</span>
-        <span class="n">source</span><span class="o">=</span><span class="s2">&quot;gfc&quot;</span><span class="p">,</span>
+        <span class="n">source</span><span class="o">=</span><span class="s2">"gfc"</span><span class="p">,</span>
         <span class="n">perc</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
         <span class="n">parallel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">crop_to_aoi</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">tile_size</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-        <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;out_gfc_50/forest_gfc_50.tif&quot;</span><span class="p">,</span>
+        <span class="n">output_file</span><span class="o">=</span><span class="s2">"out_gfc_50/forest_gfc_50.tif"</span><span class="p">,</span>
     <span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load data</span>
-<span class="n">forest_gfc</span> <span class="o">=</span> <span class="n">rioxarray</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="s2">&quot;out_gfc_50/forest_gfc_50.tif&quot;</span><span class="p">)</span>
-<span class="n">fcc_gfc</span> <span class="o">=</span> <span class="n">forest_gfc</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s2">&quot;band&quot;</span><span class="p">)</span>
+<span class="n">forest_gfc</span> <span class="o">=</span> <span class="n">rioxarray</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="s2">"out_gfc_50/forest_gfc_50.tif"</span><span class="p">)</span>
+<span class="n">fcc_gfc</span> <span class="o">=</span> <span class="n">forest_gfc</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s2">"band"</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
 <span class="n">raster_image</span> <span class="o">=</span> <span class="n">fcc_gfc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">color_map</span><span class="p">,</span> <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Forest cover change 2001-2010-2020, GFC&quot;</span><span class="p">)</span>
-<span class="n">labels</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;non-forest in 2001&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="s2">&quot;deforestation 2001-2009&quot;</span><span class="p">,</span>
-          <span class="mi">2</span><span class="p">:</span><span class="s2">&quot;deforestation 2010-2019&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span><span class="s2">&quot;forest in 2020&quot;</span><span class="p">}</span>
-<span class="n">patches</span> <span class="o">=</span> <span class="p">[</span><span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"Forest cover change 2001-2010-2020, GFC"</span><span class="p">)</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">"non-forest in 2001"</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="s2">"deforestation 2001-2009"</span><span class="p">,</span>
+          <span class="mi">2</span><span class="p">:</span><span class="s2">"deforestation 2010-2019"</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span><span class="s2">"forest in 2020"</span><span class="p">}</span>
+<span class="n">patches</span> <span class="o">=</span> <span class="p">[</span><span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
                           <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">colors</span><span class="p">)]</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">patches</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;gfc.png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">"gfc.png"</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../../_images/gfc.png"><img alt="../../_images/gfc.png" class="align-center" src="../../_images/gfc.png" width="800" />
@@ -273,9 +273,9 @@ from the Tropical Moist Forest product. We will use the Reunion Island
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Labels</span>
-<span class="n">labels</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;non-forest tmf, non-forest gfc&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="s2">&quot;non-forest tmf / forest gfc&quot;</span><span class="p">,</span>
-          <span class="mi">2</span><span class="p">:</span><span class="s2">&quot;forest tmf / forest gfc&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span><span class="s2">&quot;forest tmf, non-forest gfc&quot;</span><span class="p">}</span>
-<span class="n">patches</span> <span class="o">=</span> <span class="p">[</span><span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">"non-forest tmf, non-forest gfc"</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="s2">"non-forest tmf / forest gfc"</span><span class="p">,</span>
+          <span class="mi">2</span><span class="p">:</span><span class="s2">"forest tmf / forest gfc"</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span><span class="s2">"forest tmf, non-forest gfc"</span><span class="p">}</span>
+<span class="n">patches</span> <span class="o">=</span> <span class="p">[</span><span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
                          <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">colors</span><span class="p">)]</span>
 </pre></div>
 </div>
@@ -283,9 +283,9 @@ from the Tropical Moist Forest product. We will use the Reunion Island
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
 <span class="n">raster_image</span> <span class="o">=</span> <span class="n">forest_diff</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">color_map</span><span class="p">,</span> <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Difference between TMF and GFC for forest cover in 2020&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"Difference between TMF and GFC for forest cover in 2020"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">patches</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;comp.png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">"comp.png"</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../../_images/comp.png"><img alt="../../_images/comp.png" class="align-center" src="../../_images/comp.png" width="800" />
@@ -298,13 +298,13 @@ defining forest with the GFC dataset.</p>
 <span id="id4"></span><h2>Download data from an extent<a class="headerlink" href="#download-data-from-an-extent" title="Link to this heading">¶</a></h2>
 <p>We will use the following extent which corresponds to a region around
 the Analamazaotra special reserve in Madagascar.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s2">&quot;out_tmf_extent/forest_tmf_extent.tif&quot;</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s2">"out_tmf_extent/forest_tmf_extent.tif"</span><span class="p">):</span>
     <span class="n">geefcc</span><span class="o">.</span><span class="n">get_fcc</span><span class="p">(</span>
         <span class="n">aoi</span><span class="o">=</span><span class="p">(</span><span class="mf">48.4</span><span class="p">,</span> <span class="o">-</span><span class="mf">19.0</span><span class="p">,</span> <span class="mf">48.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">18.8</span><span class="p">),</span>
         <span class="n">years</span><span class="o">=</span><span class="p">[</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">2010</span><span class="p">,</span> <span class="mi">2020</span><span class="p">],</span>
-        <span class="n">source</span><span class="o">=</span><span class="s2">&quot;tmf&quot;</span><span class="p">,</span>
+        <span class="n">source</span><span class="o">=</span><span class="s2">"tmf"</span><span class="p">,</span>
         <span class="n">tile_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
-        <span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;out_tmf_extent/forest_tmf_extent.tif&quot;</span><span class="p">,</span>
+        <span class="n">output_file</span><span class="o">=</span><span class="s2">"out_tmf_extent/forest_tmf_extent.tif"</span><span class="p">,</span>
     <span class="p">)</span>
 </pre></div>
 </div>
@@ -312,8 +312,8 @@ the Analamazaotra special reserve in Madagascar.</p>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load data</span>
-<span class="n">forest_tmf_mdg</span> <span class="o">=</span> <span class="n">rioxarray</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="s2">&quot;out_tmf_extent/forest_tmf_extent.tif&quot;</span><span class="p">)</span>
-<span class="n">fcc_tmf_mdg</span> <span class="o">=</span> <span class="n">forest_tmf_mdg</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s2">&quot;band&quot;</span><span class="p">)</span>
+<span class="n">forest_tmf_mdg</span> <span class="o">=</span> <span class="n">rioxarray</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="s2">"out_tmf_extent/forest_tmf_extent.tif"</span><span class="p">)</span>
+<span class="n">fcc_tmf_mdg</span> <span class="o">=</span> <span class="n">forest_tmf_mdg</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s2">"band"</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Colors</span>
@@ -326,9 +326,9 @@ the Analamazaotra special reserve in Madagascar.</p>
 <span class="n">color_map</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span>
 
 <span class="c1"># Labels</span>
-<span class="n">labels</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;non-forest in 2000&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="s2">&quot;deforestation 2000-2009&quot;</span><span class="p">,</span>
-          <span class="mi">2</span><span class="p">:</span><span class="s2">&quot;deforestation 2010-2019&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span><span class="s2">&quot;forest in 2020&quot;</span><span class="p">}</span>
-<span class="n">patches</span> <span class="o">=</span><span class="p">[</span><span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">"non-forest in 2000"</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="s2">"deforestation 2000-2009"</span><span class="p">,</span>
+          <span class="mi">2</span><span class="p">:</span><span class="s2">"deforestation 2010-2019"</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span><span class="s2">"forest in 2020"</span><span class="p">}</span>
+<span class="n">patches</span> <span class="o">=</span><span class="p">[</span><span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
                          <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">colors</span><span class="p">)]</span>
 </pre></div>
 </div>
@@ -336,9 +336,9 @@ the Analamazaotra special reserve in Madagascar.</p>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
 <span class="n">raster_image</span> <span class="o">=</span> <span class="n">fcc_tmf_mdg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">color_map</span><span class="p">,</span> <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Forest cover change 2000-2010-2020, TMF&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"Forest cover change 2000-2010-2020, TMF"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">patches</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;extent.png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">"extent.png"</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../../_images/extent.png"><img alt="../../_images/extent.png" class="align-center" src="../../_images/extent.png" width="700" />

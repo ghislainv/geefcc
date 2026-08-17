@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="_static/basic.css?v=3f530b75" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=8fb1bb4b" />
-    <script src="_static/documentation_options.js?v=ca7ad2ea"></script>
+    <script src="_static/documentation_options.js?v=22607128"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <link rel="icon" href="_static/favicon.ico"/>
@@ -71,6 +71,7 @@
 <li class="toctree-l1"><a class="reference internal" href="python_api.html">Python API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="indices.html">Indices and tables</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#geefcc-0-1-8-dev">geefcc 0.1.8 (dev)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#geefcc-0-1-7">geefcc 0.1.7</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#geefcc-0-1-6">geefcc 0.1.6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#geefcc-0-1-5">geefcc 0.1.5</a></li>
@@ -111,6 +112,16 @@
             
   <section id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading">¶</a></h1>
+<section id="geefcc-0-1-8-dev">
+<h2>geefcc 0.1.8 (dev)<a class="headerlink" href="#geefcc-0-1-8-dev" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>This version includes forest gain in addition to forest loss when
+deriving the forest cover change map.</p></li>
+<li><p>Function <cite>get_fcc</cite> is deprecated and has been replaced by <cite>get_fcc_loss</cite>.</p></li>
+<li><p>Function <cite>get_fcc_loss_gain</cite> has been added.</p></li>
+<li><p>Changes: <a class="reference external" href="https://github.com/ghislainv/geefcc/compare/v0.1.7...v0.1.8">https://github.com/ghislainv/geefcc/compare/v0.1.7…v0.1.8</a></p></li>
+</ul>
+</section>
 <section id="geefcc-0-1-7">
 <h2>geefcc 0.1.7<a class="headerlink" href="#geefcc-0-1-7" title="Link to this heading">¶</a></h2>
 <ul class="simple">
@@ -118,7 +129,7 @@
 <li><p>Using version 2025_v1_13 of GFC.</p></li>
 <li><p>Migrating code to use Xee v0.1.0.</p></li>
 <li><p>Use of rioxarray to convert Xarray dataset to GeoTIFF. This makes several internal functions deprecated.</p></li>
-<li><p>Changes: <a class="reference external" href="https://github.com/ghislainv/geefcc/compare/v0.16...v0.1.7">https://github.com/ghislainv/geefcc/compare/v0.16…v0.1.7</a></p></li>
+<li><p>Changes: <a class="reference external" href="https://github.com/ghislainv/geefcc/compare/v0.1.6...v0.1.7">https://github.com/ghislainv/geefcc/compare/v0.1.6…v0.1.7</a></p></li>
 </ul>
 </section>
 <section id="geefcc-0-1-6">
