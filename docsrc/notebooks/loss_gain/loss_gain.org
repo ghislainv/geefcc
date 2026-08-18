@@ -23,6 +23,7 @@ import geefcc
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 import matplotlib.patches as mpatches
+import numpy as np
 import cartopy.crs as ccrs
 import rioxarray
 from osgeo import gdal
@@ -30,7 +31,7 @@ import pandas as pd
 from tabulate import tabulate
 
 # Some convenient aliases
-opj = opj
+opj = os.path.join
 #+end_src
 
 #+RESULTS:
@@ -70,17 +71,23 @@ fcc_tmf
 #+RESULTS:
 #+begin_example
 <xarray.DataArray (band: 1, y: 1924, x: 2305)> Size: 4MB
-dask.array<open_rasterio-382f8e930ab2c3f89e86e12300c7ef23<this-array>, shape=(1, 1924, 2305), dtype=uint8, chunksize=(1, 512, 512), chunktype=numpy.ndarray>
+[4434820 values with dtype=uint8]
 Coordinates:
   ,* band         (band) int64 8B 1
   ,* y            (y) float64 15kB -20.87 -20.87 -20.87 ... -21.39 -21.39 -21.39
   ,* x            (x) float64 18kB 55.22 55.22 55.22 55.22 ... 55.84 55.84 55.84
     spatial_ref  int64 8B 0
 Attributes:
-    AREA_OR_POINT:  Area
-    scale_factor:   1.0
-    add_offset:     0.0
-    long_name:      fcc
+    AREA_OR_POINT:             Area
+    STATISTICS_APPROXIMATE:    YES
+    STATISTICS_MAXIMUM:        6
+    STATISTICS_MEAN:           0.42158629512209
+    STATISTICS_MINIMUM:        0
+    STATISTICS_STDDEV:         0.65497290607766
+    STATISTICS_VALID_PERCENT:  100
+    scale_factor:              1.0
+    add_offset:                0.0
+    long_name:                 fcc
 #+end_example
 
 * Plot the forest cover change map
@@ -158,25 +165,56 @@ res_df = pd.DataFrame({
     "label": list(labels.values()),
     "count": counts[present],
 })
-res_df = res_df.set_index("category")
 
 # Convert pixel count to area in hectares (1 ha = 10,000 m^2)
 res_df["area_ha"] = round(res_df["count"] * pixel_area_m2 / 10_000).astype(int)
 
 # Export
-res_df.to_csv(os.path.join("fcc_statistics.csv"), index=False)
-tabulate(res_df, headers=res_df.columns, tablefmt="orgtbl")
+res_df.to_csv(opj("fcc_statistics.csv"), index=False)
+tabulate(res_df, headers=res_df.columns, tablefmt="orgtbl", showindex=False)
+#+end_src
+
+#+caption: *Area per class of forest cover change.* A regrowth is considered old in this case if it has at least 5 years.
+#+RESULTS:
+| category | label                                       |   count | area_ha |
+|----------+---------------------------------------------+---------+---------|
+|        0 | stable non-forest                           | 2672678 |  240541 |
+|        1 | stable forest                               | 1387668 |  124890 |
+|        2 | forest --> deforested                       |   67986 |    6119 |
+|        3 | non-forest --> old regrowth                 |   49882 |    4489 |
+|        4 | forest --> old regrowth (via deforestation) |    1057 |      95 |
+|        5 | stable old-regrowth                         |   14629 |    1317 |
+|        6 | old regrowth --> deforested                 |     946 |      85 |
+
+We can then estimate the gross loss and gain of forest cover change for the period 2015--2025. Category 4 (forest --> old regrowth via deforestation) is accounted for both gross loss and gain.
+
+#+begin_src python :results value raw :exports both
+forest_t1 = res_df.loc[[1, 2, 4, 5, 6], "area_ha"].sum()
+forest_t2 = res_df.loc[[1, 3, 4, 5], "area_ha"].sum()
+gross_loss = - res_df.loc[[2, 4, 6], "area_ha"].sum()
+gross_gain = res_df.loc[[3, 4], "area_ha"].sum()
+lossgain_df = pd.DataFrame({
+    "label": ["forest_t1", "forest_t2", "gross loss", "gross gain", "net loss"],
+    "area_ha": [forest_t1, forest_t2, gross_loss, gross_gain, gross_gain + gross_loss],
+})
+time = 2025 - 2015
+lossgain_df["annual_change_ha"] = (lossgain_df["area_ha"] / time).round().astype(int)
+ratio = lossgain_df["area_ha"] / forest_t1
+lossgain_df["annual_change_perc"] = round(100 * (1 - pow((1 - ratio), 1 / time)), 2)
+lossgain_df.iloc[:2, 2:4] = np.nan
+
+# Export
+res_df.to_csv(opj("loss_gain_statistics.csv"), index=False)
+tabulate(lossgain_df, headers=lossgain_df.columns, tablefmt="orgtbl", showindex=False)
 #+end_src
 
 #+RESULTS:
-|   | label                                       |   count | area_ha |
-|---+---------------------------------------------+---------+---------|
-| 0 | stable non-forest                           | 2672678 |  240541 |
-| 1 | stable forest                               | 1387668 |  124890 |
-| 2 | forest --> deforested                       |   67986 |    6119 |
-| 3 | non-forest --> old regrowth                 |   49882 |    4489 |
-| 4 | forest --> old regrowth (via deforestation) |    1057 |      95 |
-| 5 | stable old-regrowth                         |   14629 |    1317 |
-| 6 | old regrowth --> deforested                 |     946 |      85 |
+| label      | area_ha | annual_change_ha | annual_change_perc |
+|------------+---------+------------------+--------------------|
+| forest_t1  |  132506 |              nan |                nan |
+| forest_t2  |  130791 |              nan |                nan |
+| gross loss |   -6299 |             -630 |              -0.47 |
+| gross gain |    4584 |              458 |               0.35 |
+| net loss   |   -1715 |             -172 |              -0.13 |
 
 # End Of File
