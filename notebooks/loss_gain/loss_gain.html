@@ -138,8 +138,10 @@ from the Tropical Moist Forest product.</p>
 <span class="n">ee</span><span class="o">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s2">"deforisk"</span><span class="p">,</span> <span class="n">opt_url</span><span class="o">=</span><span class="s2">"https://earthengine-highvolume.googleapis.com"</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>We want to estimate and map the forest cover change for the period 2015–2025, considering regrowth of at least 5 years as being forest, which is debatable (<a class="reference external" href="citeproc_bib_item_2">Poorter &amp; others 2016</a>; <a class="reference external" href="citeproc_bib_item_1">Bourgoin *et al.* 2024</a>).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download data from GEE</span>
-<span class="n">ofile</span> <span class="o">=</span> <span class="n">opj</span><span class="p">(</span><span class="s2">"out_tmf"</span><span class="p">,</span> <span class="s2">"fcc_tmf.tif"</span><span class="p">)</span>
+<span class="n">out_dir</span> <span class="o">=</span> <span class="s2">"out_tmf_5yr"</span>
+<span class="n">ofile</span> <span class="o">=</span> <span class="n">opj</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">"fcc_tmf.tif"</span><span class="p">)</span>
 <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">ofile</span><span class="p">):</span>
     <span class="n">geefcc</span><span class="o">.</span><span class="n">get_fcc_loss_gain</span><span class="p">(</span>
         <span class="n">aoi</span><span class="o">=</span><span class="s2">"REU"</span><span class="p">,</span>
@@ -152,6 +154,9 @@ from the Tropical Moist Forest product.</p>
         <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">output_file</span><span class="o">=</span><span class="n">ofile</span><span class="p">,</span>
     <span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">get_fcc</span> <span class="n">running</span><span class="p">,</span> <span class="mi">3</span> <span class="n">tiles</span> <span class="o">.</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load data</span>
@@ -167,16 +172,11 @@ from the Tropical Moist Forest product.</p>
   <span class="o">*</span> <span class="n">x</span>            <span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="n">float64</span> <span class="mi">18</span><span class="n">kB</span> <span class="mf">55.22</span> <span class="mf">55.22</span> <span class="mf">55.22</span> <span class="mf">55.22</span> <span class="o">...</span> <span class="mf">55.84</span> <span class="mf">55.84</span> <span class="mf">55.84</span>
     <span class="n">spatial_ref</span>  <span class="n">int64</span> <span class="mi">8</span><span class="n">B</span> <span class="mi">0</span>
 <span class="n">Attributes</span><span class="p">:</span>
-    <span class="n">AREA_OR_POINT</span><span class="p">:</span>             <span class="n">Area</span>
-    <span class="n">STATISTICS_APPROXIMATE</span><span class="p">:</span>    <span class="n">YES</span>
-    <span class="n">STATISTICS_MAXIMUM</span><span class="p">:</span>        <span class="mi">6</span>
-    <span class="n">STATISTICS_MEAN</span><span class="p">:</span>           <span class="mf">0.42158629512209</span>
-    <span class="n">STATISTICS_MINIMUM</span><span class="p">:</span>        <span class="mi">0</span>
-    <span class="n">STATISTICS_STDDEV</span><span class="p">:</span>         <span class="mf">0.65497290607766</span>
-    <span class="n">STATISTICS_VALID_PERCENT</span><span class="p">:</span>  <span class="mi">100</span>
-    <span class="n">scale_factor</span><span class="p">:</span>              <span class="mf">1.0</span>
-    <span class="n">add_offset</span><span class="p">:</span>                <span class="mf">0.0</span>
-    <span class="n">long_name</span><span class="p">:</span>                 <span class="n">fcc</span>
+    <span class="n">AREA_OR_POINT</span><span class="p">:</span>  <span class="n">Area</span>
+    <span class="n">_FillValue</span><span class="p">:</span>     <span class="mi">0</span>
+    <span class="n">scale_factor</span><span class="p">:</span>   <span class="mf">1.0</span>
+    <span class="n">add_offset</span><span class="p">:</span>     <span class="mf">0.0</span>
+    <span class="n">long_name</span><span class="p">:</span>      <span class="n">fcc</span>
 </pre></div>
 </div>
 </section>
@@ -216,8 +216,8 @@ from the Tropical Moist Forest product.</p>
 <section id="reproject-for-area-computation">
 <h2>Reproject for area computation<a class="headerlink" href="#reproject-for-area-computation" title="Link to this heading">¶</a></h2>
 <p>We need to reproject the raster before performing area computation. We use projection UTM zone 40S (EPSG code 34740) for Reunion island.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ifile</span> <span class="o">=</span> <span class="n">opj</span><span class="p">(</span><span class="s2">"out_tmf"</span><span class="p">,</span> <span class="s2">"fcc_tmf.tif"</span><span class="p">)</span>
-<span class="n">ofile</span> <span class="o">=</span> <span class="n">opj</span><span class="p">(</span><span class="s2">"out_tmf"</span><span class="p">,</span> <span class="s2">"fcc_tmf_utm.tif"</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ifile</span> <span class="o">=</span> <span class="n">opj</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">"fcc_tmf.tif"</span><span class="p">)</span>
+<span class="n">ofile</span> <span class="o">=</span> <span class="n">opj</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">"fcc_tmf_utm.tif"</span><span class="p">)</span>
 <span class="n">ds</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Warp</span><span class="p">(</span><span class="n">ofile</span><span class="p">,</span> <span class="n">ifile</span><span class="p">,</span> <span class="n">xRes</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">yRes</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">dstSRS</span><span class="o">=</span><span class="s2">"EPSG:32740"</span><span class="p">,</span> <span class="n">resampleAlg</span><span class="o">=</span><span class="s2">"near"</span><span class="p">,</span>
           <span class="n">targetAlignedPixels</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">creationOptions</span><span class="o">=</span><span class="p">[</span><span class="s2">"COMPRESS=DEFLATE"</span><span class="p">])</span>
 <span class="n">ds</span> <span class="o">=</span> <span class="kc">None</span>
@@ -228,7 +228,7 @@ from the Tropical Moist Forest product.</p>
 <h2>Deforestation and regrowth estimates<a class="headerlink" href="#deforestation-and-regrowth-estimates" title="Link to this heading">¶</a></h2>
 <p>We use functions <code class="docutils literal notranslate"><span class="pre">bincount</span></code> and dask arrays to compute the number of pixels per class and the corresponding area (in ha).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Bincount with dask array</span>
-<span class="n">ifile</span> <span class="o">=</span> <span class="n">opj</span><span class="p">(</span><span class="s2">"out_tmf"</span><span class="p">,</span> <span class="s2">"fcc_tmf_utm.tif"</span><span class="p">)</span>
+<span class="n">ifile</span> <span class="o">=</span> <span class="n">opj</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">"fcc_tmf_utm.tif"</span><span class="p">)</span>
 <span class="n">fcc_tmf_utm</span> <span class="o">=</span> <span class="n">rioxarray</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="n">ifile</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="p">{</span><span class="s2">"x"</span><span class="p">:</span> <span class="mi">512</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="mi">512</span><span class="p">})</span>
 
 <span class="c1"># Get pixel resolution in meters</span>
@@ -257,8 +257,8 @@ from the Tropical Moist Forest product.</p>
 <span class="n">tabulate</span><span class="p">(</span><span class="n">res_df</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">res_df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s2">"orgtbl"</span><span class="p">,</span> <span class="n">showindex</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils align-default" id="id1">
-<caption><span class="caption-text"><strong>Area per class of forest cover change.</strong> A regrowth is considered old in this case if it has at least 5 years.</span><a class="headerlink" href="#id1" title="Link to this table">¶</a></caption>
+<table class="docutils align-default" id="id2">
+<caption><span class="caption-text"><strong>Area per class of forest cover change.</strong> A regrowth is considered “old” in this example if it has at least 5 years.</span><a class="headerlink" href="#id2" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>category</p></th>
 <th class="head"><p>label</p></th>
@@ -304,7 +304,7 @@ from the Tropical Moist Forest product.</p>
 </tr>
 </tbody>
 </table>
-<p>We can then estimate the gross loss and gain of forest cover change for the period 2015–2025. Category 4 (forest –&gt; old regrowth via deforestation) is accounted for both gross loss and gain.</p>
+<p>We can then estimate gross loss, gross gain and net loss in forest cover change for the period 2015–2025. Category 4 (forest –&gt; old regrowth via deforestation) is accounted for both gross loss and gain.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">forest_t1</span> <span class="o">=</span> <span class="n">res_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="s2">"area_ha"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="n">forest_t2</span> <span class="o">=</span> <span class="n">res_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="s2">"area_ha"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="n">gross_loss</span> <span class="o">=</span> <span class="o">-</span> <span class="n">res_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="s2">"area_ha"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
@@ -360,6 +360,14 @@ from the Tropical Moist Forest product.</p>
 </tr>
 </tbody>
 </table>
+<p>When considering regrowth of at least 5 years, which is very short for forest recovery (<a class="reference external" href="citeproc_bib_item_1">Bourgoin *et al.* 2024</a>), the gain (458 ha/yr) compensates the forest cover loss (-630 ha/yr), and the net deforestation is small (-172 ha/yr). But if we consider regrowth of at least 10 years as being forest (<code class="docutils literal notranslate"><span class="pre">min_years=10</span></code> in function <code class="docutils literal notranslate"><span class="pre">get_fcc_loss_gain</span></code>), the gain is much smaller (202 ha/yr) and the net deforestation much higher (-427 ha/yr corresponding to -0.32 %/yr).</p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><p><span class="target" id="citeproc-bib-item-1">citeproc_bib_item_1</span> Bourgoin, C., Ceccherini, G., Girardello, M., Vancutsem, C., Avitabile, V., Beck, P.S.A., Beuchle, R., Blanc, L., Duveiller, G., Migliavacca, M., Vieilledent, G., Cescatti, A. &amp; Achard, F. (2024) <a class="reference external" href="https://doi.org/10.1038/s41586-024-07629-0">Human degradation of tropical moist forests is greater than previously estimated</a>. <em>Nature</em>, <strong>631</strong>, 570–576.</p>
+<p><span class="target" id="citeproc-bib-item-2">citeproc_bib_item_2</span> Poorter, L. &amp; others. (2016) <a class="reference external" href="https://doi.org/10.1038/nature16512">Biomass resilience of neotropical secondary forests</a>. <em>Nature</em>, <strong>530</strong>, 211–214.</p>
+</div></blockquote>
 </section>
 </section>
 
