@@ -18,13 +18,21 @@ We will use the Reunion Island (isocode “REU”) as a case study.
 
     import os
 
+    import dask.array as da_
     import ee
     import geefcc
     import matplotlib.pyplot as plt
     from matplotlib.colors import ListedColormap
     import matplotlib.patches as mpatches
+    import numpy as np
     import cartopy.crs as ccrs
     import rioxarray
+    from osgeo import gdal
+    import pandas as pd
+    from tabulate import tabulate
+
+    # Some convenient aliases
+    opj = os.path.join
 
 .. code:: python
 
@@ -34,7 +42,7 @@ We will use the Reunion Island (isocode “REU”) as a case study.
 .. code:: python
 
     # Download data from GEE
-    ofile = os.path.join("out_tmf", "fcc_tmf.tif") 
+    ofile = opj("out_tmf", "fcc_tmf.tif") 
     if not os.path.isfile(ofile):
         geefcc.get_fcc_loss_gain(
             aoi="REU",
@@ -51,7 +59,7 @@ We will use the Reunion Island (isocode “REU”) as a case study.
 .. code:: python
 
     # Load data
-    fcc_tmf = rioxarray.open_rasterio("out_tmf/fcc_tmf.tif")
+    fcc_tmf = rioxarray.open_rasterio(ofile)
     fcc_tmf
 
 ::
@@ -64,10 +72,16 @@ We will use the Reunion Island (isocode “REU”) as a case study.
       * x            (x) float64 18kB 55.22 55.22 55.22 55.22 ... 55.84 55.84 55.84
         spatial_ref  int64 8B 0
     Attributes:
-        AREA_OR_POINT:  Area
-        scale_factor:   1.0
-        add_offset:     0.0
-        long_name:      fcc
+        AREA_OR_POINT:             Area
+        STATISTICS_APPROXIMATE:    YES
+        STATISTICS_MAXIMUM:        6
+        STATISTICS_MEAN:           0.42158629512209
+        STATISTICS_MINIMUM:        0
+        STATISTICS_STDDEV:         0.65497290607766
+        STATISTICS_VALID_PERCENT:  100
+        scale_factor:              1.0
+        add_offset:                0.0
+        long_name:                 fcc
 
 Plot the forest cover change map
 --------------------------------
@@ -105,3 +119,110 @@ Plot the forest cover change map
 .. image:: tmf.png
     :width: 800
     :align: center
+
+Reproject for area computation
+------------------------------
+
+We need to reproject the raster before performing area computation. We use projection UTM zone 40S (EPSG code 34740) for Reunion island.
+
+.. code:: python
+
+    ifile = opj("out_tmf", "fcc_tmf.tif")
+    ofile = opj("out_tmf", "fcc_tmf_utm.tif")
+    ds = gdal.Warp(ofile, ifile, xRes=30, yRes=30, dstSRS="EPSG:32740", resampleAlg="near",
+              targetAlignedPixels=True, creationOptions=["COMPRESS=DEFLATE"])
+    ds = None
+
+Deforestation and regrowth estimates
+------------------------------------
+
+We use functions ``bincount`` and dask arrays to compute the number of pixels per class and the corresponding area (in ha).
+
+.. code:: python
+
+    # Bincount with dask array
+    ifile = opj("out_tmf", "fcc_tmf_utm.tif")
+    fcc_tmf_utm = rioxarray.open_rasterio(ifile, chunks={"x": 512, "y": 512})
+
+    # Get pixel resolution in meters
+    x_res, y_res = fcc_tmf_utm.rio.resolution()
+    pixel_area_m2 = abs(x_res) * abs(y_res)
+
+    # Count occurrences of each class (0-255) across all chunks in parallel
+    fcc_flat = fcc_tmf_utm.data.ravel()
+    counts = da_.bincount(fcc_flat, minlength=256).compute()
+
+    # Keep only classes that actually appear in the raster
+    present = np.nonzero(counts)[0]
+
+    # Create data frame
+    res_df = pd.DataFrame({
+        "category": present,
+        "label": list(labels.values()),
+        "count": counts[present],
+    })
+
+    # Convert pixel count to area in hectares (1 ha = 10,000 m^2)
+    res_df["area_ha"] = round(res_df["count"] * pixel_area_m2 / 10_000).astype(int)
+
+    # Export
+    res_df.to_csv(opj("fcc_statistics.csv"), index=False)
+    tabulate(res_df, headers=res_df.columns, tablefmt="orgtbl", showindex=False)
+
+.. table:: **Area per class of forest cover change.** A regrowth is considered old in this case if it has at least 5 years.
+
+    +----------+---------------------------------------------+---------+----------+
+    | category | label                                       |   count | area\_ha |
+    +==========+=============================================+=========+==========+
+    |        0 | stable non-forest                           | 2672678 |   240541 |
+    +----------+---------------------------------------------+---------+----------+
+    |        1 | stable forest                               | 1387668 |   124890 |
+    +----------+---------------------------------------------+---------+----------+
+    |        2 | forest --> deforested                       |   67986 |     6119 |
+    +----------+---------------------------------------------+---------+----------+
+    |        3 | non-forest --> old regrowth                 |   49882 |     4489 |
+    +----------+---------------------------------------------+---------+----------+
+    |        4 | forest --> old regrowth (via deforestation) |    1057 |       95 |
+    +----------+---------------------------------------------+---------+----------+
+    |        5 | stable old-regrowth                         |   14629 |     1317 |
+    +----------+---------------------------------------------+---------+----------+
+    |        6 | old regrowth --> deforested                 |     946 |       85 |
+    +----------+---------------------------------------------+---------+----------+
+
+We can then estimate the gross loss and gain of forest cover change for the period 2015--2025. Category 4 (forest --> old regrowth via deforestation) is accounted for both gross loss and gain.
+
+.. code:: python
+
+    forest_t1 = res_df.loc[[1, 2, 4, 5, 6], "area_ha"].sum()
+    forest_t2 = res_df.loc[[1, 3, 4, 5], "area_ha"].sum()
+    gross_loss = - res_df.loc[[2, 4, 6], "area_ha"].sum()
+    gross_gain = res_df.loc[[3, 4], "area_ha"].sum()
+    lossgain_df = pd.DataFrame({
+        "label": ["forest_t1", "forest_t2", "gross loss", "gross gain", "net loss"],
+        "area_ha": [forest_t1, forest_t2, gross_loss, gross_gain, gross_gain + gross_loss],
+    })
+    time = 2025 - 2015
+    lossgain_df["annual_change_ha"] = (lossgain_df["area_ha"] / time).round().astype(int)
+    ratio = lossgain_df["area_ha"] / forest_t1
+    lossgain_df["annual_change_perc"] = round(100 * (1 - pow((1 - ratio), 1 / time)), 2)
+    lossgain_df.iloc[:2, 2:4] = np.nan
+
+    # Export
+    res_df.to_csv(opj("loss_gain_statistics.csv"), index=False)
+    tabulate(lossgain_df, headers=lossgain_df.columns, tablefmt="orgtbl", showindex=False)
+
+.. table::
+
+    +------------+----------+--------------------+----------------------+
+    | label      | area\_ha | annual\_change\_ha | annual\_change\_perc |
+    +============+==========+====================+======================+
+    | forest\_t1 |   132506 |                nan |                  nan |
+    +------------+----------+--------------------+----------------------+
+    | forest\_t2 |   130791 |                nan |                  nan |
+    +------------+----------+--------------------+----------------------+
+    | gross loss |    -6299 |               -630 |                -0.47 |
+    +------------+----------+--------------------+----------------------+
+    | gross gain |     4584 |                458 |                 0.35 |
+    +------------+----------+--------------------+----------------------+
+    | net loss   |    -1715 |               -172 |                -0.13 |
+    +------------+----------+--------------------+----------------------+
