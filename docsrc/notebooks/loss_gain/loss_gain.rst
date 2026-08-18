@@ -39,10 +39,13 @@ We will use the Reunion Island (isocode “REU”) as a case study.
     # Initialize GEE
     ee.Initialize(project="deforisk", opt_url="https://earthengine-highvolume.googleapis.com")
 
+We want to estimate and map the forest cover change for the period 2015--2025, considering regrowth of at least 5 years as being forest, which is debatable (`Poorter & others 2016 <citeproc_bib_item_2>`_; `Bourgoin *et al.* 2024 <citeproc_bib_item_1>`_).
+
 .. code:: python
 
     # Download data from GEE
-    ofile = opj("out_tmf", "fcc_tmf.tif") 
+    out_dir = "out_tmf_5yr"
+    ofile = opj(out_dir, "fcc_tmf.tif") 
     if not os.path.isfile(ofile):
         geefcc.get_fcc_loss_gain(
             aoi="REU",
@@ -55,6 +58,11 @@ We will use the Reunion Island (isocode “REU”) as a case study.
             parallel=True,
             output_file=ofile,
         )
+
+::
+
+    get_fcc running, 3 tiles .
+
 
 .. code:: python
 
@@ -72,16 +80,11 @@ We will use the Reunion Island (isocode “REU”) as a case study.
       * x            (x) float64 18kB 55.22 55.22 55.22 55.22 ... 55.84 55.84 55.84
         spatial_ref  int64 8B 0
     Attributes:
-        AREA_OR_POINT:             Area
-        STATISTICS_APPROXIMATE:    YES
-        STATISTICS_MAXIMUM:        6
-        STATISTICS_MEAN:           0.42158629512209
-        STATISTICS_MINIMUM:        0
-        STATISTICS_STDDEV:         0.65497290607766
-        STATISTICS_VALID_PERCENT:  100
-        scale_factor:              1.0
-        add_offset:                0.0
-        long_name:                 fcc
+        AREA_OR_POINT:  Area
+        _FillValue:     0
+        scale_factor:   1.0
+        add_offset:     0.0
+        long_name:      fcc
 
 Plot the forest cover change map
 --------------------------------
@@ -127,8 +130,8 @@ We need to reproject the raster before performing area computation. We use proje
 
 .. code:: python
 
-    ifile = opj("out_tmf", "fcc_tmf.tif")
-    ofile = opj("out_tmf", "fcc_tmf_utm.tif")
+    ifile = opj(out_dir, "fcc_tmf.tif")
+    ofile = opj(out_dir, "fcc_tmf_utm.tif")
     ds = gdal.Warp(ofile, ifile, xRes=30, yRes=30, dstSRS="EPSG:32740", resampleAlg="near",
               targetAlignedPixels=True, creationOptions=["COMPRESS=DEFLATE"])
     ds = None
@@ -141,7 +144,7 @@ We use functions ``bincount`` and dask arrays to compute the number of pixels pe
 .. code:: python
 
     # Bincount with dask array
-    ifile = opj("out_tmf", "fcc_tmf_utm.tif")
+    ifile = opj(out_dir, "fcc_tmf_utm.tif")
     fcc_tmf_utm = rioxarray.open_rasterio(ifile, chunks={"x": 512, "y": 512})
 
     # Get pixel resolution in meters
@@ -169,7 +172,7 @@ We use functions ``bincount`` and dask arrays to compute the number of pixels pe
     res_df.to_csv(opj("fcc_statistics.csv"), index=False)
     tabulate(res_df, headers=res_df.columns, tablefmt="orgtbl", showindex=False)
 
-.. table:: **Area per class of forest cover change.** A regrowth is considered old in this case if it has at least 5 years.
+.. table:: **Area per class of forest cover change.** A regrowth is considered “old” in this example if it has at least 5 years.
 
     +----------+---------------------------------------------+---------+----------+
     | category | label                                       |   count | area\_ha |
@@ -189,7 +192,7 @@ We use functions ``bincount`` and dask arrays to compute the number of pixels pe
     |        6 | old regrowth --> deforested                 |     946 |       85 |
     +----------+---------------------------------------------+---------+----------+
 
-We can then estimate the gross loss and gain of forest cover change for the period 2015--2025. Category 4 (forest --> old regrowth via deforestation) is accounted for both gross loss and gain.
+We can then estimate gross loss, gross gain and net loss in forest cover change for the period 2015--2025. Category 4 (forest --> old regrowth via deforestation) is accounted for both gross loss and gain.
 
 .. code:: python
 
@@ -226,3 +229,12 @@ We can then estimate the gross loss and gain of forest cover change for the peri
     +------------+----------+--------------------+----------------------+
     | net loss   |    -1715 |               -172 |                -0.13 |
     +------------+----------+--------------------+----------------------+
+
+When considering regrowth of at least 5 years, which is very short for forest recovery (`Bourgoin *et al.* 2024 <citeproc_bib_item_1>`_), the gain (458 ha/yr) compensates the forest cover loss (-630 ha/yr), and the net deforestation is small (-172 ha/yr). But if we consider regrowth of at least 10 years as being forest (``min_years=10`` in function ``get_fcc_loss_gain``), the gain is much smaller (202 ha/yr) and the net deforestation much higher (-427 ha/yr corresponding to -0.32 %/yr).
+
+References
+----------
+
+ _`citeproc_bib_item_1` Bourgoin, C., Ceccherini, G., Girardello, M., Vancutsem, C., Avitabile, V., Beck, P.S.A., Beuchle, R., Blanc, L., Duveiller, G., Migliavacca, M., Vieilledent, G., Cescatti, A. & Achard, F. (2024) `Human degradation of tropical moist forests is greater than previously estimated <https://doi.org/10.1038/s41586-024-07629-0>`_. *Nature*, **631**, 570–576.
+
+ _`citeproc_bib_item_2` Poorter, L. & others. (2016) `Biomass resilience of neotropical secondary forests <https://doi.org/10.1038/nature16512>`_. *Nature*, **530**, 211–214.

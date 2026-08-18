@@ -9,6 +9,42 @@ opj = os.path.join
 opd = os.path.dirname
 
 
+def add_color_table(output_file):
+    """Add color table to GeoTIFF.
+
+    :param output_file: Output file to add color table to.
+    """
+
+    # Open file in update mode
+    ds = gdal.Open(output_file, gdal.GA_Update)
+    n_bands = ds.RasterCount
+
+    # Apply color table only for single band raster
+    if n_bands == 1:
+        # Define color table
+        # Format: {pixel_value: (R, G, B, A)}
+        colors = {
+            0: (255, 255, 255, 0),    # stable non-forest
+            1: (34, 139, 34, 255),    # stable forest
+            2: (227, 26, 28, 255),    # forest --> deforested
+            3: (30, 100, 200, 255),   # non-forest --> old regrowth
+            4: (100, 160, 230, 255),  # forest --> old-regrowth (via defor)
+            5: (150, 190, 140, 255),  # stable old-regrowth
+            6: (255, 140, 0, 255),    # old regrowth --> deforested
+        }
+        band = ds.GetRasterBand(1)
+        ct = gdal.ColorTable()
+        for pixel_value, rgba in colors.items():
+            ct.SetColorEntry(pixel_value, rgba)
+        band.SetRasterColorTable(ct)
+        band.SetRasterColorInterpretation(gdal.GCI_PaletteIndex)
+        band.SetNoDataValue(0)
+        band.FlushCache()
+
+    # Close dataset
+    ds = None
+
+
 def geotiff_from_tiles(crop_to_aoi, extent, output_file):
     """Make geotiff from tiles.
 
@@ -33,18 +69,14 @@ def geotiff_from_tiles(crop_to_aoi, extent, output_file):
     forest_vrt = gdal.BuildVRT(
         opj(out_dir, "forest.vrt"),
         tif_forest_files,
+        srcNodata=0,
+        VRTNodata=0,
         callback=cback)
-    # Flush cache
-    # https://gis.stackexchange.com/questions/306664/
-    # gdal-buildvrt-not-creating-any-output
-    # https://gis.stackexchange.com/questions/44003/
-    # python-equivalent-of-gdalbuildvrt
     forest_vrt.FlushCache()
     forest_vrt = None
     vrt_file = opj(out_dir, "forest.vrt")
 
     # VRT to GeoTIFF
-    # Creation options
     copts = ["COMPRESS=DEFLATE", "BIGTIFF=YES"]
     aoi_isfile = extent["aoi_isfile"]
     borders_gpkg = extent["borders_gpkg"]
@@ -56,19 +88,26 @@ def geotiff_from_tiles(crop_to_aoi, extent, output_file):
                       warpOptions=["CUTLINE_ALL_TOUCHED=TRUE"],
                       cutlineDSName=borders_gpkg,
                       creationOptions=copts,
+                      srcNodata=0,
+                      dstNodata=0,
                       callback=cback)
         else:
             xmin, ymin, xmax, ymax = extent_latlong
             ulx_uly_lrx_lry = [xmin, ymax, xmax, ymin]
             gdal.Translate(output_file, vrt_file,
                            projWin=ulx_uly_lrx_lry,
+                           noData=0,
                            maskBand=None,
                            creationOptions=copts,
                            callback=cback)
     else:
         gdal.Translate(output_file, vrt_file,
+                       noData=0,
                        maskBand=None,
                        creationOptions=copts,
                        callback=cback)
+
+    # Add color table to output file
+    add_color_table(output_file)
 
 # End

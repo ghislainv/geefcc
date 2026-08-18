@@ -170,4 +170,4 @@ We plot the forest cover change map.
     :width: 700
     :align: center
 
-Lines in black represent country borders and the 10 km buffer. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.
+Lines in black represent country borders and the 10 km buffer. One degree tiles (in grey) cover the whole study area (country borders and buffer) and were used to download the data in parallel.

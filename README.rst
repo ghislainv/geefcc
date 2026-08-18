@@ -15,7 +15,6 @@
 ``geefcc`` Python package
 *************************
 
-
 |Python version| |PyPI version| |GitHub Actions| |License| |Zenodo|
 
 
@@ -29,10 +28,12 @@ The ``geefcc`` Python package can be used to make forest cover change (fcc) maps
    :target: https://ecology.ghislainv.fr/geefcc
    :alt: banner_geefcc
 
-The ``geefcc`` package depends on the `xee <https://github.com/google/Xee>`_ Python package, which allows opening GEE datasets locally without exporting data to GEE assets or Google Drive. The user only has to specify an area of interest (aoi), either with an extent, a polygon vector file, or a country iso code (e.g. PER for Peru), and the years defining the time periods considered for the forest cover change (e.g. 2000, 2010, 2020). For the Global Forest Change product, the users also has to specify a tree cover threshold to define the forest (e.g. 75%).
+The ``geefcc`` package depends on the `xee <https://github.com/google/Xee>`_ Python package, which allows opening GEE datasets locally without exporting data to GEE assets or Google Drive. The user only has to specify an area of interest (aoi), either with an extent, a polygon vector file, or a country iso code (e.g. PER for Peru), and the years defining the time periods considered for the forest cover change (e.g. 2015, 2025). For the Global Forest Change product, the users also has to specify a tree cover threshold to define the forest (e.g. 75%).
 
 .. note::
-   The current version of the package uses GFC data up to year 2023 (`GFC v1.11 2023 <https://developers.google.com/earth-engine/datasets/catalog/UMD_hansen_global_forest_change_2023_v1_11>`_) and TMF data up to year 2023 (`TMF v1 2023 <https://forobs.jrc.ec.europa.eu/TMF/data>`_) so that years for computing forest cover change can be in the interval 2001--2024 for GFC (GFC does not provide loss for the year 2000) and 2000--2024 for TMF. Forest cover is given on the 1\ :sup:`st` of January for each year. The current version of the package only considers **deforestation as change** and **not forest gain or regrowth**.
+   The current version of the package uses GFC data up to year 2025 (`GFC v1.13 2025 <https://developers.google.com/earth-engine/datasets/catalog/UMD_hansen_global_forest_change_2023_v1_11>`_) and TMF data up to year 2025 (`TMF v1 2025 <https://forobs.jrc.ec.europa.eu/TMF/data>`_) so that years for computing forest cover change can be in the interval 2001--2026 for GFC (GFC does not provide loss for the year 2000) and 2000--2026 for TMF. Forest cover is given on the 1\ :sup:`st` of January for each year.
+
+   From version 0.1.8, the package considers both **deforestation (or loss)** and **regrowth (or gain)**.
 
 Prerequisites
 =============
@@ -40,7 +41,7 @@ Prerequisites
 Access to Google Earth Engine
 -----------------------------
 
-To use the ``geefcc`` Python package, you need a Google account and an `access to Earth Engine <https://developers.google.com/earth-engine/guides/access#a-role-in-a-cloud-project>`_ either via a Google Cloud project that's registered to use Earth Engine or via an individually signed-up account. Please follow this link `to register for Earth Engine <https://code.earthengine.google.com/register>`_.
+To use the ``geefcc`` Python package, you need a Google account and an `access to Earth Engine <https://developers.google.com/earth-engine/guides/access#a-role-in-a-cloud-project>`_ via a Google Cloud project that's registered to use Earth Engine. Please follow this link `to register for Earth Engine <https://code.earthengine.google.com/register>`_.
 
 You must always initialize GEE before using ``geefcc`` functions specifying a Google Cloud project name and `Earth Engine high-volume endpoint <https://developers.google.com/earth-engine/cloud/highvolume>`_:
 
@@ -120,7 +121,7 @@ In case of problem while installing GDAL Python bindings, try the following comm
 
 .. code-block:: shell
 		
-   python3 -m pip install --no-cache-dir --force-reinstall gdal==$(gdal-config --version)
+   python3 -m pip install --no-cache-dir --force-reinstall --no-build-isolation  gdal==$(gdal-config --version)
    
 Contributing
 ============
