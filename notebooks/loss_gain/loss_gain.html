@@ -138,7 +138,7 @@ from the Tropical Moist Forest product.</p>
 <span class="n">ee</span><span class="o">.</span><span class="n">Initialize</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s2">"deforisk"</span><span class="p">,</span> <span class="n">opt_url</span><span class="o">=</span><span class="s2">"https://earthengine-highvolume.googleapis.com"</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>We want to estimate and map the forest cover change for the period 2015–2025, considering regrowth of at least 5 years as being forest, which is debatable (<a class="reference external" href="citeproc_bib_item_2">Poorter &amp; others 2016</a>; <a class="reference external" href="citeproc_bib_item_1">Bourgoin *et al.* 2024</a>).</p>
+<p>We want to estimate and map the forest cover change for the period 2015–2025, considering regrowth of at least 5 years as being forest, which is debatable <span class="bibtex-citation" id="id1">[<a class="reference internal" href="#id5" title="C. Bourgoin, G. Ceccherini, M. Girardello, C. Vancutsem, V. Avitabile, P. S. A. Beck, R. Beuchle, L. Blanc, G. Duveiller, M. Migliavacca, G. Vieilledent, A. Cescatti, and F. Achard. Human degradation of tropical moist forests is greater than previously estimated. Nature, 631(8021):570–576, July 2024. doi:10.1038/s41586-024-07629-0.">Bourgoin <em>et al.</em>, 2024</a>, <a class="reference internal" href="#id4" title="L. Poorter, F. Bongers, T. M. Aide, A. M. Almeyda Zambrano, P. Balvanera, J. M. Becknell, V. Boukili, P. H. S. Brancalion, E. N. Broadbent, R. L. Chazdon, D. Craven, J. S. de Almeida-Cortez, G. A. L. Cabral, B. H. J. de Jong, J. S. Denslow, D. H. Dent, S. J. DeWalt, J. M. Dupuy, S. M. Durán, M. M. Espírito-Santo, M. C. Fandino, R. G. César, J. S. Hall, J. L. Hernandez-Stefanoni, C. C. Jakovac, A. B. Junqueira, D. Kennard, S. G. Letcher, J.-C. Licona, M. Lohbeck, E. Marín-Spiotta, M. Martínez-Ramos, P. Massoca, J. A. Meave, R. Mesquita, F. Mora, R. Muñoz, R. Muscarella, Y. R. F. Nunes, S. Ochoa-Gaona, A. A. de Oliveira, E. Orihuela-Belmonte, M. Peña-Claros, E. A. Pérez-García, D. Piotto, J. S. Powers, J. Rodríguez-Velázquez, I. E. Romero-Pérez, J. Ruíz, J. G. Saldarriaga, A. Sanchez-Azofeifa, N. B. Schwartz, M. K. Steininger, N. G. Swenson, M. Toledo, M. Uriarte, M. van Breugel, H. van der Wal, M. D. M. Veloso, H. F. M. Vester, A. Vicentini, I. C. G. Vieira, T. V. Bentos, G. B. Williamson, and D. M. A. Rozendaal. Biomass resilience of neotropical secondary forests. Nature, 530(7589):211–214, February 2016. doi:10.1038/nature16512.">Poorter <em>et al.</em>, 2016</a>]</span>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download data from GEE</span>
 <span class="n">out_dir</span> <span class="o">=</span> <span class="s2">"out_tmf_5yr"</span>
 <span class="n">ofile</span> <span class="o">=</span> <span class="n">opj</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">"fcc_tmf.tif"</span><span class="p">)</span>
@@ -257,8 +257,8 @@ from the Tropical Moist Forest product.</p>
 <span class="n">tabulate</span><span class="p">(</span><span class="n">res_df</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">res_df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s2">"orgtbl"</span><span class="p">,</span> <span class="n">showindex</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils align-default" id="id2">
-<caption><span class="caption-text"><strong>Area per class of forest cover change.</strong> A regrowth is considered “old” in this example if it has at least 5 years.</span><a class="headerlink" href="#id2" title="Link to this table">¶</a></caption>
+<table class="docutils align-default" id="id6">
+<caption><span class="caption-text"><strong>Area per class of forest cover change.</strong> A regrowth is considered “old” in this example if it has at least 5 years.</span><a class="headerlink" href="#id6" title="Link to this table">¶</a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>category</p></th>
 <th class="head"><p>label</p></th>
@@ -360,14 +360,23 @@ from the Tropical Moist Forest product.</p>
 </tr>
 </tbody>
 </table>
-<p>When considering regrowth of at least 5 years, which is very short for forest recovery (<a class="reference external" href="citeproc_bib_item_1">Bourgoin *et al.* 2024</a>), the gain (458 ha/yr) compensates the forest cover loss (-630 ha/yr), and the net deforestation is small (-172 ha/yr). But if we consider regrowth of at least 10 years as being forest (<code class="docutils literal notranslate"><span class="pre">min_years=10</span></code> in function <code class="docutils literal notranslate"><span class="pre">get_fcc_loss_gain</span></code>), the gain is much smaller (202 ha/yr) and the net deforestation much higher (-427 ha/yr corresponding to -0.32 %/yr).</p>
+<p>When considering regrowth of at least 5 years, which is very short for forest recovery <span class="bibtex-citation" id="id2">[<a class="reference internal" href="#id5" title="C. Bourgoin, G. Ceccherini, M. Girardello, C. Vancutsem, V. Avitabile, P. S. A. Beck, R. Beuchle, L. Blanc, G. Duveiller, M. Migliavacca, G. Vieilledent, A. Cescatti, and F. Achard. Human degradation of tropical moist forests is greater than previously estimated. Nature, 631(8021):570–576, July 2024. doi:10.1038/s41586-024-07629-0.">Bourgoin <em>et al.</em>, 2024</a>]</span>, the gain (458 ha/yr) compensates the forest cover loss (-630 ha/yr), and the net deforestation is small (-172 ha/yr). But if we consider regrowth of at least 10 years as being forest (<code class="docutils literal notranslate"><span class="pre">min_years=10</span></code> in function <code class="docutils literal notranslate"><span class="pre">get_fcc_loss_gain</span></code>), the gain is much smaller (202 ha/yr) and the net deforestation much higher (-427 ha/yr corresponding to -0.32 %/yr).</p>
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Link to this heading">¶</a></h2>
-<blockquote>
-<div><p><span class="target" id="citeproc-bib-item-1">citeproc_bib_item_1</span> Bourgoin, C., Ceccherini, G., Girardello, M., Vancutsem, C., Avitabile, V., Beck, P.S.A., Beuchle, R., Blanc, L., Duveiller, G., Migliavacca, M., Vieilledent, G., Cescatti, A. &amp; Achard, F. (2024) <a class="reference external" href="https://doi.org/10.1038/s41586-024-07629-0">Human degradation of tropical moist forests is greater than previously estimated</a>. <em>Nature</em>, <strong>631</strong>, 570–576.</p>
-<p><span class="target" id="citeproc-bib-item-2">citeproc_bib_item_2</span> Poorter, L. &amp; others. (2016) <a class="reference external" href="https://doi.org/10.1038/nature16512">Biomass resilience of neotropical secondary forests</a>. <em>Nature</em>, <strong>530</strong>, 211–214.</p>
-</div></blockquote>
+<div class="docutils container" id="id3">
+<div role="list" class="citation-list">
+<div class="citation" id="id5" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>)</span>
+<p>C. Bourgoin, G. Ceccherini, M. Girardello, C. Vancutsem, V. Avitabile, P. S. A. Beck, R. Beuchle, L. Blanc, G. Duveiller, M. Migliavacca, G. Vieilledent, A. Cescatti, and F. Achard. Human degradation of tropical moist forests is greater than previously estimated. <em>Nature</em>, 631(8021):570–576, July 2024. <a class="reference external" href="https://doi.org/10.1038/s41586-024-07629-0">doi:10.1038/s41586-024-07629-0</a>.</p>
+</div>
+<div class="citation" id="id4" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">2</a><span class="fn-bracket">]</span></span>
+<p>L. Poorter, F. Bongers, T. M. Aide, A. M. Almeyda Zambrano, P. Balvanera, J. M. Becknell, V. Boukili, P. H. S. Brancalion, E. N. Broadbent, R. L. Chazdon, D. Craven, J. S. de Almeida-Cortez, G. A. L. Cabral, B. H. J. de Jong, J. S. Denslow, D. H. Dent, S. J. DeWalt, J. M. Dupuy, S. M. Durán, M. M. Espírito-Santo, M. C. Fandino, R. G. César, J. S. Hall, J. L. Hernandez-Stefanoni, C. C. Jakovac, A. B. Junqueira, D. Kennard, S. G. Letcher, J.-C. Licona, M. Lohbeck, E. Marín-Spiotta, M. Martínez-Ramos, P. Massoca, J. A. Meave, R. Mesquita, F. Mora, R. Muñoz, R. Muscarella, Y. R. F. Nunes, S. Ochoa-Gaona, A. A. de Oliveira, E. Orihuela-Belmonte, M. Peña-Claros, E. A. Pérez-García, D. Piotto, J. S. Powers, J. Rodríguez-Velázquez, I. E. Romero-Pérez, J. Ruíz, J. G. Saldarriaga, A. Sanchez-Azofeifa, N. B. Schwartz, M. K. Steininger, N. G. Swenson, M. Toledo, M. Uriarte, M. van Breugel, H. van der Wal, M. D. M. Veloso, H. F. M. Vester, A. Vicentini, I. C. G. Vieira, T. V. Bentos, G. B. Williamson, and D. M. A. Rozendaal. Biomass resilience of neotropical secondary forests. <em>Nature</em>, 530(7589):211–214, February 2016. <a class="reference external" href="https://doi.org/10.1038/nature16512">doi:10.1038/nature16512</a>.</p>
+</div>
+</div>
+</div>
 </section>
 </section>
 
