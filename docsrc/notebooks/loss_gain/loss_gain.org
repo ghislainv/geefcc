@@ -5,8 +5,8 @@
 #+export_select_tags: export
 #+export_exclude_tags: noexport
 
-#+bibliography: refs.bib
-#+cite_export: csl ~/Documents/Bibliography/csl/jae.csl
+#+bibliography: ../refs.bib
+#+cite_export: oc-rst
 
 * Get forest cover change from TMF
 
@@ -46,7 +46,7 @@ ee.Initialize(project="deforisk", opt_url="https://earthengine-highvolume.google
 
 #+RESULTS:
 
-We want to estimate and map the forest cover change for the period 2015--2025, considering regrowth of at least 5 years as being forest, which is debatable [cite:@Bourgoin2024; @Poorter2016].
+We want to estimate and map the forest cover change for the period 2015--2025, considering regrowth of at least 5 years as being forest, which is debatable [cite:@Poorter2016; @Bourgoin2024].
 
 #+begin_src python
 # Download data from GEE

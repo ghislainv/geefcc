@@ -34,7 +34,7 @@ jobs:
           python3 -m pip install --no-build-isolation gdal==$(gdal-config --version)
           # Install requirements
           python3 -m pip install -r requirements.txt
-          python3 -m pip install sphinx nbsphinx ipython
+          python3 -m pip install sphinx nbsphinx sphinxcontrib-bibtex ipython
           python3 -m pip install .
 
       - name: Building documentation

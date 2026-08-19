@@ -41,7 +41,7 @@ add_function_parentheses = True
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = ["sphinx.ext.autodoc", "sphinx.ext.viewcode",
-              "sphinx.ext.mathjax"]
+              "sphinx.ext.mathjax", "sphinxcontrib.bibtex"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -51,6 +51,10 @@ templates_path = ["_templates"]
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
 
+# Bibtex file
+bibtex_bibfiles = ["notebooks/refs.bib"]
+bibtex_default_style = "plain"  # Style for the reference list
+bibtex_reference_style = "author_year"  # Style for references in text
 
 # -- Options for HTML output -------------------------------------------------
 

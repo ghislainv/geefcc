@@ -39,7 +39,7 @@ We will use the Reunion Island (isocode “REU”) as a case study.
     # Initialize GEE
     ee.Initialize(project="deforisk", opt_url="https://earthengine-highvolume.googleapis.com")
 
-We want to estimate and map the forest cover change for the period 2015--2025, considering regrowth of at least 5 years as being forest, which is debatable (`Poorter & others 2016 <citeproc_bib_item_2>`_; `Bourgoin *et al.* 2024 <citeproc_bib_item_1>`_).
+We want to estimate and map the forest cover change for the period 2015--2025, considering regrowth of at least 5 years as being forest, which is debatable :cite:p:`Poorter2016,Bourgoin2024`.
 
 .. code:: python
 
@@ -230,11 +230,10 @@ We can then estimate gross loss, gross gain and net loss in forest cover change 
     | net loss   |    -1715 |               -172 |                -0.13 |
     +------------+----------+--------------------+----------------------+
 
-When considering regrowth of at least 5 years, which is very short for forest recovery (`Bourgoin *et al.* 2024 <citeproc_bib_item_1>`_), the gain (458 ha/yr) compensates the forest cover loss (-630 ha/yr), and the net deforestation is small (-172 ha/yr). But if we consider regrowth of at least 10 years as being forest (``min_years=10`` in function ``get_fcc_loss_gain``), the gain is much smaller (202 ha/yr) and the net deforestation much higher (-427 ha/yr corresponding to -0.32 %/yr).
+When considering regrowth of at least 5 years, which is very short for forest recovery :cite:p:`Bourgoin2024`, the gain (458 ha/yr) compensates the forest cover loss (-630 ha/yr), and the net deforestation is small (-172 ha/yr). But if we consider regrowth of at least 10 years as being forest (``min_years=10`` in function ``get_fcc_loss_gain``), the gain is much smaller (202 ha/yr) and the net deforestation much higher (-427 ha/yr corresponding to -0.32 %/yr).
 
 References
 ----------
 
- _`citeproc_bib_item_1` Bourgoin, C., Ceccherini, G., Girardello, M., Vancutsem, C., Avitabile, V., Beck, P.S.A., Beuchle, R., Blanc, L., Duveiller, G., Migliavacca, M., Vieilledent, G., Cescatti, A. & Achard, F. (2024) `Human degradation of tropical moist forests is greater than previously estimated <https://doi.org/10.1038/s41586-024-07629-0>`_. *Nature*, **631**, 570–576.
-
- _`citeproc_bib_item_2` Poorter, L. & others. (2016) `Biomass resilience of neotropical secondary forests <https://doi.org/10.1038/nature16512>`_. *Nature*, **530**, 211–214.
+.. bibliography:: ../refs.bib
+   :filter: docname in docnames
