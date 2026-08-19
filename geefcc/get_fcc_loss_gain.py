@@ -20,7 +20,6 @@ def get_fcc_loss_gain(
         year1=2005,
         year2=2025,
         min_years=10,
-        source="tmf",
         tile_size=1,
         crop_to_aoi=False,
         parallel=False,
@@ -45,6 +44,20 @@ def get_fcc_loss_gain(
         6. oR to D -- old regrowth deforested, or fallen back below
            `min_years` of continuous regrowth
 
+    .. note::
+       :func:`get_fcc_loss_gain` returns a one-band raster with
+       forest cover change (loss and gain) between two dates. In this
+       case, both old-growth forest and old regrowth (following
+       deforestation) are considered as forest at one point in time
+       and can be deforested during the period of time. The user can
+       differentiate the results between the different states and
+       changes and make appropriate choices to estimate deforestation
+       and regrowth rates.
+
+       :func:`get_fcc_loss_gain` can only be used with the Tropical
+       Moist Forest product. The Global Forest Change product does not
+       provide annual forest gain.
+
     :param aoi: Area of interest defined either by a country iso code
         (three letters), a vector file, or an extent in lat/long
         (tuple with (xmin, ymin, xmax, ymax)).
@@ -60,10 +73,6 @@ def get_fcc_loss_gain(
 
     :param min_years: Minimum number of consecutive years classified as
         regrowth to be considered "old regrowth" (oR). Default 10.
-
-    :param source: Either "gfc" for Global Forest Change or "tmf" for
-        Tropical Moist Forest. If "gfc", the tree cover threshold
-        defining the forest must be specified with parameter ``perc``.
 
     :param tile_size: Tile size for parallel computing.
 
@@ -114,10 +123,7 @@ def get_fcc_loss_gain(
     ntiles = len(grid)
 
     # Forest image collection
-    if source == "tmf":
-        forest = ee_tmf_loss_gain(year1, year2, min_years).fcc
-    # if source == "gfc":
-    #     forest = ee_gfc(years, perc)
+    forest = ee_tmf_loss_gain(year1, year2, min_years).fcc
 
     # Create dir for forest tiles
     out_dir_tiles = opj(out_dir, "forest_tiles")

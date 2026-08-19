@@ -55,6 +55,7 @@ exclude_patterns = []
 bibtex_bibfiles = ["notebooks/refs.bib"]
 bibtex_default_style = "plain"  # Style for the reference list
 bibtex_reference_style = "author_year"  # Style for references in text
+suppress_warnings = ["bibtex.duplicate_citation"]
 
 # -- Options for HTML output -------------------------------------------------
 

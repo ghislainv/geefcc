@@ -53,7 +53,6 @@ if not os.path.isfile(ofile):
         year1=2015,
         year2=2025,
         min_years=10,
-        source="tmf",
         tile_size=0.5,
         crop_to_aoi=True,
         parallel=True,

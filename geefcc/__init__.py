@@ -77,8 +77,9 @@ else:
     get_fcc.__name__ = "get_fcc"
     get_fcc.__doc__ = (
         ".. deprecated:: 0.1.8\n"
-        "   Use :func:`get_fcc_loss` instead.\n\n"
-    ) + (get_fcc_loss.__doc__ or "")
+        "\n"
+        "   Use :func:`get_fcc_loss` instead."
+    )
     get_fcc.__wrapped__ = get_fcc_loss
 
 # End

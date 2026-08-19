@@ -2,7 +2,7 @@ Changelog
 *********
 
 geefcc 0.1.8 (dev)
-============
+==================
 
 * This version includes forest gain in addition to forest loss when
   deriving the forest cover change map.

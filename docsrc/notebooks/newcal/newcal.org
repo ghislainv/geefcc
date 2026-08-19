@@ -127,7 +127,7 @@ patches = [mpatches.Patch(facecolor=col, edgecolor="black",
                           label=labels[i]) for (i, col) in enumerate(colors)]
 #+end_src
 
-We created a short function to plot the forest cover change map.
+We create a short function to plot the forest cover change map.
 
 #+begin_src python :results none
 def plot_fcc(title, out_file):
@@ -171,7 +171,7 @@ with gdal.Open("out_tmf/fcc_tmf_coarsen.tif", gdal.GA_ReadOnly) as ds:
     plot_fcc("Forest cover change 2001-2010-2020, TMF", "fcc_tmf.png")
 #+end_src
 
-#+attr_rst: :width 700 :align center
+#+attr_rst: :width 100% :align center
 [[file:fcc_tmf.png]]
 
 Lines in black represent country borders. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.
@@ -290,7 +290,7 @@ with gdal.Open("out_gfc80/fcc_gfc80_coarsen.tif", gdal.GA_ReadOnly) as ds:
     plot_fcc("Forest cover change 2001-2010-2020, GFC 80%", "fcc_gfc80.png")
 #+end_src
 
-#+attr_rst: :width 700 :align center
+#+attr_rst: :width 100% :align center
 [[file:fcc_gfc80.png]]
 
 Lines in black represent country borders. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.
@@ -389,7 +389,7 @@ with gdal.Open("out_gfc60/fcc_gfc60_coarsen.tif", gdal.GA_ReadOnly) as ds:
     plot_fcc("Forest cover change 2001-2010-2020, GFC 60%", "fcc_gfc60.png")
 #+end_src
 
-#+attr_rst: :width 700 :align center
+#+attr_rst: :width 100% :align center
 [[file:fcc_gfc60.png]]
 
 Lines in black represent country borders. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.

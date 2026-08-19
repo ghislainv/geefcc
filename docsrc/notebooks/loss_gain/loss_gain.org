@@ -58,7 +58,6 @@ if not os.path.isfile(ofile):
         year1=2015,
         year2=2025,
         min_years=5,
-        source="tmf",
         tile_size=0.5,
         crop_to_aoi=True,
         parallel=True,
@@ -126,7 +125,7 @@ fig.savefig("tmf.png", bbox_inches="tight", dpi=100)
 plt.close(fig)
 #+end_src
 
-#+attr_rst: :width 800 :align center
+#+attr_rst: :width 100% :align center
 [[file:tmf.png]]
 
 * Reproject for area computation
@@ -196,7 +195,7 @@ forest_t2 = res_df.loc[[1, 3, 4, 5], "area_ha"].sum()
 gross_loss = - res_df.loc[[2, 4, 6], "area_ha"].sum()
 gross_gain = res_df.loc[[3, 4], "area_ha"].sum()
 lossgain_df = pd.DataFrame({
-    "label": ["forest_t1", "forest_t2", "gross loss", "gross gain", "net loss"],
+    "label": ["forest_t1", "forest_t2", "gross loss", "gross gain", "net change"],
     "area_ha": [forest_t1, forest_t2, gross_loss, gross_gain, gross_gain + gross_loss],
 })
 time = 2025 - 2015
@@ -217,9 +216,11 @@ tabulate(lossgain_df, headers=lossgain_df.columns, tablefmt="orgtbl", showindex=
 | forest_t2  |  130791 |              nan |                nan |
 | gross loss |   -6299 |             -630 |              -0.47 |
 | gross gain |    4584 |              458 |               0.35 |
-| net loss   |   -1715 |             -172 |              -0.13 |
+| net change |   -1715 |             -172 |              -0.13 |
 
-When considering regrowth of at least 5 years, which is very short for forest recovery [cite:@Bourgoin2024], the gain (458 ha/yr) compensates the forest cover loss (-630 ha/yr), and the net deforestation is small (-172 ha/yr). But if we consider regrowth of at least 10 years as being forest (~min_years=10~ in function =get_fcc_loss_gain=), the gain is much smaller (202 ha/yr) and the net deforestation much higher (-427 ha/yr corresponding to -0.32 %/yr).
+When considering regrowth of at least 5 years, which is very short for forest recovery [cite:@Bourgoin2024], the gain (458 ha/yr) compensates the forest cover loss (-630 ha/yr), and the net deforestation is small (-172 ha/yr).
+
+If we consider regrowth of at least 10 years as being forest (~min_years=10~ in function =get_fcc_loss_gain=), the gain is much smaller (202 ha/yr) and the net deforestation much higher (-427 ha/yr corresponding to -0.32 %/yr).
 
 * References
 

@@ -31,6 +31,15 @@ def get_fcc_loss(
      Produce a forest cover change raster file. One band for each
      year. Value 1 for forest and 0 for non-forest.
 
+    .. note::
+       :func:`get_fcc_loss` returns a multiband raster and can
+       be used to produce deforestation maps between several dates. In
+       this case, only old-growth forest (which was forest at the
+       beginning of the satellite image archive) is considered.
+
+       :func:`get_fcc_loss` can be used with either the
+       Tropical Moist Forest or the Global Forest Change product.
+
     :param aoi: Area of interest defined either by a country iso code
         (three letters), a vector file, or an extent in lat/long
         (tuple with (xmin, ymin, xmax, ymax)).
