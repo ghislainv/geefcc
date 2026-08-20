@@ -1,17 +1,7 @@
 """Get forest cover change data with loss and gain."""
 
-import os
-import multiprocess as mp
-
-from .get_extent_from_aoi import get_extent_from_aoi
-from .misc import make_dir
-from .make_grid import make_grid, grid_intersection
-from .geeic2geotiff import geeic2geotiff
-from .geotiff_from_tiles import geotiff_from_tiles
 from .ee_tmf_loss_gain import ee_tmf_loss_gain
-
-opj = os.path.join
-opd = os.path.dirname
+from ._run_fcc import _run_fcc_pipeline
 
 
 def get_fcc_loss_gain(
@@ -141,71 +131,11 @@ def get_fcc_loss_gain(
     ... )
     """
 
-    # Output dir
-    out_dir = opd(output_file)
-    make_dir(out_dir)
-
-    # Variables
-    proj = "EPSG:4326"
-    epsg_code = 4326
-    scale = 0.000269494585235856472  # in dd, ~30 m
-
-    # Get aoi
-    extent = get_extent_from_aoi(aoi, buff, out_dir)
-    aoi_isfile = extent["aoi_isfile"]
-    borders_gpkg = extent["borders_gpkg"]
-    extent_latlong = extent["extent_latlong"]
-
-    # Make minimal grid
-    grid_gpkg = opj(out_dir, "grid.gpkg")
-    grid = make_grid(extent_latlong, buff=0, tile_size=tile_size,
-                     scale=scale, proj=epsg_code, ofile=grid_gpkg)
-    if aoi_isfile:
-        min_grid = opj(out_dir, "min_grid.gpkg")
-        grid_i = grid_intersection(grid, grid_gpkg, min_grid,
-                                   borders_gpkg)
-        # Update grid and file
-        grid = grid_i
-        grid_gpkg = min_grid
-
-    # Number of tiles
-    ntiles = len(grid)
-
     # Forest image collection
     forest = ee_tmf_loss_gain(year1, year2, min_years).fcc
 
-    # Create dir for forest tiles
-    out_dir_tiles = opj(out_dir, "forest_tiles")
-    make_dir(out_dir_tiles)
-
-    # Message
-    print(f"get_fcc running, {ntiles} tiles .", end="", flush=True)
-
-    # Sequential computing
-    if parallel is False:
-        # Loop on tiles
-        for (i, ext) in enumerate(grid):
-            geeic2geotiff(i, ext, ntiles, forest, proj, scale, out_dir_tiles)
-
-    # Parallel computing
-    if parallel is True:
-        # Write tiles in parallel
-        # https://superfastpython.com/multiprocessing-pool-starmap_async/
-        # create and configure the process pool
-        if ncpu is None:
-            ncpu = os.cpu_count() - 1
-        with mp.Pool(processes=ncpu) as pool:
-            # prepare arguments
-            args = [(i, ext, ntiles, forest, proj, scale, out_dir_tiles)
-                    for (i, ext) in enumerate(grid)]
-            # issue many tasks asynchronously to the process pool
-            _ = pool.starmap_async(geeic2geotiff, args)
-            # close the pool
-            pool.close()
-            # wait for all issued tasks to complete
-            pool.join()
-
-    # Geotiff from tiles
-    geotiff_from_tiles(crop_to_aoi, extent, output_file)
+    # Run common pipeline
+    _run_fcc_pipeline(aoi, buff, tile_size, forest,
+                      crop_to_aoi, parallel, ncpu, output_file)
 
 # End
