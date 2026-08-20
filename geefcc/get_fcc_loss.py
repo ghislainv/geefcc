@@ -8,7 +8,7 @@ from ._run_fcc import _run_fcc_pipeline
 def get_fcc_loss(
         aoi,
         buff=0,
-        years=[2000, 2010, 2020],
+        years=None,
         source="tmf",
         perc=75,
         tile_size=1,
@@ -57,7 +57,7 @@ def get_fcc_loss(
         Number of CPUs to use for parallel computing. If ``None``, it
         will be set to the number of cores on the computer minus one.
         Default is ``None``.
-    output_file : str, optional
+    output_file : str or Path, optional
         Path to output GeoTIFF file. If directories in the path do not
         exist, they will be created. Default is ``"fcc.tif"``.
 
@@ -126,6 +126,10 @@ def get_fcc_loss(
     ...     output_file="output/fcc_extent.tif"
     ... )
     """
+
+    # Default years
+    if years is None:
+        years = [2000, 2010, 2020]
 
     # Forest image collection
     if source == "tmf":
