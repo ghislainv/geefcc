@@ -45,7 +45,8 @@ def test_get_fcc_loss_gain_extent_tmf():
     """
     gf.get_fcc_loss_gain(
         # Extent for Singapore
-        aoi=(103.6, 1.15, 104.1, 1.48),
+        aoi=(103.6090549999999979, 1.1663900010000201,
+             104.0858000000000061, 1.4713880000001001),
         buff=0,
         year1=2010,
         year2=2020,
