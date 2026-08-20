@@ -111,7 +111,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">get_fcc_loss</span><span class="p">(</span>
         <span class="n">aoi</span><span class="p">,</span>
         <span class="n">buff</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">years</span><span class="o">=</span><span class="p">[</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">2010</span><span class="p">,</span> <span class="mi">2020</span><span class="p">],</span>
+        <span class="n">years</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">source</span><span class="o">=</span><span class="s2">"tmf"</span><span class="p">,</span>
         <span class="n">perc</span><span class="o">=</span><span class="mi">75</span><span class="p">,</span>
         <span class="n">tile_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
@@ -160,7 +160,7 @@
 <span class="sd">        Number of CPUs to use for parallel computing. If ``None``, it</span>
 <span class="sd">        will be set to the number of cores on the computer minus one.</span>
 <span class="sd">        Default is ``None``.</span>
-<span class="sd">    output_file : str, optional</span>
+<span class="sd">    output_file : str or Path, optional</span>
 <span class="sd">        Path to output GeoTIFF file. If directories in the path do not</span>
 <span class="sd">        exist, they will be created. Default is ``"fcc.tif"``.</span>
 
@@ -229,6 +229,10 @@
 <span class="sd">    ...     output_file="output/fcc_extent.tif"</span>
 <span class="sd">    ... )</span>
 <span class="sd">    """</span>
+
+    <span class="c1"># Default years</span>
+    <span class="k">if</span> <span class="n">years</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">years</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">2010</span><span class="p">,</span> <span class="mi">2020</span><span class="p">]</span>
 
     <span class="c1"># Forest image collection</span>
     <span class="k">if</span> <span class="n">source</span> <span class="o">==</span> <span class="s2">"tmf"</span><span class="p">:</span>
