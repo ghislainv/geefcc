@@ -1,7 +1,6 @@
-"""Test for gee_fcc()."""
+"""Test for get_fcc_loss()."""
 
-# Import
-import os
+from pathlib import Path
 
 import geefcc as gf
 
@@ -17,6 +16,9 @@ gf.ee_initialize(
     token_name="EARTHENGINE_TOKEN",
     project="deforisk",
     opt_url="https://earthengine-highvolume.googleapis.com")
+
+# Directory of this test file
+TEST_DIR = Path(__file__).parent
 
 
 def test_get_fcc_extent_tmf():
@@ -55,9 +57,9 @@ def test_get_fcc_extent_tmf():
         years=[2000, 2010, 2020],
         source="tmf",
         tile_size=0.5,
-        output_file="out_tmf/fcc_tmf.tif",
+        output_file=TEST_DIR / "out_tmf/fcc_tmf.tif",
     )
-    assert os.path.isfile("out_tmf/fcc_tmf.tif")
+    assert (TEST_DIR / "out_tmf/fcc_tmf.tif").is_file()
 
 
 def test_get_fcc_extent_gfc():
@@ -98,8 +100,8 @@ def test_get_fcc_extent_gfc():
         source="gfc",
         perc=50,
         tile_size=0.5,
-        output_file="out_gfc_50/fcc_gfc_50.tif",
+        output_file=TEST_DIR / "out_gfc_50/fcc_gfc_50.tif",
     )
-    assert os.path.isfile("out_gfc_50/fcc_gfc_50.tif")
+    assert (TEST_DIR / "out_gfc_50/fcc_gfc_50.tif").is_file()
 
 # End

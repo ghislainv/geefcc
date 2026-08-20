@@ -1,6 +1,7 @@
 """Test for get_fcc_loss_gain()."""
 
 import os
+from pathlib import Path
 
 import geefcc as gf
 
@@ -11,6 +12,9 @@ gf.ee_initialize(
     token_name="EARTHENGINE_TOKEN",
     project="deforisk",
     opt_url="https://earthengine-highvolume.googleapis.com")
+
+# Directory of this test file
+TEST_DIR = Path(__file__).parent
 
 
 def test_get_fcc_loss_gain_extent_tmf():
@@ -91,15 +95,15 @@ def test_get_fcc_loss_gain_gpkg_crop_to_aoi():
     >>> test_get_fcc_loss_gain_gpkg_crop_to_aoi()
     """
     gf.get_fcc_loss_gain(
-        aoi="data/gadm41_SGP_0.gpkg",
+        aoi=TEST_DIR / "data/gadm41_SGP_0.gpkg",
         buff=0,
         year1=2010,
         year2=2020,
         min_years=10,
         tile_size=0.5,
         crop_to_aoi=True,
-        output_file="out_tmf_loss_gain_crop/fcc_tmf.tif",
+        output_file=TEST_DIR / "out_tmf_loss_gain_crop/fcc_tmf.tif",
     )
-    assert os.path.isfile("out_tmf_loss_gain_crop/fcc_tmf.tif")
+    assert (TEST_DIR / "out_tmf_loss_gain_crop/fcc_tmf.tif").is_file()
 
 # End
