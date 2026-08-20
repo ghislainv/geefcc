@@ -1,16 +1,33 @@
 Changelog
 *********
 
-geefcc 0.1.8 (dev)
-==================
+geefcc 0.2.0
+============
 
-* This version includes forest gain in addition to forest loss when
-  deriving the forest cover change map.
-* Function `get_fcc` is deprecated and has been replaced by `get_fcc_loss`.
-* Function `get_fcc_loss_gain` has been added.
-* Use Numpy style for docstrings when documenting functions
-* Changes: https://github.com/ghislainv/geefcc/compare/v0.1.7...v0.1.8
+* This version includes **forest gain** in addition to **forest loss**
+  when deriving the forest cover change map.
+* Function ``get_fcc`` is deprecated and has been replaced by ``get_fcc_loss``.
+* Function ``get_fcc_loss_gain`` has been added.
+* Use Numpy style for docstrings when documenting functions.
+* Code refactoring:
 
+  * **Common pipeline** extracted into ``_run_fcc.py``.
+  * **Bug fix**: ``if`` → ``elif/else`` in ``get_fcc_loss``.
+  * **Atomic download** implemented in ``download_gadm``.
+  * **AOI coordinate validation** added in ``get_extent_from_aoi``.
+  * **Retry logic** using ``tenacity`` in ``geeic2geotiff``.
+  * **Explicit OGR resource closing** in ``get_vector_extent``.
+  * **Mutable default argument fix**: ``years=None`` in ``get_fcc_loss``.
+  * **Modernisation**: ``pathlib.Path`` used throughout, with ``str()``
+    conversion for GDAL/OGR calls.
+  * **Tests**:
+
+    * ``test_validation.py``: tests without GEE (AOI validation, argument
+      checking).
+    * ``test_get_fcc_loss_gain.py``: tests with GEE on Singapore.
+
+* Changes: https://github.com/ghislainv/geefcc/compare/v0.1.7...v0.2.0
+  
 geefcc 0.1.7
 ============
 
