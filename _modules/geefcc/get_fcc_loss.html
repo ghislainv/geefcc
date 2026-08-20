@@ -101,19 +101,9 @@
   <h1>Source code for geefcc.get_fcc_loss</h1><div class="highlight"><pre>
 <span></span><span class="sd">"""Get forest cover change data."""</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">multiprocess</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mp</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">.get_extent_from_aoi</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_extent_from_aoi</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.misc</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_dir</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.make_grid</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_grid</span><span class="p">,</span> <span class="n">grid_intersection</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.geeic2geotiff</span><span class="w"> </span><span class="kn">import</span> <span class="n">geeic2geotiff</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.geotiff_from_tiles</span><span class="w"> </span><span class="kn">import</span> <span class="n">geotiff_from_tiles</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.ee_tmf</span><span class="w"> </span><span class="kn">import</span> <span class="n">ee_tmf</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.ee_gfc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ee_gfc</span>
-
-<span class="n">opj</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span>
-<span class="n">opd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._run_fcc</span><span class="w"> </span><span class="kn">import</span> <span class="n">_run_fcc_pipeline</span>
 
 
 <div class="viewcode-block" id="get_fcc_loss">
@@ -240,75 +230,17 @@
 <span class="sd">    ... )</span>
 <span class="sd">    """</span>
 
-    <span class="c1"># Output dir</span>
-    <span class="n">out_dir</span> <span class="o">=</span> <span class="n">opd</span><span class="p">(</span><span class="n">output_file</span><span class="p">)</span>
-    <span class="n">make_dir</span><span class="p">(</span><span class="n">out_dir</span><span class="p">)</span>
-
-    <span class="c1"># Variables</span>
-    <span class="n">proj</span> <span class="o">=</span> <span class="s2">"EPSG:4326"</span>
-    <span class="n">epsg_code</span> <span class="o">=</span> <span class="mi">4326</span>
-    <span class="n">scale</span> <span class="o">=</span> <span class="mf">0.000269494585235856472</span>  <span class="c1"># in dd, ~30 m</span>
-
-    <span class="c1"># Get aoi</span>
-    <span class="n">extent</span> <span class="o">=</span> <span class="n">get_extent_from_aoi</span><span class="p">(</span><span class="n">aoi</span><span class="p">,</span> <span class="n">buff</span><span class="p">,</span> <span class="n">out_dir</span><span class="p">)</span>
-    <span class="n">aoi_isfile</span> <span class="o">=</span> <span class="n">extent</span><span class="p">[</span><span class="s2">"aoi_isfile"</span><span class="p">]</span>
-    <span class="n">borders_gpkg</span> <span class="o">=</span> <span class="n">extent</span><span class="p">[</span><span class="s2">"borders_gpkg"</span><span class="p">]</span>
-    <span class="n">extent_latlong</span> <span class="o">=</span> <span class="n">extent</span><span class="p">[</span><span class="s2">"extent_latlong"</span><span class="p">]</span>
-
-    <span class="c1"># Make minimal grid</span>
-    <span class="n">grid_gpkg</span> <span class="o">=</span> <span class="n">opj</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">"grid.gpkg"</span><span class="p">)</span>
-    <span class="n">grid</span> <span class="o">=</span> <span class="n">make_grid</span><span class="p">(</span><span class="n">extent_latlong</span><span class="p">,</span> <span class="n">buff</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tile_size</span><span class="o">=</span><span class="n">tile_size</span><span class="p">,</span>
-                     <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span> <span class="n">proj</span><span class="o">=</span><span class="n">epsg_code</span><span class="p">,</span> <span class="n">ofile</span><span class="o">=</span><span class="n">grid_gpkg</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">aoi_isfile</span><span class="p">:</span>
-        <span class="n">min_grid</span> <span class="o">=</span> <span class="n">opj</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">"min_grid.gpkg"</span><span class="p">)</span>
-        <span class="n">grid_i</span> <span class="o">=</span> <span class="n">grid_intersection</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">grid_gpkg</span><span class="p">,</span> <span class="n">min_grid</span><span class="p">,</span>
-                                   <span class="n">borders_gpkg</span><span class="p">)</span>
-        <span class="c1"># Update grid and file</span>
-        <span class="n">grid</span> <span class="o">=</span> <span class="n">grid_i</span>
-        <span class="n">grid_gpkg</span> <span class="o">=</span> <span class="n">min_grid</span>
-
-    <span class="c1"># Number of tiles</span>
-    <span class="n">ntiles</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
-
     <span class="c1"># Forest image collection</span>
     <span class="k">if</span> <span class="n">source</span> <span class="o">==</span> <span class="s2">"tmf"</span><span class="p">:</span>
         <span class="n">forest</span> <span class="o">=</span> <span class="n">ee_tmf</span><span class="p">(</span><span class="n">years</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">source</span> <span class="o">==</span> <span class="s2">"gfc"</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">source</span> <span class="o">==</span> <span class="s2">"gfc"</span><span class="p">:</span>
         <span class="n">forest</span> <span class="o">=</span> <span class="n">ee_gfc</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">perc</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"source must be 'tmf' or 'gfc', got '</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
 
-    <span class="c1"># Create dir for forest tiles</span>
-    <span class="n">out_dir_tiles</span> <span class="o">=</span> <span class="n">opj</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">"forest_tiles"</span><span class="p">)</span>
-    <span class="n">make_dir</span><span class="p">(</span><span class="n">out_dir_tiles</span><span class="p">)</span>
-
-    <span class="c1"># Message</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"get_fcc running, </span><span class="si">{</span><span class="n">ntiles</span><span class="si">}</span><span class="s2"> tiles ."</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="c1"># Sequential computing</span>
-    <span class="k">if</span> <span class="n">parallel</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-        <span class="c1"># Loop on tiles</span>
-        <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
-            <span class="n">geeic2geotiff</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">ext</span><span class="p">,</span> <span class="n">ntiles</span><span class="p">,</span> <span class="n">forest</span><span class="p">,</span> <span class="n">proj</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">out_dir_tiles</span><span class="p">)</span>
-
-    <span class="c1"># Parallel computing</span>
-    <span class="k">if</span> <span class="n">parallel</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="c1"># Write tiles in parallel</span>
-        <span class="c1"># https://superfastpython.com/multiprocessing-pool-starmap_async/</span>
-        <span class="c1"># create and configure the process pool</span>
-        <span class="k">if</span> <span class="n">ncpu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">ncpu</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span>
-        <span class="k">with</span> <span class="n">mp</span><span class="o">.</span><span class="n">Pool</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span><span class="n">ncpu</span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
-            <span class="c1"># prepare arguments</span>
-            <span class="n">args</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">ext</span><span class="p">,</span> <span class="n">ntiles</span><span class="p">,</span> <span class="n">forest</span><span class="p">,</span> <span class="n">proj</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">out_dir_tiles</span><span class="p">)</span>
-                    <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">grid</span><span class="p">)]</span>
-            <span class="c1"># issue many tasks asynchronously to the process pool</span>
-            <span class="n">_</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">starmap_async</span><span class="p">(</span><span class="n">geeic2geotiff</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
-            <span class="c1"># close the pool</span>
-            <span class="n">pool</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-            <span class="c1"># wait for all issued tasks to complete</span>
-            <span class="n">pool</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
-
-    <span class="c1"># Geotiff from tiles</span>
-    <span class="n">geotiff_from_tiles</span><span class="p">(</span><span class="n">crop_to_aoi</span><span class="p">,</span> <span class="n">extent</span><span class="p">,</span> <span class="n">output_file</span><span class="p">)</span></div>
+    <span class="c1"># Run common pipeline</span>
+    <span class="n">_run_fcc_pipeline</span><span class="p">(</span><span class="n">aoi</span><span class="p">,</span> <span class="n">buff</span><span class="p">,</span> <span class="n">tile_size</span><span class="p">,</span> <span class="n">forest</span><span class="p">,</span>
+                      <span class="n">crop_to_aoi</span><span class="p">,</span> <span class="n">parallel</span><span class="p">,</span> <span class="n">ncpu</span><span class="p">,</span> <span class="n">output_file</span><span class="p">)</span></div>
 
 
 <span class="c1"># End</span>
