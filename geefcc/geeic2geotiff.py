@@ -6,6 +6,7 @@ https://gist.github.com/GerardoLopez/35123d4a15aa31f3ea4b01efb5b26d4d
 
 import os
 import sys
+from tenacity import retry, stop_after_attempt, wait_exponential
 
 from osgeo import gdal, osr, gdal_array
 import shapely
@@ -330,6 +331,7 @@ def xarray2geotiff(xarray, data_var, out_dir, index):
     del dst_ds
 
 
+@retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1))
 def geeic2geotiff(index, extent, ntiles, forest,
                   proj, scale, out_dir, verbose=True):
     """Write a Google Earth Engine image collection tile to a GeoTIFF file.
