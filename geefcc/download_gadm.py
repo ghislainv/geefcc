@@ -2,7 +2,7 @@
 
 import os
 from urllib.request import urlretrieve
-
+import tempfile, shutil
 
 def download_gadm(iso3, output_file):
     """Download GADM data for a country.
@@ -50,12 +50,15 @@ def download_gadm(iso3, output_file):
 
     """
 
-    # Check for existing file
     if not os.path.isfile(output_file):
-
-        # Download the file from gadm.org
         url = ("https://geodata.ucdavis.edu/gadm/gadm4.1/"
                f"gpkg/gadm41_{iso3}.gpkg")
-        urlretrieve(url, output_file)
+        with tempfile.NamedTemporaryFile(delete=False) as tmp:
+            try:
+                urlretrieve(url, tmp.name)
+                shutil.move(tmp.name, output_file)
+            except Exception:
+                os.unlink(tmp.name)
+                raise
 
 # End
