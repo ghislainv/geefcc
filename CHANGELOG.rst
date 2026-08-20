@@ -1,7 +1,7 @@
 Changelog
 *********
 
-geefcc 0.2.0
+geefcc 0.2.1
 ============
 
 * This version includes **forest gain** in addition to **forest loss**
@@ -26,7 +26,7 @@ geefcc 0.2.0
       checking).
     * ``test_get_fcc_loss_gain.py``: tests with GEE on Singapore.
 
-* Changes: https://github.com/ghislainv/geefcc/compare/v0.1.7...v0.2.0
+* Changes: https://github.com/ghislainv/geefcc/compare/v0.1.7...v0.2.1
   
 geefcc 0.1.7
 ============
