@@ -132,8 +132,9 @@ def get_extent_from_aoi(aoi, buff, out_dir):
         else:
             extent_latlong = aoi
 
-    # aoi = gpkg file
-    elif Path(aoi).is_file() and Path(aoi).suffix == ".gpkg":
+    # aoi = gpkg file (only check Path compatibility for str/Path types)
+    elif isinstance(aoi, (str, Path)) and Path(aoi).is_file() \
+            and Path(aoi).suffix == ".gpkg":
         aoi = Path(aoi)
         if buff > 0:
             buff_file = out_dir / "borders_buffer.gpkg"
