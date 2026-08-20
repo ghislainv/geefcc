@@ -111,156 +111,353 @@
 <dt class="sig sig-object py" id="geefcc.get_fcc_loss">
 <span class="sig-name descname"><span class="pre">get_fcc_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aoi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2000,</span> <span class="pre">2010,</span> <span class="pre">2020]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tmf'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">75</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tile_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crop_to_aoi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncpu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fcc.tif'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geefcc/get_fcc_loss.html#get_fcc_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geefcc.get_fcc_loss" title="Link to this definition">¶</a></dt>
 <dd><p>Get forest cover change data.</p>
-<blockquote>
-<div><p>Produce a forest cover change raster file. One band for each
+<p>Produce a forest cover change raster file. One band for each
 year. Value 1 for forest and 0 for non-forest.</p>
-</div></blockquote>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><a class="reference internal" href="#geefcc.get_fcc_loss" title="geefcc.get_fcc_loss"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_fcc_loss()</span></code></a> returns a multiband raster and can
-be used to produce deforestation maps between several dates. In
-this case, only old-growth forest (which was forest at the
-beginning of the satellite image archive) is considered.</p>
-<p><a class="reference internal" href="#geefcc.get_fcc_loss" title="geefcc.get_fcc_loss"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_fcc_loss()</span></code></a> can be used with either the
-Tropical Moist Forest or the Global Forest Change product.</p>
-</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>aoi</strong> – Area of interest defined either by a country iso code
-(three letters), a vector file, or an extent in lat/long
-(tuple with (xmin, ymin, xmax, ymax)).</p></li>
-<li><p><strong>buff</strong> – Buffer around the aoi. In decimal degrees
-(e.g. 0.08983152841195216 correspond to ~10 km at the
-equator).</p></li>
-<li><p><strong>years</strong> – List of years defining time-periods for estimating
-forest cover change. Years for computing forest cover change
-can be in the interval 2001–2024 for GFC (GFC does not
-provide loss for the year 2000) and 2000–2024 for TMF.</p></li>
-<li><p><strong>source</strong> – Either “gfc” for Global Forest Change or “tmf” for
-Tropical Moist Forest. If “gfc”, the tree cover threshold
-defining the forest must be specified with parameter <code class="docutils literal notranslate"><span class="pre">perc</span></code>.</p></li>
-<li><p><strong>perc</strong> – Tree cover threshold defining the forest for GFC
-product.</p></li>
-<li><p><strong>tile_size</strong> – Tile size for parallel computing.</p></li>
-<li><p><strong>crop_to_aoi</strong> – Crop the raster GeoTIFF file to <strong>aoi with
-buffer</strong>. If <code class="docutils literal notranslate"><span class="pre">False</span></code>, the output file will match the
-<strong>grid</strong> covering the aoi with buffer.</p></li>
-<li><p><strong>parallel</strong> – Logical. Parallel (if <code class="docutils literal notranslate"><span class="pre">True</span></code>) or sequential (if
-<code class="docutils literal notranslate"><span class="pre">False</span></code>) computing. Default to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-<li><p><strong>ncpu</strong> – Number of CPU to use for parallel computing. If None,
-it will be set to the number of cores on the computer minus
-one.</p></li>
-<li><p><strong>output_file</strong> – Path to output GeoTIFF file. If directories in
-path do not exist they will be created.</p></li>
+<li><p><strong>aoi</strong> (<em>str</em><em> or </em><em>tuple</em>) – Area of interest defined either by a country iso code
+(three letters), a vector file path, or an extent in lat/long
+as a tuple with (xmin, ymin, xmax, ymax).</p></li>
+<li><p><strong>buff</strong> (<em>float</em><em>, </em><em>optional</em>) – Buffer around the aoi in decimal degrees. For example,
+0.08983152841195216 corresponds to approximately 10 km at the
+equator. Default is 0.</p></li>
+<li><p><strong>years</strong> (<em>list</em><em> of </em><em>int</em><em>, </em><em>optional</em>) – List of years defining time-periods for estimating forest cover
+change. Years for computing forest cover change can be in the
+interval 2001–2024 for GFC (GFC does not provide loss for the
+year 2000) and 2000–2024 for TMF. Default is [2000, 2010, 2020].</p></li>
+<li><p><strong>source</strong> (<em>{&quot;tmf&quot;</em><em>, </em><em>&quot;gfc&quot;}</em><em>, </em><em>optional</em>) – Source of forest cover data. Either <code class="docutils literal notranslate"><span class="pre">&quot;gfc&quot;</span></code> for Global Forest
+Change or <code class="docutils literal notranslate"><span class="pre">&quot;tmf&quot;</span></code> for Tropical Moist Forest. If <code class="docutils literal notranslate"><span class="pre">&quot;gfc&quot;</span></code>,
+the tree cover threshold defining the forest must be specified
+with parameter <code class="docutils literal notranslate"><span class="pre">perc</span></code>. Default is <code class="docutils literal notranslate"><span class="pre">&quot;tmf&quot;</span></code>.</p></li>
+<li><p><strong>perc</strong> (<em>int</em><em>, </em><em>optional</em>) – Tree cover threshold (percentage) defining the forest for the
+GFC product. Default is 75.</p></li>
+<li><p><strong>tile_size</strong> (<em>int</em><em> or </em><em>float</em><em>, </em><em>optional</em>) – Tile size in degrees for parallel computing. Default is 1.</p></li>
+<li><p><strong>crop_to_aoi</strong> (<em>bool</em><em>, </em><em>optional</em>) – Crop the raster GeoTIFF file to the aoi with buffer. If
+<code class="docutils literal notranslate"><span class="pre">False</span></code>, the output file will match the grid covering the aoi
+with buffer. Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>parallel</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, use parallel computing. If <code class="docutils literal notranslate"><span class="pre">False</span></code>, use
+sequential computing. Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>ncpu</strong> (<em>int</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Number of CPUs to use for parallel computing. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, it
+will be set to the number of cores on the computer minus one.
+Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>output_file</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to output GeoTIFF file. If directories in the path do not
+exist, they will be created. Default is <code class="docutils literal notranslate"><span class="pre">&quot;fcc.tif&quot;</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The function writes the forest cover change raster directly to
+<code class="docutils literal notranslate"><span class="pre">output_file</span></code> on disk. No Python object is returned.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">source</span></code> is not one of <code class="docutils literal notranslate"><span class="pre">&quot;tmf&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;gfc&quot;</span></code>, or if the
+    specified <code class="docutils literal notranslate"><span class="pre">years</span></code> are outside the valid range for the chosen
+    source.</p></li>
+<li><p><strong>OSError</strong> – If the output directory cannot be created or the output file
+    cannot be written.</p></li>
 </ul>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p><code class="docutils literal notranslate"><span class="pre">get_fcc_loss</span></code> returns a multiband raster and can be used to
+produce deforestation maps between several dates. In this case,
+only old-growth forest (which was forest at the beginning of the
+satellite image archive) is considered.</p>
+<p><code class="docutils literal notranslate"><span class="pre">get_fcc_loss</span></code> can be used with either the Tropical Moist Forest
+(TMF) or the Global Forest Change (GFC) product.</p>
+<p>The output raster uses the <code class="docutils literal notranslate"><span class="pre">EPSG:4326</span></code> projection at approximately
+30 m resolution (~0.000269 decimal degrees per pixel).</p>
+<p class="rubric">Examples</p>
+<p>Get forest cover change using the TMF product for a country defined
+by its ISO3 code:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">get_fcc_loss</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">aoi</span><span class="o">=</span><span class="s2">"BRA"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">buff</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">years</span><span class="o">=</span><span class="p">[</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">2010</span><span class="p">,</span> <span class="mi">2020</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">source</span><span class="o">=</span><span class="s2">"tmf"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">output_file</span><span class="o">=</span><span class="s2">"output/fcc_brazil.tif"</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Get forest cover change using the GFC product with a custom tree
+cover threshold:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">get_fcc_loss</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">aoi</span><span class="o">=</span><span class="s2">"COD"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">years</span><span class="o">=</span><span class="p">[</span><span class="mi">2001</span><span class="p">,</span> <span class="mi">2015</span><span class="p">,</span> <span class="mi">2024</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">source</span><span class="o">=</span><span class="s2">"gfc"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">perc</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">output_file</span><span class="o">=</span><span class="s2">"output/fcc_cod.tif"</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Get forest cover change using a bounding box extent and parallel
+computing:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">get_fcc_loss</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">aoi</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">55.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">15.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">45.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.0</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">years</span><span class="o">=</span><span class="p">[</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">2020</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">source</span><span class="o">=</span><span class="s2">"tmf"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">ncpu</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">output_file</span><span class="o">=</span><span class="s2">"output/fcc_extent.tif"</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="geefcc.get_fcc_loss_gain">
 <span class="sig-name descname"><span class="pre">get_fcc_loss_gain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aoi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2005</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2025</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tile_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crop_to_aoi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncpu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fcc.tif'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geefcc/get_fcc_loss_gain.html#get_fcc_loss_gain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geefcc.get_fcc_loss_gain" title="Link to this definition">¶</a></dt>
 <dd><p>Get forest cover change data.</p>
-<p>Produce a forest cover change raster file.</p>
+<p>Produce a forest cover change raster file with loss and gain.</p>
 <p>Recodes forest/tree cover change products into 6 transition
 classes between two reference years, distinguishing old regrowth
 (continuously classified as regrowth for at least <cite>min_years</cite>)
 from young regrowth / non-forest.</p>
-<dl class="simple">
-<dt>Transition classes:</dt><dd><ol class="arabic simple">
-<li><p>F to F – stable forest (undisturbed or degraded at both dates)</p></li>
-<li><p>F to D – deforestation (includes young regrowth at year2)</p></li>
-<li><p>D to oR – non-forest / young regrowth becoming old regrowth</p></li>
-<li><p>F to oR (via D) – forest cleared then regrown to old regrowth
+<p>Transition classes:</p>
+<ul class="simple">
+<li><p>1 = F to F – stable forest (undisturbed or degraded at both dates)</p></li>
+<li><p>2 = F to D – deforestation (includes young regrowth at year2)</p></li>
+<li><p>3 = D to oR – non-forest / young regrowth becoming old regrowth</p></li>
+<li><p>4 = F to oR (via D) – forest cleared then regrown to old regrowth
 within the window</p></li>
-<li><p>oR to oR – stable old regrowth</p></li>
-<li><p>oR to D – old regrowth deforested, or fallen back below
-<cite>min_years</cite> of continuous regrowth</p></li>
-</ol>
-</dd>
-</dl>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><a class="reference internal" href="#geefcc.get_fcc_loss_gain" title="geefcc.get_fcc_loss_gain"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_fcc_loss_gain()</span></code></a> returns a one-band raster with
-forest cover change (loss and gain) between two dates. In this
-case, both old-growth forest and old regrowth (following
-deforestation) are considered as forest at one point in time
-and can be deforested during the period of time. The user can
-differentiate the results between the different states and
-changes and make appropriate choices to estimate deforestation
-and regrowth rates.</p>
-<p><a class="reference internal" href="#geefcc.get_fcc_loss_gain" title="geefcc.get_fcc_loss_gain"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_fcc_loss_gain()</span></code></a> can only be used with the Tropical
-Moist Forest product. The Global Forest Change product does not
-provide annual forest gain.</p>
-</div>
+<li><p>5 = oR to oR – stable old regrowth</p></li>
+<li><p>6 = oR to D – old regrowth deforested, or fallen back below <cite>min_years</cite>
+of continuous regrowth</p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>aoi</strong> – Area of interest defined either by a country iso code
-(three letters), a vector file, or an extent in lat/long
-(tuple with (xmin, ymin, xmax, ymax)).</p></li>
-<li><p><strong>buff</strong> – Buffer around the aoi. In decimal degrees
-(e.g. 0.08983152841195216 correspond to ~10 km at the
-equator).</p></li>
-<li><p><strong>year1</strong> – Start year (state assessed on 1st of January).</p></li>
-<li><p><strong>year2</strong> – End year (state assessed on 1st of January).
-Must be greater than year1.</p></li>
-<li><p><strong>min_years</strong> – Minimum number of consecutive years classified as
-regrowth to be considered “old regrowth” (oR). Default 10.</p></li>
-<li><p><strong>tile_size</strong> – Tile size for parallel computing.</p></li>
-<li><p><strong>crop_to_aoi</strong> – Crop the raster GeoTIFF file to <strong>aoi with
-buffer</strong>. If <code class="docutils literal notranslate"><span class="pre">False</span></code>, the output file will match the
-<strong>grid</strong> covering the aoi with buffer.</p></li>
-<li><p><strong>parallel</strong> – Logical. Parallel (if <code class="docutils literal notranslate"><span class="pre">True</span></code>) or sequential (if
-<code class="docutils literal notranslate"><span class="pre">False</span></code>) computing. Default to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-<li><p><strong>ncpu</strong> – Number of CPU to use for parallel computing. If None,
-it will be set to the number of cores on the computer minus
-one.</p></li>
-<li><p><strong>output_file</strong> – Path to output GeoTIFF file. If directories in
-path do not exist they will be created.</p></li>
+<li><p><strong>aoi</strong> (<em>str</em><em> or </em><em>tuple</em>) – Area of interest defined either by a country iso code
+(three letters), a vector file path, or an extent in lat/long
+as a tuple with <code class="docutils literal notranslate"><span class="pre">(xmin,</span> <span class="pre">ymin,</span> <span class="pre">xmax,</span> <span class="pre">ymax)</span></code>.</p></li>
+<li><p><strong>buff</strong> (<em>float</em><em>, </em><em>optional</em>) – Buffer around the aoi in decimal degrees. For example,
+<code class="docutils literal notranslate"><span class="pre">0.08983152841195216</span></code> corresponds to approximately 10 km at
+the equator. Default is <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+<li><p><strong>year1</strong> (<em>int</em><em>, </em><em>optional</em>) – Start year. State is assessed on the 1st of January of this
+year. Default is <code class="docutils literal notranslate"><span class="pre">2005</span></code>.</p></li>
+<li><p><strong>year2</strong> (<em>int</em><em>, </em><em>optional</em>) – End year. State is assessed on the 1st of January of this
+year. Must be greater than <cite>year1</cite>. Default is <code class="docutils literal notranslate"><span class="pre">2025</span></code>.</p></li>
+<li><p><strong>min_years</strong> (<em>int</em><em>, </em><em>optional</em>) – Minimum number of consecutive years classified as regrowth to
+be considered “old regrowth” (oR). Default is <code class="docutils literal notranslate"><span class="pre">10</span></code>.</p></li>
+<li><p><strong>tile_size</strong> (<em>int</em><em> or </em><em>float</em><em>, </em><em>optional</em>) – Tile size used for parallel computing, in degrees. Default is
+<code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
+<li><p><strong>crop_to_aoi</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, crop the output raster GeoTIFF to the aoi with
+buffer. If <code class="docutils literal notranslate"><span class="pre">False</span></code>, the output file will match the grid
+covering the aoi with buffer. Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>parallel</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, use parallel computing. If <code class="docutils literal notranslate"><span class="pre">False</span></code>, use
+sequential computing. Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>ncpu</strong> (<em>int</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Number of CPUs to use for parallel computing. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, it
+will be set to the number of cores on the computer minus one.
+Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>output_file</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to the output GeoTIFF file. If directories in the path do
+not exist, they will be created. Default is <code class="docutils literal notranslate"><span class="pre">&quot;fcc.tif&quot;</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The function writes a single-band GeoTIFF raster to
+<cite>output_file</cite> containing forest cover change (loss and gain)
+between <cite>year1</cite> and <cite>year2</cite>. Pixel values correspond to the
+six transition classes described above.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If <cite>year2</cite> is not greater than <cite>year1</cite>.</p></li>
+<li><p><strong>FileNotFoundError</strong> – If <cite>aoi</cite> is specified as a file path and the file does not
+    exist.</p></li>
 </ul>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>This function returns a one-band raster with forest cover change
+(loss and gain) between two dates. Both old-growth forest and old
+regrowth (following deforestation) are considered as forest at one
+point in time and can be deforested during the period of time. The
+user can differentiate the results between the different states and
+changes and make appropriate choices to estimate deforestation and
+regrowth rates.</p>
+<p>This function can only be used with the Tropical Moist Forest
+product. The Global Forest Change product does not provide annual
+forest gain.</p>
+<p>The output raster uses the <code class="docutils literal notranslate"><span class="pre">EPSG:4326</span></code> coordinate reference
+system and a pixel resolution of approximately 30 m
+(<code class="docutils literal notranslate"><span class="pre">0.000269494585235856472</span></code> decimal degrees).</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">get_fcc_loss_gain</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">aoi</span><span class="o">=</span><span class="s2">"MDG"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">buff</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">year1</span><span class="o">=</span><span class="mi">2010</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">year2</span><span class="o">=</span><span class="mi">2020</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">min_years</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">tile_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">crop_to_aoi</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">parallel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">ncpu</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">output_file</span><span class="o">=</span><span class="s2">"output/fcc_madagascar.tif"</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">get_fcc_loss_gain</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">aoi</span><span class="o">=</span><span class="p">(</span><span class="mf">44.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">25.5</span><span class="p">,</span> <span class="mf">50.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">12.0</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">year1</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">year2</span><span class="o">=</span><span class="mi">2015</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">ncpu</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">output_file</span><span class="o">=</span><span class="s2">"output/fcc_custom_extent.tif"</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <section id="utilities">
 <h1>Utilities<a class="headerlink" href="#utilities" title="Link to this heading">¶</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="geefcc.sum_raster_bands">
-<span class="sig-name descname"><span class="pre">sum_raster_bands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sum.tif'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blk_rows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geefcc/sum_raster_bands.html#sum_raster_bands"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geefcc.sum_raster_bands" title="Link to this definition">¶</a></dt>
-<dd><p>Summing the raster bands.</p>
+<dt class="sig sig-object py" id="geefcc.ee_initialize">
+<span class="sig-name descname"><span class="pre">ee_initialize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geefcc/ee_initialize.html#ee_initialize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geefcc.ee_initialize" title="Link to this definition">¶</a></dt>
+<dd><p>Initialize Google Earth Engine (GEE).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>file</strong> (<em>input</em>) – Input file with several bands.</p></li>
-<li><p><strong>output_file</strong> – Output file with one band corresponding to the
-sum of the input bands.</p></li>
-<li><p><strong>blk_rows</strong> – Number of rows for block. This is used to break
-lage raster files in several blocks of data that can be hold
-in memory.</p></li>
-<li><p><strong>verbose</strong> – Logical. Whether to print messages or not.</p></li>
+<li><p><strong>token_name</strong> (<em>str</em>) – The name of the environment variable containing the Earth Engine
+authentication token.</p></li>
+<li><p><strong>project</strong> (<em>str</em>) – Name of the Google Cloud project to use with Earth Engine.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – Additional keyword arguments passed to <code class="docutils literal notranslate"><span class="pre">ee.Initialize()</span></code>. For
+example, <code class="docutils literal notranslate"><span class="pre">opt_url='https://earthengine-highvolume.googleapis.com'</span></code>
+to use the Earth Engine High-Volume platform.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function initializes the Earth Engine session in place and
+does not return a value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>KeyError</strong> – If the environment variable specified by <code class="docutils literal notranslate"><span class="pre">token_name</span></code> is not set
+    or cannot be found.</p></li>
+<li><p><strong>json.JSONDecodeError</strong> – If the token value is a JSON-like string but cannot be parsed as
+    valid JSON.</p></li>
+<li><p><strong>ee.EEException</strong> – If Earth Engine initialization fails due to invalid credentials or
+    project configuration.</p></li>
 </ul>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>The function reads the authentication token from the environment variable
+specified by <code class="docutils literal notranslate"><span class="pre">token_name</span></code>. If the Earth Engine credentials file does
+not already exist at <code class="docutils literal notranslate"><span class="pre">~/.config/earthengine/credentials</span></code>, it will be
+created automatically.</p>
+<p>Two token formats are supported:</p>
+<ul class="simple">
+<li><p><strong>New format</strong> (<code class="docutils literal notranslate"><span class="pre">earthengine-api</span> <span class="pre">&gt;=</span> <span class="pre">0.1.304</span></code>): The token is a JSON
+string (starts and ends with <code class="docutils literal notranslate"><span class="pre">{</span></code> and <code class="docutils literal notranslate"><span class="pre">}</span></code>). The parsed dictionary
+is written directly to the credentials file.</p></li>
+<li><p><strong>Old format</strong>: The token is a refresh token string, which is wrapped
+in <code class="docutils literal notranslate"><span class="pre">{&quot;refresh_token&quot;:</span> <span class="pre">&quot;&lt;token&gt;&quot;}</span></code> before being written to the
+credentials file.</p></li>
+</ul>
+<p class="rubric">Examples</p>
+<p>Initialize Earth Engine using the default endpoint:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"MY_EE_TOKEN"</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'{"refresh_token": "my_token"}'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ee_initialize</span><span class="p">(</span><span class="n">token_name</span><span class="o">=</span><span class="s2">"MY_EE_TOKEN"</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="s2">"my-gcp-project"</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Initialize Earth Engine using the High-Volume endpoint:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ee_initialize</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">token_name</span><span class="o">=</span><span class="s2">"MY_EE_TOKEN"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">project</span><span class="o">=</span><span class="s2">"my-gcp-project"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">opt_url</span><span class="o">=</span><span class="s2">"https://earthengine-highvolume.googleapis.com"</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="geefcc.sum_raster_bands">
+<span class="sig-name descname"><span class="pre">sum_raster_bands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sum.tif'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blk_rows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geefcc/sum_raster_bands.html#sum_raster_bands"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geefcc.sum_raster_bands" title="Link to this definition">¶</a></dt>
+<dd><p>Sum the raster bands of a multi-band input file into a single
+output band.</p>
+<p>Reads the input raster file band by band in configurable block sizes to
+manage memory usage, computes the pixel-wise sum across all bands, and
+writes the result to a single-band GeoTIFF output file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_file</strong> (<em>str</em>) – Path to the input raster file containing several bands to be summed.</p></li>
+<li><p><strong>output_file</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to the output GeoTIFF file with one band corresponding to the
+sum of the input bands. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;sum.tif&quot;</span></code>.</p></li>
+<li><p><strong>blk_rows</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of rows per processing block. Used to break large raster files
+into several blocks of data that can be held in memory at one time.
+Defaults to <code class="docutils literal notranslate"><span class="pre">128</span></code>.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to print progress messages during processing. Defaults to
+<code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The function writes results directly to <code class="docutils literal notranslate"><span class="pre">output_file</span></code> and does not
+return a value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – If <code class="docutils literal notranslate"><span class="pre">input_file</span></code> cannot be opened by GDAL or if the output raster
+    cannot be created.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>The output raster is created with <code class="docutils literal notranslate"><span class="pre">gdal.GDT_Byte</span></code> data type, DEFLATE
+compression, and BIGTIFF support enabled.</p></li>
+<li><p>A NoData value of <code class="docutils literal notranslate"><span class="pre">255</span></code> is assigned to the output band.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">output_file</span></code> already exists, it will be removed before the new
+file is created.</p></li>
+<li><p>Band statistics are computed and flushed to disk after all blocks have
+been processed.</p></li>
+</ul>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sum_raster_bands</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">input_file</span><span class="o">=</span><span class="s2">"input_multiband.tif"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">output_file</span><span class="o">=</span><span class="s2">"sum.tif"</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">blk_rows</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="geefcc.make_dir">
 <span class="sig-name descname"><span class="pre">make_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">newdir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geefcc/misc/miscellaneous.html#make_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geefcc.make_dir" title="Link to this definition">¶</a></dt>
-<dd><p>Make new directory</p>
-<blockquote>
-<div><ul class="simple">
+<dd><p>Make new directory.</p>
+<p>Handles three cases:</p>
+<ul class="simple">
 <li><p>Already exists, silently complete</p></li>
 <li><p>Regular file in the way, raise an exception</p></li>
 <li><p>Parent directory(ies) does not exist, make them as well</p></li>
 </ul>
-</div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>newdir</strong> – Directory path to create.</p>
+<dd class="field-odd"><p><strong>newdir</strong> (<em>str</em>) – Directory path to create.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>OSError</strong> – If a file with the same name as the desired directory already exists.</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">make_dir</span><span class="p">(</span><span class="s2">"/tmp/new_directory"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">make_dir</span><span class="p">(</span><span class="s2">"/tmp/parent/child/grandchild"</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </section>

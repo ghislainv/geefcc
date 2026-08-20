@@ -113,14 +113,28 @@
 <div class="viewcode-block" id="make_dir">
 <a class="viewcode-back" href="../../../python_api/functions.html#geefcc.make_dir">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">make_dir</span><span class="p">(</span><span class="n">newdir</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Make new directory</span>
+<span class="w">    </span><span class="sd">"""Make new directory.</span>
 
-<span class="sd">        * Already exists, silently complete</span>
-<span class="sd">        * Regular file in the way, raise an exception</span>
-<span class="sd">        * Parent directory(ies) does not exist, make them as well</span>
+<span class="sd">    Handles three cases:</span>
 
-<span class="sd">    :param newdir: Directory path to create.</span>
+<span class="sd">    * Already exists, silently complete</span>
+<span class="sd">    * Regular file in the way, raise an exception</span>
+<span class="sd">    * Parent directory(ies) does not exist, make them as well</span>
 
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    newdir : str</span>
+<span class="sd">        Directory path to create.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    OSError</span>
+<span class="sd">        If a file with the same name as the desired directory already exists.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; make_dir("/tmp/new_directory")</span>
+<span class="sd">    &gt;&gt;&gt; make_dir("/tmp/parent/child/grandchild")</span>
 <span class="sd">    """</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">newdir</span><span class="p">):</span>
         <span class="k">pass</span>
@@ -149,15 +163,43 @@
 <span class="sd">    of a raster file and an indication on the number of rows to</span>
 <span class="sd">    consider.</span>
 
-<span class="sd">    :param rasterfile: Path to a raster file.</span>
-<span class="sd">    :param blk_rows: If &gt; 0, number of rows for block. If &lt;=0, the</span>
-<span class="sd">        block size will be 256 x 256.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rasterfile : str</span>
+<span class="sd">        Path to a raster file.</span>
+<span class="sd">    blk_rows : int, optional</span>
+<span class="sd">        If &gt; 0, number of rows for block. If &lt;= 0, the block size will</span>
+<span class="sd">        be 256 x 256. Default is 128.</span>
 
-<span class="sd">    :return: A tuple of length 6 including block number, block number</span>
-<span class="sd">        on x axis, block number on y axis, block offsets on x axis,</span>
-<span class="sd">        block offsets on y axis, block sizes on x axis, block sizes on</span>
-<span class="sd">        y axis.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    nblock : int</span>
+<span class="sd">        Total number of blocks.</span>
+<span class="sd">    nblock_x : int</span>
+<span class="sd">        Number of blocks on the x axis.</span>
+<span class="sd">    nblock_y : int</span>
+<span class="sd">        Number of blocks on the y axis.</span>
+<span class="sd">    x : list of int</span>
+<span class="sd">        Block offsets on the x axis (upper-left x coordinates of each block).</span>
+<span class="sd">    y : list of int</span>
+<span class="sd">        Block offsets on the y axis (upper-left y coordinates of each block).</span>
+<span class="sd">    nx : list of int</span>
+<span class="sd">        Block sizes (number of columns) on the x axis.</span>
+<span class="sd">    ny : list of int</span>
+<span class="sd">        Block sizes (number of rows) on the y axis.</span>
 
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The returned tuple has length 7 and contains block count information</span>
+<span class="sd">    alongside the offsets and sizes needed to iterate over all blocks</span>
+<span class="sd">    in a raster file.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; nblock, nblock_x, nblock_y, x, y, nx, ny = makeblock("raster.tif")</span>
+<span class="sd">    &gt;&gt;&gt; nblock, nblock_x, nblock_y, x, y, nx, ny = makeblock(</span>
+<span class="sd">    ...     "raster.tif", blk_rows=256</span>
+<span class="sd">    ... )</span>
 <span class="sd">    """</span>
 
     <span class="n">r</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">rasterfile</span><span class="p">)</span>
@@ -195,14 +237,32 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">progress_bar</span><span class="p">(</span><span class="n">niter</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Draw progress_bar</span>
+<span class="w">    </span><span class="sd">"""Draw progress bar.</span>
 
-<span class="sd">     See results of ``[(100 * i / niter) // 10 * 10 for i in</span>
-<span class="sd">     range(niter + 1)]`` to understand how it works.</span>
+<span class="sd">    Prints a simple text-based progress bar to standard output.</span>
+<span class="sd">    See results of ``[(100 * i / niter) // 10 * 10 for i in</span>
+<span class="sd">    range(niter + 1)]`` to understand how it works.</span>
 
-<span class="sd">    :param niter: Total number of iterations.</span>
-<span class="sd">    :param i: Current number of iteration (starts at 1).</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    niter : int</span>
+<span class="sd">        Total number of iterations.</span>
+<span class="sd">    i : int</span>
+<span class="sd">        Current number of iteration (starts at 1).</span>
 
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    When ``niter &gt;= 40``, the progress bar prints percentage markers</span>
+<span class="sd">    at every 10% and dot markers at every 2.5%. When ``niter &lt; 40``,</span>
+<span class="sd">    only 10% markers are printed. Output is flushed immediately to</span>
+<span class="sd">    support real-time display in terminals and notebooks.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; niter = 100</span>
+<span class="sd">    &gt;&gt;&gt; for i in range(1, niter + 1):</span>
+<span class="sd">    ...     progress_bar(niter, i)</span>
+<span class="sd">    geefcc: 0....10....20....30....40....50....60....70....80....90....100 - done</span>
 <span class="sd">    """</span>
 
     <span class="n">pkg_name</span> <span class="o">=</span> <span class="s2">"geefcc"</span>

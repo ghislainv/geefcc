@@ -99,7 +99,7 @@
           <div class="body" role="main">
             
   <h1>Source code for geefcc.get_fcc_loss_gain</h1><div class="highlight"><pre>
-<span></span><span class="sd">"""Get forest cover change data."""</span>
+<span></span><span class="sd">"""Get forest cover change data with loss and gain."""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">multiprocess</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mp</span>
@@ -130,7 +130,7 @@
         <span class="n">output_file</span><span class="o">=</span><span class="s2">"fcc.tif"</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Get forest cover change data.</span>
 
-<span class="sd">    Produce a forest cover change raster file.</span>
+<span class="sd">    Produce a forest cover change raster file with loss and gain.</span>
 
 <span class="sd">    Recodes forest/tree cover change products into 6 transition</span>
 <span class="sd">    classes between two reference years, distinguishing old regrowth</span>
@@ -138,61 +138,110 @@
 <span class="sd">    from young regrowth / non-forest.</span>
 
 <span class="sd">    Transition classes:</span>
-<span class="sd">        1. F to F -- stable forest (undisturbed or degraded at both dates)</span>
-<span class="sd">        2. F to D -- deforestation (includes young regrowth at year2)</span>
-<span class="sd">        3. D to oR -- non-forest / young regrowth becoming old regrowth</span>
-<span class="sd">        4. F to oR (via D) -- forest cleared then regrown to old regrowth</span>
-<span class="sd">           within the window</span>
-<span class="sd">        5. oR to oR -- stable old regrowth</span>
-<span class="sd">        6. oR to D -- old regrowth deforested, or fallen back below</span>
-<span class="sd">           `min_years` of continuous regrowth</span>
 
-<span class="sd">    .. note::</span>
-<span class="sd">       :func:`get_fcc_loss_gain` returns a one-band raster with</span>
-<span class="sd">       forest cover change (loss and gain) between two dates. In this</span>
-<span class="sd">       case, both old-growth forest and old regrowth (following</span>
-<span class="sd">       deforestation) are considered as forest at one point in time</span>
-<span class="sd">       and can be deforested during the period of time. The user can</span>
-<span class="sd">       differentiate the results between the different states and</span>
-<span class="sd">       changes and make appropriate choices to estimate deforestation</span>
-<span class="sd">       and regrowth rates.</span>
+<span class="sd">    - 1 = F to F -- stable forest (undisturbed or degraded at both dates)</span>
+<span class="sd">    - 2 = F to D -- deforestation (includes young regrowth at year2)</span>
+<span class="sd">    - 3 = D to oR -- non-forest / young regrowth becoming old regrowth</span>
+<span class="sd">    - 4 = F to oR (via D) -- forest cleared then regrown to old regrowth</span>
+<span class="sd">      within the window</span>
+<span class="sd">    - 5 = oR to oR -- stable old regrowth</span>
+<span class="sd">    - 6 = oR to D -- old regrowth deforested, or fallen back below `min_years`</span>
+<span class="sd">      of continuous regrowth</span>
 
-<span class="sd">       :func:`get_fcc_loss_gain` can only be used with the Tropical</span>
-<span class="sd">       Moist Forest product. The Global Forest Change product does not</span>
-<span class="sd">       provide annual forest gain.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    aoi : str or tuple</span>
+<span class="sd">        Area of interest defined either by a country iso code</span>
+<span class="sd">        (three letters), a vector file path, or an extent in lat/long</span>
+<span class="sd">        as a tuple with ``(xmin, ymin, xmax, ymax)``.</span>
+<span class="sd">    buff : float, optional</span>
+<span class="sd">        Buffer around the aoi in decimal degrees. For example,</span>
+<span class="sd">        ``0.08983152841195216`` corresponds to approximately 10 km at</span>
+<span class="sd">        the equator. Default is ``0``.</span>
+<span class="sd">    year1 : int, optional</span>
+<span class="sd">        Start year. State is assessed on the 1st of January of this</span>
+<span class="sd">        year. Default is ``2005``.</span>
+<span class="sd">    year2 : int, optional</span>
+<span class="sd">        End year. State is assessed on the 1st of January of this</span>
+<span class="sd">        year. Must be greater than `year1`. Default is ``2025``.</span>
+<span class="sd">    min_years : int, optional</span>
+<span class="sd">        Minimum number of consecutive years classified as regrowth to</span>
+<span class="sd">        be considered "old regrowth" (oR). Default is ``10``.</span>
+<span class="sd">    tile_size : int or float, optional</span>
+<span class="sd">        Tile size used for parallel computing, in degrees. Default is</span>
+<span class="sd">        ``1``.</span>
+<span class="sd">    crop_to_aoi : bool, optional</span>
+<span class="sd">        If ``True``, crop the output raster GeoTIFF to the aoi with</span>
+<span class="sd">        buffer. If ``False``, the output file will match the grid</span>
+<span class="sd">        covering the aoi with buffer. Default is ``False``.</span>
+<span class="sd">    parallel : bool, optional</span>
+<span class="sd">        If ``True``, use parallel computing. If ``False``, use</span>
+<span class="sd">        sequential computing. Default is ``False``.</span>
+<span class="sd">    ncpu : int or None, optional</span>
+<span class="sd">        Number of CPUs to use for parallel computing. If ``None``, it</span>
+<span class="sd">        will be set to the number of cores on the computer minus one.</span>
+<span class="sd">        Default is ``None``.</span>
+<span class="sd">    output_file : str, optional</span>
+<span class="sd">        Path to the output GeoTIFF file. If directories in the path do</span>
+<span class="sd">        not exist, they will be created. Default is ``"fcc.tif"``.</span>
 
-<span class="sd">    :param aoi: Area of interest defined either by a country iso code</span>
-<span class="sd">        (three letters), a vector file, or an extent in lat/long</span>
-<span class="sd">        (tuple with (xmin, ymin, xmax, ymax)).</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">        The function writes a single-band GeoTIFF raster to</span>
+<span class="sd">        `output_file` containing forest cover change (loss and gain)</span>
+<span class="sd">        between `year1` and `year2`. Pixel values correspond to the</span>
+<span class="sd">        six transition classes described above.</span>
 
-<span class="sd">    :param buff: Buffer around the aoi. In decimal degrees</span>
-<span class="sd">        (e.g. 0.08983152841195216 correspond to ~10 km at the</span>
-<span class="sd">        equator).</span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If `year2` is not greater than `year1`.</span>
+<span class="sd">    FileNotFoundError</span>
+<span class="sd">        If `aoi` is specified as a file path and the file does not</span>
+<span class="sd">        exist.</span>
 
-<span class="sd">    :param year1: Start year (state assessed on 1st of January).</span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function returns a one-band raster with forest cover change</span>
+<span class="sd">    (loss and gain) between two dates. Both old-growth forest and old</span>
+<span class="sd">    regrowth (following deforestation) are considered as forest at one</span>
+<span class="sd">    point in time and can be deforested during the period of time. The</span>
+<span class="sd">    user can differentiate the results between the different states and</span>
+<span class="sd">    changes and make appropriate choices to estimate deforestation and</span>
+<span class="sd">    regrowth rates.</span>
 
-<span class="sd">    :param year2: End year (state assessed on 1st of January).</span>
-<span class="sd">        Must be greater than year1.</span>
+<span class="sd">    This function can only be used with the Tropical Moist Forest</span>
+<span class="sd">    product. The Global Forest Change product does not provide annual</span>
+<span class="sd">    forest gain.</span>
 
-<span class="sd">    :param min_years: Minimum number of consecutive years classified as</span>
-<span class="sd">        regrowth to be considered "old regrowth" (oR). Default 10.</span>
+<span class="sd">    The output raster uses the ``EPSG:4326`` coordinate reference</span>
+<span class="sd">    system and a pixel resolution of approximately 30 m</span>
+<span class="sd">    (``0.000269494585235856472`` decimal degrees).</span>
 
-<span class="sd">    :param tile_size: Tile size for parallel computing.</span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; get_fcc_loss_gain(</span>
+<span class="sd">    ...     aoi="MDG",</span>
+<span class="sd">    ...     buff=0,</span>
+<span class="sd">    ...     year1=2010,</span>
+<span class="sd">    ...     year2=2020,</span>
+<span class="sd">    ...     min_years=10,</span>
+<span class="sd">    ...     tile_size=1,</span>
+<span class="sd">    ...     crop_to_aoi=True,</span>
+<span class="sd">    ...     parallel=False,</span>
+<span class="sd">    ...     ncpu=None,</span>
+<span class="sd">    ...     output_file="output/fcc_madagascar.tif"</span>
+<span class="sd">    ... )</span>
 
-<span class="sd">    :param crop_to_aoi: Crop the raster GeoTIFF file to **aoi with</span>
-<span class="sd">        buffer**. If ``False``, the output file will match the</span>
-<span class="sd">        **grid** covering the aoi with buffer.</span>
-
-<span class="sd">    :param parallel: Logical. Parallel (if ``True``) or sequential (if</span>
-<span class="sd">        ``False``) computing. Default to ``False``.</span>
-
-<span class="sd">    :param ncpu: Number of CPU to use for parallel computing. If None,</span>
-<span class="sd">        it will be set to the number of cores on the computer minus</span>
-<span class="sd">        one.</span>
-
-<span class="sd">    :param output_file: Path to output GeoTIFF file. If directories in</span>
-<span class="sd">        path do not exist they will be created.</span>
-
+<span class="sd">    &gt;&gt;&gt; get_fcc_loss_gain(</span>
+<span class="sd">    ...     aoi=(44.0, -25.5, 50.5, -12.0),</span>
+<span class="sd">    ...     year1=2000,</span>
+<span class="sd">    ...     year2=2015,</span>
+<span class="sd">    ...     parallel=True,</span>
+<span class="sd">    ...     ncpu=4,</span>
+<span class="sd">    ...     output_file="output/fcc_custom_extent.tif"</span>
+<span class="sd">    ... )</span>
 <span class="sd">    """</span>
 
     <span class="c1"># Output dir</span>

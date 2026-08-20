@@ -5,10 +5,12 @@
 Utilities
 =========
 
+.. autofunction:: geefcc.ee_initialize
+
 .. autofunction:: geefcc.sum_raster_bands
 		  
 .. autofunction:: geefcc.make_dir
-
+		  
 Deprecated
 ==========
 

@@ -100,6 +100,7 @@
             
   <h1>Source code for geefcc.sum_raster_bands</h1><div class="highlight"><pre>
 <span></span><span class="sd">"""Summing raster bands.</span>
+
 <span class="sd">See: https://github.com/mstrimas/gdal-summarize/blob/master/gdal-summarize.py</span>
 <span class="sd">"""</span>
 
@@ -115,18 +116,58 @@
 <a class="viewcode-back" href="../../python_api/functions.html#geefcc.sum_raster_bands">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">sum_raster_bands</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="s2">"sum.tif"</span><span class="p">,</span>
                      <span class="n">blk_rows</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Summing the raster bands.</span>
+<span class="w">    </span><span class="sd">"""Sum the raster bands of a multi-band input file into a single</span>
+<span class="sd">    output band.</span>
 
-<span class="sd">    :param input file: Input file with several bands.</span>
+<span class="sd">    Reads the input raster file band by band in configurable block sizes to</span>
+<span class="sd">    manage memory usage, computes the pixel-wise sum across all bands, and</span>
+<span class="sd">    writes the result to a single-band GeoTIFF output file.</span>
 
-<span class="sd">    :param output_file: Output file with one band corresponding to the</span>
-<span class="sd">        sum of the input bands.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    input_file : str</span>
+<span class="sd">        Path to the input raster file containing several bands to be summed.</span>
+<span class="sd">    output_file : str, optional</span>
+<span class="sd">        Path to the output GeoTIFF file with one band corresponding to the</span>
+<span class="sd">        sum of the input bands. Defaults to ``"sum.tif"``.</span>
+<span class="sd">    blk_rows : int, optional</span>
+<span class="sd">        Number of rows per processing block. Used to break large raster files</span>
+<span class="sd">        into several blocks of data that can be held in memory at one time.</span>
+<span class="sd">        Defaults to ``128``.</span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        Whether to print progress messages during processing. Defaults to</span>
+<span class="sd">        ``True``.</span>
 
-<span class="sd">    :param blk_rows: Number of rows for block. This is used to break</span>
-<span class="sd">        lage raster files in several blocks of data that can be hold</span>
-<span class="sd">        in memory.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">        The function writes results directly to ``output_file`` and does not</span>
+<span class="sd">        return a value.</span>
 
-<span class="sd">    :param verbose: Logical. Whether to print messages or not.</span>
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    RuntimeError</span>
+<span class="sd">        If ``input_file`` cannot be opened by GDAL or if the output raster</span>
+<span class="sd">        cannot be created.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - The output raster is created with ``gdal.GDT_Byte`` data type, DEFLATE</span>
+<span class="sd">      compression, and BIGTIFF support enabled.</span>
+<span class="sd">    - A NoData value of ``255`` is assigned to the output band.</span>
+<span class="sd">    - If ``output_file`` already exists, it will be removed before the new</span>
+<span class="sd">      file is created.</span>
+<span class="sd">    - Band statistics are computed and flushed to disk after all blocks have</span>
+<span class="sd">      been processed.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; sum_raster_bands(</span>
+<span class="sd">    ...     input_file="input_multiband.tif",</span>
+<span class="sd">    ...     output_file="sum.tif",</span>
+<span class="sd">    ...     blk_rows=256,</span>
+<span class="sd">    ...     verbose=True,</span>
+<span class="sd">    ... )</span>
 
 <span class="sd">    """</span>
 
@@ -190,7 +231,6 @@
     <span class="c1"># Dereference driver</span>
     <span class="n">band_out</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">del</span> <span class="n">ds_out</span></div>
-
 
 
 <span class="c1"># End</span>
