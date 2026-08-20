@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>geefcc.get_fcc_loss &#8212; geefcc — Forest cover change from Google Earth Engine</title>
+    <title>geefcc.get_fcc_loss_gain &#8212; geefcc — Forest cover change from Google Earth Engine</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=3f530b75" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=8fb1bb4b" />
@@ -98,7 +98,7 @@
 
           <div class="body" role="main">
             
-  <h1>Source code for geefcc.get_fcc_loss</h1><div class="highlight"><pre>
+  <h1>Source code for geefcc.get_fcc_loss_gain</h1><div class="highlight"><pre>
 <span></span><span class="sd">"""Get forest cover change data."""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -109,21 +109,20 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.make_grid</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_grid</span><span class="p">,</span> <span class="n">grid_intersection</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.geeic2geotiff</span><span class="w"> </span><span class="kn">import</span> <span class="n">geeic2geotiff</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.geotiff_from_tiles</span><span class="w"> </span><span class="kn">import</span> <span class="n">geotiff_from_tiles</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.ee_tmf</span><span class="w"> </span><span class="kn">import</span> <span class="n">ee_tmf</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.ee_gfc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ee_gfc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.ee_tmf_loss_gain</span><span class="w"> </span><span class="kn">import</span> <span class="n">ee_tmf_loss_gain</span>
 
 <span class="n">opj</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span>
 <span class="n">opd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span>
 
 
-<div class="viewcode-block" id="get_fcc_loss">
-<a class="viewcode-back" href="../../python_api/functions.html#geefcc.get_fcc_loss">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_fcc_loss</span><span class="p">(</span>
+<div class="viewcode-block" id="get_fcc_loss_gain">
+<a class="viewcode-back" href="../../python_api/functions.html#geefcc.get_fcc_loss_gain">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_fcc_loss_gain</span><span class="p">(</span>
         <span class="n">aoi</span><span class="p">,</span>
         <span class="n">buff</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">years</span><span class="o">=</span><span class="p">[</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">2010</span><span class="p">,</span> <span class="mi">2020</span><span class="p">],</span>
-        <span class="n">source</span><span class="o">=</span><span class="s2">"tmf"</span><span class="p">,</span>
-        <span class="n">perc</span><span class="o">=</span><span class="mi">75</span><span class="p">,</span>
+        <span class="n">year1</span><span class="o">=</span><span class="mi">2005</span><span class="p">,</span>
+        <span class="n">year2</span><span class="o">=</span><span class="mi">2025</span><span class="p">,</span>
+        <span class="n">min_years</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
         <span class="n">tile_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">crop_to_aoi</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">parallel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -131,17 +130,36 @@
         <span class="n">output_file</span><span class="o">=</span><span class="s2">"fcc.tif"</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Get forest cover change data.</span>
 
-<span class="sd">     Produce a forest cover change raster file. One band for each</span>
-<span class="sd">     year. Value 1 for forest and 0 for non-forest.</span>
+<span class="sd">    Produce a forest cover change raster file.</span>
+
+<span class="sd">    Recodes forest/tree cover change products into 6 transition</span>
+<span class="sd">    classes between two reference years, distinguishing old regrowth</span>
+<span class="sd">    (continuously classified as regrowth for at least `min_years`)</span>
+<span class="sd">    from young regrowth / non-forest.</span>
+
+<span class="sd">    Transition classes:</span>
+<span class="sd">        1. F to F -- stable forest (undisturbed or degraded at both dates)</span>
+<span class="sd">        2. F to D -- deforestation (includes young regrowth at year2)</span>
+<span class="sd">        3. D to oR -- non-forest / young regrowth becoming old regrowth</span>
+<span class="sd">        4. F to oR (via D) -- forest cleared then regrown to old regrowth</span>
+<span class="sd">           within the window</span>
+<span class="sd">        5. oR to oR -- stable old regrowth</span>
+<span class="sd">        6. oR to D -- old regrowth deforested, or fallen back below</span>
+<span class="sd">           `min_years` of continuous regrowth</span>
 
 <span class="sd">    .. note::</span>
-<span class="sd">       :func:`get_fcc_loss` returns a multiband raster and can</span>
-<span class="sd">       be used to produce deforestation maps between several dates. In</span>
-<span class="sd">       this case, only old-growth forest (which was forest at the</span>
-<span class="sd">       beginning of the satellite image archive) is considered.</span>
+<span class="sd">       :func:`get_fcc_loss_gain` returns a one-band raster with</span>
+<span class="sd">       forest cover change (loss and gain) between two dates. In this</span>
+<span class="sd">       case, both old-growth forest and old regrowth (following</span>
+<span class="sd">       deforestation) are considered as forest at one point in time</span>
+<span class="sd">       and can be deforested during the period of time. The user can</span>
+<span class="sd">       differentiate the results between the different states and</span>
+<span class="sd">       changes and make appropriate choices to estimate deforestation</span>
+<span class="sd">       and regrowth rates.</span>
 
-<span class="sd">       :func:`get_fcc_loss` can be used with either the</span>
-<span class="sd">       Tropical Moist Forest or the Global Forest Change product.</span>
+<span class="sd">       :func:`get_fcc_loss_gain` can only be used with the Tropical</span>
+<span class="sd">       Moist Forest product. The Global Forest Change product does not</span>
+<span class="sd">       provide annual forest gain.</span>
 
 <span class="sd">    :param aoi: Area of interest defined either by a country iso code</span>
 <span class="sd">        (three letters), a vector file, or an extent in lat/long</span>
@@ -151,17 +169,13 @@
 <span class="sd">        (e.g. 0.08983152841195216 correspond to ~10 km at the</span>
 <span class="sd">        equator).</span>
 
-<span class="sd">    :param years: List of years defining time-periods for estimating</span>
-<span class="sd">        forest cover change. Years for computing forest cover change</span>
-<span class="sd">        can be in the interval 2001--2024 for GFC (GFC does not</span>
-<span class="sd">        provide loss for the year 2000) and 2000--2024 for TMF.</span>
+<span class="sd">    :param year1: Start year (state assessed on 1st of January).</span>
 
-<span class="sd">    :param source: Either "gfc" for Global Forest Change or "tmf" for</span>
-<span class="sd">        Tropical Moist Forest. If "gfc", the tree cover threshold</span>
-<span class="sd">        defining the forest must be specified with parameter ``perc``.</span>
+<span class="sd">    :param year2: End year (state assessed on 1st of January).</span>
+<span class="sd">        Must be greater than year1.</span>
 
-<span class="sd">    :param perc: Tree cover threshold defining the forest for GFC</span>
-<span class="sd">        product.</span>
+<span class="sd">    :param min_years: Minimum number of consecutive years classified as</span>
+<span class="sd">        regrowth to be considered "old regrowth" (oR). Default 10.</span>
 
 <span class="sd">    :param tile_size: Tile size for parallel computing.</span>
 
@@ -212,10 +226,7 @@
     <span class="n">ntiles</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
 
     <span class="c1"># Forest image collection</span>
-    <span class="k">if</span> <span class="n">source</span> <span class="o">==</span> <span class="s2">"tmf"</span><span class="p">:</span>
-        <span class="n">forest</span> <span class="o">=</span> <span class="n">ee_tmf</span><span class="p">(</span><span class="n">years</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">source</span> <span class="o">==</span> <span class="s2">"gfc"</span><span class="p">:</span>
-        <span class="n">forest</span> <span class="o">=</span> <span class="n">ee_gfc</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">perc</span><span class="p">)</span>
+    <span class="n">forest</span> <span class="o">=</span> <span class="n">ee_tmf_loss_gain</span><span class="p">(</span><span class="n">year1</span><span class="p">,</span> <span class="n">year2</span><span class="p">,</span> <span class="n">min_years</span><span class="p">)</span><span class="o">.</span><span class="n">fcc</span>
 
     <span class="c1"># Create dir for forest tiles</span>
     <span class="n">out_dir_tiles</span> <span class="o">=</span> <span class="n">opj</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">"forest_tiles"</span><span class="p">)</span>

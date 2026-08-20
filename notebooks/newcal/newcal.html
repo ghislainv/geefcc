@@ -16,7 +16,7 @@
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Python API" href="../../python_api.html" />
+    <link rel="next" title="New Caledonia with loss and gain" href="../newcal_loss_gain/newcal_loss_gain.html" />
     <link rel="prev" title="Large countries" href="../large_countries/large_countries.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
@@ -73,6 +73,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../loss_gain/loss_gain.html">Loss and gain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../large_countries/large_countries.html">Large countries</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">New Caledonia</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../newcal_loss_gain/newcal_loss_gain.html">New Caledonia with loss and gain</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../python_api.html">Python API</a></li>
@@ -87,7 +88,7 @@
   <li><a href="../../index.html">Documentation overview</a><ul>
   <li><a href="../../articles.html">Articles</a><ul>
       <li>Previous: <a href="../large_countries/large_countries.html" title="previous chapter">Large countries</a></li>
-      <li>Next: <a href="../../python_api.html" title="next chapter">Python API</a></li>
+      <li>Next: <a href="../newcal_loss_gain/newcal_loss_gain.html" title="next chapter">New Caledonia with loss and gain</a></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -215,7 +216,7 @@
                           <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">colors</span><span class="p">)]</span>
 </pre></div>
 </div>
-<p>We created a short function to plot the forest cover change map.</p>
+<p>We create a short function to plot the forest cover change map.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_fcc</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">out_file</span><span class="p">):</span>
     <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
@@ -251,7 +252,7 @@
     <span class="n">plot_fcc</span><span class="p">(</span><span class="s2">"Forest cover change 2001-2010-2020, TMF"</span><span class="p">,</span> <span class="s2">"fcc_tmf.png"</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/fcc_tmf.png"><img alt="../../_images/fcc_tmf.png" class="align-center" src="../../_images/fcc_tmf.png" width="700" />
+<a class="reference internal image-reference" href="../../_images/fcc_tmf.png"><img alt="../../_images/fcc_tmf.png" class="align-center" src="../../_images/fcc_tmf.png" style="width: 100%;" />
 </a>
 <p>Lines in black represent country borders. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.</p>
 </section>
@@ -360,7 +361,7 @@
     <span class="n">plot_fcc</span><span class="p">(</span><span class="s2">"Forest cover change 2001-2010-2020, GFC 80%"</span><span class="p">,</span> <span class="s2">"fcc_gfc80.png"</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/fcc_gfc80.png"><img alt="../../_images/fcc_gfc80.png" class="align-center" src="../../_images/fcc_gfc80.png" width="700" />
+<a class="reference internal image-reference" href="../../_images/fcc_gfc80.png"><img alt="../../_images/fcc_gfc80.png" class="align-center" src="../../_images/fcc_gfc80.png" style="width: 100%;" />
 </a>
 <p>Lines in black represent country borders. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.</p>
 </section>
@@ -451,7 +452,7 @@
     <span class="n">plot_fcc</span><span class="p">(</span><span class="s2">"Forest cover change 2001-2010-2020, GFC 60%"</span><span class="p">,</span> <span class="s2">"fcc_gfc60.png"</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/fcc_gfc60.png"><img alt="../../_images/fcc_gfc60.png" class="align-center" src="../../_images/fcc_gfc60.png" width="700" />
+<a class="reference internal image-reference" href="../../_images/fcc_gfc60.png"><img alt="../../_images/fcc_gfc60.png" class="align-center" src="../../_images/fcc_gfc60.png" style="width: 100%;" />
 </a>
 <p>Lines in black represent country borders. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.</p>
 </section>

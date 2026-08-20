@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>&lt;no title&gt; &#8212; geefcc — Forest cover change from Google Earth Engine</title>
+    <title>Utilities &#8212; geefcc — Forest cover change from Google Earth Engine</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=3f530b75" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=8fb1bb4b" />
@@ -70,8 +70,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../articles.html">Articles</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../python_api.html">Python API</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">get_fcc_loss()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#geefcc.sum_raster_bands"><code class="docutils literal notranslate"><span class="pre">sum_raster_bands()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#geefcc.make_dir"><code class="docutils literal notranslate"><span class="pre">make_dir()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#geefcc.get_fcc_loss_gain"><code class="docutils literal notranslate"><span class="pre">get_fcc_loss_gain()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#utilities">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#deprecated">Deprecated</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../indices.html">Indices and tables</a></li>
@@ -114,6 +115,15 @@
 <div><p>Produce a forest cover change raster file. One band for each
 year. Value 1 for forest and 0 for non-forest.</p>
 </div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#geefcc.get_fcc_loss" title="geefcc.get_fcc_loss"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_fcc_loss()</span></code></a> returns a multiband raster and can
+be used to produce deforestation maps between several dates. In
+this case, only old-growth forest (which was forest at the
+beginning of the satellite image archive) is considered.</p>
+<p><a class="reference internal" href="#geefcc.get_fcc_loss" title="geefcc.get_fcc_loss"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_fcc_loss()</span></code></a> can be used with either the
+Tropical Moist Forest or the Global Forest Change product.</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -149,16 +159,41 @@ path do not exist they will be created.</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">get_fcc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aoi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2000,</span> <span class="pre">2010,</span> <span class="pre">2020]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tmf'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">75</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tile_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crop_to_aoi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncpu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fcc.tif'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geefcc.html#get_fcc"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><div class="deprecated">
-<p><span class="versionmodified deprecated">Deprecated since version 0.1.8: </span>Use <a class="reference internal" href="#geefcc.get_fcc_loss" title="geefcc.get_fcc_loss"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_fcc_loss()</span></code></a> instead.</p>
+<dt class="sig sig-object py" id="geefcc.get_fcc_loss_gain">
+<span class="sig-name descname"><span class="pre">get_fcc_loss_gain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aoi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2005</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2025</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tile_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crop_to_aoi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncpu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fcc.tif'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geefcc/get_fcc_loss_gain.html#get_fcc_loss_gain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geefcc.get_fcc_loss_gain" title="Link to this definition">¶</a></dt>
+<dd><p>Get forest cover change data.</p>
+<p>Produce a forest cover change raster file.</p>
+<p>Recodes forest/tree cover change products into 6 transition
+classes between two reference years, distinguishing old regrowth
+(continuously classified as regrowth for at least <cite>min_years</cite>)
+from young regrowth / non-forest.</p>
+<dl class="simple">
+<dt>Transition classes:</dt><dd><ol class="arabic simple">
+<li><p>F to F – stable forest (undisturbed or degraded at both dates)</p></li>
+<li><p>F to D – deforestation (includes young regrowth at year2)</p></li>
+<li><p>D to oR – non-forest / young regrowth becoming old regrowth</p></li>
+<li><p>F to oR (via D) – forest cleared then regrown to old regrowth
+within the window</p></li>
+<li><p>oR to oR – stable old regrowth</p></li>
+<li><p>oR to D – old regrowth deforested, or fallen back below
+<cite>min_years</cite> of continuous regrowth</p></li>
+</ol>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#geefcc.get_fcc_loss_gain" title="geefcc.get_fcc_loss_gain"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_fcc_loss_gain()</span></code></a> returns a one-band raster with
+forest cover change (loss and gain) between two dates. In this
+case, both old-growth forest and old regrowth (following
+deforestation) are considered as forest at one point in time
+and can be deforested during the period of time. The user can
+differentiate the results between the different states and
+changes and make appropriate choices to estimate deforestation
+and regrowth rates.</p>
+<p><a class="reference internal" href="#geefcc.get_fcc_loss_gain" title="geefcc.get_fcc_loss_gain"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_fcc_loss_gain()</span></code></a> can only be used with the Tropical
+Moist Forest product. The Global Forest Change product does not
+provide annual forest gain.</p>
 </div>
-<p>Get forest cover change data.</p>
-<blockquote>
-<div><p>Produce a forest cover change raster file. One band for each
-year. Value 1 for forest and 0 for non-forest.</p>
-</div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -168,15 +203,11 @@ year. Value 1 for forest and 0 for non-forest.</p>
 <li><p><strong>buff</strong> – Buffer around the aoi. In decimal degrees
 (e.g. 0.08983152841195216 correspond to ~10 km at the
 equator).</p></li>
-<li><p><strong>years</strong> – List of years defining time-periods for estimating
-forest cover change. Years for computing forest cover change
-can be in the interval 2001–2024 for GFC (GFC does not
-provide loss for the year 2000) and 2000–2024 for TMF.</p></li>
-<li><p><strong>source</strong> – Either “gfc” for Global Forest Change or “tmf” for
-Tropical Moist Forest. If “gfc”, the tree cover threshold
-defining the forest must be specified with parameter <code class="docutils literal notranslate"><span class="pre">perc</span></code>.</p></li>
-<li><p><strong>perc</strong> – Tree cover threshold defining the forest for GFC
-product.</p></li>
+<li><p><strong>year1</strong> – Start year (state assessed on 1st of January).</p></li>
+<li><p><strong>year2</strong> – End year (state assessed on 1st of January).
+Must be greater than year1.</p></li>
+<li><p><strong>min_years</strong> – Minimum number of consecutive years classified as
+regrowth to be considered “old regrowth” (oR). Default 10.</p></li>
 <li><p><strong>tile_size</strong> – Tile size for parallel computing.</p></li>
 <li><p><strong>crop_to_aoi</strong> – Crop the raster GeoTIFF file to <strong>aoi with
 buffer</strong>. If <code class="docutils literal notranslate"><span class="pre">False</span></code>, the output file will match the
@@ -193,6 +224,8 @@ path do not exist they will be created.</p></li>
 </dl>
 </dd></dl>
 
+<section id="utilities">
+<h1>Utilities<a class="headerlink" href="#utilities" title="Link to this heading">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="geefcc.sum_raster_bands">
 <span class="sig-name descname"><span class="pre">sum_raster_bands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sum.tif'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blk_rows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geefcc/sum_raster_bands.html#sum_raster_bands"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geefcc.sum_raster_bands" title="Link to this definition">¶</a></dt>
@@ -230,6 +263,19 @@ in memory.</p></li>
 </dl>
 </dd></dl>
 
+</section>
+<section id="deprecated">
+<h1>Deprecated<a class="headerlink" href="#deprecated" title="Link to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="geefcc.get_fcc">
+<span class="sig-name descname"><span class="pre">get_fcc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aoi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2000,</span> <span class="pre">2010,</span> <span class="pre">2020]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tmf'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">75</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tile_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crop_to_aoi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncpu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fcc.tif'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geefcc.html#get_fcc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#geefcc.get_fcc" title="Link to this definition">¶</a></dt>
+<dd><div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.8.</span></p>
+</div>
+<p>Use <a class="reference internal" href="#geefcc.get_fcc_loss" title="geefcc.get_fcc_loss"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_fcc_loss()</span></code></a> instead.</p>
+</dd></dl>
+
+</section>
 
 
           </div>

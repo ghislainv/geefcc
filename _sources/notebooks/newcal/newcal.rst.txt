@@ -131,7 +131,7 @@ We prepare the colors for the map.
     patches = [mpatches.Patch(facecolor=col, edgecolor="black",
                               label=labels[i]) for (i, col) in enumerate(colors)]
 
-We created a short function to plot the forest cover change map.
+We create a short function to plot the forest cover change map.
 
 .. code:: python
 
@@ -174,7 +174,7 @@ We plot the forest cover change map.
         plot_fcc("Forest cover change 2001-2010-2020, TMF", "fcc_tmf.png")
 
 .. image:: fcc_tmf.png
-    :width: 700
+    :width: 100%
     :align: center
 
 Lines in black represent country borders. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.
@@ -303,7 +303,7 @@ We plot the forest cover change map.
         plot_fcc("Forest cover change 2001-2010-2020, GFC 80%", "fcc_gfc80.png")
 
 .. image:: fcc_gfc80.png
-    :width: 700
+    :width: 100%
     :align: center
 
 Lines in black represent country borders. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.
@@ -411,7 +411,7 @@ We plot the forest cover change map.
         plot_fcc("Forest cover change 2001-2010-2020, GFC 60%", "fcc_gfc60.png")
 
 .. image:: fcc_gfc60.png
-    :width: 700
+    :width: 100%
     :align: center
 
 Lines in black represent country borders. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.

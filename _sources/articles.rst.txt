@@ -8,3 +8,4 @@ Articles
    notebooks/loss_gain/loss_gain
    notebooks/large_countries/large_countries
    notebooks/newcal/newcal
+   notebooks/newcal_loss_gain/newcal_loss_gain
