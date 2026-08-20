@@ -392,8 +392,8 @@ writes the result to a single-band GeoTIFF output file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>input_file</strong> (<em>str</em>) – Path to the input raster file containing several bands to be summed.</p></li>
-<li><p><strong>output_file</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to the output GeoTIFF file with one band corresponding to the
+<li><p><strong>input_file</strong> (<em>str</em><em> or </em><em>Path</em>) – Path to the input raster file containing several bands to be summed.</p></li>
+<li><p><strong>output_file</strong> (<em>str</em><em> or </em><em>Path</em><em>, </em><em>optional</em>) – Path to the output GeoTIFF file with one band corresponding to the
 sum of the input bands. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;sum.tif&quot;</span></code>.</p></li>
 <li><p><strong>blk_rows</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of rows per processing block. Used to break large raster files
 into several blocks of data that can be held in memory at one time.
@@ -447,7 +447,7 @@ been processed.</p></li>
 </ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>newdir</strong> (<em>str</em>) – Directory path to create.</p>
+<dd class="field-odd"><p><strong>newdir</strong> (<em>str</em><em> or </em><em>Path</em>) – Directory path to create.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>OSError</strong> – If a file with the same name as the desired directory already exists.</p>

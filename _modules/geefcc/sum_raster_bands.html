@@ -104,7 +104,7 @@
 <span class="sd">See: https://github.com/mstrimas/gdal-summarize/blob/master/gdal-summarize.py</span>
 <span class="sd">"""</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">osgeo</span><span class="w"> </span><span class="kn">import</span> <span class="n">gdal</span>
@@ -125,9 +125,9 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    input_file : str</span>
+<span class="sd">    input_file : str or Path</span>
 <span class="sd">        Path to the input raster file containing several bands to be summed.</span>
-<span class="sd">    output_file : str, optional</span>
+<span class="sd">    output_file : str or Path, optional</span>
 <span class="sd">        Path to the output GeoTIFF file with one band corresponding to the</span>
 <span class="sd">        sum of the input bands. Defaults to ``"sum.tif"``.</span>
 <span class="sd">    blk_rows : int, optional</span>
@@ -171,8 +171,11 @@
 
 <span class="sd">    """</span>
 
+    <span class="n">input_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">input_file</span><span class="p">)</span>
+    <span class="n">output_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">output_file</span><span class="p">)</span>
+
     <span class="c1"># Load input raster info</span>
-    <span class="n">ds</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">input_file</span><span class="p">)</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">input_file</span><span class="p">))</span>  <span class="c1"># GDAL requires str</span>
     <span class="n">gt</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">GetGeoTransform</span><span class="p">()</span>
     <span class="n">proj</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">GetProjection</span><span class="p">()</span>
     <span class="n">ncol</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">RasterXSize</span>
@@ -181,10 +184,10 @@
 
     <span class="c1"># Create output raster file</span>
     <span class="n">driver</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">GetDriverByName</span><span class="p">(</span><span class="s2">"GTiff"</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">output_file</span><span class="p">):</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">output_file</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">output_file</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+        <span class="n">output_file</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
     <span class="n">ds_out</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span>
-        <span class="n">output_file</span><span class="p">,</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">output_file</span><span class="p">),</span>  <span class="c1"># GDAL requires str</span>
         <span class="n">ncol</span><span class="p">,</span> <span class="n">nrow</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>
         <span class="n">gdal</span><span class="o">.</span><span class="n">GDT_Byte</span><span class="p">,</span>
         <span class="p">[</span><span class="s2">"COMPRESS=DEFLATE"</span><span class="p">,</span> <span class="s2">"BIGTIFF=YES"</span><span class="p">],</span>
@@ -213,8 +216,7 @@
         <span class="n">px</span> <span class="o">=</span> <span class="n">b</span> <span class="o">%</span> <span class="n">nblock_x</span>
         <span class="n">py</span> <span class="o">=</span> <span class="n">b</span> <span class="o">//</span> <span class="n">nblock_x</span>
         <span class="c1"># Make stack to store data</span>
-        <span class="n">stack</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nband</span><span class="p">,</span> <span class="n">ny</span><span class="p">[</span><span class="n">py</span><span class="p">],</span> <span class="n">nx</span><span class="p">[</span><span class="n">px</span><span class="p">]),</span>
-                         <span class="n">dtype</span><span class="o">=</span><span class="s2">"b"</span><span class="p">)</span>
+        <span class="n">stack</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nband</span><span class="p">,</span> <span class="n">ny</span><span class="p">[</span><span class="n">py</span><span class="p">],</span> <span class="n">nx</span><span class="p">[</span><span class="n">px</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">"b"</span><span class="p">)</span>
         <span class="c1"># Data for one block</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nband</span><span class="p">):</span>
             <span class="n">stack</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">GetRasterBand</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
