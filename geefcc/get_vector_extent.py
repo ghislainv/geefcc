@@ -44,6 +44,7 @@ def get_vector_extent(input_file):
     in_layer = in_data_source.GetLayer()
     extent = in_layer.GetExtent()
     extent = (extent[0], extent[2], extent[1], extent[3])
+    in_data_source = None  # Close OGR object
 
     return extent  # (xmin, ymin, xmax, ymax)
 
