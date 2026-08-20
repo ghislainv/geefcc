@@ -71,7 +71,7 @@
 <li class="toctree-l1"><a class="reference internal" href="python_api.html">Python API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="indices.html">Indices and tables</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#geefcc-0-1-8-dev">geefcc 0.1.8 (dev)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#geefcc-0-2-0">geefcc 0.2.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#geefcc-0-1-7">geefcc 0.1.7</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#geefcc-0-1-6">geefcc 0.1.6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#geefcc-0-1-5">geefcc 0.1.5</a></li>
@@ -112,15 +112,35 @@
             
   <section id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading">¶</a></h1>
-<section id="geefcc-0-1-8-dev">
-<h2>geefcc 0.1.8 (dev)<a class="headerlink" href="#geefcc-0-1-8-dev" title="Link to this heading">¶</a></h2>
+<section id="geefcc-0-2-0">
+<h2>geefcc 0.2.0<a class="headerlink" href="#geefcc-0-2-0" title="Link to this heading">¶</a></h2>
 <ul class="simple">
-<li><p>This version includes forest gain in addition to forest loss when
-deriving the forest cover change map.</p></li>
-<li><p>Function <cite>get_fcc</cite> is deprecated and has been replaced by <cite>get_fcc_loss</cite>.</p></li>
-<li><p>Function <cite>get_fcc_loss_gain</cite> has been added.</p></li>
-<li><p>Use Numpy style for docstrings when documenting functions</p></li>
-<li><p>Changes: <a class="reference external" href="https://github.com/ghislainv/geefcc/compare/v0.1.7...v0.1.8">https://github.com/ghislainv/geefcc/compare/v0.1.7…v0.1.8</a></p></li>
+<li><p>This version includes <strong>forest gain</strong> in addition to <strong>forest loss</strong>
+when deriving the forest cover change map.</p></li>
+<li><p>Function <code class="docutils literal notranslate"><span class="pre">get_fcc</span></code> is deprecated and has been replaced by <code class="docutils literal notranslate"><span class="pre">get_fcc_loss</span></code>.</p></li>
+<li><p>Function <code class="docutils literal notranslate"><span class="pre">get_fcc_loss_gain</span></code> has been added.</p></li>
+<li><p>Use Numpy style for docstrings when documenting functions.</p></li>
+<li><p>Code refactoring:</p>
+<ul>
+<li><p><strong>Common pipeline</strong> extracted into <code class="docutils literal notranslate"><span class="pre">_run_fcc.py</span></code>.</p></li>
+<li><p><strong>Bug fix</strong>: <code class="docutils literal notranslate"><span class="pre">if</span></code> → <code class="docutils literal notranslate"><span class="pre">elif/else</span></code> in <code class="docutils literal notranslate"><span class="pre">get_fcc_loss</span></code>.</p></li>
+<li><p><strong>Atomic download</strong> implemented in <code class="docutils literal notranslate"><span class="pre">download_gadm</span></code>.</p></li>
+<li><p><strong>AOI coordinate validation</strong> added in <code class="docutils literal notranslate"><span class="pre">get_extent_from_aoi</span></code>.</p></li>
+<li><p><strong>Retry logic</strong> using <code class="docutils literal notranslate"><span class="pre">tenacity</span></code> in <code class="docutils literal notranslate"><span class="pre">geeic2geotiff</span></code>.</p></li>
+<li><p><strong>Explicit OGR resource closing</strong> in <code class="docutils literal notranslate"><span class="pre">get_vector_extent</span></code>.</p></li>
+<li><p><strong>Mutable default argument fix</strong>: <code class="docutils literal notranslate"><span class="pre">years=None</span></code> in <code class="docutils literal notranslate"><span class="pre">get_fcc_loss</span></code>.</p></li>
+<li><p><strong>Modernisation</strong>: <code class="docutils literal notranslate"><span class="pre">pathlib.Path</span></code> used throughout, with <code class="docutils literal notranslate"><span class="pre">str()</span></code>
+conversion for GDAL/OGR calls.</p></li>
+<li><p><strong>Tests</strong>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">test_validation.py</span></code>: tests without GEE (AOI validation, argument
+checking).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">test_get_fcc_loss_gain.py</span></code>: tests with GEE on Singapore.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Changes: <a class="reference external" href="https://github.com/ghislainv/geefcc/compare/v0.1.7...v0.2.0">https://github.com/ghislainv/geefcc/compare/v0.1.7…v0.2.0</a></p></li>
 </ul>
 </section>
 <section id="geefcc-0-1-7">
