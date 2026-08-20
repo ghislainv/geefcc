@@ -109,6 +109,11 @@ def get_extent_from_aoi(aoi, buff, out_dir):
 
     # aoi = extent
     elif isinstance(aoi, tuple) and len(aoi) == 4:
+        xmin, ymin, xmax, ymax = aoi
+        if xmin >= xmax or ymin >= ymax:
+            raise ValueError("Invalid extent: xmin >= xmax or ymin >= ymax")
+        if not (-180 <= xmin <= 180 and -90 <= ymin <= 90):
+            raise ValueError("Coordinates out of lat/long bounds")
         aoi_isfile = False
         # nb: We could create a vector file here...
         borders_gpkg = None
