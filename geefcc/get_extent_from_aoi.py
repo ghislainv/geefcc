@@ -13,17 +13,77 @@ opd = os.path.dirname
 def get_extent_from_aoi(aoi, buff, out_dir):
     """Get extent from aoi.
 
-    :param aoi: Area of interest defined either by a country iso code
-        (three letters), a vector file, or an extent in lat/long
-        (tuple with (xmin, ymin, xmax, ymax)).
+    Parameters
+    ----------
+    aoi : str or tuple
+        Area of interest defined either by a country ISO code (three
+        letters), a path to a vector file in GeoPackage format
+        (``.gpkg``), or an extent in lat/long coordinates as a tuple
+        with ``(xmin, ymin, xmax, ymax)``.
+    buff : float
+        Buffer around the aoi in decimal degrees. For example,
+        ``0.08983152841195216`` corresponds to approximately 10 km at
+        the equator. Use ``0`` to apply no buffer.
+    out_dir : str
+        Path to the output directory where intermediate and result files
+        will be saved.
 
-    :param buff: Buffer around the aoi. In decimal degrees
-        (e.g. 0.08983152841195216 correspond to ~10 km at the
-        equator).
+    Returns
+    -------
+    dict
+        A dictionary with the following keys:
 
-    :out_dir: Output directory.
+        - ``"extent_latlong"`` : tuple of float
+            The bounding box of the aoi (with buffer if applicable) as
+            ``(xmin, ymin, xmax, ymax)`` in decimal degrees.
+        - ``"borders_gpkg"`` : str or None
+            Path to the borders GeoPackage file (with buffer if
+            applicable). ``None`` when ``aoi`` is provided as a tuple
+            extent.
+        - ``"aoi_isfile"`` : bool
+            ``True`` if the aoi was defined by a country ISO code or a
+            vector file, ``False`` if it was defined as a tuple extent.
 
-    :return: A dictionary including extent and border vector file.
+    Raises
+    ------
+    ValueError
+        If ``aoi`` is not a valid country ISO code (three-letter
+        string), a tuple of four coordinates, or a path to an existing
+        ``.gpkg`` file.
+
+    Notes
+    -----
+    - When ``aoi`` is a three-letter country ISO code, the GADM borders
+      are downloaded automatically using :func:`download_gadm` and
+      saved to ``out_dir``.
+    - When ``aoi`` is a tuple, no vector border file is created; the
+      buffer is applied directly to the coordinate values.
+    - When ``aoi`` is a ``.gpkg`` file and ``buff > 0``, a buffered
+      copy is saved as ``borders_buffer.gpkg`` inside ``out_dir``.
+
+    Examples
+    --------
+    Using a country ISO code:
+
+    >>> result = get_extent_from_aoi("BRA", buff=0.1, out_dir="/tmp")
+    >>> result["extent_latlong"]
+    (-73.9904, -33.7517, -28.6481, 5.2717)
+
+    Using a tuple extent with no buffer:
+
+    >>> result = get_extent_from_aoi(
+    ...     (-10.0, -5.0, 10.0, 5.0), buff=0, out_dir="/tmp"
+    ... )
+    >>> result["borders_gpkg"] is None
+    True
+
+    Using a GeoPackage file:
+
+    >>> result = get_extent_from_aoi(
+    ...     "/data/my_area.gpkg", buff=0.05, out_dir="/tmp"
+    ... )
+    >>> result["aoi_isfile"]
+    True
     """
 
     # Set aoi_isfile

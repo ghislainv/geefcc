@@ -7,7 +7,7 @@ from osgeo import ogr, osr
 
 
 def create_buffer(input_file, output_file, buffer_dist):
-    """Create buffer.
+    """Create buffer around features of a layer and save to a new layer.
 
     Make buffers around features of a layer and saves them to a new
     layer.
@@ -15,10 +15,29 @@ def create_buffer(input_file, output_file, buffer_dist):
     Source: https://pcjericks.github.io/py-gdalogr-cookbook/
     vector_layers.html#create-buffer
 
-    :param input_file: Input filename.
-    :param output_file: Output filename (`.gpkg`).
-    :param buffer_dist: Buffer distance (in unit of CRS).
+    Parameters
+    ----------
+    input_file : str
+        Input filename.
+    output_file : str
+        Output filename (`.gpkg`).
+    buffer_dist : float
+        Buffer distance (in unit of CRS).
 
+    Returns
+    -------
+    None
+        The buffered features are written directly to ``output_file``.
+
+    Notes
+    -----
+    The output layer is created as a ``MultiPolygon`` geometry type.
+    If ``output_file`` already exists, it will be deleted before
+    creating a new one.
+
+    Examples
+    --------
+    >>> create_buffer("input.gpkg", "output_buffer.gpkg", buffer_dist=100)
     """
     input_ds = ogr.Open(input_file)
     # Get first layer
@@ -54,10 +73,30 @@ def gpkg_from_grid(grid, proj=4326, ofile="grid.gpkg"):
     Source: https://pcjericks.github.io/py-gdalogr-cookbook/
     vector_layers.html#create-fishnet-grid
 
-    :param grid: List of extents for each grid cell.
-    :param proj: Projection as EPSG code, default to 4326.
-    :param ofile: Output file, default to `grid.gpkg`.
+    Parameters
+    ----------
+    grid : list of tuple of float
+        List of extents ``(xmin, ymin, xmax, ymax)`` for each grid cell.
+    proj : int, optional
+        Projection as EPSG code, by default ``4326``.
+    ofile : str, optional
+        Output file path, by default ``"grid.gpkg"``.
 
+    Returns
+    -------
+    None
+        The grid is written directly to ``ofile``.
+
+    Notes
+    -----
+    If ``ofile`` already exists, it will be removed before creating a
+    new file. Each grid cell is stored as a ``Polygon`` feature with an
+    integer ``id`` field.
+
+    Examples
+    --------
+    >>> grid = [(0.0, 0.0, 1.0, 1.0), (1.0, 0.0, 2.0, 1.0)]
+    >>> gpkg_from_grid(grid, proj=4326, ofile="grid.gpkg")
     """
 
     # Set up the shapefile driver
@@ -113,15 +152,41 @@ def make_grid(extent, buff, tile_size, scale, proj=4326,
               ofile="grid.gpkg"):
     """Make overlapping grid from an extent and resolution.
 
-    :param extent: Extent (xmin, ymin, xmax, ymax).
-    :param buff: Buffer (same unit as extent).
-    :param tile_size: Tile size (same unit as extent).
-    :param scale: Resolution (same unit as extent).
-    :param proj: Projection as EPSG code, default to 4326.
-    :param ofile: Output file, default to `grid.gpkg`.
+    Parameters
+    ----------
+    extent : tuple of float
+        Extent of the area of interest as ``(xmin, ymin, xmax, ymax)``.
+    buff : float
+        Buffer to add around the extent (same unit as ``extent``).
+    tile_size : float
+        Tile size for each grid cell (same unit as ``extent``).
+    scale : float
+        Resolution used to snap ``tile_size`` to a multiple of ``scale``
+        (same unit as ``extent``).
+    proj : int, optional
+        Projection as EPSG code, by default ``4326``.
+    ofile : str, optional
+        Output file path, by default ``"grid.gpkg"``.
 
-    :return: List of extents for each grid cell.
+    Returns
+    -------
+    list of tuple of float
+        List of extents ``(xmin, ymin, xmax, ymax)`` for each grid cell.
 
+    Notes
+    -----
+    The ``tile_size`` is first rounded to the nearest multiple of
+    ``scale`` before generating the grid coordinates. The resulting
+    grid is also saved as a GeoPackage vector file via
+    :func:`gpkg_from_grid`.
+
+    Examples
+    --------
+    >>> extent = (0.0, 0.0, 10.0, 10.0)
+    >>> grid = make_grid(extent, buff=1.0, tile_size=5.0,
+    ...                  scale=1.0, proj=4326, ofile="grid.gpkg")
+    >>> len(grid)
+    4
     """
 
     # Buffer around extent
@@ -147,15 +212,53 @@ def make_grid(extent, buff, tile_size, scale, proj=4326,
 
 
 def grid_intersection(grid, input_grid, output_grid, borders_gpkg):
-    """Grid intersection.
+    """Compute the intersection between a grid and a border vector file.
 
-    :param grid: List of extents for grid cells.
-    :param input_grid: Input grid vector file.
-    :param output_grid: Output grid vector file.
-    :param borders_gpkg: Border vector file.
+    Parameters
+    ----------
+    grid : list of tuple of float
+        List of extents ``(xmin, ymin, xmax, ymax)`` for each grid cell,
+        corresponding to the features in ``input_grid``.
+    input_grid : str
+        Path to the input grid vector file (GeoPackage format).
+    output_grid : str
+        Path to the output grid vector file for intersecting cells
+        (GeoPackage format).
+    borders_gpkg : str
+        Path to the border vector file (GeoPackage format) used for
+        intersection testing.
 
-    :return: List of extents for intersecting grid cells.
+    Returns
+    -------
+    list of tuple of float
+        List of extents ``(xmin, ymin, xmax, ymax)`` for grid cells that
+        intersect with at least one feature in ``borders_gpkg``.
 
+    Raises
+    ------
+    RuntimeError
+        If ``input_grid`` or ``borders_gpkg`` cannot be opened by the
+        GPKG driver.
+
+    Notes
+    -----
+    A grid cell is included in the result if its geometry intersects
+    with at least one feature geometry from ``borders_gpkg``. The
+    spatial reference system of the output layer is derived from
+    ``input_grid``. If ``output_grid`` already exists, it will be
+    removed before creating a new file.
+
+    Examples
+    --------
+    >>> grid = [(0.0, 0.0, 1.0, 1.0), (1.0, 0.0, 2.0, 1.0)]
+    >>> intersecting = grid_intersection(
+    ...     grid,
+    ...     input_grid="grid.gpkg",
+    ...     output_grid="grid_intersect.gpkg",
+    ...     borders_gpkg="borders.gpkg"
+    ... )
+    >>> len(intersecting)
+    1
     """
     # Grid
     dr_g = ogr.GetDriverByName("GPKG")

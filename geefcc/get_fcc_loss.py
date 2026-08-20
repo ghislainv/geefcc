@@ -28,54 +28,113 @@ def get_fcc_loss(
         output_file="fcc.tif"):
     """Get forest cover change data.
 
-     Produce a forest cover change raster file. One band for each
-     year. Value 1 for forest and 0 for non-forest.
+    Produce a forest cover change raster file. One band for each
+    year. Value 1 for forest and 0 for non-forest.
 
-    .. note::
-       :func:`get_fcc_loss` returns a multiband raster and can
-       be used to produce deforestation maps between several dates. In
-       this case, only old-growth forest (which was forest at the
-       beginning of the satellite image archive) is considered.
+    Parameters
+    ----------
+    aoi : str or tuple
+        Area of interest defined either by a country iso code
+        (three letters), a vector file path, or an extent in lat/long
+        as a tuple with (xmin, ymin, xmax, ymax).
+    buff : float, optional
+        Buffer around the aoi in decimal degrees. For example,
+        0.08983152841195216 corresponds to approximately 10 km at the
+        equator. Default is 0.
+    years : list of int, optional
+        List of years defining time-periods for estimating forest cover
+        change. Years for computing forest cover change can be in the
+        interval 2001--2024 for GFC (GFC does not provide loss for the
+        year 2000) and 2000--2024 for TMF. Default is [2000, 2010, 2020].
+    source : {"tmf", "gfc"}, optional
+        Source of forest cover data. Either ``"gfc"`` for Global Forest
+        Change or ``"tmf"`` for Tropical Moist Forest. If ``"gfc"``,
+        the tree cover threshold defining the forest must be specified
+        with parameter ``perc``. Default is ``"tmf"``.
+    perc : int, optional
+        Tree cover threshold (percentage) defining the forest for the
+        GFC product. Default is 75.
+    tile_size : int or float, optional
+        Tile size in degrees for parallel computing. Default is 1.
+    crop_to_aoi : bool, optional
+        Crop the raster GeoTIFF file to the aoi with buffer. If
+        ``False``, the output file will match the grid covering the aoi
+        with buffer. Default is ``False``.
+    parallel : bool, optional
+        If ``True``, use parallel computing. If ``False``, use
+        sequential computing. Default is ``False``.
+    ncpu : int or None, optional
+        Number of CPUs to use for parallel computing. If ``None``, it
+        will be set to the number of cores on the computer minus one.
+        Default is ``None``.
+    output_file : str, optional
+        Path to output GeoTIFF file. If directories in the path do not
+        exist, they will be created. Default is ``"fcc.tif"``.
 
-       :func:`get_fcc_loss` can be used with either the
-       Tropical Moist Forest or the Global Forest Change product.
+    Returns
+    -------
+    None
+        The function writes the forest cover change raster directly to
+        ``output_file`` on disk. No Python object is returned.
 
-    :param aoi: Area of interest defined either by a country iso code
-        (three letters), a vector file, or an extent in lat/long
-        (tuple with (xmin, ymin, xmax, ymax)).
+    Raises
+    ------
+    ValueError
+        If ``source`` is not one of ``"tmf"`` or ``"gfc"``, or if the
+        specified ``years`` are outside the valid range for the chosen
+        source.
+    OSError
+        If the output directory cannot be created or the output file
+        cannot be written.
 
-    :param buff: Buffer around the aoi. In decimal degrees
-        (e.g. 0.08983152841195216 correspond to ~10 km at the
-        equator).
+    Notes
+    -----
+    ``get_fcc_loss`` returns a multiband raster and can be used to
+    produce deforestation maps between several dates. In this case,
+    only old-growth forest (which was forest at the beginning of the
+    satellite image archive) is considered.
 
-    :param years: List of years defining time-periods for estimating
-        forest cover change. Years for computing forest cover change
-        can be in the interval 2001--2024 for GFC (GFC does not
-        provide loss for the year 2000) and 2000--2024 for TMF.
+    ``get_fcc_loss`` can be used with either the Tropical Moist Forest
+    (TMF) or the Global Forest Change (GFC) product.
 
-    :param source: Either "gfc" for Global Forest Change or "tmf" for
-        Tropical Moist Forest. If "gfc", the tree cover threshold
-        defining the forest must be specified with parameter ``perc``.
+    The output raster uses the ``EPSG:4326`` projection at approximately
+    30 m resolution (~0.000269 decimal degrees per pixel).
 
-    :param perc: Tree cover threshold defining the forest for GFC
-        product.
+    Examples
+    --------
+    Get forest cover change using the TMF product for a country defined
+    by its ISO3 code:
 
-    :param tile_size: Tile size for parallel computing.
+    >>> get_fcc_loss(
+    ...     aoi="BRA",
+    ...     buff=0,
+    ...     years=[2000, 2010, 2020],
+    ...     source="tmf",
+    ...     output_file="output/fcc_brazil.tif"
+    ... )
 
-    :param crop_to_aoi: Crop the raster GeoTIFF file to **aoi with
-        buffer**. If ``False``, the output file will match the
-        **grid** covering the aoi with buffer.
+    Get forest cover change using the GFC product with a custom tree
+    cover threshold:
 
-    :param parallel: Logical. Parallel (if ``True``) or sequential (if
-        ``False``) computing. Default to ``False``.
+    >>> get_fcc_loss(
+    ...     aoi="COD",
+    ...     years=[2001, 2015, 2024],
+    ...     source="gfc",
+    ...     perc=50,
+    ...     output_file="output/fcc_cod.tif"
+    ... )
 
-    :param ncpu: Number of CPU to use for parallel computing. If None,
-        it will be set to the number of cores on the computer minus
-        one.
+    Get forest cover change using a bounding box extent and parallel
+    computing:
 
-    :param output_file: Path to output GeoTIFF file. If directories in
-        path do not exist they will be created.
-
+    >>> get_fcc_loss(
+    ...     aoi=(-55.0, -15.0, -45.0, -5.0),
+    ...     years=[2000, 2020],
+    ...     source="tmf",
+    ...     parallel=True,
+    ...     ncpu=4,
+    ...     output_file="output/fcc_extent.tif"
+    ... )
     """
 
     # Output dir

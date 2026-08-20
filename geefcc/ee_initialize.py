@@ -7,20 +7,69 @@ import ee
 
 
 def ee_initialize(token_name, project, **kwargs):
-    r"""Initialize GEE.
+    r"""Initialize Google Earth Engine (GEE).
 
-    :param token_name: The name of the Earth Engine token.
+    Parameters
+    ----------
+    token_name : str
+        The name of the environment variable containing the Earth Engine
+        authentication token.
+    project : str
+        Name of the Google Cloud project to use with Earth Engine.
+    **kwargs : dict, optional
+        Additional keyword arguments passed to ``ee.Initialize()``. For
+        example, ``opt_url='https://earthengine-highvolume.googleapis.com'``
+        to use the Earth Engine High-Volume platform.
 
-    :param project: Name of the Google Cloud project.
+    Returns
+    -------
+    None
+        This function initializes the Earth Engine session in place and
+        does not return a value.
 
-    :param \**kwargs: See below
+    Raises
+    ------
+    KeyError
+        If the environment variable specified by ``token_name`` is not set
+        or cannot be found.
+    json.JSONDecodeError
+        If the token value is a JSON-like string but cannot be parsed as
+        valid JSON.
+    ee.EEException
+        If Earth Engine initialization fails due to invalid credentials or
+        project configuration.
 
-    :Keyword Arguments:
-        Additional parameters for ee.Initialize(). For
-        example,
-        opt_url='https://earthengine-highvolume.googleapis.com' to use
-        the Earth Engine High-Volume platform.
+    Notes
+    -----
+    The function reads the authentication token from the environment variable
+    specified by ``token_name``. If the Earth Engine credentials file does
+    not already exist at ``~/.config/earthengine/credentials``, it will be
+    created automatically.
 
+    Two token formats are supported:
+
+    - **New format** (``earthengine-api >= 0.1.304``): The token is a JSON
+      string (starts and ends with ``{`` and ``}``). The parsed dictionary
+      is written directly to the credentials file.
+    - **Old format**: The token is a refresh token string, which is wrapped
+      in ``{"refresh_token": "<token>"}`` before being written to the
+      credentials file.
+
+    Examples
+    --------
+    Initialize Earth Engine using the default endpoint:
+
+    >>> import os
+    >>> os.environ["MY_EE_TOKEN"] = '{"refresh_token": "my_token"}'
+    >>> ee_initialize(token_name="MY_EE_TOKEN", project="my-gcp-project")
+
+    Initialize Earth Engine using the High-Volume endpoint:
+
+    >>> ee_initialize(
+    ...     token_name="MY_EE_TOKEN",
+    ...     project="my-gcp-project",
+    ...     opt_url="https://earthengine-highvolume.googleapis.com",
+    ... )
     """
 
     # Get credentials from environmental variable
@@ -48,6 +97,5 @@ def ee_initialize(token_name, project, **kwargs):
 
     # Initialize
     ee.Initialize(project=project, **kwargs)
-
 
 # End

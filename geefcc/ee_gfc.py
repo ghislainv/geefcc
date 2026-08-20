@@ -10,16 +10,42 @@ def ee_gfc(years, perc):
     `https://developers.google.com/earth-engine/datasets/catalog/\
     UMD_hansen_global_forest_change_2025_v1_13`_.
 
-    :param years: List of years defining time-periods for estimating
-        forest cover change. Years for computing forest cover change
-        can be in the interval 2001--2025 for GFC (GFC does not
-        provide loss for the year 2000).
+    Parameters
+    ----------
+    years : list of int
+        List of years defining time-periods for estimating forest cover
+        change. Years for computing forest cover change can be in the
+        interval 2001--2025 for GFC (GFC does not provide loss for the
+        year 2000).
+    perc : int or float
+        Tree cover threshold defining the forest for GFC product.
 
-    :param perc: Tree cover threshold defining the forest for GFC
-        product.
+    Returns
+    -------
+    ee.ImageCollection
+        An image collection for forest where each image corresponds to
+        a year. Each image contains a single band named ``forest_cover``
+        and has the ``system:time_start`` and ``system:id`` properties
+        set to the first of January of the corresponding year.
 
-    :return: An image collection for forest where each image
-        correspond to a year.
+    Notes
+    -----
+    The function uses the Hansen Global Forest Change product version
+    2025 v1.13. Forest cover at the end of year 2000 is derived from
+    the ``treecover2000`` band by applying the ``perc`` threshold.
+    Subsequent yearly forest maps are obtained by masking out pixels
+    where tree cover loss occurred up to (but not including) the given
+    year, using the ``lossyear`` band.
+
+    Examples
+    --------
+    >>> import ee
+    >>> ee.Initialize()
+    >>> years = [2001, 2005, 2010]
+    >>> perc = 75
+    >>> forest_collection = ee_gfc(years, perc)
+    >>> forest_collection.size().getInfo()
+    3
 
     """
 

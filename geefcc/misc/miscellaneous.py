@@ -10,14 +10,28 @@ from osgeo import gdal
 
 # Function to make a directory
 def make_dir(newdir):
-    """Make new directory
+    """Make new directory.
 
-        * Already exists, silently complete
-        * Regular file in the way, raise an exception
-        * Parent directory(ies) does not exist, make them as well
+    Handles three cases:
 
-    :param newdir: Directory path to create.
+    * Already exists, silently complete
+    * Regular file in the way, raise an exception
+    * Parent directory(ies) does not exist, make them as well
 
+    Parameters
+    ----------
+    newdir : str
+        Directory path to create.
+
+    Raises
+    ------
+    OSError
+        If a file with the same name as the desired directory already exists.
+
+    Examples
+    --------
+    >>> make_dir("/tmp/new_directory")
+    >>> make_dir("/tmp/parent/child/grandchild")
     """
     if os.path.isdir(newdir):
         pass
@@ -45,15 +59,43 @@ def makeblock(rasterfile, blk_rows=128):
     of a raster file and an indication on the number of rows to
     consider.
 
-    :param rasterfile: Path to a raster file.
-    :param blk_rows: If > 0, number of rows for block. If <=0, the
-        block size will be 256 x 256.
+    Parameters
+    ----------
+    rasterfile : str
+        Path to a raster file.
+    blk_rows : int, optional
+        If > 0, number of rows for block. If <= 0, the block size will
+        be 256 x 256. Default is 128.
 
-    :return: A tuple of length 6 including block number, block number
-        on x axis, block number on y axis, block offsets on x axis,
-        block offsets on y axis, block sizes on x axis, block sizes on
-        y axis.
+    Returns
+    -------
+    nblock : int
+        Total number of blocks.
+    nblock_x : int
+        Number of blocks on the x axis.
+    nblock_y : int
+        Number of blocks on the y axis.
+    x : list of int
+        Block offsets on the x axis (upper-left x coordinates of each block).
+    y : list of int
+        Block offsets on the y axis (upper-left y coordinates of each block).
+    nx : list of int
+        Block sizes (number of columns) on the x axis.
+    ny : list of int
+        Block sizes (number of rows) on the y axis.
 
+    Notes
+    -----
+    The returned tuple has length 7 and contains block count information
+    alongside the offsets and sizes needed to iterate over all blocks
+    in a raster file.
+
+    Examples
+    --------
+    >>> nblock, nblock_x, nblock_y, x, y, nx, ny = makeblock("raster.tif")
+    >>> nblock, nblock_x, nblock_y, x, y, nx, ny = makeblock(
+    ...     "raster.tif", blk_rows=256
+    ... )
     """
 
     r = gdal.Open(rasterfile)
@@ -91,14 +133,32 @@ def makeblock(rasterfile, blk_rows=128):
 
 
 def progress_bar(niter, i):
-    """Draw progress_bar
+    """Draw progress bar.
 
-     See results of ``[(100 * i / niter) // 10 * 10 for i in
-     range(niter + 1)]`` to understand how it works.
+    Prints a simple text-based progress bar to standard output.
+    See results of ``[(100 * i / niter) // 10 * 10 for i in
+    range(niter + 1)]`` to understand how it works.
 
-    :param niter: Total number of iterations.
-    :param i: Current number of iteration (starts at 1).
+    Parameters
+    ----------
+    niter : int
+        Total number of iterations.
+    i : int
+        Current number of iteration (starts at 1).
 
+    Notes
+    -----
+    When ``niter >= 40``, the progress bar prints percentage markers
+    at every 10% and dot markers at every 2.5%. When ``niter < 40``,
+    only 10% markers are printed. Output is flushed immediately to
+    support real-time display in terminals and notebooks.
+
+    Examples
+    --------
+    >>> niter = 100
+    >>> for i in range(1, niter + 1):
+    ...     progress_bar(niter, i)
+    geefcc: 0....10....20....30....40....50....60....70....80....90....100 - done
     """
 
     pkg_name = "geefcc"

@@ -1,4 +1,5 @@
 """Summing raster bands.
+
 See: https://github.com/mstrimas/gdal-summarize/blob/master/gdal-summarize.py
 """
 
@@ -12,18 +13,58 @@ from .misc import progress_bar, makeblock
 
 def sum_raster_bands(input_file, output_file="sum.tif",
                      blk_rows=128, verbose=True):
-    """Summing the raster bands.
+    """Sum the raster bands of a multi-band input file into a single
+    output band.
 
-    :param input file: Input file with several bands.
+    Reads the input raster file band by band in configurable block sizes to
+    manage memory usage, computes the pixel-wise sum across all bands, and
+    writes the result to a single-band GeoTIFF output file.
 
-    :param output_file: Output file with one band corresponding to the
-        sum of the input bands.
+    Parameters
+    ----------
+    input_file : str
+        Path to the input raster file containing several bands to be summed.
+    output_file : str, optional
+        Path to the output GeoTIFF file with one band corresponding to the
+        sum of the input bands. Defaults to ``"sum.tif"``.
+    blk_rows : int, optional
+        Number of rows per processing block. Used to break large raster files
+        into several blocks of data that can be held in memory at one time.
+        Defaults to ``128``.
+    verbose : bool, optional
+        Whether to print progress messages during processing. Defaults to
+        ``True``.
 
-    :param blk_rows: Number of rows for block. This is used to break
-        lage raster files in several blocks of data that can be hold
-        in memory.
+    Returns
+    -------
+    None
+        The function writes results directly to ``output_file`` and does not
+        return a value.
 
-    :param verbose: Logical. Whether to print messages or not.
+    Raises
+    ------
+    RuntimeError
+        If ``input_file`` cannot be opened by GDAL or if the output raster
+        cannot be created.
+
+    Notes
+    -----
+    - The output raster is created with ``gdal.GDT_Byte`` data type, DEFLATE
+      compression, and BIGTIFF support enabled.
+    - A NoData value of ``255`` is assigned to the output band.
+    - If ``output_file`` already exists, it will be removed before the new
+      file is created.
+    - Band statistics are computed and flushed to disk after all blocks have
+      been processed.
+
+    Examples
+    --------
+    >>> sum_raster_bands(
+    ...     input_file="input_multiband.tif",
+    ...     output_file="sum.tif",
+    ...     blk_rows=256,
+    ...     verbose=True,
+    ... )
 
     """
 
@@ -87,6 +128,5 @@ def sum_raster_bands(input_file, output_file="sum.tif",
     # Dereference driver
     band_out = None
     del ds_out
-
 
 # End
