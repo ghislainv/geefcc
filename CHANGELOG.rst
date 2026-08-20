@@ -8,6 +8,7 @@ geefcc 0.1.8 (dev)
   deriving the forest cover change map.
 * Function `get_fcc` is deprecated and has been replaced by `get_fcc_loss`.
 * Function `get_fcc_loss_gain` has been added.
+* Use Numpy style for docstrings when documenting functions
 * Changes: https://github.com/ghislainv/geefcc/compare/v0.1.7...v0.1.8
 
 geefcc 0.1.7

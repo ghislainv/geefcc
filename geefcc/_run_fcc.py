@@ -1,6 +1,7 @@
 """Shared pipeline for get_fcc_loss and get_fcc_loss_gain."""
 
 import os
+from pathlib import Path
 import multiprocess as mp
 
 from .misc import make_dir
@@ -8,9 +9,6 @@ from .make_grid import make_grid, grid_intersection
 from .geeic2geotiff import geeic2geotiff
 from .geotiff_from_tiles import geotiff_from_tiles
 from .get_extent_from_aoi import get_extent_from_aoi
-
-opj = os.path.join
-opd = os.path.dirname
 
 PROJ = "EPSG:4326"
 EPSG_CODE = 4326
@@ -38,7 +36,7 @@ def _run_fcc_pipeline(aoi, buff, tile_size, forest,
     ncpu : int or None
         Number of CPUs for parallel computing. If None, uses
         os.cpu_count() - 1.
-    output_file : str
+    output_file : str or Path
         Path to the output GeoTIFF file.
 
     Returns
@@ -47,8 +45,8 @@ def _run_fcc_pipeline(aoi, buff, tile_size, forest,
         The function writes the output GeoTIFF to disk and returns nothing.
     """
 
-    # Output dir
-    out_dir = opd(output_file)
+    output_file = Path(output_file)
+    out_dir = output_file.parent
     make_dir(out_dir)
 
     # Get aoi
@@ -58,18 +56,18 @@ def _run_fcc_pipeline(aoi, buff, tile_size, forest,
     extent_latlong = extent["extent_latlong"]
 
     # Make minimal grid
-    grid_gpkg = opj(out_dir, "grid.gpkg")
+    grid_gpkg = out_dir / "grid.gpkg"
     grid = make_grid(extent_latlong, buff=0, tile_size=tile_size,
                      scale=SCALE, proj=EPSG_CODE, ofile=grid_gpkg)
     if aoi_isfile:
-        min_grid = opj(out_dir, "min_grid.gpkg")
+        min_grid = out_dir / "min_grid.gpkg"
         grid = grid_intersection(grid, grid_gpkg, min_grid, borders_gpkg)
 
     # Number of tiles
     ntiles = len(grid)
 
     # Create dir for forest tiles
-    out_dir_tiles = opj(out_dir, "forest_tiles")
+    out_dir_tiles = out_dir / "forest_tiles"
     make_dir(out_dir_tiles)
 
     # Message
@@ -85,7 +83,7 @@ def _run_fcc_pipeline(aoi, buff, tile_size, forest,
         if ncpu is None:
             ncpu = os.cpu_count() - 1
         with mp.Pool(processes=ncpu) as pool:
-            args = [(i, ext, ntiles, forest, PROJ, SCALE, out_dir_tiles)
+            args = [(i, ext, ntiles, forest, PROJ, SCALE, str(out_dir_tiles))
                     for (i, ext) in enumerate(grid)]
             _ = pool.starmap_async(geeic2geotiff, args)
             pool.close()

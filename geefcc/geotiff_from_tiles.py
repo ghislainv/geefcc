@@ -1,12 +1,8 @@
 """Make geotiff from tiles."""
 
-import os
-from glob import glob
+from pathlib import Path
 
 from osgeo import gdal
-
-opj = os.path.join
-opd = os.path.dirname
 
 
 def add_color_table(output_file):
@@ -14,7 +10,7 @@ def add_color_table(output_file):
 
     Parameters
     ----------
-    output_file : str
+    output_file : str or Path
         Path to the output GeoTIFF file to add the color table to.
         The file must exist and will be opened in update mode. The
         color table is only applied if the raster has a single band.
@@ -50,8 +46,8 @@ def add_color_table(output_file):
     >>> add_color_table("output/forest_map.tif")
     """
 
-    # Open file in update mode
-    ds = gdal.Open(output_file, gdal.GA_Update)
+    # Open file in update mode (GDAL requires str)
+    ds = gdal.Open(str(Path(output_file)), gdal.GA_Update)
     n_bands = ds.RasterCount
 
     # Apply color table only for single band raster
@@ -101,14 +97,14 @@ def geotiff_from_tiles(crop_to_aoi, extent, output_file):
 
         - ``"aoi_isfile"`` (*bool*): Whether the AOI is provided as a
           file.
-        - ``"borders_gpkg"`` (*str*): Path to the GeoPackage file
-          containing the AOI borders, used as a cutline when
+        - ``"borders_gpkg"`` (*str or Path*): Path to the GeoPackage
+          file containing the AOI borders, used as a cutline when
           ``aoi_isfile`` is True.
         - ``"extent_latlong"`` (*tuple*): A tuple of
           ``(xmin, ymin, xmax, ymax)`` in latitude/longitude
           coordinates, used when ``aoi_isfile`` is False.
 
-    output_file : str
+    output_file : str or Path
         Path to the output GeoTIFF file to be created. The parent
         directory must already exist and will also be used to store
         intermediate files (``forest.vrt`` and the ``forest_tiles``
@@ -156,24 +152,24 @@ def geotiff_from_tiles(crop_to_aoi, extent, output_file):
     ... )
     """
 
-    # Dir for forest tiles
-    out_dir = opd(output_file)
-    out_dir_tiles = opj(out_dir, "forest_tiles")
+    output_file = Path(output_file)
+    out_dir = output_file.parent
+    out_dir_tiles = out_dir / "forest_tiles"
 
     # Make vrt
-    tif_forest_files = glob(opj(out_dir_tiles, "forest_*.tif"))
+    tif_forest_files = [str(p) for p in out_dir_tiles.glob("forest_*.tif")]
     # Callback
     verbose = False
     cback = gdal.TermProgress_nocb if verbose else 0
+    vrt_file = out_dir / "forest.vrt"
     forest_vrt = gdal.BuildVRT(
-        opj(out_dir, "forest.vrt"),
+        str(vrt_file),  # GDAL requires str
         tif_forest_files,
         srcNodata=0,
         VRTNodata=0,
         callback=cback)
     forest_vrt.FlushCache()
     forest_vrt = None
-    vrt_file = opj(out_dir, "forest.vrt")
 
     # VRT to GeoTIFF
     copts = ["COMPRESS=DEFLATE", "BIGTIFF=YES"]
@@ -182,10 +178,10 @@ def geotiff_from_tiles(crop_to_aoi, extent, output_file):
     extent_latlong = extent["extent_latlong"]
     if crop_to_aoi:
         if aoi_isfile:
-            gdal.Warp(output_file, vrt_file,
+            gdal.Warp(str(output_file), str(vrt_file),  # GDAL requires str
                       cropToCutline=True,
                       warpOptions=["CUTLINE_ALL_TOUCHED=TRUE"],
-                      cutlineDSName=borders_gpkg,
+                      cutlineDSName=str(borders_gpkg),  # GDAL requires str
                       creationOptions=copts,
                       srcNodata=0,
                       dstNodata=0,
@@ -193,14 +189,14 @@ def geotiff_from_tiles(crop_to_aoi, extent, output_file):
         else:
             xmin, ymin, xmax, ymax = extent_latlong
             ulx_uly_lrx_lry = [xmin, ymax, xmax, ymin]
-            gdal.Translate(output_file, vrt_file,
+            gdal.Translate(str(output_file), str(vrt_file),  # GDAL requires str
                            projWin=ulx_uly_lrx_lry,
                            noData=0,
                            maskBand=None,
                            creationOptions=copts,
                            callback=cback)
     else:
-        gdal.Translate(output_file, vrt_file,
+        gdal.Translate(str(output_file), str(vrt_file),  # GDAL requires str
                        noData=0,
                        maskBand=None,
                        creationOptions=copts,

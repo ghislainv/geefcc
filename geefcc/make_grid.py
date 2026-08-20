@@ -1,6 +1,6 @@
 """Make minimal grid with buffer around polygons."""
 
-import os
+from pathlib import Path
 
 import numpy as np
 from osgeo import ogr, osr
@@ -17,9 +17,9 @@ def create_buffer(input_file, output_file, buffer_dist):
 
     Parameters
     ----------
-    input_file : str
+    input_file : str or Path
         Input filename.
-    output_file : str
+    output_file : str or Path
         Output filename (`.gpkg`).
     buffer_dist : float
         Buffer distance (in unit of CRS).
@@ -39,14 +39,16 @@ def create_buffer(input_file, output_file, buffer_dist):
     --------
     >>> create_buffer("input.gpkg", "output_buffer.gpkg", buffer_dist=100)
     """
-    input_ds = ogr.Open(input_file)
-    # Get first layer
+    input_file = Path(input_file)
+    output_file = Path(output_file)
+
+    input_ds = ogr.Open(str(input_file))  # OGR requires str
     input_lyr = input_ds.GetLayer(0)
 
     driver = ogr.GetDriverByName("GPKG")
-    if os.path.exists(output_file):
-        driver.DeleteDataSource(output_file)
-    output_ds = driver.CreateDataSource(output_file)
+    if output_file.exists():
+        driver.DeleteDataSource(str(output_file))  # OGR requires str
+    output_ds = driver.CreateDataSource(str(output_file))  # OGR requires str
     # Must be MultiPolygon here
     lyr = output_ds.CreateLayer(
         "buffer",
@@ -79,7 +81,7 @@ def gpkg_from_grid(grid, proj=4326, ofile="grid.gpkg"):
         List of extents ``(xmin, ymin, xmax, ymax)`` for each grid cell.
     proj : int, optional
         Projection as EPSG code, by default ``4326``.
-    ofile : str, optional
+    ofile : str or Path, optional
         Output file path, by default ``"grid.gpkg"``.
 
     Returns
@@ -98,14 +100,15 @@ def gpkg_from_grid(grid, proj=4326, ofile="grid.gpkg"):
     >>> grid = [(0.0, 0.0, 1.0, 1.0), (1.0, 0.0, 2.0, 1.0)]
     >>> gpkg_from_grid(grid, proj=4326, ofile="grid.gpkg")
     """
+    ofile = Path(ofile)
 
     # Set up the shapefile driver
     driver = ogr.GetDriverByName("GPKG")
 
     # Create the data source
-    if os.path.exists(ofile):
-        os.remove(ofile)
-    ds = driver.CreateDataSource(ofile)
+    if ofile.exists():
+        ofile.unlink()
+    ds = driver.CreateDataSource(str(ofile))  # OGR requires str
 
     # Create the spatial reference system, WGS84
     srs = osr.SpatialReference()
@@ -123,11 +126,7 @@ def gpkg_from_grid(grid, proj=4326, ofile="grid.gpkg"):
 
     # Create grid cells
     for (i, coords) in enumerate(grid):
-        # Get coordinates
-        xmin = coords[0]
-        ymin = coords[1]
-        xmax = coords[2]
-        ymax = coords[3]
+        xmin, ymin, xmax, ymax = coords
         # Create geometry
         ring = ogr.Geometry(ogr.wkbLinearRing)
         ring.AddPoint(xmin, ymax)
@@ -165,7 +164,7 @@ def make_grid(extent, buff, tile_size, scale, proj=4326,
         (same unit as ``extent``).
     proj : int, optional
         Projection as EPSG code, by default ``4326``.
-    ofile : str, optional
+    ofile : str or Path, optional
         Output file path, by default ``"grid.gpkg"``.
 
     Returns
@@ -207,7 +206,6 @@ def make_grid(extent, buff, tile_size, scale, proj=4326,
             for i in range(nx - 1) for j in range(ny - 1)]
     # Create vector file from grid
     gpkg_from_grid(grid, proj, ofile)
-    # Return
     return grid
 
 
@@ -219,12 +217,12 @@ def grid_intersection(grid, input_grid, output_grid, borders_gpkg):
     grid : list of tuple of float
         List of extents ``(xmin, ymin, xmax, ymax)`` for each grid cell,
         corresponding to the features in ``input_grid``.
-    input_grid : str
+    input_grid : str or Path
         Path to the input grid vector file (GeoPackage format).
-    output_grid : str
+    output_grid : str or Path
         Path to the output grid vector file for intersecting cells
         (GeoPackage format).
-    borders_gpkg : str
+    borders_gpkg : str or Path
         Path to the border vector file (GeoPackage format) used for
         intersection testing.
 
@@ -260,19 +258,23 @@ def grid_intersection(grid, input_grid, output_grid, borders_gpkg):
     >>> len(intersecting)
     1
     """
+    input_grid = Path(input_grid)
+    output_grid = Path(output_grid)
+    borders_gpkg = Path(borders_gpkg)
+
     # Grid
     dr_g = ogr.GetDriverByName("GPKG")
-    ds_g = dr_g.Open(input_grid)
+    ds_g = dr_g.Open(str(input_grid))   # OGR requires str
     lay_g = ds_g.GetLayer()
     # Borders
     dr_b = ogr.GetDriverByName("GPKG")
-    ds_b = dr_b.Open(borders_gpkg)
+    ds_b = dr_b.Open(str(borders_gpkg))  # OGR requires str
     lay_b = ds_b.GetLayer()
     # New grid
     grid_i = []
-    if os.path.exists(output_grid):
-        os.remove(output_grid)
-    ds = dr_g.CreateDataSource(output_grid)
+    if output_grid.exists():
+        output_grid.unlink()
+    ds = dr_g.CreateDataSource(str(output_grid))  # OGR requires str
     wkt = lay_g.GetSpatialRef().ExportToWkt()
     srs = osr.SpatialReference()
     srs.ImportFromWkt(wkt)
@@ -288,8 +290,6 @@ def grid_intersection(grid, input_grid, output_grid, borders_gpkg):
             if geom_g.Intersects(geom_b):
                 grid_i.append(ext)
                 layer.CreateFeature(feat_g)
-                # Reset reading so that features of lay_b
-                # are accessible again
                 lay_b.ResetReading()
                 break
 
@@ -298,7 +298,6 @@ def grid_intersection(grid, input_grid, output_grid, borders_gpkg):
     ds_b = None
     ds_g = None
 
-    # Return
     return grid_i
 
 # End Of File

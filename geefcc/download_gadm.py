@@ -1,8 +1,10 @@
 """Download GADM data."""
 
-import os
+import tempfile
+import shutil
+from pathlib import Path
 from urllib.request import urlretrieve
-import tempfile, shutil
+
 
 def download_gadm(iso3, output_file):
     """Download GADM data for a country.
@@ -14,7 +16,7 @@ def download_gadm(iso3, output_file):
     ----------
     iso3 : str
         Country ISO 3166-1 alpha-3 code.
-    output_file : str
+    output_file : str or Path
         Path to output GPKG file.
 
     Returns
@@ -39,6 +41,10 @@ def download_gadm(iso3, output_file):
     attempting to download. If the file is present, the download is
     skipped entirely.
 
+    To avoid corrupt files from interrupted downloads, the file is
+    first downloaded to a temporary location and then moved to
+    ``output_file`` only upon success.
+
     Data are retrieved from the GADM version 4.1 repository hosted at
     the University of California, Davis:
     ``https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/``.
@@ -50,15 +56,20 @@ def download_gadm(iso3, output_file):
 
     """
 
-    if not os.path.isfile(output_file):
+    output_file = Path(output_file)
+
+    if not output_file.is_file():
         url = ("https://geodata.ucdavis.edu/gadm/gadm4.1/"
                f"gpkg/gadm41_{iso3}.gpkg")
-        with tempfile.NamedTemporaryFile(delete=False) as tmp:
-            try:
-                urlretrieve(url, tmp.name)
-                shutil.move(tmp.name, output_file)
-            except Exception:
-                os.unlink(tmp.name)
-                raise
+        # Download to a temp file first to avoid partial downloads
+        with tempfile.NamedTemporaryFile(delete=False,
+                                        suffix=".gpkg") as tmp:
+            tmp_path = Path(tmp.name)
+        try:
+            urlretrieve(url, tmp_path)
+            shutil.move(tmp_path, output_file)
+        except Exception:
+            tmp_path.unlink(missing_ok=True)
+            raise
 
 # End

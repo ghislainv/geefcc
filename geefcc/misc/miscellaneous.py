@@ -1,7 +1,7 @@
 """Miscellaneous functions."""
 
 # Standard library imports
-import os
+from pathlib import Path
 
 # Third party imports
 import numpy as np
@@ -20,7 +20,7 @@ def make_dir(newdir):
 
     Parameters
     ----------
-    newdir : str
+    newdir : str or Path
         Directory path to create.
 
     Raises
@@ -33,22 +33,16 @@ def make_dir(newdir):
     >>> make_dir("/tmp/new_directory")
     >>> make_dir("/tmp/parent/child/grandchild")
     """
-    if os.path.isdir(newdir):
+    newdir = Path(newdir)
+    if newdir.is_dir():
         pass
-    elif os.path.isfile(newdir):
+    elif newdir.is_file():
         raise OSError(
-            "a file with the same name as the desired \
-                      dir, '{}', already exists.".format(
-                newdir
-            )
+            f"a file with the same name as the desired "
+            f"dir, '{newdir}', already exists."
         )
     else:
-        head, tail = os.path.split(newdir)
-        if head and not os.path.isdir(head):
-            make_dir(head)
-        # print "_mkdir %s" % repr(newdir)
-        if tail:
-            os.mkdir(newdir)
+        newdir.mkdir(parents=True, exist_ok=True)
 
 
 # Makeblock
@@ -61,7 +55,7 @@ def makeblock(rasterfile, blk_rows=128):
 
     Parameters
     ----------
-    rasterfile : str
+    rasterfile : str or Path
         Path to a raster file.
     blk_rows : int, optional
         If > 0, number of rows for block. If <= 0, the block size will
@@ -98,13 +92,10 @@ def makeblock(rasterfile, blk_rows=128):
     ... )
     """
 
-    r = gdal.Open(rasterfile)
-    # b = r.GetRasterBand(1)
+    r = gdal.Open(str(rasterfile))  # GDAL requires str
     # Landscape variables
     ncol = r.RasterXSize
     nrow = r.RasterYSize
-    # Block size
-    # block_xsize, block_ysize = b.GetBlockSize()
     # Adapt number of blocks
     if blk_rows > 0:
         block_xsize = ncol
@@ -127,7 +118,6 @@ def makeblock(rasterfile, blk_rows=128):
         nx[-1] = ncol % block_xsize
     if (nrow % block_ysize) > 0:
         ny[-1] = nrow % block_ysize
-    # b = None
     del r
     return (nblock, nblock_x, nblock_y, x, y, nx, ny)
 

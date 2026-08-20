@@ -3,7 +3,7 @@
 See: https://github.com/mstrimas/gdal-summarize/blob/master/gdal-summarize.py
 """
 
-import os
+from pathlib import Path
 
 import numpy as np
 from osgeo import gdal
@@ -22,9 +22,9 @@ def sum_raster_bands(input_file, output_file="sum.tif",
 
     Parameters
     ----------
-    input_file : str
+    input_file : str or Path
         Path to the input raster file containing several bands to be summed.
-    output_file : str, optional
+    output_file : str or Path, optional
         Path to the output GeoTIFF file with one band corresponding to the
         sum of the input bands. Defaults to ``"sum.tif"``.
     blk_rows : int, optional
@@ -68,8 +68,11 @@ def sum_raster_bands(input_file, output_file="sum.tif",
 
     """
 
+    input_file = Path(input_file)
+    output_file = Path(output_file)
+
     # Load input raster info
-    ds = gdal.Open(input_file)
+    ds = gdal.Open(str(input_file))  # GDAL requires str
     gt = ds.GetGeoTransform()
     proj = ds.GetProjection()
     ncol = ds.RasterXSize
@@ -78,10 +81,10 @@ def sum_raster_bands(input_file, output_file="sum.tif",
 
     # Create output raster file
     driver = gdal.GetDriverByName("GTiff")
-    if os.path.isfile(output_file):
-        os.remove(output_file)
+    if output_file.is_file():
+        output_file.unlink()
     ds_out = driver.Create(
-        output_file,
+        str(output_file),  # GDAL requires str
         ncol, nrow, 1,
         gdal.GDT_Byte,
         ["COMPRESS=DEFLATE", "BIGTIFF=YES"],
@@ -110,8 +113,7 @@ def sum_raster_bands(input_file, output_file="sum.tif",
         px = b % nblock_x
         py = b // nblock_x
         # Make stack to store data
-        stack = np.empty(shape=(nband, ny[py], nx[px]),
-                         dtype="b")
+        stack = np.empty(shape=(nband, ny[py], nx[px]), dtype="b")
         # Data for one block
         for i in range(nband):
             stack[i] = (ds.GetRasterBand(i + 1)

@@ -1,5 +1,7 @@
 """Get the extent of a shapefile."""
 
+from pathlib import Path
+
 from osgeo import ogr
 
 
@@ -11,7 +13,7 @@ def get_vector_extent(input_file):
 
     Parameters
     ----------
-    input_file : str
+    input_file : str or Path
         Path to the input vector file.
 
     Returns
@@ -33,19 +35,18 @@ def get_vector_extent(input_file):
 
     Examples
     --------
-    >>> from forestatrisk import get_vector_extent
+    >>> from geefcc import get_vector_extent
     >>> extent = get_vector_extent("myfile.shp")
     >>> print(extent)
     (-180.0, -90.0, 180.0, 90.0)
 
     """
 
-    in_data_source = ogr.Open(input_file)
+    in_data_source = ogr.Open(str(Path(input_file)))  # OGR requires str
     in_layer = in_data_source.GetLayer()
     extent = in_layer.GetExtent()
-    extent = (extent[0], extent[2], extent[1], extent[3])
-    in_data_source = None  # Close OGR object
+    in_data_source = None  # Close datasource explicitly
 
-    return extent  # (xmin, ymin, xmax, ymax)
+    return (extent[0], extent[2], extent[1], extent[3])  # (xmin, ymin, xmax, ymax)
 
 # End

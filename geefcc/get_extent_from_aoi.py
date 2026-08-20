@@ -1,13 +1,10 @@
 """Get extent from aoi."""
 
-import os
+from pathlib import Path
 
 from .download_gadm import download_gadm
 from .make_grid import create_buffer
 from .get_vector_extent import get_vector_extent
-
-opj = os.path.join
-opd = os.path.dirname
 
 
 def get_extent_from_aoi(aoi, buff, out_dir):
@@ -24,7 +21,7 @@ def get_extent_from_aoi(aoi, buff, out_dir):
         Buffer around the aoi in decimal degrees. For example,
         ``0.08983152841195216`` corresponds to approximately 10 km at
         the equator. Use ``0`` to apply no buffer.
-    out_dir : str
+    out_dir : str or Path
         Path to the output directory where intermediate and result files
         will be saved.
 
@@ -36,7 +33,7 @@ def get_extent_from_aoi(aoi, buff, out_dir):
         - ``"extent_latlong"`` : tuple of float
             The bounding box of the aoi (with buffer if applicable) as
             ``(xmin, ymin, xmax, ymax)`` in decimal degrees.
-        - ``"borders_gpkg"`` : str or None
+        - ``"borders_gpkg"`` : Path or None
             Path to the borders GeoPackage file (with buffer if
             applicable). ``None`` when ``aoi`` is provided as a tuple
             extent.
@@ -49,7 +46,9 @@ def get_extent_from_aoi(aoi, buff, out_dir):
     ValueError
         If ``aoi`` is not a valid country ISO code (three-letter
         string), a tuple of four coordinates, or a path to an existing
-        ``.gpkg`` file.
+        ``.gpkg`` file. Also raised if the tuple extent has invalid
+        coordinates (e.g. xmin >= xmax, or values out of lat/long
+        bounds).
 
     Notes
     -----
@@ -86,20 +85,19 @@ def get_extent_from_aoi(aoi, buff, out_dir):
     True
     """
 
+    out_dir = Path(out_dir)
+
     # Set aoi_isfile
     aoi_isfile = True
 
     # aoi = country iso code
     if isinstance(aoi, str) and len(aoi) == 3:
-        # Download borders
         iso = aoi
-        borders_gpkg = opj(out_dir, f"gadm41_{iso}_0.gpkg")
+        borders_gpkg = out_dir / f"gadm41_{iso}_0.gpkg"
         download_gadm(iso, output_file=borders_gpkg)
         # Buffer around borders
         if buff > 0:
-            buff_file = opj(
-                out_dir,
-                f"gadm41_{iso}_buffer.gpkg")
+            buff_file = out_dir / f"gadm41_{iso}_buffer.gpkg"
             create_buffer(input_file=borders_gpkg,
                           output_file=buff_file,
                           buffer_dist=buff)
@@ -109,27 +107,36 @@ def get_extent_from_aoi(aoi, buff, out_dir):
 
     # aoi = extent
     elif isinstance(aoi, tuple) and len(aoi) == 4:
-        xmin, ymin, xmax, ymax = aoi
-        if xmin >= xmax or ymin >= ymax:
-            raise ValueError("Invalid extent: xmin >= xmax or ymin >= ymax")
-        if not (-180 <= xmin <= 180 and -90 <= ymin <= 90):
-            raise ValueError("Coordinates out of lat/long bounds")
         aoi_isfile = False
-        # nb: We could create a vector file here...
         borders_gpkg = None
+        xmin, ymin, xmax, ymax = aoi
+        # Validate coordinates
+        if xmin >= xmax:
+            raise ValueError(
+                f"Invalid extent: xmin ({xmin}) must be less than xmax ({xmax}).")
+        if ymin >= ymax:
+            raise ValueError(
+                f"Invalid extent: ymin ({ymin}) must be less than ymax ({ymax}).")
+        if not (-180 <= xmin <= 180 and -180 <= xmax <= 180):
+            raise ValueError(
+                f"Invalid extent: xmin ({xmin}) and xmax ({xmax}) "
+                "must be in the range [-180, 180].")
+        if not (-90 <= ymin <= 90 and -90 <= ymax <= 90):
+            raise ValueError(
+                f"Invalid extent: ymin ({ymin}) and ymax ({ymax}) "
+                "must be in the range [-90, 90].")
+        # Apply buffer
         if buff > 0:
-            extent_latlong = (aoi[0] - buff, aoi[1] - buff,
-                              aoi[2] + buff, aoi[3] + buff)
+            extent_latlong = (xmin - buff, ymin - buff,
+                              xmax + buff, ymax + buff)
         else:
             extent_latlong = aoi
 
     # aoi = gpkg file
-    elif os.path.isfile(aoi) and aoi[-5:] == ".gpkg":
-        # Buffer around borders
+    elif Path(aoi).is_file() and Path(aoi).suffix == ".gpkg":
+        aoi = Path(aoi)
         if buff > 0:
-            buff_file = opj(
-                out_dir,
-                "borders_buffer.gpkg")
+            buff_file = out_dir / "borders_buffer.gpkg"
             create_buffer(input_file=aoi,
                           output_file=buff_file,
                           buffer_dist=buff)
