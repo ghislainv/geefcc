@@ -1,6 +1,7 @@
 numpy
 gdal
-rioxarray
 xarray
+rioxarray
 xee
 multiprocess
+tenacity

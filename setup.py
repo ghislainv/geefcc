@@ -64,7 +64,7 @@ setup(name="geefcc",
       package_dir={"geefcc": "geefcc", "misc": "geefcc/misc"},
       entry_points={"console_scripts": ["geefcc = geefcc.geefcc:main"]},
       install_requires=["numpy", "gdal", "xarray", "xee",
-                        "rioxarray", "multiprocess"],
+                        "rioxarray", "multiprocess", "tenacity"],
       extras_require={
           "interactive": ["cartopy", "matplotlib", "geopandas"]},
       zip_safe=False)
