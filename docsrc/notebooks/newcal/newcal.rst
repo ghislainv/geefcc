@@ -12,17 +12,12 @@ We can use ``geefcc`` to download forest cover change for large countries, for e
 .. code:: python
 
     import os
+    from pathlib import Path
     import time
 
     import ee
-    import numpy as np
+    import geefcc
     import pandas as pd
-    from osgeo import gdal
-    from geefcc import get_fcc, sum_raster_bands
-    import geopandas
-    import matplotlib.pyplot as plt
-    from matplotlib.colors import ListedColormap
-    import matplotlib.patches as mpatches
     from tabulate import tabulate
 
 We initialize Google Earth Engine.
@@ -51,21 +46,27 @@ Using TMF product
 Downloading data
 ~~~~~~~~~~~~~~~~
 
-We download the forest cover change data from GEE for New Caledonia for years 2001, 2010 and 2020, using a tile size of one degree. We use the TMF product (version ``v1_2025`` available in geefcc).
+We download the forest cover change data from GEE for New Caledonia for years 2001, 2010 and 2020, using a tile size of one degree. We use the TMF product.
 
 .. code:: python
 
+    years_tmf = [2001, 2010, 2020]
+    out_dir_tmf = Path("out_tmf")
+    ofile_tmf = out_dir_tmf / "forest_tmf.tif"
+
     start_time = time.time()
-    get_fcc(
-        aoi=(163.5, -23, 168.15, -19.51),
-        buff=0.0,
-        years=[2001, 2010, 2020],
-        source="tmf",
-        tile_size=1.0,
-        crop_to_aoi=True,
-        output_file="out_tmf/forest_tmf.tif",
-        parallel=True,
-        ncpu=ncpu)
+    if not ofile_tmf.is_file():
+        geefcc.get_fcc_loss(
+            aoi=(163.5, -23, 168.15, -19.51),
+            buff=0.0,
+            years=years_tmf,
+            source="tmf",
+            tile_size=1.0,
+            crop_to_aoi=True,
+            output_file=ofile_tmf,
+            parallel=True,
+            ncpu=ncpu,
+        )
     end_time = time.time()
 
 ::
@@ -73,7 +74,7 @@ We download the forest cover change data from GEE for New Caledonia for years 20
     get_fcc running, 20 tiles .....................
 
 
-We estimate the computation time to download 20 1-degree tiles using several cores. 
+We estimate the computation time to download 20 1-degree tiles using several cores.
 
 .. code:: python
 
@@ -87,91 +88,36 @@ We estimate the computation time to download 20 1-degree tiles using several cor
 Transform multiband fcc raster in one band raster
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We transform the data to have only one band describing the forest cover change with 0 for non-forest, 1 for deforestation on the period 2000--2009, 2 for deforestation on the period 2010--2019, and 3 for the remaining forest in 2020. To do so, we just sum the values of the raster bands.
+We transform the data to have only one band describing the forest cover change with 0 for non-forest, 1 for deforestation on the period 2001--2009, 2 for deforestation on the period 2010--2019, and 3 for the remaining forest in 2020. To do so, we just sum the values of the raster bands.
 
 .. code:: python
 
-    sum_raster_bands(input_file="out_tmf/forest_tmf.tif",
-                     output_file="out_tmf/fcc_tmf.tif",
-                     verbose=False)
-
-We resample at a lower resolution for plotting.
-
-.. code:: python
-
-    infn = "out_tmf/fcc_tmf.tif"
-    outfn = "out_tmf/fcc_tmf_coarsen.tif"
-    scale = gdal.Open(infn).GetGeoTransform()[1]
-    xres = 20 * scale
-    yres = 20 * scale
-    resample_alg = "near"
-
-    ds = gdal.Warp(outfn, infn, xRes=xres, yRes=yres, resampleAlg=resample_alg)
-    ds = None
+    fcc_file_tmf = out_dir_tmf / "fcc_tmf.tif"
+    if not fcc_file_tmf.is_file():
+        geefcc.sum_raster_bands(
+            input_file=ofile_tmf,
+            output_file=fcc_file_tmf,
+            verbose=False,
+        )
 
 Plot the forest cover change map
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We prepare the colors for the map.
+We plot the forest cover change map. The raster is automatically resampled to a coarser resolution before plotting as it exceeds the default pixel threshold. Country borders and the tile grid are overlaid directly from their vector files.
 
 .. code:: python
 
-    # Colors
-    cols=[(255, 165, 0, 255), (227, 26, 28, 255), (34, 139, 34, 255)]
-    colors = [(1, 1, 1, 0)]  # transparent white for 0
-    cmax = 255.0  # float for division
-    for col in cols:
-        col_class = tuple([i / cmax for i in col])
-        colors.append(col_class)
-    color_map = ListedColormap(colors)
-
-    # Labels
-    labels = {0: "non-forest in 2001", 1:"deforestation 2001-2009",
-              2:"deforestation 2010-2019", 3:"forest in 2020"}
-    patches = [mpatches.Patch(facecolor=col, edgecolor="black",
-                              label=labels[i]) for (i, col) in enumerate(colors)]
-
-We create a short function to plot the forest cover change map.
-
-.. code:: python
-
-    def plot_fcc(title, out_file):
-        fig = plt.figure()
-        ax = plt.subplot(111)
-        ax.imshow(raster_image, cmap=color_map, extent=extent,
-                  resample=False)
-        ax.set_aspect("equal") 
-        grid_image = grid.boundary.plot(ax=ax, color="grey", linewidth=0.5)
-        borders_image = borders.boundary.plot(ax=ax, color="black", linewidth=0.5)
-        plt.title(title)
-        plt.legend(handles=patches, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
-        plt.xlim((163, 169))
-        plt.ylim((-23.25, -18.75))
-        fig.savefig(out_file, bbox_inches="tight", dpi=200)
-        plt.close(fig)
-
-We load the data: country borders and grid. The borders can be downloaded from the `gadm <https://gadm.org/download_country.html>`_ website. 
-
-.. code:: python
-
-    # Borders
-    borders_gpkg = os.path.join("data", "borders_NCL.gpkg")
-    borders = geopandas.read_file(borders_gpkg)
-
-    # Grid
-    grid_gpkg = os.path.join("out_tmf", "grid.gpkg")
-    grid = geopandas.read_file(grid_gpkg)
-
-We plot the forest cover change map.
-
-.. code:: python
-
-    with gdal.Open("out_tmf/fcc_tmf_coarsen.tif", gdal.GA_ReadOnly) as ds:
-        raster_image = ds.ReadAsArray()
-        nrow, ncol = raster_image.shape
-        xmin, xres, _, ymax, _, yres = ds.GetGeoTransform()
-        extent = [xmin, xmin + xres * ncol, ymax + yres * nrow, ymax]
-        plot_fcc("Forest cover change 2001-2010-2020, TMF", "fcc_tmf.png")
+    geefcc.plot_fcc_loss(
+        input_file=fcc_file_tmf,
+        years=years_tmf,
+        output_file="fcc_tmf.png",
+        title="Forest cover change 2001-2010-2020, TMF",
+        dpi=200,
+        borders=Path("data") / "borders_NCL.gpkg",
+        grid=out_dir_tmf / "grid.gpkg",
+        xlim=(163, 169),
+        ylim=(-23.25, -18.75),
+    )
 
 .. image:: fcc_tmf.png
     :width: 100%
@@ -184,56 +130,59 @@ Reproject in EPSG:3163 for area computation
 
 .. code:: python
 
-    ifile = os.path.join("out_tmf", "fcc_tmf.tif")
-    ofile = os.path.join("out_tmf", "fcc_tmf_epsg3163.tif")
-    ds = gdal.Warp(ofile, ifile, xRes=30, yRes=30, dstSRS="EPSG:3163", resampleAlg="near",
-              targetAlignedPixels=True, creationOptions=["COMPRESS=DEFLATE"])
-    ds = None
+    res_df_tmf = geefcc.stat_fcc_loss(
+        input_file=fcc_file_tmf,
+        years=years_tmf,
+        epsg=3163,
+        output_file="fcc_statistics_tmf.csv",
+    )
+    tabulate(res_df_tmf, headers=res_df_tmf.columns, tablefmt="orgtbl", showindex=False)
 
-Compute statistics
-~~~~~~~~~~~~~~~~~~
+.. table::
 
-We use the tool “Raster layer unique values report” in QGIS to get the number of pixels per pixel value in the raster.
+    +----------+-------------------------+-----------+----------+
+    | category | label                   |     count | area\_ha |
+    +==========+=========================+===========+==========+
+    |        0 | non-forest in 2001      | 200532616 |   893779 |
+    +----------+-------------------------+-----------+----------+
+    |        1 | deforestation 2001-2010 |    291545 |     2915 |
+    +----------+-------------------------+-----------+----------+
+    |        2 | deforestation 2010-2020 |    258015 |     2322 |
+    +----------+-------------------------+-----------+----------+
+    |        3 | forest in 2020          |   9381325 |   844319 |
+    +----------+-------------------------+-----------+----------+
 
-.. code:: python
-
-    pixel_count = [n1, n2, n3] = [291545, 258015, 9381325]
-    areas = [round(i * (30 * 30 / 10000)) for i in pixel_count]
-    tmf_areas= {"product": "tmf", "version": "v1_2025", "perc": "",
-     "fc2001": areas[0] + areas[1] + areas[2],
-     "fc2010": areas[1] + areas[2], "fc2020": areas[2],
-     "d1": round(areas[0] / 9), "d2": round(areas[1] / 10)}
-    print(tmf_areas)
-
-::
-
-    {'product': 'tmf', 'version': 'v1_2025', 'perc': '', 'fc2001': 893779, 'fc2010': 867540, 'fc2020': 844319, 'd1': 2915, 'd2': 2322}
-
-Using GFC product and tree cover :math:`\ge` 80%
-------------------------------------------------
+Using GFC product and tree cover >= 80%
+---------------------------------------
 
 Downloading data
 ~~~~~~~~~~~~~~~~
 
-We download the forest cover change data from GEE for New Caledonia for years 2001, 2010 and 2020, using a tile size of one degree. We use the GFC product (version ``v1_11`` available in geefcc) and a tree cover percentage :math:`\ge` 80 to define the forest.
+We download the forest cover change data from GEE for New Caledonia for years 2001, 2010 and 2020, using a tile size of one degree. We use the GFC product and a tree cover percentage >= 80 to define the forest.
 
 .. code:: python
 
+    years_gfc = [2001, 2010, 2020]
+    out_dir_gfc80 = Path("out_gfc80")
+    ofile_gfc80 = out_dir_gfc80 / "forest_gfc80.tif"
+
     start_time = time.time()
-    get_fcc(
-        aoi=(163.5, -23, 168.15, -19.51),
-        buff=0.0,
-        years=[2001, 2010, 2020],
-        source="gfc",
-        perc=80,
-        tile_size=1.0,
-        crop_to_aoi=True,
-        output_file="out_gfc80/forest_gfc80.tif",
-        parallel=True,
-        ncpu=ncpu)
+    if not ofile_gfc80.is_file():
+        geefcc.get_fcc_loss(
+            aoi=(163.5, -23, 168.15, -19.51),
+            buff=0.0,
+            years=years_gfc,
+            source="gfc",
+            perc=80,
+            tile_size=1.0,
+            crop_to_aoi=True,
+            output_file=ofile_gfc80,
+            parallel=True,
+            ncpu=ncpu,
+        )
     end_time = time.time()
 
-We estimate the computation time to download 20 1-degree tiles using several cores. 
+We estimate the computation time to download 20 1-degree tiles using several cores.
 
 .. code:: python
 
@@ -247,60 +196,32 @@ We estimate the computation time to download 20 1-degree tiles using several cor
 Transform multiband fcc raster in one band raster
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We transform the data to have only one band describing the forest cover change with 0 for non-forest, 1 for deforestation on the period 2001--2009, 2 for deforestation on the period 2010--2019, and 3 for the remaining forest in 2020. To do so, we just sum the values of the raster bands.
-
 .. code:: python
 
-    sum_raster_bands(input_file="out_gfc80/forest_gfc80.tif",
-                     output_file="out_gfc80/fcc_gfc80.tif",
-                     verbose=False)
-
-We resample at a lower resolution for plotting.
-
-.. code:: python
-
-    infn = "out_gfc80/fcc_gfc80.tif"
-    outfn = "out_gfc80/fcc_gfc80_coarsen.tif"
-    scale = gdal.Open(infn).GetGeoTransform()[1]
-    xres = 20 * scale
-    yres = 20 * scale
-    resample_alg = "near"
-
-    ds = gdal.Warp(outfn, infn, xRes=xres, yRes=yres, resampleAlg=resample_alg)
-    ds = None
+    fcc_file_gfc80 = out_dir_gfc80 / "fcc_gfc80.tif"
+    if not fcc_file_gfc80.is_file():
+        geefcc.sum_raster_bands(
+            input_file=ofile_gfc80,
+            output_file=fcc_file_gfc80,
+            verbose=False,
+        )
 
 Plot the forest cover change map
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We prepare the colors for the map.
-
 .. code:: python
 
-    # Colors
-    cols=[(255, 165, 0, 255), (227, 26, 28, 255), (34, 139, 34, 255)]
-    colors = [(1, 1, 1, 0)]  # transparent white for 0
-    cmax = 255.0  # float for division
-    for col in cols:
-        col_class = tuple([i / cmax for i in col])
-        colors.append(col_class)
-    color_map = ListedColormap(colors)
-
-    # Labels
-    labels = {0: "non-forest in 2001", 1:"deforestation 2001-2009",
-              2:"deforestation 2010-2019", 3:"forest in 2020"}
-    patches = [mpatches.Patch(facecolor=col, edgecolor="black",
-                              label=labels[i]) for (i, col) in enumerate(colors)]
-
-We plot the forest cover change map.
-
-.. code:: python
-
-    with gdal.Open("out_gfc80/fcc_gfc80_coarsen.tif", gdal.GA_ReadOnly) as ds:
-        raster_image = ds.ReadAsArray()
-        nrow, ncol = raster_image.shape
-        xmin, xres, _, ymax, _, yres = ds.GetGeoTransform()
-        extent = [xmin, xmin + xres * ncol, ymax + yres * nrow, ymax]
-        plot_fcc("Forest cover change 2001-2010-2020, GFC 80%", "fcc_gfc80.png")
+    geefcc.plot_fcc_loss(
+        input_file=fcc_file_gfc80,
+        years=years_gfc,
+        output_file="fcc_gfc80.png",
+        title="Forest cover change 2001-2010-2020, GFC 80%",
+        dpi=200,
+        borders=Path("data") / "borders_NCL.gpkg",
+        grid=out_dir_gfc80 / "grid.gpkg",
+        xlim=(163, 169),
+        ylim=(-23.25, -18.75),
+    )
 
 .. image:: fcc_gfc80.png
     :width: 100%
@@ -308,59 +229,63 @@ We plot the forest cover change map.
 
 Lines in black represent country borders. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.
 
-Reproject in EPSG:3163 for area computation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. code:: python
-
-    ifile = os.path.join("out_gfc80", "fcc_gfc80.tif")
-    ofile = os.path.join("out_gfc80", "fcc_gfc80_epsg3163.tif")
-    ds = gdal.Warp(ofile, ifile, xRes=30, yRes=30, dstSRS="EPSG:3163", resampleAlg="near",
-              targetAlignedPixels=True, creationOptions=["COMPRESS=DEFLATE"])
-    ds = None
-
 Compute statistics
 ~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
-    pixel_count = [n1, n2, n3] = [41624, 27874, 7275205]
-    areas = [round(i * (30 * 30 / 10000)) for i in pixel_count]
-    gfc80_areas= {"product": "gfc", "version": "v1_13(2025)", "perc": 80,
-     "fc2001": areas[0] + areas[1] + areas[2],
-     "fc2010": areas[1] + areas[2], "fc2020": areas[2],
-     "d1": round(areas[0] / 9), "d2": round(areas[1] / 10)}
-    print(gfc80_areas)
+    res_df_gfc80 = geefcc.stat_fcc_loss(
+        input_file=fcc_file_gfc80,
+        years=years_gfc,
+        epsg=3163,
+        output_file="fcc_statistics_gfc80.csv",
+    )
+    tabulate(res_df_gfc80, headers=res_df_gfc80.columns, tablefmt="orgtbl", showindex=False)
 
-::
+.. table::
 
-    {'product': 'gfc', 'version': 'v1_13(2025)', 'perc': 80, 'fc2001': 661023, 'fc2010': 657277, 'fc2020': 654768, 'd1': 416, 'd2': 251}
+    +----------+-------------------------+-----------+----------+
+    | category | label                   |     count | area\_ha |
+    +==========+=========================+===========+==========+
+    |        0 | non-forest in 2001      | 200532616 |   661023 |
+    +----------+-------------------------+-----------+----------+
+    |        1 | deforestation 2001-2010 |     41624 |      416 |
+    +----------+-------------------------+-----------+----------+
+    |        2 | deforestation 2010-2020 |     27874 |      251 |
+    +----------+-------------------------+-----------+----------+
+    |        3 | forest in 2020          |   7275205 |   654768 |
+    +----------+-------------------------+-----------+----------+
 
-Using GFC product and tree cover :math:`\ge` 60%
-------------------------------------------------
+Using GFC product and tree cover >= 60%
+---------------------------------------
 
 Downloading data
 ~~~~~~~~~~~~~~~~
 
-We download the forest cover change data from GEE for New Caledonia for years 2000, 2010 and 2020, using a tile size of one degree. We use the GFC product (version ``v1_11`` available in geefcc) and a tree cover percentage :math:`\ge` 60 to define the forest.
+We download the forest cover change data from GEE for New Caledonia for years 2001, 2010 and 2020, using a tile size of one degree. We use the GFC product and a tree cover percentage >= 60 to define the forest.
 
 .. code:: python
 
+    out_dir_gfc60 = Path("out_gfc60")
+    ofile_gfc60 = out_dir_gfc60 / "forest_gfc60.tif"
+
     start_time = time.time()
-    get_fcc(
-        aoi=(163.5, -23, 168.15, -19.51),
-        buff=0.0,
-        years=[2001, 2010, 2020],
-        source="gfc",
-        perc=60,
-        tile_size=1.0,
-        crop_to_aoi=True,
-        output_file="out_gfc60/forest_gfc60.tif",
-        parallel=True,
-        ncpu=ncpu)
+    if not ofile_gfc60.is_file():
+        geefcc.get_fcc_loss(
+            aoi=(163.5, -23, 168.15, -19.51),
+            buff=0.0,
+            years=years_gfc,
+            source="gfc",
+            perc=60,
+            tile_size=1.0,
+            crop_to_aoi=True,
+            output_file=ofile_gfc60,
+            parallel=True,
+            ncpu=ncpu,
+        )
     end_time = time.time()
 
-We estimate the computation time to download 20 1-degree tiles using several cores. 
+We estimate the computation time to download 20 1-degree tiles using several cores.
 
 .. code:: python
 
@@ -374,41 +299,32 @@ We estimate the computation time to download 20 1-degree tiles using several cor
 Transform multiband fcc raster in one band raster
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We transform the data to have only one band describing the forest cover change with 0 for non-forest, 1 for deforestation on the period 2001--2009, 2 for deforestation on the period 2010--2019, and 3 for the remaining forest in 2020. To do so, we just sum the values of the raster bands.
-
 .. code:: python
 
-    sum_raster_bands(input_file="out_gfc60/forest_gfc60.tif",
-                     output_file="out_gfc60/fcc_gfc60.tif",
-                     verbose=False)
-
-We resample at a lower resolution for plotting.
-
-.. code:: python
-
-    infn = "out_gfc60/fcc_gfc60.tif"
-    outfn = "out_gfc60/fcc_gfc60_coarsen.tif"
-    scale = gdal.Open(infn).GetGeoTransform()[1]
-    xres = 20 * scale
-    yres = 20 * scale
-    resample_alg = "near"
-
-    ds = gdal.Warp(outfn, infn, xRes=xres, yRes=yres, resampleAlg=resample_alg)
-    ds = None
+    fcc_file_gfc60 = out_dir_gfc60 / "fcc_gfc60.tif"
+    if not fcc_file_gfc60.is_file():
+        geefcc.sum_raster_bands(
+            input_file=ofile_gfc60,
+            output_file=fcc_file_gfc60,
+            verbose=False,
+        )
 
 Plot the forest cover change map
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We plot the forest cover change map.
-
 .. code:: python
 
-    with gdal.Open("out_gfc60/fcc_gfc60_coarsen.tif", gdal.GA_ReadOnly) as ds:
-        raster_image = ds.ReadAsArray()
-        nrow, ncol = raster_image.shape
-        xmin, xres, _, ymax, _, yres = ds.GetGeoTransform()
-        extent = [xmin, xmin + xres * ncol, ymax + yres * nrow, ymax]
-        plot_fcc("Forest cover change 2001-2010-2020, GFC 60%", "fcc_gfc60.png")
+    geefcc.plot_fcc_loss(
+        input_file=fcc_file_gfc60,
+        years=years_gfc,
+        output_file="fcc_gfc60.png",
+        title="Forest cover change 2001-2010-2020, GFC 60%",
+        dpi=200,
+        borders=Path("data") / "borders_NCL.gpkg",
+        grid=out_dir_gfc60 / "grid.gpkg",
+        xlim=(163, 169),
+        ylim=(-23.25, -18.75),
+    )
 
 .. image:: fcc_gfc60.png
     :width: 100%
@@ -416,41 +332,56 @@ We plot the forest cover change map.
 
 Lines in black represent country borders. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.
 
-Reproject in EPSG:3163 for area computation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. code:: python
-
-    ifile = os.path.join("out_gfc60", "fcc_gfc60.tif")
-    ofile = os.path.join("out_gfc60", "fcc_gfc60_epsg3163.tif")
-    ds = gdal.Warp(ofile, ifile, xRes=30, yRes=30, dstSRS="EPSG:3163", resampleAlg="near",
-              targetAlignedPixels=True, creationOptions=["COMPRESS=DEFLATE"])
-    ds = None
-
 Compute statistics
 ~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
-    pixel_count = [n1, n2, n3] = [73854, 60386, 9860124]
-    areas = [round(i * (30 * 30 / 10000)) for i in pixel_count]
-    gfc60_areas= {"product": "gfc", "version": "v1_13(2025)", "perc": 60,
-     "fc2001": areas[0] + areas[1] + areas[2],
-     "fc2010": areas[1] + areas[2], "fc2020": areas[2],
-     "d1": round(areas[0] / 9), "d2": round(areas[1] / 10)}
-    print(gfc60_areas)
+    res_df_gfc60 = geefcc.stat_fcc_loss(
+        input_file=fcc_file_gfc60,
+        years=years_gfc,
+        epsg=3163,
+        output_file="fcc_statistics_gfc60.csv",
+    )
+    tabulate(res_df_gfc60, headers=res_df_gfc60.columns, tablefmt="orgtbl", showindex=False)
 
-::
+.. table::
 
-    {'product': 'gfc', 'version': 'v1_13(2025)', 'perc': 60, 'fc2001': 899493, 'fc2010': 892846, 'fc2020': 887411, 'd1': 739, 'd2': 544}
+    +----------+-------------------------+-----------+----------+
+    | category | label                   |     count | area\_ha |
+    +==========+=========================+===========+==========+
+    |        0 | non-forest in 2001      | 200532616 |   899493 |
+    +----------+-------------------------+-----------+----------+
+    |        1 | deforestation 2001-2010 |     73854 |      739 |
+    +----------+-------------------------+-----------+----------+
+    |        2 | deforestation 2010-2020 |     60386 |      544 |
+    +----------+-------------------------+-----------+----------+
+    |        3 | forest in 2020          |   9860124 |   887411 |
+    +----------+-------------------------+-----------+----------+
 
 Summary of the results
 ----------------------
 
 .. code:: python
 
+    def areas_from_df(df, product, version, perc=""):
+        fc1 = df.loc[df["category"].isin([1, 2, 3]), "area_ha"].sum()
+        fc2 = df.loc[df["category"].isin([2, 3]), "area_ha"].sum()
+        fc3 = df.loc[df["category"] == 3, "area_ha"].sum()
+        d1 = df.loc[df["category"] == 1, "area_ha"].values[0]
+        d2 = df.loc[df["category"] == 2, "area_ha"].values[0]
+        n_years1 = years_gfc[1] - years_gfc[0]
+        n_years2 = years_gfc[2] - years_gfc[1]
+        return {"product": product, "version": version, "perc": perc,
+                "fc2001": fc1, "fc2010": fc2, "fc2020": fc3,
+                "d1": round(d1 / n_years1), "d2": round(d2 / n_years2)}
+
+    tmf_areas = areas_from_df(res_df_tmf, "tmf", "v1_2025", "")
+    gfc80_areas = areas_from_df(res_df_gfc80, "gfc", "v1_13(2025)", 80)
+    gfc60_areas = areas_from_df(res_df_gfc60, "gfc", "v1_13(2025)", 60)
+
     res_df = pd.DataFrame([tmf_areas, gfc80_areas, gfc60_areas])
-    res_df.to_csv(os.path.join("comparison_geefcc_nc.csv"), index=False)
+    res_df.to_csv("comparison_geefcc_nc.csv", index=False)
     tabulate(res_df, headers=res_df.columns, tablefmt="orgtbl")
 
 .. table:: **Comparing forest-cover change products for New Caledonia.** **fc**: forest cover (in ha), **d1**: mean annual deforestation (in ha) in the first period 2001--2010, **d2**: mean annual deforestation (in ha) in the second period 2010--2020, **perc**: tree cover threshold (in %) used to define the forest with GFC.
@@ -465,4 +396,4 @@ Summary of the results
     | 2 | gfc     | v1\_13(2025) |   60 | 899493 | 892846 | 887411 |  739 |  544 |
     +---+---------+--------------+------+--------+--------+--------+------+------+
 
-Forest cover for TMF and GFC with tree cover :math:`\ge` 60% are similar in 2020 (about 850,000 ha) but the annual deforestation is 4-5 times lower when using the GFC product (e.g. 544 ha/yr for GFC in the period 2010--2020 against 2322 ha/yr for TMF for the same period).
+Forest cover for TMF and GFC with tree cover >= 60% are similar in 2020 (about 850,000 ha) but the annual deforestation is 4-5 times lower when using the GFC product (e.g. 544 ha/yr for GFC in the period 2010--2020 against 2322 ha/yr for TMF for the same period).

@@ -18,16 +18,9 @@ We will use the Reunion Island (isocode “REU”) as a case study.
 
     import os
 
-    import dask.array as da_
     import ee
     import geefcc
-    import matplotlib.pyplot as plt
-    from matplotlib.colors import ListedColormap
-    import matplotlib.patches as mpatches
     import numpy as np
-    import cartopy.crs as ccrs
-    import rioxarray
-    from osgeo import gdal
     import pandas as pd
     from tabulate import tabulate
 
@@ -58,117 +51,34 @@ We want to estimate and map the forest cover change for the period 2015--2025, c
             output_file=ofile,
         )
 
-::
-
-    get_fcc running, 3 tiles .
-
-
-.. code:: python
-
-    # Load data
-    fcc_tmf = rioxarray.open_rasterio(ofile)
-    fcc_tmf
-
-::
-
-    <xarray.DataArray (band: 1, y: 1924, x: 2305)> Size: 4MB
-    [4434820 values with dtype=uint8]
-    Coordinates:
-      * band         (band) int64 8B 1
-      * y            (y) float64 15kB -20.87 -20.87 -20.87 ... -21.39 -21.39 -21.39
-      * x            (x) float64 18kB 55.22 55.22 55.22 55.22 ... 55.84 55.84 55.84
-        spatial_ref  int64 8B 0
-    Attributes:
-        AREA_OR_POINT:  Area
-        _FillValue:     0
-        scale_factor:   1.0
-        add_offset:     0.0
-        long_name:      fcc
-
 Plot the forest cover change map
 --------------------------------
 
 .. code:: python
 
-    # Colors
-    cols=[(34, 139, 34, 255), (227, 26, 28, 255), (30, 100, 200, 255),
-          (100, 160, 230, 255), (150, 190, 140, 255), (255, 140, 0, 255)]
-    colors = [(1, 1, 1, 0)]  # transparent white for 0
-    cmax = 255.0  # float for division
-    for col in cols:
-        col_class = tuple([i / cmax for i in col])
-        colors.append(col_class)
-    color_map = ListedColormap(colors)
+    geefcc.plot_fcc_tmf(
+        input_file=ofile,
+        output_file="fcc_loss_gain.png",
+        title="Forest cover change 2015-2025, TMF",
+        dpi=100,
+    )
 
-    # Labels
-    labels = {0: "stable non-forest", 1: "stable forest", 2: "forest --> deforested",
-              3: "non-forest --> old regrowth", 4: "forest --> old regrowth (via deforestation)",
-              5: "stable old-regrowth", 6: "old regrowth --> deforested"}
-    patches = [mpatches.Patch(facecolor=col, edgecolor="black",
-                              label=labels[i]) for (i, col) in enumerate(colors)]
-
-.. code:: python
-
-    # Plot
-    fig = plt.figure()
-    ax = fig.add_axes([0, 0, 1, 1], projection=ccrs.PlateCarree())
-    raster_image = fcc_tmf.plot(ax=ax, cmap=color_map, add_colorbar=False)
-    plt.title("Forest cover change 2015-2025, TMF")
-    plt.legend(handles=patches, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
-    fig.savefig("tmf.png", bbox_inches="tight", dpi=100)
-    plt.close(fig)
-
-.. image:: tmf.png
+.. image:: fcc_loss_gain.png
     :width: 100%
     :align: center
 
-Reproject for area computation
-------------------------------
+Area per class of forest cover change
+-------------------------------------
 
-We need to reproject the raster before performing area computation. We use projection UTM zone 40S (EPSG code 34740) for Reunion island.
-
-.. code:: python
-
-    ifile = opj(out_dir, "fcc_tmf.tif")
-    ofile = opj(out_dir, "fcc_tmf_utm.tif")
-    ds = gdal.Warp(ofile, ifile, xRes=30, yRes=30, dstSRS="EPSG:32740", resampleAlg="near",
-              targetAlignedPixels=True, creationOptions=["COMPRESS=DEFLATE"])
-    ds = None
-
-Deforestation and regrowth estimates
-------------------------------------
-
-We use functions ``bincount`` and dask arrays to compute the number of pixels per class and the corresponding area (in ha).
+We use function ``fcc_area()`` to reproject the raster and compute the number of pixels per class and the corresponding area (in ha). We use projection UTM zone 40S (EPSG code 32740) for Reunion island.
 
 .. code:: python
 
-    # Bincount with dask array
-    ifile = opj(out_dir, "fcc_tmf_utm.tif")
-    fcc_tmf_utm = rioxarray.open_rasterio(ifile, chunks={"x": 512, "y": 512})
-
-    # Get pixel resolution in meters
-    x_res, y_res = fcc_tmf_utm.rio.resolution()
-    pixel_area_m2 = abs(x_res) * abs(y_res)
-
-    # Count occurrences of each class (0-255) across all chunks in parallel
-    fcc_flat = fcc_tmf_utm.data.ravel()
-    counts = da_.bincount(fcc_flat, minlength=256).compute()
-
-    # Keep only classes that actually appear in the raster
-    present = np.nonzero(counts)[0]
-
-    # Create data frame
-    res_df = pd.DataFrame({
-        "category": present,
-        "label": list(labels.values()),
-        "count": counts[present],
-    })
-
-    # Convert pixel count to area in hectares (1 ha = 10,000 m^2)
-    res_df["area_ha"] = round(res_df["count"] * pixel_area_m2 / 10_000).astype(int)
-
-    # Export
-    res_df.to_csv(opj("fcc_statistics.csv"), index=False)
+    res_df = geefcc.fcc_area(
+        input_file=ofile,
+        epsg=32740,
+        output_file="fcc_statistics.csv",
+    )
     tabulate(res_df, headers=res_df.columns, tablefmt="orgtbl", showindex=False)
 
 .. table:: **Area per class of forest cover change.** A regrowth is considered “old” in this example if it has at least 5 years.
@@ -191,6 +101,9 @@ We use functions ``bincount`` and dask arrays to compute the number of pixels pe
     |        6 | old regrowth --> deforested                 |     946 |       85 |
     +----------+---------------------------------------------+---------+----------+
 
+Deforestation and regrowth estimates
+------------------------------------
+
 We can then estimate gross loss, gross gain and net loss in forest cover change for the period 2015--2025. Category 4 (forest --> old regrowth via deforestation) is accounted for both gross loss and gain.
 
 .. code:: python
@@ -210,7 +123,7 @@ We can then estimate gross loss, gross gain and net loss in forest cover change 
     lossgain_df.iloc[:2, 2:4] = np.nan
 
     # Export
-    res_df.to_csv(opj("loss_gain_statistics.csv"), index=False)
+    lossgain_df.to_csv(opj("loss_gain_statistics.csv"), index=False)
     tabulate(lossgain_df, headers=lossgain_df.columns, tablefmt="orgtbl", showindex=False)
 
 .. table::
@@ -229,9 +142,9 @@ We can then estimate gross loss, gross gain and net loss in forest cover change 
     | net change |    -1715 |               -172 |                -0.13 |
     +------------+----------+--------------------+----------------------+
 
-When considering regrowth of at least 5 years, which is very short for forest recovery :cite:p:`Bourgoin2024`, the gain (458 ha/yr) compensates the forest cover loss (-630 ha/yr), and the net deforestation is small (-172 ha/yr).
+When considering regrowth of at least 5 years, which is very short for forest recovery :cite:p:`Bourgoin2024`, the gain (458 ha/yr) compensates the forest cover loss (-630 ha/yr), and the net deforestation is small (-172 ha/yr).
 
-If we consider regrowth of at least 10 years as being forest (``min_years=10`` in function ``get_fcc_loss_gain``), the gain is much smaller (202 ha/yr) and the net deforestation much higher (-427 ha/yr corresponding to -0.32 %/yr).
+If we consider regrowth of at least 10 years as being forest (``min_years=10`` in function ``get_fcc_loss_gain``), the gain is much smaller (202 ha/yr) and the net deforestation much higher (-427 ha/yr corresponding to -0.32 %/yr).
 
 References
 ----------

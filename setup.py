@@ -66,7 +66,7 @@ setup(name="geefcc",
       install_requires=["numpy", "gdal", "xarray", "xee",
                         "rioxarray", "multiprocess", "tenacity"],
       extras_require={
-          "interactive": ["cartopy", "matplotlib", "geopandas"]},
+          "interactive": ["matplotlib", "geopandas"]},
       zip_safe=False)
 
 # End

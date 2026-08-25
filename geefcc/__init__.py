@@ -19,6 +19,10 @@ __all__ = [
     "get_fcc_loss_gain",
     "get_fcc_loss",
     "get_fcc",
+    "plot_fcc_loss_gain",
+    "plot_fcc_loss",
+    "stat_fcc_loss_gain",
+    "stat_fcc_loss",
     "sum_raster_bands",
     "make_dir",
 ]
@@ -27,18 +31,18 @@ __all__ = [
 from osgeo import gdal
 
 # Local imports
-from .ee_initialize import ee_initialize
+from ._download.ee_initialize import ee_initialize
 from .get_fcc_loss_gain import get_fcc_loss_gain
 from .get_fcc_loss import get_fcc_loss
+from .plot import plot_fcc_loss_gain, plot_fcc_loss
+from .stat import stat_fcc_loss_gain, stat_fcc_loss
 from .sum_raster_bands import sum_raster_bands
 from .misc import make_dir
 
 # ------------------------------------
 # GDAL configuration
 # ------------------------------------
-# Suppress GDAL warnings/errors from STDERR
 gdal.PushErrorHandler("CPLQuietErrorHandler")
-# Raise Python exceptions for GDAL errors (warnings won't raise)
 gdal.UseExceptions()
 
 # ------------------------------------
@@ -50,13 +54,9 @@ logging.getLogger(__name__).addHandler(logging.NullHandler())
 # Alias
 # ------------------------------------
 
-# Type hinting for IDEs and Mypy (Static analysis only)
 if TYPE_CHECKING:
-    # Tells IDEs that functions shares
-    # the exact same type and signature
     get_fcc = get_fcc_loss
 
-# Runtime execution (For Python and Sphinx documentation)
 else:
     def get_fcc(*args, **kwargs):
         """
@@ -73,7 +73,6 @@ else:
         )
         return get_fcc_loss(*args, **kwargs)
 
-    # Maintain original metadata for standard help() inspection
     get_fcc.__name__ = "get_fcc"
     get_fcc.__doc__ = (
         ".. deprecated:: 0.1.8\n"
