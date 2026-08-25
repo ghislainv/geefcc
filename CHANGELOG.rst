@@ -1,6 +1,13 @@
 Changelog
 *********
 
+geefcc 0.2.2
+============
+
+* Adding functions for plots and statistics.
+* Functions were grouped in subdirectories (eg. `plot`, `stat`, `_download`).
+* Changes: https://github.com/ghislainv/geefcc/compare/v0.2.1...v0.2.2
+
 geefcc 0.2.1
 ============
 
