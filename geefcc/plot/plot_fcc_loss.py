@@ -28,7 +28,7 @@ def plot_fcc_loss(
     Produces a PNG map from a single-band raster file obtained by
     summing the bands of a multiband raster produced by
     :func:`get_fcc_loss` (e.g. with :func:`sum_raster_bands`). Pixel
-    values encode four classes:
+    values encode forest cover change classes:
 
     - 0 = non-forest at ``years[0]``
     - 1 = deforestation during period 1 (``years[0]``--``years[1]``)
@@ -165,7 +165,7 @@ def plot_fcc_loss(
     labels = {0: f"non-forest in {years[0]}"}
     for i in range(n_periods):
         labels[i + 1] = f"deforestation {years[i]}\u2013{years[i + 1]}"
-    labels[n_periods] = f"forest in {years[-1]}"
+    labels[n_periods + 1] = f"forest in {years[-1]}"
     patches = [
         mpatches.Patch(facecolor=col, edgecolor="black", label=labels[i])
         for i, col in enumerate(colors)
