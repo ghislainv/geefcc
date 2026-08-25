@@ -115,25 +115,14 @@
 <p>The function <code class="docutils literal notranslate"><span class="pre">.get_fcc_loss_gain()</span></code> can be used to download forest cover change from the Tropical Moist Forest product.</p>
 <p>This function considers both forest loss and gain (or regrowth) to derive the forest cover change map.</p>
 <p>We will use New Caledonia as a case study.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">dask.array</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">da_</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">ee</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">geefcc</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">ListedColormap</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpatches</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">cartopy.crs</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ccrs</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">rioxarray</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">osgeo</span><span class="w"> </span><span class="kn">import</span> <span class="n">gdal</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tabulate</span><span class="w"> </span><span class="kn">import</span> <span class="n">tabulate</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span>
-
-<span class="c1"># Some convenient aliases</span>
-<span class="n">opj</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize GEE</span>
@@ -143,9 +132,9 @@
 <p>We want to estimate and map the forest cover change for the period 2015–2025, considering regrowth of at least 5 years as being forest, which is debatable <span class="bibtex-citation" id="id1">[<a class="reference internal" href="#id5" title="C. Bourgoin, G. Ceccherini, M. Girardello, C. Vancutsem, V. Avitabile, P. S. A. Beck, R. Beuchle, L. Blanc, G. Duveiller, M. Migliavacca, G. Vieilledent, A. Cescatti, and F. Achard. Human degradation of tropical moist forests is greater than previously estimated. Nature, 631(8021):570–576, July 2024. doi:10.1038/s41586-024-07629-0.">Bourgoin <em>et al.</em>, 2024</a>, <a class="reference internal" href="#id4" title="L. Poorter, F. Bongers, T. M. Aide, A. M. Almeyda Zambrano, P. Balvanera, J. M. Becknell, V. Boukili, P. H. S. Brancalion, E. N. Broadbent, R. L. Chazdon, D. Craven, J. S. de Almeida-Cortez, G. A. L. Cabral, B. H. J. de Jong, J. S. Denslow, D. H. Dent, S. J. DeWalt, J. M. Dupuy, S. M. Durán, M. M. Espírito-Santo, M. C. Fandino, R. G. César, J. S. Hall, J. L. Hernandez-Stefanoni, C. C. Jakovac, A. B. Junqueira, D. Kennard, S. G. Letcher, J.-C. Licona, M. Lohbeck, E. Marín-Spiotta, M. Martínez-Ramos, P. Massoca, J. A. Meave, R. Mesquita, F. Mora, R. Muñoz, R. Muscarella, Y. R. F. Nunes, S. Ochoa-Gaona, A. A. de Oliveira, E. Orihuela-Belmonte, M. Peña-Claros, E. A. Pérez-García, D. Piotto, J. S. Powers, J. Rodríguez-Velázquez, I. E. Romero-Pérez, J. Ruíz, J. G. Saldarriaga, A. Sanchez-Azofeifa, N. B. Schwartz, M. K. Steininger, N. G. Swenson, M. Toledo, M. Uriarte, M. van Breugel, H. van der Wal, M. D. M. Veloso, H. F. M. Vester, A. Vicentini, I. C. G. Vieira, T. V. Bentos, G. B. Williamson, and D. M. A. Rozendaal. Biomass resilience of neotropical secondary forests. Nature, 530(7589):211–214, February 2016. doi:10.1038/nature16512.">Poorter <em>et al.</em>, 2016</a>]</span>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download data from GEE</span>
 <span class="n">min_years</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">out_dir</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"out_tmf_</span><span class="si">{</span><span class="n">min_years</span><span class="si">}</span><span class="s2">yr"</span>
-<span class="n">ofile</span> <span class="o">=</span> <span class="n">opj</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">"fcc_tmf.tif"</span><span class="p">)</span>
-<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">ofile</span><span class="p">):</span>
+<span class="n">out_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">"out_tmf_</span><span class="si">{</span><span class="n">min_years</span><span class="si">}</span><span class="s2">yr"</span><span class="p">)</span>
+<span class="n">ofile</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">/</span> <span class="s2">"fcc_tmf.tif"</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">ofile</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
     <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
     <span class="n">geefcc</span><span class="o">.</span><span class="n">get_fcc_loss_gain</span><span class="p">(</span>
         <span class="n">aoi</span><span class="o">=</span><span class="p">(</span><span class="mf">163.5</span><span class="p">,</span> <span class="o">-</span><span class="mi">23</span><span class="p">,</span> <span class="mf">168.15</span><span class="p">,</span> <span class="o">-</span><span class="mf">19.51</span><span class="p">),</span>
@@ -171,123 +160,31 @@
 </section>
 <section id="plot-the-forest-cover-change-map">
 <h2>Plot the forest cover change map<a class="headerlink" href="#plot-the-forest-cover-change-map" title="Link to this heading">¶</a></h2>
-<section id="resampling-at-lower-resolution">
-<h3>Resampling at lower resolution<a class="headerlink" href="#resampling-at-lower-resolution" title="Link to this heading">¶</a></h3>
-<p>We resample at a lower resolution for plotting.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">infn</span> <span class="o">=</span> <span class="n">opj</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">"fcc_tmf.tif"</span><span class="p">)</span>
-<span class="n">outfn</span> <span class="o">=</span> <span class="n">opj</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">"fcc_tmf_coarsen.tif"</span><span class="p">)</span>
-<span class="n">scale</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">infn</span><span class="p">)</span><span class="o">.</span><span class="n">GetGeoTransform</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">xres</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">scale</span>
-<span class="n">yres</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">scale</span>
-<span class="n">resample_alg</span> <span class="o">=</span> <span class="s2">"near"</span>
-
-<span class="n">ds</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Warp</span><span class="p">(</span><span class="n">outfn</span><span class="p">,</span> <span class="n">infn</span><span class="p">,</span> <span class="n">xRes</span><span class="o">=</span><span class="n">xres</span><span class="p">,</span> <span class="n">yRes</span><span class="o">=</span><span class="n">yres</span><span class="p">,</span> <span class="n">resampleAlg</span><span class="o">=</span><span class="n">resample_alg</span><span class="p">)</span>
-<span class="n">ds</span> <span class="o">=</span> <span class="kc">None</span>
-</pre></div>
-</div>
-</section>
-<section id="creating-the-color-map">
-<h3>Creating the color map<a class="headerlink" href="#creating-the-color-map" title="Link to this heading">¶</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Colors</span>
-<span class="n">cols</span><span class="o">=</span><span class="p">[(</span><span class="mi">34</span><span class="p">,</span> <span class="mi">139</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="p">(</span><span class="mi">227</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
-      <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="mi">230</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">190</span><span class="p">,</span> <span class="mi">140</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">140</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)]</span>
-<span class="n">colors</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>  <span class="c1"># transparent white for 0</span>
-<span class="n">cmax</span> <span class="o">=</span> <span class="mf">255.0</span>  <span class="c1"># float for division</span>
-<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
-    <span class="n">col_class</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">i</span> <span class="o">/</span> <span class="n">cmax</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">col</span><span class="p">])</span>
-    <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col_class</span><span class="p">)</span>
-<span class="n">color_map</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span>
-
-<span class="c1"># Labels</span>
-<span class="n">labels</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">"stable non-forest"</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s2">"stable forest"</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s2">"forest --&gt; deforested"</span><span class="p">,</span>
-          <span class="mi">3</span><span class="p">:</span> <span class="s2">"non-forest --&gt; old regrowth"</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="s2">"forest --&gt; old regrowth (via deforestation)"</span><span class="p">,</span>
-          <span class="mi">5</span><span class="p">:</span> <span class="s2">"stable old-regrowth"</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="s2">"old regrowth --&gt; deforested"</span><span class="p">}</span>
-<span class="n">patches</span> <span class="o">=</span> <span class="p">[</span><span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
-                          <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">colors</span><span class="p">)]</span>
-</pre></div>
-</div>
-</section>
-<section id="plotting">
-<h3>Plotting<a class="headerlink" href="#plotting" title="Link to this heading">¶</a></h3>
-<p>We create a short function to plot the forest cover change map.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_fcc</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">out_file</span><span class="p">):</span>
-    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">raster_image</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">color_map</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span>
-              <span class="n">resample</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">)</span>
-    <span class="n">grid_image</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"grey"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-    <span class="n">borders_image</span> <span class="o">=</span> <span class="n">borders</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">patches</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.05</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">borderaxespad</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">((</span><span class="mi">163</span><span class="p">,</span> <span class="mi">169</span><span class="p">))</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">((</span><span class="o">-</span><span class="mf">23.25</span><span class="p">,</span> <span class="o">-</span><span class="mf">18.75</span><span class="p">))</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">out_file</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">"tight"</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>We load the data: country borders and grid. The borders can be downloaded from the <a class="reference external" href="https://gadm.org/download_country.html">gadm</a> website.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Borders</span>
-<span class="n">borders_gpkg</span> <span class="o">=</span> <span class="n">opj</span><span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="s2">"borders_NCL.gpkg"</span><span class="p">)</span>
-<span class="n">borders</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">borders_gpkg</span><span class="p">)</span>
-
-<span class="c1"># Grid</span>
-<span class="n">grid_gpkg</span> <span class="o">=</span> <span class="n">opj</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">"grid.gpkg"</span><span class="p">)</span>
-<span class="n">grid</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">grid_gpkg</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>We plot the forest cover change map.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">opj</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">"fcc_tmf_coarsen.tif"</span><span class="p">),</span> <span class="n">gdal</span><span class="o">.</span><span class="n">GA_ReadOnly</span><span class="p">)</span> <span class="k">as</span> <span class="n">ds</span><span class="p">:</span>
-    <span class="n">raster_image</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">ReadAsArray</span><span class="p">()</span>
-    <span class="n">nrow</span><span class="p">,</span> <span class="n">ncol</span> <span class="o">=</span> <span class="n">raster_image</span><span class="o">.</span><span class="n">shape</span>
-    <span class="n">xmin</span><span class="p">,</span> <span class="n">xres</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">ymax</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">yres</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">GetGeoTransform</span><span class="p">()</span>
-    <span class="n">extent</span> <span class="o">=</span> <span class="p">[</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmin</span> <span class="o">+</span> <span class="n">xres</span> <span class="o">*</span> <span class="n">ncol</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">+</span> <span class="n">yres</span> <span class="o">*</span> <span class="n">nrow</span><span class="p">,</span> <span class="n">ymax</span><span class="p">]</span>
-    <span class="n">plot_fcc</span><span class="p">(</span><span class="s2">"Forest cover change 2015-2025, TMF"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"fcc_tmf_</span><span class="si">{</span><span class="n">min_years</span><span class="si">}</span><span class="s2">yr.png"</span><span class="p">)</span>
+<p>We plot the forest cover change map. The raster is automatically resampled to a coarser resolution before plotting as it exceeds the default pixel threshold. Country borders and the tile grid are overlaid directly from their vector files.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">geefcc</span><span class="o">.</span><span class="n">plot_fcc_loss_gain</span><span class="p">(</span>
+    <span class="n">input_file</span><span class="o">=</span><span class="n">ofile</span><span class="p">,</span>
+    <span class="n">output_file</span><span class="o">=</span><span class="sa">f</span><span class="s2">"fcc_tmf_</span><span class="si">{</span><span class="n">min_years</span><span class="si">}</span><span class="s2">yr.png"</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">"Forest cover change 2015-2025, TMF"</span><span class="p">,</span>
+    <span class="n">dpi</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+    <span class="n">borders</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">"data"</span><span class="p">)</span> <span class="o">/</span> <span class="s2">"borders_NCL.gpkg"</span><span class="p">,</span>
+    <span class="n">grid</span><span class="o">=</span><span class="n">out_dir</span> <span class="o">/</span> <span class="s2">"grid.gpkg"</span><span class="p">,</span>
+    <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">163</span><span class="p">,</span> <span class="mi">169</span><span class="p">),</span>
+    <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">23.25</span><span class="p">,</span> <span class="o">-</span><span class="mf">18.75</span><span class="p">),</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../../_images/fcc_tmf_5yr.png"><img alt="../../_images/fcc_tmf_5yr.png" class="align-center" src="../../_images/fcc_tmf_5yr.png" style="width: 100%;" />
 </a>
 <p>Lines in black represent country borders. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.</p>
 </section>
-</section>
-<section id="reproject-for-area-computation">
-<h2>Reproject for area computation<a class="headerlink" href="#reproject-for-area-computation" title="Link to this heading">¶</a></h2>
-<p>We need to reproject the raster before performing area computation. We use projection UTM zone 58S (EPSG code 34758) for New Caledonia.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ifile</span> <span class="o">=</span> <span class="n">opj</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">"fcc_tmf.tif"</span><span class="p">)</span>
-<span class="n">ofile</span> <span class="o">=</span> <span class="n">opj</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">"fcc_tmf_utm.tif"</span><span class="p">)</span>
-<span class="n">ds</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Warp</span><span class="p">(</span><span class="n">ofile</span><span class="p">,</span> <span class="n">ifile</span><span class="p">,</span> <span class="n">xRes</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">yRes</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">dstSRS</span><span class="o">=</span><span class="s2">"EPSG:32758"</span><span class="p">,</span> <span class="n">resampleAlg</span><span class="o">=</span><span class="s2">"near"</span><span class="p">,</span>
-          <span class="n">targetAlignedPixels</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">creationOptions</span><span class="o">=</span><span class="p">[</span><span class="s2">"COMPRESS=DEFLATE"</span><span class="p">])</span>
-<span class="n">ds</span> <span class="o">=</span> <span class="kc">None</span>
-</pre></div>
-</div>
-</section>
-<section id="deforestation-and-regrowth-estimates">
-<h2>Deforestation and regrowth estimates<a class="headerlink" href="#deforestation-and-regrowth-estimates" title="Link to this heading">¶</a></h2>
-<p>We use functions <code class="docutils literal notranslate"><span class="pre">bincount</span></code> and dask arrays to compute the number of pixels per class and the corresponding area (in ha).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Bincount with dask array</span>
-<span class="n">ifile</span> <span class="o">=</span> <span class="n">opj</span><span class="p">(</span><span class="n">out_dir</span><span class="p">,</span> <span class="s2">"fcc_tmf_utm.tif"</span><span class="p">)</span>
-<span class="n">fcc_tmf_utm</span> <span class="o">=</span> <span class="n">rioxarray</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="n">ifile</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="p">{</span><span class="s2">"x"</span><span class="p">:</span> <span class="mi">512</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="mi">512</span><span class="p">})</span>
-
-<span class="c1"># Get pixel resolution in meters</span>
-<span class="n">x_res</span><span class="p">,</span> <span class="n">y_res</span> <span class="o">=</span> <span class="n">fcc_tmf_utm</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">resolution</span><span class="p">()</span>
-<span class="n">pixel_area_m2</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x_res</span><span class="p">)</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y_res</span><span class="p">)</span>
-
-<span class="c1"># Count occurrences of each class (0-255) across all chunks in parallel</span>
-<span class="n">fcc_flat</span> <span class="o">=</span> <span class="n">fcc_tmf_utm</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
-<span class="n">counts</span> <span class="o">=</span> <span class="n">da_</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">fcc_flat</span><span class="p">,</span> <span class="n">minlength</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
-
-<span class="c1"># Create data frame</span>
-<span class="n">res_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-    <span class="s2">"category"</span><span class="p">:</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">)],</span>
-    <span class="s2">"label"</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
-    <span class="s2">"count"</span><span class="p">:</span> <span class="n">counts</span><span class="p">,</span>
-<span class="p">})</span>
-
-<span class="c1"># Convert pixel count to area in hectares (1 ha = 10,000 m^2)</span>
-<span class="n">res_df</span><span class="p">[</span><span class="s2">"area_ha"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">res_df</span><span class="p">[</span><span class="s2">"count"</span><span class="p">]</span> <span class="o">*</span> <span class="n">pixel_area_m2</span> <span class="o">/</span> <span class="mi">10_000</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-
-<span class="c1"># Export</span>
-<span class="n">res_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">opj</span><span class="p">(</span><span class="sa">f</span><span class="s2">"fcc_statistics_</span><span class="si">{</span><span class="n">min_years</span><span class="si">}</span><span class="s2">yr.csv"</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<section id="area-per-class-of-forest-cover-change">
+<h2>Area per class of forest cover change<a class="headerlink" href="#area-per-class-of-forest-cover-change" title="Link to this heading">¶</a></h2>
+<p>We use function <code class="docutils literal notranslate"><span class="pre">stat_fcc_loss_gain()</span></code> to reproject the raster and compute the number of pixels per class and the corresponding area (in ha). We use projection UTM zone 58S (EPSG code 32758) for New Caledonia.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">res_df</span> <span class="o">=</span> <span class="n">geefcc</span><span class="o">.</span><span class="n">stat_fcc_loss_gain</span><span class="p">(</span>
+    <span class="n">input_file</span><span class="o">=</span><span class="n">ofile</span><span class="p">,</span>
+    <span class="n">epsg</span><span class="o">=</span><span class="mi">32758</span><span class="p">,</span>
+    <span class="n">output_file</span><span class="o">=</span><span class="sa">f</span><span class="s2">"fcc_statistics_</span><span class="si">{</span><span class="n">min_years</span><span class="si">}</span><span class="s2">yr.csv"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="n">tabulate</span><span class="p">(</span><span class="n">res_df</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">res_df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s2">"orgtbl"</span><span class="p">,</span> <span class="n">showindex</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -337,6 +234,9 @@
 </tr>
 </tbody>
 </table>
+</section>
+<section id="deforestation-and-regrowth-estimates">
+<h2>Deforestation and regrowth estimates<a class="headerlink" href="#deforestation-and-regrowth-estimates" title="Link to this heading">¶</a></h2>
 <p>We can then estimate gross loss, gross gain and net loss in forest cover change for the period 2015–2025. Category 4 (forest –&gt; old regrowth via deforestation) is accounted for both gross loss and gain.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">forest_t1</span> <span class="o">=</span> <span class="n">res_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="s2">"area_ha"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="n">forest_t2</span> <span class="o">=</span> <span class="n">res_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="s2">"area_ha"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
@@ -353,7 +253,7 @@
 <span class="n">lossgain_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
 <span class="c1"># Export</span>
-<span class="n">res_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">opj</span><span class="p">(</span><span class="s2">"loss_gain_statistics_5yr.csv"</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">lossgain_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">"loss_gain_statistics_</span><span class="si">{</span><span class="n">min_years</span><span class="si">}</span><span class="s2">yr.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">tabulate</span><span class="p">(</span><span class="n">lossgain_df</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">lossgain_df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s2">"orgtbl"</span><span class="p">,</span> <span class="n">showindex</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -393,8 +293,8 @@
 </tr>
 </tbody>
 </table>
-<p>When considering regrowth of at least 5 years, which is very short for forest recovery <span class="bibtex-citation" id="id2">[<a class="reference internal" href="#id5" title="C. Bourgoin, G. Ceccherini, M. Girardello, C. Vancutsem, V. Avitabile, P. S. A. Beck, R. Beuchle, L. Blanc, G. Duveiller, M. Migliavacca, G. Vieilledent, A. Cescatti, and F. Achard. Human degradation of tropical moist forests is greater than previously estimated. Nature, 631(8021):570–576, July 2024. doi:10.1038/s41586-024-07629-0.">Bourgoin <em>et al.</em>, 2024</a>]</span>, the gain (7181 ha/yr) compensates the forest cover loss (-1683 ha/yr), and the net change is positive (5947 ha/yr).</p>
-<p>If we consider regrowth of at least 10 years as being forest (<code class="docutils literal notranslate"><span class="pre">min_years=10</span></code> in function <code class="docutils literal notranslate"><span class="pre">get_fcc_loss_gain</span></code>), the gain is much smaller (4342 ha/yr), but the net change is still positive (2728 ha/yr corresponding to 0.32 %/yr).</p>
+<p>When considering regrowth of at least 5 years, which is very short for forest recovery <span class="bibtex-citation" id="id2">[<a class="reference internal" href="#id5" title="C. Bourgoin, G. Ceccherini, M. Girardello, C. Vancutsem, V. Avitabile, P. S. A. Beck, R. Beuchle, L. Blanc, G. Duveiller, M. Migliavacca, G. Vieilledent, A. Cescatti, and F. Achard. Human degradation of tropical moist forests is greater than previously estimated. Nature, 631(8021):570–576, July 2024. doi:10.1038/s41586-024-07629-0.">Bourgoin <em>et al.</em>, 2024</a>]</span>, the gain (7181 ha/yr) compensates the forest cover loss (-1683 ha/yr), and the net change is positive (5947 ha/yr).</p>
+<p>If we consider regrowth of at least 10 years as being forest (<code class="docutils literal notranslate"><span class="pre">min_years=10</span></code> in function <code class="docutils literal notranslate"><span class="pre">get_fcc_loss_gain</span></code>), the gain is much smaller (4342 ha/yr), but the net change is still positive (2728 ha/yr corresponding to 0.32 %/yr).</p>
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Link to this heading">¶</a></h2>
