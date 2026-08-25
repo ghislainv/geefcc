@@ -30,7 +30,7 @@ from the Tropical Moist Forest product. We will use the Reunion Island
 
     # Download data from GEE
     out_dir = Path("out_tmf")
-    ofile = out_dir / "forest_tmf.tif"
+    forest_file = out_dir / "forest_tmf.tif"
     if not ofile.is_file():
         geefcc.get_fcc_loss(
             aoi="REU",
@@ -39,46 +39,22 @@ from the Tropical Moist Forest product. We will use the Reunion Island
             parallel=False,
             crop_to_aoi=True,
             tile_size=0.5,
-            output_file=ofile,
+            output_file=forest_file,
         )
 
-::
-
-    get_fcc running, 3 tiles ....
-
+We transform the forest raster with three bands into a single-band forest cover change raster.
 
 .. code:: python
 
-    # Load data
-    forest_tmf = rioxarray.open_rasterio(ofile)
-    forest_tmf
-
-::
-
-    <xarray.DataArray (band: 3, y: 1924, x: 2305)> Size: 13MB
-    [13304460 values with dtype=int8]
-    Coordinates:
-      * band         (band) int64 24B 1 2 3
-      * y            (y) float64 15kB -20.87 -20.87 -20.87 ... -21.39 -21.39 -21.39
-      * x            (x) float64 18kB 55.22 55.22 55.22 55.22 ... 55.84 55.84 55.84
-        spatial_ref  int64 8B 0
-    Attributes:
-        AREA_OR_POINT:  Area
-        data_var:       forest_cover
-        time:           2000-01-01T00:00:00.000
-        scale_factor:   1.0
-        add_offset:     0.0
-
-.. code:: python
-
-    # Sum bands to get a single-band fcc raster
     fcc_file = out_dir / "fcc_tmf.tif"
     if not fcc_file.is_file():
         geefcc.sum_raster_bands(
-            input_file=ofile,
+            input_file=forest_file,
             output_file=fcc_file,
             verbose=False,
         )
+
+We plot the forest cover change map.
 
 .. code:: python
 

@@ -125,7 +125,7 @@ from the Tropical Moist Forest product. We will use the Reunion Island
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download data from GEE</span>
 <span class="n">out_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"out_tmf"</span><span class="p">)</span>
-<span class="n">ofile</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">/</span> <span class="s2">"forest_tmf.tif"</span>
+<span class="n">forest_file</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">/</span> <span class="s2">"forest_tmf.tif"</span>
 <span class="k">if</span> <span class="ow">not</span> <span class="n">ofile</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
     <span class="n">geefcc</span><span class="o">.</span><span class="n">get_fcc_loss</span><span class="p">(</span>
         <span class="n">aoi</span><span class="o">=</span><span class="s2">"REU"</span><span class="p">,</span>
@@ -134,43 +134,21 @@ from the Tropical Moist Forest product. We will use the Reunion Island
         <span class="n">parallel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">crop_to_aoi</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">tile_size</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-        <span class="n">output_file</span><span class="o">=</span><span class="n">ofile</span><span class="p">,</span>
+        <span class="n">output_file</span><span class="o">=</span><span class="n">forest_file</span><span class="p">,</span>
     <span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">get_fcc</span> <span class="n">running</span><span class="p">,</span> <span class="mi">3</span> <span class="n">tiles</span> <span class="o">....</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load data</span>
-<span class="n">forest_tmf</span> <span class="o">=</span> <span class="n">rioxarray</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="n">ofile</span><span class="p">)</span>
-<span class="n">forest_tmf</span>
-</pre></div>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">xarray</span><span class="o">.</span><span class="n">DataArray</span> <span class="p">(</span><span class="n">band</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mi">1924</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="mi">2305</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">Size</span><span class="p">:</span> <span class="mi">13</span><span class="n">MB</span>
-<span class="p">[</span><span class="mi">13304460</span> <span class="n">values</span> <span class="k">with</span> <span class="n">dtype</span><span class="o">=</span><span class="n">int8</span><span class="p">]</span>
-<span class="n">Coordinates</span><span class="p">:</span>
-  <span class="o">*</span> <span class="n">band</span>         <span class="p">(</span><span class="n">band</span><span class="p">)</span> <span class="n">int64</span> <span class="mi">24</span><span class="n">B</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span>
-  <span class="o">*</span> <span class="n">y</span>            <span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="n">float64</span> <span class="mi">15</span><span class="n">kB</span> <span class="o">-</span><span class="mf">20.87</span> <span class="o">-</span><span class="mf">20.87</span> <span class="o">-</span><span class="mf">20.87</span> <span class="o">...</span> <span class="o">-</span><span class="mf">21.39</span> <span class="o">-</span><span class="mf">21.39</span> <span class="o">-</span><span class="mf">21.39</span>
-  <span class="o">*</span> <span class="n">x</span>            <span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="n">float64</span> <span class="mi">18</span><span class="n">kB</span> <span class="mf">55.22</span> <span class="mf">55.22</span> <span class="mf">55.22</span> <span class="mf">55.22</span> <span class="o">...</span> <span class="mf">55.84</span> <span class="mf">55.84</span> <span class="mf">55.84</span>
-    <span class="n">spatial_ref</span>  <span class="n">int64</span> <span class="mi">8</span><span class="n">B</span> <span class="mi">0</span>
-<span class="n">Attributes</span><span class="p">:</span>
-    <span class="n">AREA_OR_POINT</span><span class="p">:</span>  <span class="n">Area</span>
-    <span class="n">data_var</span><span class="p">:</span>       <span class="n">forest_cover</span>
-    <span class="n">time</span><span class="p">:</span>           <span class="mi">2000</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="n">T00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mf">00.000</span>
-    <span class="n">scale_factor</span><span class="p">:</span>   <span class="mf">1.0</span>
-    <span class="n">add_offset</span><span class="p">:</span>     <span class="mf">0.0</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sum bands to get a single-band fcc raster</span>
-<span class="n">fcc_file</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">/</span> <span class="s2">"fcc_tmf.tif"</span>
+<p>We transform the forest raster with three bands into a single-band forest cover change raster.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fcc_file</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">/</span> <span class="s2">"fcc_tmf.tif"</span>
 <span class="k">if</span> <span class="ow">not</span> <span class="n">fcc_file</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
     <span class="n">geefcc</span><span class="o">.</span><span class="n">sum_raster_bands</span><span class="p">(</span>
-        <span class="n">input_file</span><span class="o">=</span><span class="n">ofile</span><span class="p">,</span>
+        <span class="n">input_file</span><span class="o">=</span><span class="n">forest_file</span><span class="p">,</span>
         <span class="n">output_file</span><span class="o">=</span><span class="n">fcc_file</span><span class="p">,</span>
         <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span>
 </pre></div>
 </div>
+<p>We plot the forest cover change map.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot</span>
 <span class="n">years</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">2010</span><span class="p">,</span> <span class="mi">2020</span><span class="p">]</span>
 <span class="n">geefcc</span><span class="o">.</span><span class="n">plot_fcc_loss</span><span class="p">(</span>
