@@ -1,6 +1,12 @@
 Changelog
 *********
 
+geefcc 0.2.3
+============
+
+* Bug corrections.
+* Changes: https://github.com/ghislainv/geefcc/compare/v0.2.2...v0.2.3
+  
 geefcc 0.2.2
 ============
 
