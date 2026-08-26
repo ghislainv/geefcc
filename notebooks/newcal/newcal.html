@@ -164,9 +164,6 @@
 <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">get_fcc</span> <span class="n">running</span><span class="p">,</span> <span class="mi">20</span> <span class="n">tiles</span> <span class="o">.....................</span>
-</pre></div>
-</div>
 <p>We estimate the computation time to download 20 1-degree tiles using several cores.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">elapsed_time</span> <span class="o">=</span> <span class="p">(</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span> <span class="o">/</span> <span class="mi">60</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">'Execution time:'</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s1">'minutes'</span><span class="p">)</span>
@@ -214,8 +211,8 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">res_df_tmf</span> <span class="o">=</span> <span class="n">geefcc</span><span class="o">.</span><span class="n">stat_fcc_loss</span><span class="p">(</span>
     <span class="n">input_file</span><span class="o">=</span><span class="n">fcc_file_tmf</span><span class="p">,</span>
     <span class="n">years</span><span class="o">=</span><span class="n">years_tmf</span><span class="p">,</span>
-    <span class="n">epsg</span><span class="o">=</span><span class="mi">3163</span><span class="p">,</span>
-    <span class="n">output_file</span><span class="o">=</span><span class="s2">"fcc_statistics_tmf.csv"</span><span class="p">,</span>
+    <span class="n">epsg</span><span class="o">=</span><span class="mi">32758</span><span class="p">,</span>
+    <span class="n">output_file</span><span class="o">=</span><span class="s2">"fcc_statistics_tmf.csv"</span>
 <span class="p">)</span>
 <span class="n">tabulate</span><span class="p">(</span><span class="n">res_df_tmf</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">res_df_tmf</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s2">"orgtbl"</span><span class="p">,</span> <span class="n">showindex</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
@@ -231,23 +228,23 @@
 <tbody>
 <tr class="row-even"><td><p>0</p></td>
 <td><p>non-forest in 2001</p></td>
-<td><p>200532616</p></td>
-<td><p>893779</p></td>
+<td><p>197249917</p></td>
+<td><p>17752493</p></td>
 </tr>
 <tr class="row-odd"><td><p>1</p></td>
 <td><p>deforestation 2001-2010</p></td>
-<td><p>291545</p></td>
-<td><p>2915</p></td>
+<td><p>292122</p></td>
+<td><p>26291</p></td>
 </tr>
 <tr class="row-even"><td><p>2</p></td>
 <td><p>deforestation 2010-2020</p></td>
-<td><p>258015</p></td>
-<td><p>2322</p></td>
+<td><p>257516</p></td>
+<td><p>23176</p></td>
 </tr>
 <tr class="row-odd"><td><p>3</p></td>
 <td><p>forest in 2020</p></td>
-<td><p>9381325</p></td>
-<td><p>844319</p></td>
+<td><p>9379101</p></td>
+<td><p>844119</p></td>
 </tr>
 </tbody>
 </table>
@@ -324,7 +321,7 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">res_df_gfc80</span> <span class="o">=</span> <span class="n">geefcc</span><span class="o">.</span><span class="n">stat_fcc_loss</span><span class="p">(</span>
     <span class="n">input_file</span><span class="o">=</span><span class="n">fcc_file_gfc80</span><span class="p">,</span>
     <span class="n">years</span><span class="o">=</span><span class="n">years_gfc</span><span class="p">,</span>
-    <span class="n">epsg</span><span class="o">=</span><span class="mi">3163</span><span class="p">,</span>
+    <span class="n">epsg</span><span class="o">=</span><span class="mi">32758</span><span class="p">,</span>
     <span class="n">output_file</span><span class="o">=</span><span class="s2">"fcc_statistics_gfc80.csv"</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">tabulate</span><span class="p">(</span><span class="n">res_df_gfc80</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">res_df_gfc80</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s2">"orgtbl"</span><span class="p">,</span> <span class="n">showindex</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -341,23 +338,23 @@
 <tbody>
 <tr class="row-even"><td><p>0</p></td>
 <td><p>non-forest in 2001</p></td>
-<td><p>200532616</p></td>
-<td><p>661023</p></td>
+<td><p>199835640</p></td>
+<td><p>17985208</p></td>
 </tr>
 <tr class="row-odd"><td><p>1</p></td>
 <td><p>deforestation 2001-2010</p></td>
-<td><p>41624</p></td>
-<td><p>416</p></td>
+<td><p>41700</p></td>
+<td><p>3753</p></td>
 </tr>
 <tr class="row-even"><td><p>2</p></td>
 <td><p>deforestation 2010-2020</p></td>
-<td><p>27874</p></td>
-<td><p>251</p></td>
+<td><p>27890</p></td>
+<td><p>2510</p></td>
 </tr>
 <tr class="row-odd"><td><p>3</p></td>
 <td><p>forest in 2020</p></td>
-<td><p>7275205</p></td>
-<td><p>654768</p></td>
+<td><p>7273426</p></td>
+<td><p>654608</p></td>
 </tr>
 </tbody>
 </table>
@@ -433,7 +430,7 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">res_df_gfc60</span> <span class="o">=</span> <span class="n">geefcc</span><span class="o">.</span><span class="n">stat_fcc_loss</span><span class="p">(</span>
     <span class="n">input_file</span><span class="o">=</span><span class="n">fcc_file_gfc60</span><span class="p">,</span>
     <span class="n">years</span><span class="o">=</span><span class="n">years_gfc</span><span class="p">,</span>
-    <span class="n">epsg</span><span class="o">=</span><span class="mi">3163</span><span class="p">,</span>
+    <span class="n">epsg</span><span class="o">=</span><span class="mi">32758</span><span class="p">,</span>
     <span class="n">output_file</span><span class="o">=</span><span class="s2">"fcc_statistics_gfc60.csv"</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">tabulate</span><span class="p">(</span><span class="n">res_df_gfc60</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">res_df_gfc60</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s2">"orgtbl"</span><span class="p">,</span> <span class="n">showindex</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -450,23 +447,23 @@
 <tbody>
 <tr class="row-even"><td><p>0</p></td>
 <td><p>non-forest in 2001</p></td>
-<td><p>200532616</p></td>
-<td><p>899493</p></td>
+<td><p>197186817</p></td>
+<td><p>17746814</p></td>
 </tr>
 <tr class="row-odd"><td><p>1</p></td>
 <td><p>deforestation 2001-2010</p></td>
-<td><p>73854</p></td>
-<td><p>739</p></td>
+<td><p>74006</p></td>
+<td><p>6661</p></td>
 </tr>
 <tr class="row-even"><td><p>2</p></td>
 <td><p>deforestation 2010-2020</p></td>
-<td><p>60386</p></td>
-<td><p>544</p></td>
+<td><p>60484</p></td>
+<td><p>5444</p></td>
 </tr>
 <tr class="row-odd"><td><p>3</p></td>
 <td><p>forest in 2020</p></td>
-<td><p>9860124</p></td>
-<td><p>887411</p></td>
+<td><p>9857349</p></td>
+<td><p>887161</p></td>
 </tr>
 </tbody>
 </table>
@@ -514,35 +511,35 @@
 <td><p>tmf</p></td>
 <td><p>v1_2025</p></td>
 <td><p></p></td>
-<td><p>893779</p></td>
-<td><p>867540</p></td>
-<td><p>844319</p></td>
-<td><p>2915</p></td>
-<td><p>2322</p></td>
+<td><p>893586</p></td>
+<td><p>867295</p></td>
+<td><p>844119</p></td>
+<td><p>2921</p></td>
+<td><p>2318</p></td>
 </tr>
 <tr class="row-odd"><td><p>1</p></td>
 <td><p>gfc</p></td>
 <td><p>v1_13(2025)</p></td>
 <td><p>80</p></td>
-<td><p>661023</p></td>
-<td><p>657277</p></td>
-<td><p>654768</p></td>
-<td><p>416</p></td>
+<td><p>660871</p></td>
+<td><p>657118</p></td>
+<td><p>654608</p></td>
+<td><p>417</p></td>
 <td><p>251</p></td>
 </tr>
 <tr class="row-even"><td><p>2</p></td>
 <td><p>gfc</p></td>
 <td><p>v1_13(2025)</p></td>
 <td><p>60</p></td>
-<td><p>899493</p></td>
-<td><p>892846</p></td>
-<td><p>887411</p></td>
-<td><p>739</p></td>
+<td><p>899266</p></td>
+<td><p>892605</p></td>
+<td><p>887161</p></td>
+<td><p>740</p></td>
 <td><p>544</p></td>
 </tr>
 </tbody>
 </table>
-<p>Forest cover for TMF and GFC with tree cover &gt;= 60% are similar in 2020 (about 850,000 ha) but the annual deforestation is 4-5 times lower when using the GFC product (e.g. 544 ha/yr for GFC in the period 2010–2020 against 2322 ha/yr for TMF for the same period).</p>
+<p>Forest cover for TMF and GFC with tree cover &gt;= 60% are similar in 2020 (mean at about 865,000 ha) but the annual deforestation is 4-5 times lower when using the GFC product (e.g. 544 ha/yr for GFC in the period 2010–2020 against 2322 ha/yr for TMF for the same period).</p>
 </section>
 </section>
 

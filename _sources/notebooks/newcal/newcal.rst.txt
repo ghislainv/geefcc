@@ -69,11 +69,6 @@ We download the forest cover change data from GEE for New Caledonia for years 20
         )
     end_time = time.time()
 
-::
-
-    get_fcc running, 20 tiles .....................
-
-
 We estimate the computation time to download 20 1-degree tiles using several cores.
 
 .. code:: python
@@ -133,8 +128,8 @@ Reproject in EPSG:3163 for area computation
     res_df_tmf = geefcc.stat_fcc_loss(
         input_file=fcc_file_tmf,
         years=years_tmf,
-        epsg=3163,
-        output_file="fcc_statistics_tmf.csv",
+        epsg=32758,
+        output_file="fcc_statistics_tmf.csv"
     )
     tabulate(res_df_tmf, headers=res_df_tmf.columns, tablefmt="orgtbl", showindex=False)
 
@@ -143,13 +138,13 @@ Reproject in EPSG:3163 for area computation
     +----------+-------------------------+-----------+----------+
     | category | label                   |     count | area\_ha |
     +==========+=========================+===========+==========+
-    |        0 | non-forest in 2001      | 200532616 |   893779 |
+    |        0 | non-forest in 2001      | 197249917 | 17752493 |
     +----------+-------------------------+-----------+----------+
-    |        1 | deforestation 2001-2010 |    291545 |     2915 |
+    |        1 | deforestation 2001-2010 |    292122 |    26291 |
     +----------+-------------------------+-----------+----------+
-    |        2 | deforestation 2010-2020 |    258015 |     2322 |
+    |        2 | deforestation 2010-2020 |    257516 |    23176 |
     +----------+-------------------------+-----------+----------+
-    |        3 | forest in 2020          |   9381325 |   844319 |
+    |        3 | forest in 2020          |   9379101 |   844119 |
     +----------+-------------------------+-----------+----------+
 
 Using GFC product and tree cover >= 80%
@@ -237,7 +232,7 @@ Compute statistics
     res_df_gfc80 = geefcc.stat_fcc_loss(
         input_file=fcc_file_gfc80,
         years=years_gfc,
-        epsg=3163,
+        epsg=32758,
         output_file="fcc_statistics_gfc80.csv",
     )
     tabulate(res_df_gfc80, headers=res_df_gfc80.columns, tablefmt="orgtbl", showindex=False)
@@ -247,13 +242,13 @@ Compute statistics
     +----------+-------------------------+-----------+----------+
     | category | label                   |     count | area\_ha |
     +==========+=========================+===========+==========+
-    |        0 | non-forest in 2001      | 200532616 |   661023 |
+    |        0 | non-forest in 2001      | 199835640 | 17985208 |
     +----------+-------------------------+-----------+----------+
-    |        1 | deforestation 2001-2010 |     41624 |      416 |
+    |        1 | deforestation 2001-2010 |     41700 |     3753 |
     +----------+-------------------------+-----------+----------+
-    |        2 | deforestation 2010-2020 |     27874 |      251 |
+    |        2 | deforestation 2010-2020 |     27890 |     2510 |
     +----------+-------------------------+-----------+----------+
-    |        3 | forest in 2020          |   7275205 |   654768 |
+    |        3 | forest in 2020          |   7273426 |   654608 |
     +----------+-------------------------+-----------+----------+
 
 Using GFC product and tree cover >= 60%
@@ -340,7 +335,7 @@ Compute statistics
     res_df_gfc60 = geefcc.stat_fcc_loss(
         input_file=fcc_file_gfc60,
         years=years_gfc,
-        epsg=3163,
+        epsg=32758,
         output_file="fcc_statistics_gfc60.csv",
     )
     tabulate(res_df_gfc60, headers=res_df_gfc60.columns, tablefmt="orgtbl", showindex=False)
@@ -350,13 +345,13 @@ Compute statistics
     +----------+-------------------------+-----------+----------+
     | category | label                   |     count | area\_ha |
     +==========+=========================+===========+==========+
-    |        0 | non-forest in 2001      | 200532616 |   899493 |
+    |        0 | non-forest in 2001      | 197186817 | 17746814 |
     +----------+-------------------------+-----------+----------+
-    |        1 | deforestation 2001-2010 |     73854 |      739 |
+    |        1 | deforestation 2001-2010 |     74006 |     6661 |
     +----------+-------------------------+-----------+----------+
-    |        2 | deforestation 2010-2020 |     60386 |      544 |
+    |        2 | deforestation 2010-2020 |     60484 |     5444 |
     +----------+-------------------------+-----------+----------+
-    |        3 | forest in 2020          |   9860124 |   887411 |
+    |        3 | forest in 2020          |   9857349 |   887161 |
     +----------+-------------------------+-----------+----------+
 
 Summary of the results
@@ -389,11 +384,11 @@ Summary of the results
     +---+---------+--------------+------+--------+--------+--------+------+------+
     | \ | product | version      | perc | fc2001 | fc2010 | fc2020 |   d1 |   d2 |
     +===+=========+==============+======+========+========+========+======+======+
-    | 0 | tmf     | v1\_2025     | \    | 893779 | 867540 | 844319 | 2915 | 2322 |
+    | 0 | tmf     | v1\_2025     | \    | 893586 | 867295 | 844119 | 2921 | 2318 |
     +---+---------+--------------+------+--------+--------+--------+------+------+
-    | 1 | gfc     | v1\_13(2025) |   80 | 661023 | 657277 | 654768 |  416 |  251 |
+    | 1 | gfc     | v1\_13(2025) |   80 | 660871 | 657118 | 654608 |  417 |  251 |
     +---+---------+--------------+------+--------+--------+--------+------+------+
-    | 2 | gfc     | v1\_13(2025) |   60 | 899493 | 892846 | 887411 |  739 |  544 |
+    | 2 | gfc     | v1\_13(2025) |   60 | 899266 | 892605 | 887161 |  740 |  544 |
     +---+---------+--------------+------+--------+--------+--------+------+------+
 
-Forest cover for TMF and GFC with tree cover >= 60% are similar in 2020 (about 850,000 ha) but the annual deforestation is 4-5 times lower when using the GFC product (e.g. 544 ha/yr for GFC in the period 2010--2020 against 2322 ha/yr for TMF for the same period).
+Forest cover for TMF and GFC with tree cover >= 60% are similar in 2020 (mean at about 865,000 ha) but the annual deforestation is 4-5 times lower when using the GFC product (e.g. 544 ha/yr for GFC in the period 2010--2020 against 2322 ha/yr for TMF for the same period).
