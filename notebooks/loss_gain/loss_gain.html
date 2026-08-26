@@ -112,9 +112,9 @@
 <h1>Loss and gain<a class="headerlink" href="#loss-and-gain" title="Link to this heading">¶</a></h1>
 <section id="get-forest-cover-change-from-tmf">
 <h2>Get forest cover change from TMF<a class="headerlink" href="#get-forest-cover-change-from-tmf" title="Link to this heading">¶</a></h2>
-<p>The function <code class="docutils literal notranslate"><span class="pre">.get_fcc_loss_gain()</span></code> can be used to download forest cover change
+<p>The function <code class="docutils literal notranslate"><span class="pre">.get_fcc_loss_gain()</span></code> can be used to download the forest cover change
 from the Tropical Moist Forest product.</p>
-<p>This function, contrary to <code class="docutils literal notranslate"><span class="pre">get_fcc_loss()</span></code> which accounts only for loss in the forest cover change, considers both forest loss and gain (or regrowth) to derive the forest cover change map.</p>
+<p>This function, contrary to <code class="docutils literal notranslate"><span class="pre">get_fcc_loss()</span></code> which accounts only for loss in the forest cover change, considers both forest loss and gain (also called regrowth) to derive the forest cover change map.</p>
 <p>We will use the Reunion Island (isocode “REU”) as a case study.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
@@ -152,7 +152,7 @@ from the Tropical Moist Forest product.</p>
 </section>
 <section id="plot-the-forest-cover-change-map">
 <h2>Plot the forest cover change map<a class="headerlink" href="#plot-the-forest-cover-change-map" title="Link to this heading">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">geefcc</span><span class="o">.</span><span class="n">plot_fcc_tmf</span><span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">geefcc</span><span class="o">.</span><span class="n">plot_fcc_loss_gain</span><span class="p">(</span>
     <span class="n">input_file</span><span class="o">=</span><span class="n">ofile</span><span class="p">,</span>
     <span class="n">output_file</span><span class="o">=</span><span class="s2">"fcc_loss_gain.png"</span><span class="p">,</span>
     <span class="n">title</span><span class="o">=</span><span class="s2">"Forest cover change 2015-2025, TMF"</span><span class="p">,</span>
@@ -166,7 +166,7 @@ from the Tropical Moist Forest product.</p>
 <section id="area-per-class-of-forest-cover-change">
 <h2>Area per class of forest cover change<a class="headerlink" href="#area-per-class-of-forest-cover-change" title="Link to this heading">¶</a></h2>
 <p>We use function <code class="docutils literal notranslate"><span class="pre">fcc_area()</span></code> to reproject the raster and compute the number of pixels per class and the corresponding area (in ha). We use projection UTM zone 40S (EPSG code 32740) for Reunion island.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">res_df</span> <span class="o">=</span> <span class="n">geefcc</span><span class="o">.</span><span class="n">fcc_area</span><span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">res_df</span> <span class="o">=</span> <span class="n">geefcc</span><span class="o">.</span><span class="n">stat_fcc_loss_gain</span><span class="p">(</span>
     <span class="n">input_file</span><span class="o">=</span><span class="n">ofile</span><span class="p">,</span>
     <span class="n">epsg</span><span class="o">=</span><span class="mi">32740</span><span class="p">,</span>
     <span class="n">output_file</span><span class="o">=</span><span class="s2">"fcc_statistics.csv"</span><span class="p">,</span>

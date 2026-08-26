@@ -122,6 +122,7 @@ cores, n-1 cores will be used in parallel.</p>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">ee</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">geefcc</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span>
 </pre></div>
 </div>
 <p>We initialize Google Earth Engine.</p>
@@ -142,7 +143,7 @@ cores, n-1 cores will be used in parallel.</p>
 <p>We download the forest cover change data from GEE for Peru for years 2000, 2010 and 2020, using a buffer of about 10 km around the border (0.089… decimal degrees) and a tile size of one degree.</p>
 <p>A buffer can be useful if we want to avoid “edge effects”, while computing distance to forest edge for example. One degree tiles are used to download the data from GEE in parallel.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">out_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"out_tmf"</span><span class="p">)</span>
-<span class="n">ofile</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">/</span> <span class="s2">"forest_tmf.tif"</span>
+<span class="n">forest_file</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">/</span> <span class="s2">"forest_tmf.tif"</span>
 <span class="n">years</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">2010</span><span class="p">,</span> <span class="mi">2020</span><span class="p">]</span>
 
 <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
@@ -152,7 +153,7 @@ cores, n-1 cores will be used in parallel.</p>
     <span class="n">years</span><span class="o">=</span><span class="n">years</span><span class="p">,</span>
     <span class="n">source</span><span class="o">=</span><span class="s2">"tmf"</span><span class="p">,</span>
     <span class="n">tile_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">output_file</span><span class="o">=</span><span class="n">ofile</span><span class="p">,</span>
+    <span class="n">output_file</span><span class="o">=</span><span class="n">forest_file</span><span class="p">,</span>
     <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">ncpu</span><span class="o">=</span><span class="n">ncpu</span><span class="p">,</span>
 <span class="p">)</span>
@@ -176,7 +177,7 @@ cores, n-1 cores will be used in parallel.</p>
 <p>We transform the data to have only one band describing the forest cover change with 0 for non-forest, 1 for deforestation on the period 2000–2009, 2 for deforestation on the period 2010–2019, and 3 for the remaining forest in 2020. To do so, we just sum the values of the raster bands.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fcc_file</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">/</span> <span class="s2">"fcc_tmf.tif"</span>
 <span class="n">geefcc</span><span class="o">.</span><span class="n">sum_raster_bands</span><span class="p">(</span>
-    <span class="n">input_file</span><span class="o">=</span><span class="n">ofile</span><span class="p">,</span>
+    <span class="n">input_file</span><span class="o">=</span><span class="n">forest_file</span><span class="p">,</span>
     <span class="n">output_file</span><span class="o">=</span><span class="n">fcc_file</span><span class="p">,</span>
     <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
@@ -186,13 +187,14 @@ cores, n-1 cores will be used in parallel.</p>
 <section id="plot-the-forest-cover-change-map">
 <h2>Plot the forest cover change map<a class="headerlink" href="#plot-the-forest-cover-change-map" title="Link to this heading">¶</a></h2>
 <p>We plot the forest cover change map. The raster is automatically resampled to a coarser resolution before plotting as it exceeds the default pixel threshold. Country borders, buffer and grid are overlaid directly from their vector files.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">geefcc</span><span class="o">.</span><span class="n">plot_fcc_loss</span><span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">borders</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">out_dir</span> <span class="o">/</span> <span class="s2">"gadm41_PER_0.gpkg"</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s2">"ADM_ADM_0"</span><span class="p">)</span>
+<span class="n">geefcc</span><span class="o">.</span><span class="n">plot_fcc_loss</span><span class="p">(</span>
     <span class="n">input_file</span><span class="o">=</span><span class="n">fcc_file</span><span class="p">,</span>
     <span class="n">years</span><span class="o">=</span><span class="n">years</span><span class="p">,</span>
     <span class="n">output_file</span><span class="o">=</span><span class="s2">"fcc.png"</span><span class="p">,</span>
     <span class="n">title</span><span class="o">=</span><span class="s2">"Forest cover change 2000-2010-2020, TMF"</span><span class="p">,</span>
     <span class="n">dpi</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
-    <span class="n">borders</span><span class="o">=</span><span class="n">out_dir</span> <span class="o">/</span> <span class="s2">"gadm41_PER_0.gpkg"</span><span class="p">,</span>
+    <span class="n">borders</span><span class="o">=</span><span class="n">borders</span><span class="p">,</span>
     <span class="n">buffer</span><span class="o">=</span><span class="n">out_dir</span> <span class="o">/</span> <span class="s2">"gadm41_PER_buffer.gpkg"</span><span class="p">,</span>
     <span class="n">grid</span><span class="o">=</span><span class="n">out_dir</span> <span class="o">/</span> <span class="s2">"min_grid.gpkg"</span><span class="p">,</span>
 <span class="p">)</span>

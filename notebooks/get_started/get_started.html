@@ -126,7 +126,7 @@ from the Tropical Moist Forest product. We will use the Reunion Island
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download data from GEE</span>
 <span class="n">out_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"out_tmf"</span><span class="p">)</span>
 <span class="n">forest_file</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">/</span> <span class="s2">"forest_tmf.tif"</span>
-<span class="k">if</span> <span class="ow">not</span> <span class="n">ofile</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">forest_file</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
     <span class="n">geefcc</span><span class="o">.</span><span class="n">get_fcc_loss</span><span class="p">(</span>
         <span class="n">aoi</span><span class="o">=</span><span class="s2">"REU"</span><span class="p">,</span>
         <span class="n">years</span><span class="o">=</span><span class="p">[</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">2010</span><span class="p">,</span> <span class="mi">2020</span><span class="p">],</span>
@@ -136,6 +136,9 @@ from the Tropical Moist Forest product. We will use the Reunion Island
         <span class="n">tile_size</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
         <span class="n">output_file</span><span class="o">=</span><span class="n">forest_file</span><span class="p">,</span>
     <span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">get_fcc</span> <span class="n">running</span><span class="p">,</span> <span class="mi">3</span> <span class="n">tiles</span> <span class="o">....</span>
 </pre></div>
 </div>
 <p>We transform the forest raster with three bands into a single-band forest cover change raster.</p>
@@ -166,9 +169,9 @@ from the Tropical Moist Forest product. We will use the Reunion Island
 <section id="compare-with-forest-cover-change-from-gfc">
 <span id="id2"></span><h2>Compare with forest cover change from GFC<a class="headerlink" href="#compare-with-forest-cover-change-from-gfc" title="Link to this heading">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get data from GEE</span>
-<span class="n">out_dir_gfc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"out_gfc_50"</span><span class="p">)</span>
-<span class="n">ofile_gfc</span> <span class="o">=</span> <span class="n">out_dir_gfc</span> <span class="o">/</span> <span class="s2">"forest_gfc_50.tif"</span>
-<span class="k">if</span> <span class="ow">not</span> <span class="n">ofile_gfc</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+<span class="n">out_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"out_gfc_50"</span><span class="p">)</span>
+<span class="n">forest_file</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">/</span> <span class="s2">"forest_gfc_50.tif"</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">forest_file</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
     <span class="n">geefcc</span><span class="o">.</span><span class="n">get_fcc_loss</span><span class="p">(</span>
         <span class="n">aoi</span><span class="o">=</span><span class="s2">"REU"</span><span class="p">,</span>
         <span class="n">years</span><span class="o">=</span><span class="p">[</span><span class="mi">2001</span><span class="p">,</span> <span class="mi">2010</span><span class="p">,</span> <span class="mi">2020</span><span class="p">],</span>  <span class="c1"># Here, first year must be 2001 (1st Jan)</span>
@@ -177,16 +180,19 @@ from the Tropical Moist Forest product. We will use the Reunion Island
         <span class="n">parallel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">crop_to_aoi</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">tile_size</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-        <span class="n">output_file</span><span class="o">=</span><span class="n">ofile_gfc</span><span class="p">,</span>
+        <span class="n">output_file</span><span class="o">=</span><span class="n">forest_file</span><span class="p">,</span>
     <span class="p">)</span>
 </pre></div>
 </div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">get_fcc</span> <span class="n">running</span><span class="p">,</span> <span class="mi">3</span> <span class="n">tiles</span> <span class="o">....</span>
+</pre></div>
+</div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sum bands to get a single-band fcc raster</span>
-<span class="n">fcc_file_gfc</span> <span class="o">=</span> <span class="n">out_dir_gfc</span> <span class="o">/</span> <span class="s2">"fcc_gfc_50.tif"</span>
-<span class="k">if</span> <span class="ow">not</span> <span class="n">fcc_file_gfc</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+<span class="n">fcc_file</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">/</span> <span class="s2">"fcc_gfc_50.tif"</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">fcc_file</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
     <span class="n">geefcc</span><span class="o">.</span><span class="n">sum_raster_bands</span><span class="p">(</span>
-        <span class="n">input_file</span><span class="o">=</span><span class="n">ofile_gfc</span><span class="p">,</span>
-        <span class="n">output_file</span><span class="o">=</span><span class="n">fcc_file_gfc</span><span class="p">,</span>
+        <span class="n">input_file</span><span class="o">=</span><span class="n">forest_file</span><span class="p">,</span>
+        <span class="n">output_file</span><span class="o">=</span><span class="n">fcc_file</span><span class="p">,</span>
         <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span>
 </pre></div>
@@ -194,7 +200,7 @@ from the Tropical Moist Forest product. We will use the Reunion Island
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot</span>
 <span class="n">years_gfc</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2001</span><span class="p">,</span> <span class="mi">2010</span><span class="p">,</span> <span class="mi">2020</span><span class="p">]</span>
 <span class="n">geefcc</span><span class="o">.</span><span class="n">plot_fcc_loss</span><span class="p">(</span>
-    <span class="n">input_file</span><span class="o">=</span><span class="n">fcc_file_gfc</span><span class="p">,</span>
+    <span class="n">input_file</span><span class="o">=</span><span class="n">fcc_file</span><span class="p">,</span>
     <span class="n">years</span><span class="o">=</span><span class="n">years_gfc</span><span class="p">,</span>
     <span class="n">output_file</span><span class="o">=</span><span class="s2">"gfc.png"</span><span class="p">,</span>
     <span class="n">title</span><span class="o">=</span><span class="s2">"Forest cover change 2001-2010-2020, GFC"</span><span class="p">,</span>
@@ -212,8 +218,8 @@ from the Tropical Moist Forest product. We will use the Reunion Island
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">ListedColormap</span>
 
 <span class="c1"># Computing difference and sum</span>
-<span class="n">forest_tmf</span> <span class="o">=</span> <span class="n">rioxarray</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="n">ofile</span><span class="p">)</span>
-<span class="n">forest_gfc</span> <span class="o">=</span> <span class="n">rioxarray</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="n">ofile_gfc</span><span class="p">)</span>
+<span class="n">forest_tmf</span> <span class="o">=</span> <span class="n">rioxarray</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">"out_tmf"</span><span class="p">)</span> <span class="o">/</span> <span class="s2">"forest_tmf.tif"</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">"int"</span><span class="p">)</span>
+<span class="n">forest_gfc</span> <span class="o">=</span> <span class="n">rioxarray</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">"out_gfc_50"</span><span class="p">)</span> <span class="o">/</span> <span class="s2">"forest_gfc_50.tif"</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">"int"</span><span class="p">)</span>
 <span class="n">forest_diff</span> <span class="o">=</span> <span class="n">forest_tmf</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">band</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="o">-</span> <span class="n">forest_gfc</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">band</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">forest_sum</span> <span class="o">=</span> <span class="n">forest_tmf</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">band</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="n">forest_gfc</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">band</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">forest_diff</span> <span class="o">=</span> <span class="n">forest_diff</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">forest_sum</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
@@ -258,22 +264,22 @@ from the Tropical Moist Forest product. We will use the Reunion Island
 <a class="reference internal image-reference" href="../../_images/comp.png"><img alt="../../_images/comp.png" class="align-center" src="../../_images/comp.png" width="800" />
 </a>
 <p>Differences are quite important between the two data-sets. This might
-change depending on the tree cover threshold (here = 75%) we select for
-defining forest with the GFC dataset.</p>
+change depending on the tree cover threshold we select for defining
+forest with the GFC dataset.</p>
 </section>
 <section id="download-data-from-an-extent">
 <span id="id4"></span><h2>Download data from an extent<a class="headerlink" href="#download-data-from-an-extent" title="Link to this heading">¶</a></h2>
 <p>We will use the following extent which corresponds to a region around
 the Analamazaotra special reserve in Madagascar.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">out_dir_mdg</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"out_tmf_extent"</span><span class="p">)</span>
-<span class="n">ofile_mdg</span> <span class="o">=</span> <span class="n">out_dir_mdg</span> <span class="o">/</span> <span class="s2">"forest_tmf_extent.tif"</span>
-<span class="k">if</span> <span class="ow">not</span> <span class="n">ofile_mdg</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">out_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"out_tmf_extent"</span><span class="p">)</span>
+<span class="n">forest_file</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">/</span> <span class="s2">"forest_tmf_extent.tif"</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">forest_file</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
     <span class="n">geefcc</span><span class="o">.</span><span class="n">get_fcc_loss</span><span class="p">(</span>
         <span class="n">aoi</span><span class="o">=</span><span class="p">(</span><span class="mf">48.4</span><span class="p">,</span> <span class="o">-</span><span class="mf">19.0</span><span class="p">,</span> <span class="mf">48.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">18.8</span><span class="p">),</span>
         <span class="n">years</span><span class="o">=</span><span class="p">[</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">2010</span><span class="p">,</span> <span class="mi">2020</span><span class="p">],</span>
         <span class="n">source</span><span class="o">=</span><span class="s2">"tmf"</span><span class="p">,</span>
         <span class="n">tile_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
-        <span class="n">output_file</span><span class="o">=</span><span class="n">ofile_mdg</span><span class="p">,</span>
+        <span class="n">output_file</span><span class="o">=</span><span class="n">forest_file</span><span class="p">,</span>
     <span class="p">)</span>
 </pre></div>
 </div>
@@ -281,18 +287,18 @@ the Analamazaotra special reserve in Madagascar.</p>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sum bands to get a single-band fcc raster</span>
-<span class="n">fcc_file_mdg</span> <span class="o">=</span> <span class="n">out_dir_mdg</span> <span class="o">/</span> <span class="s2">"fcc_tmf_extent.tif"</span>
-<span class="k">if</span> <span class="ow">not</span> <span class="n">fcc_file_mdg</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+<span class="n">fcc_file</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">/</span> <span class="s2">"fcc_tmf_extent.tif"</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">fcc_file</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
     <span class="n">geefcc</span><span class="o">.</span><span class="n">sum_raster_bands</span><span class="p">(</span>
-        <span class="n">input_file</span><span class="o">=</span><span class="n">ofile_mdg</span><span class="p">,</span>
-        <span class="n">output_file</span><span class="o">=</span><span class="n">fcc_file_mdg</span><span class="p">,</span>
+        <span class="n">input_file</span><span class="o">=</span><span class="n">forest_file</span><span class="p">,</span>
+        <span class="n">output_file</span><span class="o">=</span><span class="n">fcc_file</span><span class="p">,</span>
         <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot</span>
 <span class="n">geefcc</span><span class="o">.</span><span class="n">plot_fcc_loss</span><span class="p">(</span>
-    <span class="n">input_file</span><span class="o">=</span><span class="n">fcc_file_mdg</span><span class="p">,</span>
+    <span class="n">input_file</span><span class="o">=</span><span class="n">fcc_file</span><span class="p">,</span>
     <span class="n">years</span><span class="o">=</span><span class="p">[</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">2010</span><span class="p">,</span> <span class="mi">2020</span><span class="p">],</span>
     <span class="n">output_file</span><span class="o">=</span><span class="s2">"extent.png"</span><span class="p">,</span>
     <span class="n">title</span><span class="o">=</span><span class="s2">"Forest cover change 2000-2010-2020, TMF"</span><span class="p">,</span>

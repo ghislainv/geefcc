@@ -7,10 +7,10 @@ Loss and gain
 Get forest cover change from TMF
 --------------------------------
 
-The function ``.get_fcc_loss_gain()`` can be used to download forest cover change
+The function ``.get_fcc_loss_gain()`` can be used to download the forest cover change
 from the Tropical Moist Forest product.
 
-This function, contrary to ``get_fcc_loss()`` which accounts only for loss in the forest cover change, considers both forest loss and gain (or regrowth) to derive the forest cover change map.
+This function, contrary to ``get_fcc_loss()`` which accounts only for loss in the forest cover change, considers both forest loss and gain (also called regrowth) to derive the forest cover change map.
 
 We will use the Reunion Island (isocode “REU”) as a case study.
 
@@ -56,7 +56,7 @@ Plot the forest cover change map
 
 .. code:: python
 
-    geefcc.plot_fcc_tmf(
+    geefcc.plot_fcc_loss_gain(
         input_file=ofile,
         output_file="fcc_loss_gain.png",
         title="Forest cover change 2015-2025, TMF",
@@ -74,7 +74,7 @@ We use function ``fcc_area()`` to reproject the raster and compute the number of
 
 .. code:: python
 
-    res_df = geefcc.fcc_area(
+    res_df = geefcc.stat_fcc_loss_gain(
         input_file=ofile,
         epsg=32740,
         output_file="fcc_statistics.csv",
