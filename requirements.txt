@@ -1,9 +1,11 @@
 numpy
 gdal
 xarray
+xee>=0.1.0
+earthengine-api
+geopandas
 rioxarray
-xee
+matplotlib
 multiprocess
 tenacity
-matplotlib
-geopandas
+shapely
