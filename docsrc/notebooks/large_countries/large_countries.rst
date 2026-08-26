@@ -20,6 +20,7 @@ cores, n-1 cores will be used in parallel.
 
     import ee
     import geefcc
+    import geopandas
 
 We initialize Google Earth Engine.
 
@@ -49,7 +50,7 @@ A buffer can be useful if we want to avoid “edge effects”, while computing d
 .. code:: python
 
     out_dir = Path("out_tmf")
-    ofile = out_dir / "forest_tmf.tif"
+    forest_file = out_dir / "forest_tmf.tif"
     years = [2000, 2010, 2020]
 
     start_time = time.time()
@@ -59,7 +60,7 @@ A buffer can be useful if we want to avoid “edge effects”, while computing d
         years=years,
         source="tmf",
         tile_size=1,
-        output_file=ofile,
+        output_file=forest_file,
         parallel=True,
         ncpu=ncpu,
     )
@@ -90,7 +91,7 @@ We transform the data to have only one band describing the forest cover change w
 
     fcc_file = out_dir / "fcc_tmf.tif"
     geefcc.sum_raster_bands(
-        input_file=ofile,
+        input_file=forest_file,
         output_file=fcc_file,
         verbose=False,
     )
@@ -102,13 +103,14 @@ We plot the forest cover change map. The raster is automatically resampled to a 
 
 .. code:: python
 
+    borders = geopandas.read_file(out_dir / "gadm41_PER_0.gpkg", layer="ADM_ADM_0")
     geefcc.plot_fcc_loss(
         input_file=fcc_file,
         years=years,
         output_file="fcc.png",
         title="Forest cover change 2000-2010-2020, TMF",
         dpi=200,
-        borders=out_dir / "gadm41_PER_0.gpkg",
+        borders=borders,
         buffer=out_dir / "gadm41_PER_buffer.gpkg",
         grid=out_dir / "min_grid.gpkg",
     )

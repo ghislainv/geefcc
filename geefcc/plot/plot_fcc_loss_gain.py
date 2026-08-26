@@ -128,6 +128,7 @@ def plot_fcc_loss_gain(
             ds = gdal.Warp(
                 str(coarsen_file), str(input_file),
                 xRes=xres, yRes=yres, resampleAlg="near",
+                creationOptions=["COMPRESS=DEFLATE"]
             )
             ds = None
         plot_file = coarsen_file

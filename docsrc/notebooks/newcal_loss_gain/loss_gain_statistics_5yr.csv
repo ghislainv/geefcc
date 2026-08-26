@@ -1,8 +1,6 @@
-category,label,count,area_ha
-0,stable non-forest,200532616,18047935
-1,stable forest,9349449,841450
-2,forest --> deforested,161223,14510
-3,non-forest --> old regrowth,781232,70311
-4,forest --> old regrowth (via deforestation),16623,1496
-5,stable old-regrowth,516513,46486
-6,old regrowth --> deforested,9192,827
+label,area_ha,annual_change_ha,annual_change_perc
+forest_t1,904769,,
+forest_t2,959743,,
+gross loss,-16833,-1683.0,-0.18
+gross gain,71807,7181.0,0.82
+net change,54974,5497.0,0.62

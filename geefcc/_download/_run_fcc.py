@@ -46,6 +46,8 @@ def _run_fcc_pipeline(aoi, buff, tile_size, forest,
         for (i, ext) in enumerate(grid):
             geeic2geotiff(i, ext, ntiles, forest, PROJ, SCALE, out_dir_tiles)
     else:
+        # Write tiles in parallel
+        # https://superfastpython.com/multiprocessing-pool-starmap_async/
         if ncpu is None:
             ncpu = os.cpu_count() - 1
         with mp.Pool(processes=ncpu) as pool:

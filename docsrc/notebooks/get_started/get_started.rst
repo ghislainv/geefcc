@@ -31,7 +31,7 @@ from the Tropical Moist Forest product. We will use the Reunion Island
     # Download data from GEE
     out_dir = Path("out_tmf")
     forest_file = out_dir / "forest_tmf.tif"
-    if not ofile.is_file():
+    if not forest_file.is_file():
         geefcc.get_fcc_loss(
             aoi="REU",
             years=[2000, 2010, 2020],
@@ -41,6 +41,11 @@ from the Tropical Moist Forest product. We will use the Reunion Island
             tile_size=0.5,
             output_file=forest_file,
         )
+
+::
+
+    get_fcc running, 3 tiles ....
+
 
 We transform the forest raster with three bands into a single-band forest cover change raster.
 
@@ -80,9 +85,9 @@ Compare with forest cover change from GFC
 .. code:: python
 
     # Get data from GEE
-    out_dir_gfc = Path("out_gfc_50")
-    ofile_gfc = out_dir_gfc / "forest_gfc_50.tif"
-    if not ofile_gfc.is_file():
+    out_dir = Path("out_gfc_50")
+    forest_file = out_dir / "forest_gfc_50.tif"
+    if not forest_file.is_file():
         geefcc.get_fcc_loss(
             aoi="REU",
             years=[2001, 2010, 2020],  # Here, first year must be 2001 (1st Jan)
@@ -91,17 +96,22 @@ Compare with forest cover change from GFC
             parallel=False,
             crop_to_aoi=True,
             tile_size=0.5,
-            output_file=ofile_gfc,
+            output_file=forest_file,
         )
+
+::
+
+    get_fcc running, 3 tiles ....
+
 
 .. code:: python
 
     # Sum bands to get a single-band fcc raster
-    fcc_file_gfc = out_dir_gfc / "fcc_gfc_50.tif"
-    if not fcc_file_gfc.is_file():
+    fcc_file = out_dir / "fcc_gfc_50.tif"
+    if not fcc_file.is_file():
         geefcc.sum_raster_bands(
-            input_file=ofile_gfc,
-            output_file=fcc_file_gfc,
+            input_file=forest_file,
+            output_file=fcc_file,
             verbose=False,
         )
 
@@ -110,7 +120,7 @@ Compare with forest cover change from GFC
     # Plot
     years_gfc = [2001, 2010, 2020]
     geefcc.plot_fcc_loss(
-        input_file=fcc_file_gfc,
+        input_file=fcc_file,
         years=years_gfc,
         output_file="gfc.png",
         title="Forest cover change 2001-2010-2020, GFC",
@@ -133,8 +143,8 @@ Comparing forest cover in 2020 between TMF and GFC
     from matplotlib.colors import ListedColormap
 
     # Computing difference and sum
-    forest_tmf = rioxarray.open_rasterio(ofile)
-    forest_gfc = rioxarray.open_rasterio(ofile_gfc)
+    forest_tmf = rioxarray.open_rasterio(Path("out_tmf") / "forest_tmf.tif").astype("int")
+    forest_gfc = rioxarray.open_rasterio(Path("out_gfc_50") / "forest_gfc_50.tif").astype("int")
     forest_diff = forest_tmf.sel(band=3) - forest_gfc.sel(band=3)
     forest_sum = forest_tmf.sel(band=3) + forest_gfc.sel(band=3)
     forest_diff = forest_diff.where(forest_sum != 0, -2)
@@ -181,8 +191,8 @@ Comparing forest cover in 2020 between TMF and GFC
     :align: center
 
 Differences are quite important between the two data-sets. This might
-change depending on the tree cover threshold (here = 75%) we select for
-defining forest with the GFC dataset.
+change depending on the tree cover threshold we select for defining
+forest with the GFC dataset.
 
 .. _download-data-from-an-extent:
 
@@ -194,15 +204,15 @@ the Analamazaotra special reserve in Madagascar.
 
 .. code:: python
 
-    out_dir_mdg = Path("out_tmf_extent")
-    ofile_mdg = out_dir_mdg / "forest_tmf_extent.tif"
-    if not ofile_mdg.is_file():
+    out_dir = Path("out_tmf_extent")
+    forest_file = out_dir / "forest_tmf_extent.tif"
+    if not forest_file.is_file():
         geefcc.get_fcc_loss(
             aoi=(48.4, -19.0, 48.6, -18.8),
             years=[2000, 2010, 2020],
             source="tmf",
             tile_size=0.2,
-            output_file=ofile_mdg,
+            output_file=forest_file,
         )
 
 ::
@@ -213,11 +223,11 @@ the Analamazaotra special reserve in Madagascar.
 .. code:: python
 
     # Sum bands to get a single-band fcc raster
-    fcc_file_mdg = out_dir_mdg / "fcc_tmf_extent.tif"
-    if not fcc_file_mdg.is_file():
+    fcc_file = out_dir / "fcc_tmf_extent.tif"
+    if not fcc_file.is_file():
         geefcc.sum_raster_bands(
-            input_file=ofile_mdg,
-            output_file=fcc_file_mdg,
+            input_file=forest_file,
+            output_file=fcc_file,
             verbose=False,
         )
 
@@ -225,7 +235,7 @@ the Analamazaotra special reserve in Madagascar.
 
     # Plot
     geefcc.plot_fcc_loss(
-        input_file=fcc_file_mdg,
+        input_file=fcc_file,
         years=[2000, 2010, 2020],
         output_file="extent.png",
         title="Forest cover change 2000-2010-2020, TMF",
