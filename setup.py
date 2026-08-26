@@ -21,9 +21,9 @@ def find_version(pkg_name):
     """Finding package version."""
     with open(f"{pkg_name}/__init__.py", encoding="utf-8") as init_file:
         init_text = init_file.read()
-    _version = (re.search('^__version__\\s*=\\s*"(.*)"',
-                          init_text, re.M)
-                .group(1))
+        _version = (re.search('^__version__\\s*=\\s*"(.*)"',
+                              init_text, re.M)
+                    .group(1))
     return _version
 
 
@@ -62,8 +62,9 @@ setup(name="geefcc",
       python_requires=">=3.6",
       packages=find_packages(include=["geefcc", "geefcc.*"]),
       entry_points={"console_scripts": ["geefcc = geefcc.geefcc:main"]},
-      install_requires=["numpy", "gdal", "xarray", "xee>=0.1.0", "geopandas",
-                        "rioxarray", "matplotlib", "multiprocess", "tenacity"],
+      install_requires=["numpy", "gdal", "ee", "xarray", "xee>=0.1.0",
+                        "geopandas", "rioxarray", "matplotlib",
+                        "multiprocess", "tenacity", "shapely"],
       extras_require={
           "dev": ["pytest", "flake8", "ipython", "pylint"],
           "doc": ["sphinx", "nbsphinx", "sphinxcontrib-bibtex",
