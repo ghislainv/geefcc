@@ -1,0 +1,9 @@
+pytest
+flake8
+ipython
+pylint
+sphinx
+nbsphinx
+sphinxcontrib-bibtex
+tabulate
+pandas

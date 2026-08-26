@@ -61,12 +61,13 @@ setup(name="geefcc",
                 "cover change map google earth engine"),
       python_requires=">=3.6",
       packages=find_packages(include=["geefcc", "geefcc.*"]),
-      package_dir={"geefcc": "geefcc", "misc": "geefcc/misc"},
       entry_points={"console_scripts": ["geefcc = geefcc.geefcc:main"]},
-      install_requires=["numpy", "gdal", "xarray", "xee",
-                        "rioxarray", "multiprocess", "tenacity"],
+      install_requires=["numpy", "gdal", "xarray", "xee>=0.1.0", "geopandas",
+                        "rioxarray", "matplotlib", "multiprocess", "tenacity"],
       extras_require={
-          "interactive": ["matplotlib", "geopandas"]},
+          "dev": ["pytest", "flake8", "ipython", "pylint"],
+          "doc": ["sphinx", "nbsphinx", "sphinxcontrib-bibtex",
+                  "tabulate", "pandas"]},
       zip_safe=False)
 
 # End

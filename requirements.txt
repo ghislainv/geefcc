@@ -5,3 +5,5 @@ rioxarray
 xee
 multiprocess
 tenacity
+matplotlib
+geopandas
