@@ -63,11 +63,11 @@ def stat_fcc_loss(
 
     # Build labels from years
     n_periods = len(years) - 1
-    n_classes = n_periods + 1
+    n_classes = len(years) + 1
     labels = {0: f"non-forest in {years[0]}"}
     for i in range(n_periods):
         labels[i + 1] = f"deforestation {years[i]}-{years[i + 1]}"
-    labels[n_periods] = f"forest in {years[-1]}"
+    labels[n_periods + 1] = f"forest in {years[-1]}"
 
     # Reproject to metric CRS at 30 m resolution
     proj_file = input_file.with_stem(input_file.stem + f"_epsg{epsg}")
