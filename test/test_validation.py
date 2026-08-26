@@ -3,7 +3,7 @@
 import pytest
 
 import geefcc as gf
-from geefcc.get_extent_from_aoi import get_extent_from_aoi
+from geefcc._download.get_extent_from_aoi import get_extent_from_aoi
 
 
 # ============================================================

@@ -13,7 +13,7 @@
 # Import
 import io
 import re  # Regular expression
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 # find_version
@@ -60,7 +60,7 @@ setup(name="geefcc",
       keywords=("deforestation tropical forests forest "
                 "cover change map google earth engine"),
       python_requires=">=3.6",
-      packages=["geefcc", "geefcc/misc"],
+      packages=find_packages(include=["geefcc", "geefcc.*"]),
       package_dir={"geefcc": "geefcc", "misc": "geefcc/misc"},
       entry_points={"console_scripts": ["geefcc = geefcc.geefcc:main"]},
       install_requires=["numpy", "gdal", "xarray", "xee",
