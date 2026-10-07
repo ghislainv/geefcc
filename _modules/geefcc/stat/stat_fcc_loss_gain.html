@@ -118,6 +118,9 @@
     <span class="mi">4</span><span class="p">:</span> <span class="s2">"forest --&gt; old regrowth (via deforestation)"</span><span class="p">,</span>
     <span class="mi">5</span><span class="p">:</span> <span class="s2">"stable old-regrowth"</span><span class="p">,</span>
     <span class="mi">6</span><span class="p">:</span> <span class="s2">"old regrowth --&gt; deforested"</span><span class="p">,</span>
+    <span class="mi">7</span><span class="p">:</span> <span class="s2">"stable old afforestation"</span><span class="p">,</span>
+    <span class="mi">8</span><span class="p">:</span> <span class="s2">"old afforestation --&gt; deforested"</span><span class="p">,</span>
+    <span class="mi">9</span><span class="p">:</span> <span class="s2">"non-forest --&gt; old afforestation"</span><span class="p">,</span>
 <span class="p">}</span>
 
 
@@ -133,7 +136,7 @@
 <span class="sd">    :func:`dask.array.bincount` to count pixels per class and converts</span>
 <span class="sd">    counts to hectares.</span>
 
-<span class="sd">    The seven transition classes produced by :func:`get_fcc_loss_gain`</span>
+<span class="sd">    The ten transition classes produced by :func:`get_fcc_loss_gain`</span>
 <span class="sd">    are:</span>
 
 <span class="sd">    - 0 = stable non-forest</span>
@@ -143,6 +146,9 @@
 <span class="sd">    - 4 = forest to old regrowth (via deforestation)</span>
 <span class="sd">    - 5 = stable old regrowth</span>
 <span class="sd">    - 6 = old regrowth to deforested</span>
+<span class="sd">    - 7 = stable old afforestation</span>
+<span class="sd">    - 8 = old afforestation to deforested</span>
+<span class="sd">    - 9 = non-forest to old afforestation</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -158,7 +164,7 @@
 <span class="sd">    -------</span>
 <span class="sd">    pandas.DataFrame</span>
 <span class="sd">        DataFrame with columns ``category``, ``label``, ``count``,</span>
-<span class="sd">        ``area_ha``. All seven classes included. Also written to</span>
+<span class="sd">        ``area_ha``. All ten classes included. Also written to</span>
 <span class="sd">        ``output_file``.</span>
 
 <span class="sd">    Notes</span>
@@ -198,7 +204,7 @@
     <span class="n">x_res</span><span class="p">,</span> <span class="n">y_res</span> <span class="o">=</span> <span class="n">fcc</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">resolution</span><span class="p">()</span>
     <span class="n">pixel_area_m2</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x_res</span><span class="p">)</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y_res</span><span class="p">)</span>
     <span class="n">fcc_flat</span> <span class="o">=</span> <span class="n">fcc</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
-    <span class="n">counts</span> <span class="o">=</span> <span class="n">da_</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">fcc_flat</span><span class="p">,</span> <span class="n">minlength</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="n">da_</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">fcc_flat</span><span class="p">,</span> <span class="n">minlength</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
 
     <span class="c1"># Build DataFrame</span>
     <span class="n">res_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
