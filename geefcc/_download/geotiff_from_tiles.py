@@ -11,6 +11,8 @@ def add_color_table(output_file):
     ds = gdal.Open(str(Path(output_file)), gdal.GA_Update)
     n_bands = ds.RasterCount
 
+    # If n_bands=1, then it is loss and gain.
+    # Otherwise nbands=3 for loss only.
     if n_bands == 1:
         colors = {
             0: (255, 255, 255, 0),
@@ -20,6 +22,9 @@ def add_color_table(output_file):
             4: (100, 160, 230, 255),
             5: (150, 190, 140, 255),
             6: (255, 140, 0, 255),
+            7: (155, 89, 182, 255),
+            8: (255, 215, 0, 255),
+            9: (189, 195, 230, 255)
         }
         band = ds.GetRasterBand(1)
         ct = gdal.ColorTable()

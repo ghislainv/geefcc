@@ -17,6 +17,9 @@ FCC_LABELS = {
     4: "forest --> old regrowth (via deforestation)",
     5: "stable old-regrowth",
     6: "old regrowth --> deforested",
+    7: "stable old afforestation",
+    8: "old afforestation --> deforested",
+    9: "non-forest --> old afforestation",
 }
 
 
@@ -30,7 +33,7 @@ def stat_fcc_loss_gain(
     :func:`dask.array.bincount` to count pixels per class and converts
     counts to hectares.
 
-    The seven transition classes produced by :func:`get_fcc_loss_gain`
+    The ten transition classes produced by :func:`get_fcc_loss_gain`
     are:
 
     - 0 = stable non-forest
@@ -40,6 +43,9 @@ def stat_fcc_loss_gain(
     - 4 = forest to old regrowth (via deforestation)
     - 5 = stable old regrowth
     - 6 = old regrowth to deforested
+    - 7 = stable old afforestation
+    - 8 = old afforestation to deforested
+    - 9 = non-forest to old afforestation
 
     Parameters
     ----------
@@ -55,7 +61,7 @@ def stat_fcc_loss_gain(
     -------
     pandas.DataFrame
         DataFrame with columns ``category``, ``label``, ``count``,
-        ``area_ha``. All seven classes included. Also written to
+        ``area_ha``. All ten classes included. Also written to
         ``output_file``.
 
     Notes
@@ -95,7 +101,7 @@ def stat_fcc_loss_gain(
     x_res, y_res = fcc.rio.resolution()
     pixel_area_m2 = abs(x_res) * abs(y_res)
     fcc_flat = fcc.data.ravel()
-    counts = da_.bincount(fcc_flat, minlength=7).compute()
+    counts = da_.bincount(fcc_flat, minlength=10).compute()
 
     # Build DataFrame
     res_df = pd.DataFrame({
