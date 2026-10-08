@@ -29,12 +29,12 @@ We will use New Caledonia as a case study.
     # Initialize GEE
     ee.Initialize(project="deforisk", opt_url="https://earthengine-highvolume.googleapis.com")
 
-We want to estimate and map the forest cover change for the period 2015--2025, considering regrowth of at least 5 years as being forest, which is debatable :cite:p:`Poorter2016,Bourgoin2024`.
+We want to estimate and map the forest cover change for the period 2015--2025, considering regrowth of at least 10 years as being forest, which is debatable :cite:p:`Poorter2016,Bourgoin2024`.
 
 .. code:: python
 
     # Download data from GEE
-    min_years = 5
+    min_years = 10
     out_dir = Path(f"out_tmf_{min_years}yr")
     ofile = out_dir / "fcc_tmf.tif"
     if not ofile.is_file():
@@ -60,7 +60,7 @@ We estimate the computation time to download 20 1-degree tiles using several cor
 
 ::
 
-    Execution time: 1.19 minutes
+    Execution time: 1.25 minutes
 
 Plot the forest cover change map
 --------------------------------
@@ -72,7 +72,7 @@ We plot the forest cover change map. The raster is automatically resampled to a 
     geefcc.plot_fcc_loss_gain(
         input_file=ofile,
         output_file=f"fcc_tmf_{min_years}yr.png",
-        title="Forest cover change 2015-2025, TMF",
+        title="Forest cover change 2015\u20132025, TMF",
         dpi=200,
         borders=Path("data") / "borders_NCL.gpkg",
         grid=out_dir / "grid.gpkg",
@@ -80,7 +80,7 @@ We plot the forest cover change map. The raster is automatically resampled to a 
         ylim=(-23.25, -18.75),
     )
 
-.. image:: fcc_tmf_5yr.png
+.. image:: fcc_tmf_10yr.png
     :width: 100%
     :align: center
 
@@ -105,19 +105,25 @@ We use function ``stat_fcc_loss_gain()`` to reproject the raster and compute the
     +----------+---------------------------------------------+-----------+----------+
     | category | label                                       |     count | area\_ha |
     +==========+=============================================+===========+==========+
-    |        0 | stable non-forest                           | 200532616 | 18047935 |
+    |        0 | stable non-forest                           | 201155951 | 18104036 |
     +----------+---------------------------------------------+-----------+----------+
     |        1 | stable forest                               |   9349449 |   841450 |
     +----------+---------------------------------------------+-----------+----------+
-    |        2 | forest --> deforested                       |    161223 |    14510 |
+    |        2 | forest --> deforested                       |    177846 |    16006 |
     +----------+---------------------------------------------+-----------+----------+
-    |        3 | non-forest --> old regrowth                 |    781232 |    70311 |
+    |        3 | non-forest --> old regrowth                 |     69727 |     6275 |
     +----------+---------------------------------------------+-----------+----------+
-    |        4 | forest --> old regrowth (via deforestation) |     16623 |     1496 |
+    |        4 | forest --> old regrowth (via deforestation) |         0 |        0 |
     +----------+---------------------------------------------+-----------+----------+
-    |        5 | stable old-regrowth                         |    516513 |    46486 |
+    |        5 | stable old-regrowth                         |     12317 |     1109 |
     +----------+---------------------------------------------+-----------+----------+
-    |        6 | old regrowth --> deforested                 |      9192 |      827 |
+    |        6 | old regrowth --> deforested                 |      1522 |      137 |
+    +----------+---------------------------------------------+-----------+----------+
+    |        7 | stable old afforestation                    |    187208 |    16849 |
+    +----------+---------------------------------------------+-----------+----------+
+    |        8 | old afforestation --> deforested            |        51 |        5 |
+    +----------+---------------------------------------------+-----------+----------+
+    |        9 | non-forest --> old afforestation            |    412777 |    37150 |
     +----------+---------------------------------------------+-----------+----------+
 
 Deforestation and regrowth estimates
@@ -127,10 +133,10 @@ We can then estimate gross loss, gross gain and net loss in forest cover change 
 
 .. code:: python
 
-    forest_t1 = res_df.loc[[1, 2, 4, 5, 6], "area_ha"].sum()
-    forest_t2 = res_df.loc[[1, 3, 4, 5], "area_ha"].sum()
-    gross_loss = - res_df.loc[[2, 4, 6], "area_ha"].sum()
-    gross_gain = res_df.loc[[3, 4], "area_ha"].sum()
+    forest_t1 = res_df.loc[[1, 2, 4, 5, 6, 7, 8], "area_ha"].sum()
+    forest_t2 = res_df.loc[[1, 3, 4, 5, 7, 9], "area_ha"].sum()
+    gross_loss = - res_df.loc[[2, 4, 6, 8], "area_ha"].sum()
+    gross_gain = res_df.loc[[3, 4, 9], "area_ha"].sum()
     lossgain_df = pd.DataFrame({
         "label": ["forest_t1", "forest_t2", "gross loss", "gross gain", "net change"],
         "area_ha": [forest_t1, forest_t2, gross_loss, gross_gain, gross_gain + gross_loss],
@@ -150,20 +156,58 @@ We can then estimate gross loss, gross gain and net loss in forest cover change 
     +------------+----------+--------------------+----------------------+
     | label      | area\_ha | annual\_change\_ha | annual\_change\_perc |
     +============+==========+====================+======================+
-    | forest\_t1 |   904769 |                nan |                  nan |
+    | forest\_t1 |   875556 |                nan |                  nan |
     +------------+----------+--------------------+----------------------+
-    | forest\_t2 |   959743 |                nan |                  nan |
+    | forest\_t2 |   902833 |                nan |                  nan |
     +------------+----------+--------------------+----------------------+
-    | gross loss |   -16833 |              -1683 |                -0.18 |
+    | gross loss |   -16148 |              -1615 |                -0.18 |
     +------------+----------+--------------------+----------------------+
-    | gross gain |    71807 |               7181 |                 0.82 |
+    | gross gain |    43425 |               4342 |                 0.51 |
     +------------+----------+--------------------+----------------------+
-    | net change |    54974 |               5497 |                 0.62 |
+    | net change |    27277 |               2728 |                 0.32 |
     +------------+----------+--------------------+----------------------+
 
-When considering regrowth of at least 5 years, which is very short for forest recovery :cite:p:`Bourgoin2024`, the gain (7181 ha/yr) compensates the forest cover loss (-1683 ha/yr), and the net change is positive (5947 ha/yr).
+When considering regrowth of at least 10 years, which is short for forest recovery :cite:p:`Bourgoin2024`, the gain (4342 ha/yr) compensates the forest cover loss (-1615 ha/yr), and the net change is positive (2728 ha/yr, corresponding to 0.32 %/yr).
 
-If we consider regrowth of at least 10 years as being forest (``min_years=10`` in function ``get_fcc_loss_gain``), the gain is much smaller (4342 ha/yr), but the net change is still positive (2728 ha/yr corresponding to 0.32 %/yr).
+When disregarding afforestation (categories 8 and 9, which might be several things including missed forest in the past), figures are different:
+
+.. code:: python
+
+    forest_t1 = res_df.loc[[1, 2, 4, 5, 6, 7], "area_ha"].sum()
+    forest_t2 = res_df.loc[[1, 3, 4, 5, 7], "area_ha"].sum()
+    gross_loss = - res_df.loc[[2, 4, 6], "area_ha"].sum()
+    gross_gain = res_df.loc[[3, 4], "area_ha"].sum()
+    lossgain_df = pd.DataFrame({
+        "label": ["forest_t1", "forest_t2", "gross loss", "gross gain", "net change"],
+        "area_ha": [forest_t1, forest_t2, gross_loss, gross_gain, gross_gain + gross_loss],
+    })
+    time = 2025 - 2015
+    lossgain_df["annual_change_ha"] = (lossgain_df["area_ha"] / time).round().astype(int)
+    ratio = lossgain_df["area_ha"] / forest_t1
+    lossgain_df["annual_change_perc"] = round(100 * (1 - pow((1 - ratio), 1 / time)), 2)
+    lossgain_df.iloc[:2, 2:4] = np.nan
+
+    # Export
+    lossgain_df.to_csv(f"loss_gain_statistics_{min_years}yr_noaff.csv", index=False)
+    tabulate(lossgain_df, headers=lossgain_df.columns, tablefmt="orgtbl", showindex=False)
+
+.. table::
+
+    +------------+----------+--------------------+----------------------+
+    | label      | area\_ha | annual\_change\_ha | annual\_change\_perc |
+    +============+==========+====================+======================+
+    | forest\_t1 |   875551 |                nan |                  nan |
+    +------------+----------+--------------------+----------------------+
+    | forest\_t2 |   865683 |                nan |                  nan |
+    +------------+----------+--------------------+----------------------+
+    | gross loss |   -16143 |              -1614 |                -0.18 |
+    +------------+----------+--------------------+----------------------+
+    | gross gain |     6275 |                628 |                 0.07 |
+    +------------+----------+--------------------+----------------------+
+    | net change |    -9868 |               -987 |                -0.11 |
+    +------------+----------+--------------------+----------------------+
+
+In this case, the gain (628 ha/yr) does not compensate for the loss (-1614 ha/yr), and the net change is negative (-987 ha/yr, corresponding to -0.11 %/yr).
 
 References
 ----------

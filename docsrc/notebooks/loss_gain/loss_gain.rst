@@ -51,6 +51,10 @@ We want to estimate and map the forest cover change for the period 2015--2025, c
             output_file=ofile,
         )
 
+::
+
+    get_fcc running, 3 tiles ...
+
 Plot the forest cover change map
 --------------------------------
 
@@ -59,7 +63,7 @@ Plot the forest cover change map
     geefcc.plot_fcc_loss_gain(
         input_file=ofile,
         output_file="fcc_loss_gain.png",
-        title="Forest cover change 2015-2025, TMF",
+        title="Forest cover change 2015\u20132025, TMF",
         dpi=100,
     )
 
@@ -70,7 +74,7 @@ Plot the forest cover change map
 Area per class of forest cover change
 -------------------------------------
 
-We use function ``fcc_area()`` to reproject the raster and compute the number of pixels per class and the corresponding area (in ha). We use projection UTM zone 40S (EPSG code 32740) for Reunion island.
+We use function ``stat_fcc_loss_gain()`` to reproject the raster and compute the number of pixels per class and the corresponding area (in ha). We use projection UTM zone 40S (EPSG code 32740) for Reunion island.
 
 .. code:: python
 
@@ -86,19 +90,25 @@ We use function ``fcc_area()`` to reproject the raster and compute the number of
     +----------+---------------------------------------------+---------+----------+
     | category | label                                       |   count | area\_ha |
     +==========+=============================================+=========+==========+
-    |        0 | stable non-forest                           | 2672678 |   240541 |
+    |        0 | stable non-forest                           | 2672683 |   240541 |
     +----------+---------------------------------------------+---------+----------+
     |        1 | stable forest                               | 1387668 |   124890 |
     +----------+---------------------------------------------+---------+----------+
     |        2 | forest --> deforested                       |   67986 |     6119 |
     +----------+---------------------------------------------+---------+----------+
-    |        3 | non-forest --> old regrowth                 |   49882 |     4489 |
+    |        3 | non-forest --> old regrowth                 |   13163 |     1185 |
     +----------+---------------------------------------------+---------+----------+
-    |        4 | forest --> old regrowth (via deforestation) |    1057 |       95 |
+    |        4 | forest --> old regrowth (via deforestation) |    1052 |       95 |
     +----------+---------------------------------------------+---------+----------+
-    |        5 | stable old-regrowth                         |   14629 |     1317 |
+    |        5 | stable old-regrowth                         |    2103 |      189 |
     +----------+---------------------------------------------+---------+----------+
-    |        6 | old regrowth --> deforested                 |     946 |       85 |
+    |        6 | old regrowth --> deforested                 |     921 |       83 |
+    +----------+---------------------------------------------+---------+----------+
+    |        7 | stable old afforestation                    |   12526 |     1127 |
+    +----------+---------------------------------------------+---------+----------+
+    |        8 | old afforestation --> deforested            |      25 |        2 |
+    +----------+---------------------------------------------+---------+----------+
+    |        9 | non-forest --> old afforestation            |   36719 |     3305 |
     +----------+---------------------------------------------+---------+----------+
 
 Deforestation and regrowth estimates
@@ -108,10 +118,10 @@ We can then estimate gross loss, gross gain and net loss in forest cover change 
 
 .. code:: python
 
-    forest_t1 = res_df.loc[[1, 2, 4, 5, 6], "area_ha"].sum()
-    forest_t2 = res_df.loc[[1, 3, 4, 5], "area_ha"].sum()
-    gross_loss = - res_df.loc[[2, 4, 6], "area_ha"].sum()
-    gross_gain = res_df.loc[[3, 4], "area_ha"].sum()
+    forest_t1 = res_df.loc[[1, 2, 4, 5, 6, 7, 8], "area_ha"].sum()
+    forest_t2 = res_df.loc[[1, 3, 4, 5, 7, 9], "area_ha"].sum()
+    gross_loss = - res_df.loc[[2, 4, 6, 8], "area_ha"].sum()
+    gross_gain = res_df.loc[[3, 4, 9], "area_ha"].sum()
     lossgain_df = pd.DataFrame({
         "label": ["forest_t1", "forest_t2", "gross loss", "gross gain", "net change"],
         "area_ha": [forest_t1, forest_t2, gross_loss, gross_gain, gross_gain + gross_loss],
@@ -131,15 +141,15 @@ We can then estimate gross loss, gross gain and net loss in forest cover change 
     +------------+----------+--------------------+----------------------+
     | label      | area\_ha | annual\_change\_ha | annual\_change\_perc |
     +============+==========+====================+======================+
-    | forest\_t1 |   132506 |                nan |                  nan |
+    | forest\_t1 |   132505 |                nan |                  nan |
     +------------+----------+--------------------+----------------------+
     | forest\_t2 |   130791 |                nan |                  nan |
     +------------+----------+--------------------+----------------------+
     | gross loss |    -6299 |               -630 |                -0.47 |
     +------------+----------+--------------------+----------------------+
-    | gross gain |     4584 |                458 |                 0.35 |
+    | gross gain |     4585 |                458 |                 0.35 |
     +------------+----------+--------------------+----------------------+
-    | net change |    -1715 |               -172 |                -0.13 |
+    | net change |    -1714 |               -171 |                -0.13 |
     +------------+----------+--------------------+----------------------+
 
 When considering regrowth of at least 5 years, which is very short for forest recovery :cite:p:`Bourgoin2024`, the gain (458 ha/yr) compensates the forest cover loss (-630 ha/yr), and the net deforestation is small (-172 ha/yr).
