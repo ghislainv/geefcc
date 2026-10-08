@@ -149,13 +149,16 @@ from the Tropical Moist Forest product.</p>
     <span class="p">)</span>
 </pre></div>
 </div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">get_fcc</span> <span class="n">running</span><span class="p">,</span> <span class="mi">3</span> <span class="n">tiles</span> <span class="o">...</span>
+</pre></div>
+</div>
 </section>
 <section id="plot-the-forest-cover-change-map">
 <h2>Plot the forest cover change map<a class="headerlink" href="#plot-the-forest-cover-change-map" title="Link to this heading">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">geefcc</span><span class="o">.</span><span class="n">plot_fcc_loss_gain</span><span class="p">(</span>
     <span class="n">input_file</span><span class="o">=</span><span class="n">ofile</span><span class="p">,</span>
     <span class="n">output_file</span><span class="o">=</span><span class="s2">"fcc_loss_gain.png"</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">"Forest cover change 2015-2025, TMF"</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">"Forest cover change 2015</span><span class="se">\u2013</span><span class="s2">2025, TMF"</span><span class="p">,</span>
     <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
@@ -165,7 +168,7 @@ from the Tropical Moist Forest product.</p>
 </section>
 <section id="area-per-class-of-forest-cover-change">
 <h2>Area per class of forest cover change<a class="headerlink" href="#area-per-class-of-forest-cover-change" title="Link to this heading">¶</a></h2>
-<p>We use function <code class="docutils literal notranslate"><span class="pre">fcc_area()</span></code> to reproject the raster and compute the number of pixels per class and the corresponding area (in ha). We use projection UTM zone 40S (EPSG code 32740) for Reunion island.</p>
+<p>We use function <code class="docutils literal notranslate"><span class="pre">stat_fcc_loss_gain()</span></code> to reproject the raster and compute the number of pixels per class and the corresponding area (in ha). We use projection UTM zone 40S (EPSG code 32740) for Reunion island.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">res_df</span> <span class="o">=</span> <span class="n">geefcc</span><span class="o">.</span><span class="n">stat_fcc_loss_gain</span><span class="p">(</span>
     <span class="n">input_file</span><span class="o">=</span><span class="n">ofile</span><span class="p">,</span>
     <span class="n">epsg</span><span class="o">=</span><span class="mi">32740</span><span class="p">,</span>
@@ -186,7 +189,7 @@ from the Tropical Moist Forest product.</p>
 <tbody>
 <tr class="row-even"><td><p>0</p></td>
 <td><p>stable non-forest</p></td>
-<td><p>2672678</p></td>
+<td><p>2672683</p></td>
 <td><p>240541</p></td>
 </tr>
 <tr class="row-odd"><td><p>1</p></td>
@@ -201,23 +204,38 @@ from the Tropical Moist Forest product.</p>
 </tr>
 <tr class="row-odd"><td><p>3</p></td>
 <td><p>non-forest –&gt; old regrowth</p></td>
-<td><p>49882</p></td>
-<td><p>4489</p></td>
+<td><p>13163</p></td>
+<td><p>1185</p></td>
 </tr>
 <tr class="row-even"><td><p>4</p></td>
 <td><p>forest –&gt; old regrowth (via deforestation)</p></td>
-<td><p>1057</p></td>
+<td><p>1052</p></td>
 <td><p>95</p></td>
 </tr>
 <tr class="row-odd"><td><p>5</p></td>
 <td><p>stable old-regrowth</p></td>
-<td><p>14629</p></td>
-<td><p>1317</p></td>
+<td><p>2103</p></td>
+<td><p>189</p></td>
 </tr>
 <tr class="row-even"><td><p>6</p></td>
 <td><p>old regrowth –&gt; deforested</p></td>
-<td><p>946</p></td>
-<td><p>85</p></td>
+<td><p>921</p></td>
+<td><p>83</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>stable old afforestation</p></td>
+<td><p>12526</p></td>
+<td><p>1127</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>old afforestation –&gt; deforested</p></td>
+<td><p>25</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p>non-forest –&gt; old afforestation</p></td>
+<td><p>36719</p></td>
+<td><p>3305</p></td>
 </tr>
 </tbody>
 </table>
@@ -225,10 +243,10 @@ from the Tropical Moist Forest product.</p>
 <section id="deforestation-and-regrowth-estimates">
 <h2>Deforestation and regrowth estimates<a class="headerlink" href="#deforestation-and-regrowth-estimates" title="Link to this heading">¶</a></h2>
 <p>We can then estimate gross loss, gross gain and net loss in forest cover change for the period 2015–2025. Category 4 (forest –&gt; old regrowth via deforestation) is accounted for both gross loss and gain.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">forest_t1</span> <span class="o">=</span> <span class="n">res_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="s2">"area_ha"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="n">forest_t2</span> <span class="o">=</span> <span class="n">res_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="s2">"area_ha"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="n">gross_loss</span> <span class="o">=</span> <span class="o">-</span> <span class="n">res_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="s2">"area_ha"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="n">gross_gain</span> <span class="o">=</span> <span class="n">res_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="s2">"area_ha"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">forest_t1</span> <span class="o">=</span> <span class="n">res_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="s2">"area_ha"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">forest_t2</span> <span class="o">=</span> <span class="n">res_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="s2">"area_ha"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">gross_loss</span> <span class="o">=</span> <span class="o">-</span> <span class="n">res_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="s2">"area_ha"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">gross_gain</span> <span class="o">=</span> <span class="n">res_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="s2">"area_ha"</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="n">lossgain_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
     <span class="s2">"label"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"forest_t1"</span><span class="p">,</span> <span class="s2">"forest_t2"</span><span class="p">,</span> <span class="s2">"gross loss"</span><span class="p">,</span> <span class="s2">"gross gain"</span><span class="p">,</span> <span class="s2">"net change"</span><span class="p">],</span>
     <span class="s2">"area_ha"</span><span class="p">:</span> <span class="p">[</span><span class="n">forest_t1</span><span class="p">,</span> <span class="n">forest_t2</span><span class="p">,</span> <span class="n">gross_loss</span><span class="p">,</span> <span class="n">gross_gain</span><span class="p">,</span> <span class="n">gross_gain</span> <span class="o">+</span> <span class="n">gross_loss</span><span class="p">],</span>
@@ -254,7 +272,7 @@ from the Tropical Moist Forest product.</p>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>forest_t1</p></td>
-<td><p>132506</p></td>
+<td><p>132505</p></td>
 <td><p>nan</p></td>
 <td><p>nan</p></td>
 </tr>
@@ -269,13 +287,13 @@ from the Tropical Moist Forest product.</p>
 <td><p>-0.47</p></td>
 </tr>
 <tr class="row-odd"><td><p>gross gain</p></td>
-<td><p>4584</p></td>
+<td><p>4585</p></td>
 <td><p>458</p></td>
 <td><p>0.35</p></td>
 </tr>
 <tr class="row-even"><td><p>net change</p></td>
-<td><p>-1715</p></td>
-<td><p>-172</p></td>
+<td><p>-1714</p></td>
+<td><p>-171</p></td>
 <td><p>-0.13</p></td>
 </tr>
 </tbody>
