@@ -1,6 +1,6 @@
 #+title: New Caledonia with loss and gain
 #+options: toc:nil title:t num:nil author:nil ^:{}
-#+property: header-args:python :results output :session :exports both
+#+property: header-args:python :results output :session :exports both :tangle fcc-map-2015-2025-newcal.py
 #+property: header-args :eval never-export
 #+export_select_tags: export
 #+export_exclude_tags: noexport
@@ -25,6 +25,9 @@ import geefcc
 import numpy as np
 import pandas as pd
 from tabulate import tabulate
+from osgeo import gdal
+
+gdal.UseExceptions()
 #+end_src
 
 #+RESULTS:
@@ -89,6 +92,139 @@ geefcc.plot_fcc_loss_gain(
 [[file:fcc_tmf_10yr.png]]
 
 Lines in black represent country borders. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.
+
+** Interactive map
+
+*** Reproject in Web Mercator
+
+#+begin_src python
+ifile = out_dir / "fcc_tmf.tif"
+ofile = out_dir / "fcc_tmf_epsg3857.tif"
+ds = gdal.Warp(
+    str(ofile),            
+    str(ifile),
+    xRes=30, yRes=30,
+    targetAlignedPixels=True,   # aligne la grille sur des multiples de 30 m
+    dstSRS="EPSG:3857",
+    resampleAlg="near",
+    format="GTiff",
+    creationOptions=["COMPRESS=DEFLATE", "TILED=YES"],
+)
+ds = None                  # ferme le dataset et force l'écriture sur disque
+#+end_src
+
+*** Convert to mbtiles
+
+#+begin_src python
+ifile = out_dir / "fcc_tmf_epsg3857.tif"
+mbtiles = out_dir / "fcc_tmf.mbtiles"
+
+# gdal_translate -of MBTILES -co TILE_FORMAT=PNG
+ds = gdal.Translate(
+    str(mbtiles),
+    str(ifile),
+    format="MBTILES",
+    creationOptions=["TILE_FORMAT=PNG"],
+)
+ds = None
+
+# Add overviews
+ds = gdal.Open(str(mbtiles), gdal.GA_Update)
+ds.BuildOverviews("NEAREST", [2, 4, 8, 16, 32])
+ds = None
+#+end_src
+
+Convert to pmtiles using go-pmtiles. The pmtiles CLI can be installed from the GitHub releases of [[https://github.com/protomaps/go-pmtiles/releases][protomaps/go-pmtiles]].
+
+#+begin_src python :results none
+import subprocess
+pmtiles = out_dir / "fcc.pmtiles"
+subprocess.run(["/home/ghislain/Applications/go-pmtiles/pmtiles", "convert", str(mbtiles), str(pmtiles)], check=True)
+#+end_src
+
+*** Convert the raster to a PNG image with a colormap
+
+#+begin_src python :results none
+import rasterio
+import numpy as np
+from PIL import Image
+from rasterio.warp import transform_bounds
+
+# Colormap : valeur -> RGBA
+cmap = {
+    0: (255, 255, 255, 0),    # transparent
+    1: (34, 139, 34, 255),    # stable forest
+    2: (227, 26, 28, 255),    # deforestation
+    3: (30, 100, 200, 255),   # non-forest -> regrowth
+    4: (100, 160, 230, 255),  # forest -> regrowth
+    5: (150, 190, 140, 255),  # stable regrowth
+    6: (255, 140, 0, 255),    # regrowth -> deforested
+}
+
+# Bounds
+ifile = out_dir / "fcc_tmf_epsg3857.tif"
+with rasterio.open(ifile) as src:
+    data = src.read(1)                    
+    nodata = src.nodata
+    west, south, east, north = transform_bounds(src.crs, "EPSG:4326", *src.bounds)
+bounds = [[south, west], [north, east]]
+
+# Index 8 bits: values not in cmap (and nodata) -> 0 (transparent)
+idx = np.zeros(data.shape, dtype="uint8")
+for val in cmap:
+    idx[data == val] = val
+if nodata is not None:
+    idx[data == nodata] = 0
+
+# 256-entry palette, RGB + separate transparency table (alpha)
+palette = np.zeros((256, 3), dtype="uint8")
+alpha = np.full(256, 255, dtype="uint8")
+for val, (r, g, b, a) in cmap.items():
+    palette[val] = (r, g, b)
+    alpha[val] = a
+
+img = Image.fromarray(idx, mode="P")
+img.putpalette(palette.flatten().tolist())
+
+png_file = out_dir / "fcc_tmf.png"
+img.save(png_file, optimize=True, transparency=bytes(alpha[:7]))
+#+end_src
+
+*** Use folium for interactive plot
+
+#+begin_src python
+import folium
+import rasterio
+from rasterio.warp import transform_bounds
+import numpy as np
+
+# Build map centred on New Caledonia
+mapbox_token = 
+m = folium.Map(
+    location=[-21.3, 165.5],
+    zoom_start=8, tiles=f"https://api.mapbox.com/styles/v1/mapbox/light-v11/tiles/{{z}}/{{x}}/{{y}}?access_token={mapbox_token}",
+    attr="Mapbox",
+)
+
+# Add raster as image overlay
+folium.raster_layers.ImageOverlay(
+    image=str(png_file),
+    bounds=bounds,
+    opacity=0.9,
+    name="FCC TMF",
+).add_to(m)
+
+folium.LayerControl().add_to(m)
+m.save("map/fcc_tmf_interactive.html")
+#+end_src
+
+#+RESULTS:
+
+#+BEGIN_EXPORT rst
+.. raw:: html
+
+   <iframe src="../../_static/fcc_tmf_interactive.html" width="100%" height="500" style="border:none;"></iframe>
+#+END_EXPORT
 
 * Area per class of forest cover change
 
