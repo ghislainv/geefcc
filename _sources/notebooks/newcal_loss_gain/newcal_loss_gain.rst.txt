@@ -160,7 +160,7 @@ Interactive map with folium
     # Create empty map
     m = folium.Map(
         tiles=None,
-        location=[-21.3, 165.5],
+        location=[-21.3, 166.2],
         zoom_start=8,
         max_zoom=14
     )
@@ -174,9 +174,18 @@ Interactive map with folium
     m.save("map/fcc_tmf_interactive.html")
 
 .. raw:: html
-	 
-   <iframe src="/geefcc/_static/fcc_tmf_interactive.html" 
-           width="100%" height="600px"></iframe>
+
+   <iframe 
+    src="/geefcc/_static/fcc_tmf_interactive.html" 
+    style="
+      width: 100%; 
+      height: 600px; 
+      border: 2px solid #e0e0e0; 
+      border-radius: 16px; 
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); 
+      aspect-ratio: 16 / 9;
+    ">
+   </iframe>
 
 Area per class of forest cover change
 -------------------------------------
