@@ -132,26 +132,19 @@ Interactive map with folium
 .. code:: python
 
     # Mapbox token
+    # Add MAPBOX_PUBLIC_TOKEN=<your token> in a .env file
     load_dotenv()
     mapbox_token = os.getenv("MAPBOX_PUBLIC_TOKEN")
-
-    # Create empty map
-    m = folium.Map(
-        tiles=None,
-        location=[-21.3, 165.5],
-        zoom_start=8,
-        max_zoom=14
-    )
+    mapbox_token = "MAPBOX_PUBLIC_TOKEN"  # Uncomment for GitHub
 
     # Mapbox
     base = folium.TileLayer(
         tiles=("https://api.mapbox.com/styles/v1/mapbox/light-v11/"
-               f"tiles/{{z}}/{{x}}/{{y}}?access_token={mapbox_token}"),
+                f"tiles/{{z}}/{{x}}/{{y}}?access_token={mapbox_token}"),
         name="Mapbox",
-        attr="© Mapbox © OpenStreetMap",
+        attr="© Mapbox, © <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors",
         max_zoom=14
     )
-    m.add_child(base)
 
     # Add tiles
     tile_layer = folium.TileLayer(
@@ -163,7 +156,16 @@ Interactive map with folium
         max_native_zoom=12,
         attr="EC-JRC"
     )
-    m.add_child(tile_layer)
+
+    # Create empty map
+    m = folium.Map(
+        tiles=None,
+        location=[-21.3, 165.5],
+        zoom_start=8,
+        max_zoom=14
+    )
+    tile_layer.add_to(m)
+    base.add_to(m)
 
     # Ajouter layer control
     folium.LayerControl().add_to(m)
@@ -173,7 +175,7 @@ Interactive map with folium
 
 .. raw:: html
 	 
-   <iframe src="../../static/fcc_tmf_interactive.html" 
+   <iframe src="../../_static/fcc_tmf_interactive.html" 
            width="100%" height="600px"></iframe>
 
 Area per class of forest cover change
