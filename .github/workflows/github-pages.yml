@@ -45,7 +45,7 @@ jobs:
           gdal_translate -of VRT -expand rgba "$tif_file" "$vrt_file"
           gdal2tiles.py --xyz -p mercator -z 5-12 -r near --processes=4 -w none $vrt_file $png_odir   
 
-      - name: Build tiles from GeoTIFF 
+      - name: Include Mapbox secret token
         run: |
           html_file="docsrc/notebooks/newcal_loss_gain/map/fcc_tmf_interactive.html"
           sed -i "s/MAPBOX_PUBLIC_TOKEN/${{ secrets.MAPBOX_PUBLIC_TOKEN }}/g" $html_file
