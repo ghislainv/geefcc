@@ -15,6 +15,7 @@ We will use New Caledonia as a case study.
 
 .. code:: python
 
+    import os
     from pathlib import Path
     import time
 
@@ -23,6 +24,11 @@ We will use New Caledonia as a case study.
     import numpy as np
     import pandas as pd
     from tabulate import tabulate
+    from osgeo import gdal
+    import folium
+    from dotenv import load_dotenv
+
+    gdal.UseExceptions()
 
 .. code:: python
 
@@ -72,7 +78,7 @@ We plot the forest cover change map. The raster is automatically resampled to a 
     geefcc.plot_fcc_loss_gain(
         input_file=ofile,
         output_file=f"fcc_tmf_{min_years}yr.png",
-        title="Forest cover change 2015\u20132025, TMF",
+        title="Forest cover change 2015 \u2013 2025, TMF",
         dpi=200,
         borders=Path("data") / "borders_NCL.gpkg",
         grid=out_dir / "grid.gpkg",
@@ -85,6 +91,90 @@ We plot the forest cover change map. The raster is automatically resampled to a 
     :align: center
 
 Lines in black represent country borders. One degree tiles in grey cover the whole buffer and were used to download the data in parallel.
+
+Interactive map
+~~~~~~~~~~~~~~~
+
+Reproject in Web Mercator
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    ifile = out_dir / "fcc_tmf.tif"
+    ofile = out_dir / "fcc_tmf_epsg3857.tif"
+    ds = gdal.Warp(
+        str(ofile),            
+        str(ifile),
+        xRes=30, yRes=30,
+        targetAlignedPixels=True,   # aligne la grille sur des multiples de 30 m
+        dstSRS="EPSG:3857",
+        resampleAlg="near",
+        format="GTiff",
+        creationOptions=["COMPRESS=DEFLATE", "TILED=YES"],
+    )
+    ds = None                  # ferme le dataset et force l'écriture sur disque
+
+Create tiles
+^^^^^^^^^^^^
+
+.. code:: python
+
+    import subprocess
+    subprocess.run([
+        "gdal2tiles.py", "--xyz", "-p", "mercator",
+        "-z", "5-12", "-r", "near", "--processes=4", "-w", "none",
+        str(ofile), "map/tiles_fcc"),
+    ], check=True)
+
+Interactive map with folium
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+    # Mapbox token
+    load_dotenv()
+    mapbox_token = os.getenv("MAPBOX_PUBLIC_TOKEN")
+
+    # Create empty map
+    m = folium.Map(
+        tiles=None,
+        location=[-21.3, 165.5],
+        zoom_start=8,
+        max_zoom=14
+    )
+
+    # Mapbox
+    base = folium.TileLayer(
+        tiles=("https://api.mapbox.com/styles/v1/mapbox/light-v11/"
+               f"tiles/{{z}}/{{x}}/{{y}}?access_token={mapbox_token}"),
+        name="Mapbox",
+        attr="© Mapbox © OpenStreetMap",
+        max_zoom=14
+    )
+    m.add_child(base)
+
+    # Add tiles
+    tile_layer = folium.TileLayer(
+        tiles=("tiles_fcc/{z}/{x}/{y}.png"),
+        overlay=True,
+        name="FCC TMF 2015 \u2013 2025",
+        min_zoom=5,
+        max_zoom=14,
+        max_native_zoom=12,
+        attr="EC-JRC"
+    )
+    m.add_child(tile_layer)
+
+    # Ajouter layer control
+    folium.LayerControl().add_to(m)
+
+    # Save to html
+    m.save("map/fcc_tmf_interactive.html")
+
+.. raw:: html
+	 
+   <iframe src="../../static/fcc_tmf_interactive.html" 
+           width="100%" height="600px"></iframe>
 
 Area per class of forest cover change
 -------------------------------------
