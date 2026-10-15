@@ -2,9 +2,13 @@
 tmp_outputs
 docs
 docsrc/notebooks/*/out*
+!docsrc/notebooks/*/out_tmf_10yr/
+docsrc/notebooks/*/out_tmf_10yr/*
+!docsrc/notebooks/*/out_tmf_10yr/fcc_tmf_epsg3857.tif
 docsrc/notebooks/*/data*
 test/out*
 docsrc/notebooks/*/test.py
+docsrc/notebooks/newcal_loss_gain/map/tiles_fcc
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

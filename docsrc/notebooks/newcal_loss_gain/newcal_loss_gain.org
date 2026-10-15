@@ -17,6 +17,7 @@ This function considers both forest loss and gain (or regrowth) to derive the fo
 We will use New Caledonia as a case study.
 
 #+begin_src python :results none
+import os
 from pathlib import Path
 import time
 
@@ -26,6 +27,8 @@ import numpy as np
 import pandas as pd
 from tabulate import tabulate
 from osgeo import gdal
+import folium
+from dotenv import load_dotenv
 
 gdal.UseExceptions()
 #+end_src
@@ -79,7 +82,7 @@ We plot the forest cover change map. The raster is automatically resampled to a 
 geefcc.plot_fcc_loss_gain(
     input_file=ofile,
     output_file=f"fcc_tmf_{min_years}yr.png",
-    title="Forest cover change 2015\u20132025, TMF",
+    title="Forest cover change 2015 \u2013 2025, TMF",
     dpi=200,
     borders=Path("data") / "borders_NCL.gpkg",
     grid=out_dir / "grid.gpkg",
@@ -113,118 +116,69 @@ ds = gdal.Warp(
 ds = None                  # ferme le dataset et force l'écriture sur disque
 #+end_src
 
-*** Convert to mbtiles
-
-#+begin_src python
-ifile = out_dir / "fcc_tmf_epsg3857.tif"
-mbtiles = out_dir / "fcc_tmf.mbtiles"
-
-# gdal_translate -of MBTILES -co TILE_FORMAT=PNG
-ds = gdal.Translate(
-    str(mbtiles),
-    str(ifile),
-    format="MBTILES",
-    creationOptions=["TILE_FORMAT=PNG"],
-)
-ds = None
-
-# Add overviews
-ds = gdal.Open(str(mbtiles), gdal.GA_Update)
-ds.BuildOverviews("NEAREST", [2, 4, 8, 16, 32])
-ds = None
-#+end_src
-
-Convert to pmtiles using go-pmtiles. The pmtiles CLI can be installed from the GitHub releases of [[https://github.com/protomaps/go-pmtiles/releases][protomaps/go-pmtiles]].
+*** Create tiles
 
 #+begin_src python :results none
 import subprocess
-pmtiles = out_dir / "fcc.pmtiles"
-subprocess.run(["/home/ghislain/Applications/go-pmtiles/pmtiles", "convert", str(mbtiles), str(pmtiles)], check=True)
+subprocess.run([
+    "gdal2tiles.py", "--xyz", "-p", "mercator",
+    "-z", "5-12", "-r", "near", "--processes=4", "-w", "none",
+    str(ofile), "map/tiles_fcc"),
+], check=True)
 #+end_src
 
-*** Convert the raster to a PNG image with a colormap
+*** Interactive map with folium
 
 #+begin_src python :results none
-import rasterio
-import numpy as np
-from PIL import Image
-from rasterio.warp import transform_bounds
+# Mapbox token
+# Add MAPBOX_PUBLIC_TOKEN=<your token> in a .env file
+load_dotenv()
+mapbox_token = os.getenv("MAPBOX_PUBLIC_TOKEN")
+mapbox_token = "MAPBOX_PUBLIC_TOKEN"  # Uncomment for GitHub
 
-# Colormap : valeur -> RGBA
-cmap = {
-    0: (255, 255, 255, 0),    # transparent
-    1: (34, 139, 34, 255),    # stable forest
-    2: (227, 26, 28, 255),    # deforestation
-    3: (30, 100, 200, 255),   # non-forest -> regrowth
-    4: (100, 160, 230, 255),  # forest -> regrowth
-    5: (150, 190, 140, 255),  # stable regrowth
-    6: (255, 140, 0, 255),    # regrowth -> deforested
-}
-
-# Bounds
-ifile = out_dir / "fcc_tmf_epsg3857.tif"
-with rasterio.open(ifile) as src:
-    data = src.read(1)                    
-    nodata = src.nodata
-    west, south, east, north = transform_bounds(src.crs, "EPSG:4326", *src.bounds)
-bounds = [[south, west], [north, east]]
-
-# Index 8 bits: values not in cmap (and nodata) -> 0 (transparent)
-idx = np.zeros(data.shape, dtype="uint8")
-for val in cmap:
-    idx[data == val] = val
-if nodata is not None:
-    idx[data == nodata] = 0
-
-# 256-entry palette, RGB + separate transparency table (alpha)
-palette = np.zeros((256, 3), dtype="uint8")
-alpha = np.full(256, 255, dtype="uint8")
-for val, (r, g, b, a) in cmap.items():
-    palette[val] = (r, g, b)
-    alpha[val] = a
-
-img = Image.fromarray(idx, mode="P")
-img.putpalette(palette.flatten().tolist())
-
-png_file = out_dir / "fcc_tmf.png"
-img.save(png_file, optimize=True, transparency=bytes(alpha[:7]))
-#+end_src
-
-*** Use folium for interactive plot
-
-#+begin_src python
-import folium
-import rasterio
-from rasterio.warp import transform_bounds
-import numpy as np
-
-# Build map centred on New Caledonia
-mapbox_token = 
-m = folium.Map(
-    location=[-21.3, 165.5],
-    zoom_start=8, tiles=f"https://api.mapbox.com/styles/v1/mapbox/light-v11/tiles/{{z}}/{{x}}/{{y}}?access_token={mapbox_token}",
-    attr="Mapbox",
+# Mapbox
+base = folium.TileLayer(
+    tiles=("https://api.mapbox.com/styles/v1/mapbox/light-v11/"
+            f"tiles/{{z}}/{{x}}/{{y}}?access_token={mapbox_token}"),
+    name="Mapbox",
+    attr="© Mapbox, © <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors",
+    max_zoom=14
 )
 
-# Add raster as image overlay
-folium.raster_layers.ImageOverlay(
-    image=str(png_file),
-    bounds=bounds,
-    opacity=0.9,
-    name="FCC TMF",
-).add_to(m)
+# Add tiles
+tile_layer = folium.TileLayer(
+    tiles=("tiles_fcc/{z}/{x}/{y}.png"),
+    overlay=True,
+    name="FCC TMF 2015 \u2013 2025",
+    min_zoom=5,
+    max_zoom=14,
+    max_native_zoom=12,
+    attr="EC-JRC"
+)
 
+# Create empty map
+m = folium.Map(
+    tiles=None,
+    location=[-21.3, 165.5],
+    zoom_start=8,
+    max_zoom=14
+)
+tile_layer.add_to(m)
+base.add_to(m)
+
+# Ajouter layer control
 folium.LayerControl().add_to(m)
+
+# Save to html
 m.save("map/fcc_tmf_interactive.html")
 #+end_src
 
-#+RESULTS:
-
-#+BEGIN_EXPORT rst
+#+begin_export rst
 .. raw:: html
-
-   <iframe src="../../_static/fcc_tmf_interactive.html" width="100%" height="500" style="border:none;"></iframe>
-#+END_EXPORT
+	 
+   <iframe src="../../static/fcc_tmf_interactive.html" 
+           width="100%" height="600px"></iframe>
+#+end_export
 
 * Area per class of forest cover change
 

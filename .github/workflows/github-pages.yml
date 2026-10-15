@@ -31,11 +31,22 @@ jobs:
           # Install GDAL
           export CPLUS_INCLUDE_PATH=/usr/include/gdal
           export C_INCLUDE_PATH=/usr/include/gdal
-          python3 -m pip install --no-build-isolation gdal==$(gdal-config --version)
+          python3 -m pip install --no-build-isolation gdal==$(gdal-config --version)     
           # Install requirements
           python3 -m pip install -r requirements.txt
           python3 -m pip install sphinx nbsphinx sphinxcontrib-bibtex ipython
           python3 -m pip install .
+
+      - name: Build tiles from GeoTIFF 
+        run: |
+          tif_file="docsrc/notebooks/newcal_loss_gain/out_tmf_10yr/fcc_tmf_epsg3857.tif"        
+          png_odir="docsrc/notebooks/newcal_loss_gain/map/tiles_fcc"
+          gdal2tiles.py --xyz -p mercator -z 5-12 -r near --processes=4 -w none $tif_file $png_odir   
+
+      - name: Build tiles from GeoTIFF 
+        run: |
+          html_file="docsrc/notebooks/newcal_loss_gain/map/fcc_tmf_interactive.html"
+          sed -i "s/MAPBOX_PUBLIC_TOKEN/${{ secrets.MAPBOX_PUBLIC_TOKEN }}/g" $html_file
 
       - name: Building documentation
         run: sphinx-build docsrc docs/html -b html -d docs/doctree

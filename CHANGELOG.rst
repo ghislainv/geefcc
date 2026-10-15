@@ -1,6 +1,13 @@
 Changelog
 *********
 
+geefcc 0.2.4
+============
+
+* Differentiate afforestation from regrowth for forest gain.
+* Updating tutorials.
+* Changes: https://github.com/ghislainv/geefcc/compare/v0.2.3...v0.2.4
+
 geefcc 0.2.3
 ============
 
