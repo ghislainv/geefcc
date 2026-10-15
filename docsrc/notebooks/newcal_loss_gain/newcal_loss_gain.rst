@@ -175,7 +175,7 @@ Interactive map with folium
 
 .. raw:: html
 	 
-   <iframe src="../../_static/fcc_tmf_interactive.html" 
+   <iframe src="/geefcc/_static/fcc_tmf_interactive.html" 
            width="100%" height="600px"></iframe>
 
 Area per class of forest cover change
