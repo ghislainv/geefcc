@@ -40,8 +40,10 @@ jobs:
       - name: Build tiles from GeoTIFF 
         run: |
           tif_file="docsrc/notebooks/newcal_loss_gain/out_tmf_10yr/fcc_tmf_epsg3857.tif"        
+          vrt_file="$RUNNER_TEMP/fcc_tmf_rgba.vrt"
           png_odir="docsrc/notebooks/newcal_loss_gain/map/tiles_fcc"
-          gdal2tiles.py --xyz -p mercator -z 5-12 -r near --processes=4 -w none $tif_file $png_odir   
+          gdal_translate -of VRT -expand rgba "$tif_file" "$vrt_file"
+          gdal2tiles.py --xyz -p mercator -z 5-12 -r near --processes=4 -w none $vrt_file $png_odir   
 
       - name: Build tiles from GeoTIFF 
         run: |
