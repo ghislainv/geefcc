@@ -111,8 +111,8 @@
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The current version of the package uses GFC data up to year 2025 (<a class="reference external" href="https://developers.google.com/earth-engine/datasets/catalog/UMD_hansen_global_forest_change_2023_v1_11">GFC v1.13 2025</a>) and TMF data up to year 2025 (<a class="reference external" href="https://forobs.jrc.ec.europa.eu/TMF/data">TMF v1 2025</a>) so that years for computing forest cover change can be in the interval 2001–2026 for GFC (GFC does not provide loss for the year 2000) and 2000–2026 for TMF. Forest cover is given on the 1<sup>st</sup> of January for each year.</p>
-<p>From version 0.1.8, the package considers both <strong>deforestation (or loss)</strong> and <strong>regrowth (or gain)</strong>.</p>
 </div>
+<p>From version 0.1.8, the package accounts for both <strong>deforestation (or loss)</strong> and <strong>regrowth (or gain)</strong>. For gain, <code class="docutils literal notranslate"><span class="pre">geefcc</span></code> distinguishes <strong>regrowth</strong> <em>sensu stricto</em> (forest gain on pixels previously classified as forest at some point since the beginning of the image archive) from <strong>afforestation</strong> (forest gain on pixels never previously classified as forest).</p>
 </section>
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">¶</a></h2>
