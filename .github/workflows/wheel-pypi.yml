@@ -101,7 +101,7 @@ jobs:
     name: Upload to PyPI
     needs: [check-current-branch, dist_check]
     runs-on: ubuntu-latest
-    if: contains(${{ needs.check.outputs.branch }}, 'main')
+    if: contains(needs.check-current-branch.outputs.branch, 'main')
     environment:
       name: pypi
       url: https://pypi.org/p/geefcc
@@ -114,5 +114,3 @@ jobs:
           path: dist
           merge-multiple: true
       - uses: pypa/gh-action-pypi-publish@release/v1
-
-# End
