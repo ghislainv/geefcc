@@ -33,7 +33,7 @@ The ``geefcc`` package depends on the `xee <https://github.com/google/Xee>`_ Pyt
 .. note::
    The current version of the package uses GFC data up to year 2025 (`GFC v1.13 2025 <https://developers.google.com/earth-engine/datasets/catalog/UMD_hansen_global_forest_change_2023_v1_11>`_) and TMF data up to year 2025 (`TMF v1 2025 <https://forobs.jrc.ec.europa.eu/TMF/data>`_) so that years for computing forest cover change can be in the interval 2001--2026 for GFC (GFC does not provide loss for the year 2000) and 2000--2026 for TMF. Forest cover is given on the 1\ :sup:`st` of January for each year.
 
-   From version 0.1.8, the package considers both **deforestation (or loss)** and **regrowth (or gain)**.
+From version 0.1.8, the package accounts for both **deforestation (or loss)** and **regrowth (or gain)**. For gain, ``geefcc`` distinguishes **regrowth** *sensu stricto* (forest gain on pixels previously classified as forest at some point since the beginning of the image archive) from **afforestation** (forest gain on pixels never previously classified as forest).
 
 Prerequisites
 =============
